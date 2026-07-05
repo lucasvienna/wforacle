@@ -5,6 +5,7 @@ export interface WarframePart {
 	frameId: string;
 	slot: Slot;
 	dropSourceNodeId?: string;
+	chance?: number;
 }
 
 export interface Warframe {
