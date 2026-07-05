@@ -27,3 +27,19 @@ test('tracking a part persists across reload', async ({ page }) => {
 	await expect(readout).toHaveText(/^1 \//);
 	await expect(part).toHaveAttribute('data-owned', 'true');
 });
+
+test('works offline after first load (service worker)', async ({ page, context }) => {
+	await page.goto('/');
+	await expect(page.getByText('VENUS')).toBeVisible(); // data cached by SW
+
+	// Wait for the service worker to install, activate (skipWaiting +
+	// clients.claim() in src/service-worker.ts), and take control of this
+	// page — a fixed timeout is flaky because it races the install handler's
+	// caches.addAll(); polling for `controller` waits for the real signal.
+	await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+
+	await context.setOffline(true);
+	await page.reload();
+	await expect(page.getByText('VENUS')).toBeVisible(); // served from cache
+	await context.setOffline(false);
+});
