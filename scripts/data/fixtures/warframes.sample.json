@@ -1,0 +1,58 @@
+[
+	{
+		"name": "Rhino",
+		"uniqueName": "/Lotus/Powersuits/Rhino/Rhino",
+		"type": "Warframe",
+		"imageName": "rhino.png",
+		"components": [
+			{ "name": "Blueprint", "drops": [] },
+			{ "name": "Neurodes", "drops": [] },
+			{
+				"name": "Chassis",
+				"drops": [
+					{ "location": "Venus/Fossa (Assassination)", "rarity": "Common", "chance": 38.72 }
+				]
+			},
+			{
+				"name": "Neuroptics",
+				"drops": [
+					{ "location": "Venus/Fossa (Assassination)", "rarity": "Common", "chance": 38.72 }
+				]
+			},
+			{
+				"name": "Systems",
+				"drops": [
+					{ "location": "Venus/Fossa (Assassination)", "rarity": "Uncommon", "chance": 22.56 }
+				]
+			}
+		]
+	},
+	{
+		"name": "Mesa",
+		"uniqueName": "/Lotus/Powersuits/Mesa/Mesa",
+		"type": "Warframe",
+		"imageName": "mesa.png",
+		"components": [
+			{ "name": "Blueprint", "drops": [] },
+			{
+				"name": "Chassis",
+				"drops": [{ "location": "Earth/Oro (Assassination)", "rarity": "Common", "chance": 12.5 }]
+			},
+			{
+				"name": "Neuroptics",
+				"drops": [{ "location": "Earth/Oro (Assassination)", "rarity": "Common", "chance": 12.5 }]
+			},
+			{
+				"name": "Systems",
+				"drops": [{ "location": "Earth/Oro (Assassination)", "rarity": "Uncommon", "chance": 7.69 }]
+			}
+		]
+	},
+	{
+		"name": "Volt",
+		"uniqueName": "/Lotus/Powersuits/Shock/Shock",
+		"type": "Warframe",
+		"imageName": "volt.png",
+		"components": [{ "name": "Blueprint", "drops": [] }]
+	}
+]

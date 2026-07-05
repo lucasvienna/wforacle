@@ -14,6 +14,7 @@
 		"test": "pnpm test:unit --run && pnpm test:e2e",
 		"test:e2e": "playwright test",
 		"gen": "wrangler types",
+		"data:build": "tsx scripts/build-data.ts",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
 		"format": "oxfmt . && prettier --write \"**/*.svelte\"",
@@ -31,6 +32,7 @@
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/svelte": "^5.4.2",
 		"@types/node": "^26.1.0",
+		"@wfcd/items": "^1.1274.72",
 		"fake-indexeddb": "^6.2.5",
 		"jsdom": "^29.1.1",
 		"oxfmt": "^0.57.0",
@@ -41,9 +43,11 @@
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
 		"tailwindcss": "^4.3.0",
+		"tsx": "^4.23.0",
 		"typescript": "^6.0.3",
 		"vite": "^8.0.16",
 		"vitest": "^4.1.8",
+		"warframe-worldstate-data": "^3.16.2",
 		"wrangler": "^4.97.0"
 	},
 	"engines": {

@@ -1,0 +1,6 @@
+{
+	"SolNode104": { "value": "Fossa (Venus)", "enemy": "Corpus", "type": "Assassination" },
+	"SolNode30": { "value": "Cytherean (Venus)", "enemy": "Corpus", "type": "Interception" },
+	"SolNode14": { "value": "Oro (Earth)", "enemy": "Grineer", "type": "Assassination" },
+	"SolNode0": { "value": "SolNode0", "enemy": "Sentient", "type": "Ancient Retribution" }
+}
