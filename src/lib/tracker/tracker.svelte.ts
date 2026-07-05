@@ -6,8 +6,9 @@ export function createTracker(frames: Warframe[], persist?: (ids: string[]) => v
 	const owned = new SvelteSet<string>();
 	const byId = new Map(frames.map((f) => [f.id, f]));
 
+	let dispose = () => {};
 	if (persist) {
-		$effect.root(() => {
+		dispose = $effect.root(() => {
 			$effect(() => {
 				persist([...owned]);
 			});
@@ -42,7 +43,8 @@ export function createTracker(frames: Warframe[], persist?: (ids: string[]) => v
 		load: (ids: string[]) => {
 			owned.clear();
 			for (const id of ids) owned.add(id);
-		}
+		},
+		dispose
 	};
 }
 export type Tracker = ReturnType<typeof createTracker>;

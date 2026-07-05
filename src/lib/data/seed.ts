@@ -5,7 +5,7 @@ const SLOTS: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems'];
 function frame(id: string, name: string, nodeId: string): Warframe {
   return { id, name, nodeId, parts: SLOTS.map((slot) => ({ id: partId(id, slot), frameId: id, slot })) };
 }
-// regions: Earth(3) Venus(2) Mercury(1) Mars(4) Phobos(5) Ceres(6) Jupiter(7) — progressionOrder
+// regions: Earth(1) Venus(2) Mars(3) Phobos(4) Ceres(5) Mercury(6) Jupiter(7) — progressionOrder
 // assassination nodes: oro→Vay Hek→hydroid, fossa→Jackal→rhino, war→Lech Kril→excalibur
 export const seed: Dataset = {
   regions: [

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { seed } from '$lib/data/seed';
 	import StarChart from '$lib/starchart/StarChart.svelte';
@@ -17,6 +17,8 @@
 		tracker.load(await loadOwned());
 		ready = true;
 	});
+
+	onDestroy(() => tracker.dispose());
 
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
 		const node = seed.nodes.find((n) => n.regionId === regionId && n.isAssassination);

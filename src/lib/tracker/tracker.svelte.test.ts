@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { flushSync } from 'svelte';
 import { createTracker } from './tracker.svelte';
 import { seed } from '$lib/data/seed';
 
@@ -28,5 +29,14 @@ describe('tracker', () => {
 		const t = createTracker(seed.warframes);
 		t.load(['rhino:bp', 'excalibur:systems']);
 		expect(t.snapshot().sort()).toEqual(['excalibur:systems', 'rhino:bp']);
+	});
+	it('wires persist to fire on ownership changes', () => {
+		const calls: string[][] = [];
+		const t = createTracker(seed.warframes, (ids) => calls.push([...ids]));
+		flushSync();
+		t.togglePart('rhino:bp');
+		flushSync();
+		expect(calls[calls.length - 1]).toContain('rhino:bp');
+		t.dispose();
 	});
 });

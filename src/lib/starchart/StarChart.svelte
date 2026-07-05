@@ -18,7 +18,12 @@
     {@const sel = p.region.id === selectedId}
     <g role="button" tabindex="0" data-region={p.region.id} class="cursor-pointer"
        onclick={() => onselect(p.region.id)}
-       onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && onselect(p.region.id)}>
+       onkeydown={(e) => {
+         if (e.key === 'Enter' || e.key === ' ') {
+           if (e.key === ' ') e.preventDefault();
+           onselect(p.region.id);
+         }
+       }}>
       {#if sel}
         <circle cx={p.x} cy={p.y} r={p.r + 7} fill="none" stroke="#37d2e6" stroke-width="2" />
       {:else if status !== 'none'}
