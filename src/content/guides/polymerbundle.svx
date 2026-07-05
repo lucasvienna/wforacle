@@ -1,0 +1,18 @@
+## Early game
+
+**Ophelia** on Uranus (Survival) is a natural first stop, since Uranus has the
+highest Polymer Bundle drop chance of any planet — nearly every resource pickup
+on this Survival is a bundle, and it nets Tellurium on the side for later
+weapon builds.
+
+## Mid & late game
+
+**Assur** on the same planet (Dark Sector Survival, Infested Grineer Galleon,
+Steel Path) edges Ophelia out for a geared squad: its cramped chokepoints
+concentrate the large Infested population that spawns there, and running with
+a Nekros or Hydroid to re-roll enemy drops squeezes extra bundles out of every
+kill on top of the Dark Sector's resource bonus.
+
+## Sources
+
+- [Polymer Bundle — Warframe Wiki](https://wiki.warframe.com/w/Polymer_Bundle)

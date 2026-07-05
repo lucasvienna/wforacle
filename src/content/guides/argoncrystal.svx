@@ -1,0 +1,25 @@
+## Early game
+
+Argon Crystals only come from Argon Deposits — two static containers found in
+almost every non-Defense Void tileset, each worth 1-2 crystals. **Hepit**
+(Capture, levels 10-15) is a quick way to hit both deposits without needing a
+levelled squad. Because these are container pickups, Resource Drop Boosters
+and the Steel Path resource passive don't apply to them — the only thing that
+matters is how many Void missions you can run. Remember that Argon Crystals
+decay: at 00:00 GMT every day, whatever's still decaying gets cut in half, so
+don't stockpile more than you're about to spend.
+
+## Mid & late game
+
+**Mot** on the Void (Survival, Steel Path) lets a squad bank as many crystals
+as they can before the next decay tick, since an endless Survival means
+repeated deposit spawns without resetting the mission. Enemy drops in the same
+mission (including anything picked up via Resourceful Retriever or a booster)
+still benefit from Steel Path's passive even though the Argon Deposits
+themselves don't. Corrupted Vor on his Assassination node is also worth
+remembering — he's guaranteed to drop either an Orokin Cell or an Argon
+Crystal.
+
+## Sources
+
+- [Argon Crystal — Warframe Wiki](https://wiki.warframe.com/w/Argon_Crystal)

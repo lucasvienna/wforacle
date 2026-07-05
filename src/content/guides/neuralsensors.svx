@@ -1,0 +1,25 @@
+## Early game
+
+**Elara** on Jupiter (Survival, levels 15-20 in the Corpus Gas City tileset) is
+an accessible Survival for newer players to rotate a few times: Neural Sensors
+come from regular enemy drops here, so any Resource Drop Booster or
+Resourceful Retriever you already have will help. If you'd rather not run an
+endless mission, **Themisto** (Assassination, Alad V) offers an alternative —
+each Raptor variant summoned during the fight has its own small chance to drop
+a Neural Sensor.
+
+## Mid & late game
+
+**Cameria** on Jupiter (Dark Sector Survival, Steel Path) is the strongest
+squad option once your gear can handle it: the Dark Sector's intrinsic +20%
+resource drop chance stacks with the Steel Path resource-drop passive against
+dense Corpus Gas City spawns. **Sinai** (Dark Sector Defense) on the same
+planet is a close second if Cameria's matchmaking is inconvenient.
+
+The Kuva Fortress node **Taveuni** is worth keeping in mind too — it lets a
+squad farm Neural Sensors and Kuva in the same run once Kuva Liches are part
+of the regular rotation.
+
+## Sources
+
+- [Neural Sensors — Warframe Wiki](https://wiki.warframe.com/w/Neural_Sensors)

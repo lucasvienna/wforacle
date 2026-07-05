@@ -1,0 +1,19 @@
+## Early game
+
+**Gulliver** on Phobos (Defense, Corpus Ship, levels 10-15) is one of the few
+main-planet nodes with a decent Plastids drop chance for a fresh account —
+Phobos is a signature Plastids planet, and this Defense is short enough to
+repeat a few times in a session without much of a level requirement.
+
+## Mid & late game
+
+Plastids are notoriously low-yield no matter where you farm them, so the
+endgame play is a dedicated squad run rather than solo resets. **Assur** on
+Uranus (Dark Sector Survival, Infested Grineer Galleon, levels 25-35, Steel
+Path) is the best of these: the Dark Sector resource bonus plus Steel Path
+enemy density give a loot squad (Nekros, Hydroid) enough enemy throughput to
+make a long rotation worthwhile.
+
+## Sources
+
+- [Plastids — Warframe Wiki](https://wiki.warframe.com/w/Plastids)

@@ -1,0 +1,20 @@
+## Early game
+
+**Tessera** on Venus (Defense, Corpus Outpost, levels 3-8) is Alloy Plate's
+best early stop — Venus is one of the resource's signature planets, so drops
+show up from the very first waves without needing any gear investment. Alloy
+Plate only comes from in-mission pickups (not end-of-mission rewards), so a
+Resource Drop Booster applies to every drop you pick up along the way.
+
+## Mid & late game
+
+For a geared squad, **Tuvul Commons** on the Zariman (Void Cascade, levels
+50-55) is the highest-yield spot: the endless mission's enemy density keeps
+containers and drops flowing continuously. If the Zariman isn't unlocked yet
+or matchmaking is slow, **Gabii** on Ceres (Dark Sector Survival, Steel Path)
+is a strong fallback — the wiki cites roughly 1,000 Alloy Plate every 15
+minutes there with a Resource Booster running.
+
+## Sources
+
+- [Alloy Plate — Warframe Wiki](https://wiki.warframe.com/w/Alloy_Plate)

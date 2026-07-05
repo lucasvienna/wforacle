@@ -1,0 +1,20 @@
+## Early game
+
+**Hellas** on Mars (Exterminate, Grineer Settlement, levels 8-10) is a quick
+way to stock up early: Mars is one of Gallium's two signature planets, and a
+short Exterminate is easy to repeat for a fresh account. **Gradivus**
+(Sabotage) on the same planet is a good secondary stop — its resource cache
+carries a decent Gallium chance too.
+
+## Mid & late game
+
+**Titania** on Uranus (Assassination, Tyl Regor, Steel Path) is the strongest
+endgame option: Tyl Regor has his own Gallium drop on top of Uranus being
+Gallium's other signature planet, so repeat boss kills with a Steel Path
+squad scale well per hour. Because Gallium mostly comes from mission
+completion and resource caches rather than regular enemy kills, a Resource
+Drop Booster is worth stacking on top for the cache-based portion of the run.
+
+## Sources
+
+- [Gallium — Warframe Wiki](https://wiki.warframe.com/w/Gallium)

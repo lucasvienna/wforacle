@@ -1,0 +1,31 @@
+## Early game
+
+Neurodes have a very low chance to drop from regular enemies, so the wiki's own
+advice is to hunt containers instead of grinding kills. On **Earth**, quick
+Exterminate and Excavation runs through the Grineer settlement tilesets (nodes
+like **Mariana** and **Tikal**) put you next to resource caches that reliably
+carry Neurodes without needing a boss fight or an endless mission — and because
+it's a container pickup, Resource Drop Boosters and the Steel Path drop-chance
+passive don't apply here, so there's no rush to save the farm for later.
+
+If you'd rather fight for them, **Magnacidium** on Deimos (Assassination,
+Lephantis) is one of the easiest boss-based sources, averaging 1-2 Neurodes per
+run and doubling as a good early-Deimos objective.
+
+## Mid & late game
+
+Once a squad is running Steel Path, **Circulus** on Lua is one of the most
+popular full-squad farms in the game: it's a Void Fissure Survival with dense
+Sentient and Corpus spawns that drops Neurodes alongside Rubedo, Ferrite, and
+relics, so it's easy to find a public group for it. Because this farm is enemy
+drops rather than containers, Resourceful Retriever and Resource Drop Boosters
+meaningfully increase yield here.
+
+**Plato** on Lua (Exterminate) is a solid alternative for a coordinated squad —
+it guarantees a Sentient spawn within the first couple of minutes — if Circulus
+matchmaking is slow.
+
+## Sources
+
+- [Neurodes — Warframe Wiki](https://wiki.warframe.com/w/Neurodes)
+- [User:Megazawr/Resource Farming Guide — Warframe Wiki](https://wiki.warframe.com/w/User:Megazawr/Resource_Farming_Guide)

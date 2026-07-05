@@ -1,0 +1,19 @@
+## Early game
+
+**Io** on Jupiter (Defense) is the classic Oxium farm: the wiki cites roughly
+80 Oxium over 10 waves here, all from Oxium Ospreys that must be shot down by
+a player (they don't drop anything if they self-destruct first). It's low
+enough level for a new account to run comfortably, and every Osprey kill is an
+enemy drop, so Resource Drop Boosters and Resourceful Retriever both help.
+
+## Mid & late game
+
+**Tycho** on Lua (Survival, Steel Path) scales the same idea up: higher enemy
+levels mean more Oxium Ospreys spawn per minute, so a long Survival rotation
+here comfortably outpaces resetting Io over and over. Europa's **Paimon** and
+Pluto's **Outer Terminus** (both Defense) are solid alternatives if Tycho's
+squad isn't available.
+
+## Sources
+
+- [Oxium — Warframe Wiki](https://wiki.warframe.com/w/Oxium)

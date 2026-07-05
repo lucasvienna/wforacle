@@ -1,0 +1,20 @@
+## Early game
+
+**Zeugma** on Phobos (Dark Sector Survival) is among the best Rubedo spots at
+any gear level — the wiki cites roughly 250 Rubedo per 5 minutes there, and
+Phobos is one of Rubedo's two signature planets. Rubedo comes from containers
+and lockers rather than enemy drop tables, so it's the mission's resource
+density (not your squad's kill speed) that matters most here.
+
+## Mid & late game
+
+The wiki's general endgame advice is simply "run Void Survival or Defense" —
+it cites over 1,000 Rubedo per 20 minutes from Orokin Void endless missions.
+**Ani** (Survival, Steel Path) is a standard Void node for putting that into
+practice with a squad. Since Rubedo is container/reward-based rather than an
+enemy drop, Resource Drop Boosters help with in-mission pickups but won't
+affect the end-of-mission rotation rewards.
+
+## Sources
+
+- [Rubedo — Warframe Wiki](https://wiki.warframe.com/w/Rubedo)
