@@ -1,6 +1,13 @@
-import type { Region, StarNode, Warframe, Boss, Slot, WarframePart } from '../../src/lib/model/types';
+import type {
+	Region,
+	StarNode,
+	Warframe,
+	Boss,
+	Slot,
+	WarframePart,
+} from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
-import { PLANETS, planetOrder, BOSS_BY_NODE } from './curated';
+import { PLANETS, BOSS_BY_NODE } from './curated';
 import { partId } from '../../src/lib/model/completion';
 
 export type SolNodes = Record<string, { value: string; enemy: string; type: string }>;
@@ -72,12 +79,16 @@ export function buildFrames(
 
 	for (const wf of warframes) {
 		if (wf.type !== 'Warframe' || !wf.components) continue;
-		// find the assassination node this frame links to (from any component's drops)
+		// Find the assassination node this frame links to. A frame's farm node
+		// is where its COMPONENTS drop, not where its blueprint drops (the bp
+		// is bought from the Market) — so only non-bp component drops may set
+		// `node` or record a chance. A Blueprint-only Assassination drop must
+		// not fabricate a node link (and thus not create a frame at all).
 		let node: StarNode | undefined;
 		const chanceBySlot = new Map<Slot, number>();
 		for (const c of wf.components) {
 			const slot = SLOT_BY_COMPONENT[c.name];
-			if (!slot) continue;
+			if (!slot || slot === 'bp') continue;
 			for (const d of c.drops ?? []) {
 				const loc = parseDropLocation(d.location);
 				if (!loc || loc.type !== 'Assassination') continue;
@@ -85,7 +96,7 @@ export function buildFrames(
 				const n = nodeByKey.get(key);
 				if (!n) continue;
 				node = n;
-				if (d.chance != null && slot !== 'bp') chanceBySlot.set(slot, d.chance);
+				if (d.chance != null) chanceBySlot.set(slot, d.chance);
 			}
 		}
 		if (!node) continue;

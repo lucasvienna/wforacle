@@ -28,16 +28,20 @@
 
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
 		if (!data || !tracker) return 'none';
-		const node = data.nodes.find(
-			(n) => n.regionId === regionId && n.isAssassination,
-		);
-		if (!node?.frameId) return 'none';
-		const c = tracker.frameCount(node.frameId);
-		return c.owned === c.total && c.total > 0
-			? 'done'
-			: c.owned > 0
-				? 'part'
-				: 'none';
+		// A region can have multiple Assassination-frame nodes (e.g. Jupiter:
+		// Themisto→Valkyr and The Ropalolyst→Wisp) — aggregate across all of
+		// them so the status only reports 'done' when every frame is complete.
+		const frameIds = data.nodes
+			.filter((n) => n.regionId === regionId && n.isAssassination && n.frameId)
+			.map((n) => n.frameId!);
+		let owned = 0;
+		let total = 0;
+		for (const fid of frameIds) {
+			const c = tracker.frameCount(fid);
+			owned += c.owned;
+			total += c.total;
+		}
+		return owned === total && total > 0 ? 'done' : owned > 0 ? 'part' : 'none';
 	}
 </script>
 

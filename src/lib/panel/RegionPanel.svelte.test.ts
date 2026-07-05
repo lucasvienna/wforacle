@@ -3,6 +3,75 @@ import { describe, it, expect } from 'vitest';
 import RegionPanel from './RegionPanel.svelte';
 import { seed } from '$lib/data/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
+import type { Dataset } from '$lib/model/types';
+
+// Jupiter-shaped fixture: one region with TWO Assassination nodes, each
+// linking a different frame (mirrors the real Themisto→Valkyr and
+// The Ropalolyst→Wisp case). Regression test for the bug where RegionPanel
+// only rendered the FIRST matching node's frame.
+const multiNodeRegion: Dataset = {
+	regions: [
+		{
+			id: 'jupiter',
+			name: 'Jupiter',
+			kind: 'planet',
+			progressionOrder: 7,
+			factions: ['Corpus'],
+			nodeIds: ['themisto', 'ropalolyst'],
+			spoilerGated: false,
+		},
+	],
+	nodes: [
+		{
+			id: 'themisto',
+			regionId: 'jupiter',
+			name: 'Themisto',
+			missionType: 'Assassination',
+			faction: 'Corpus',
+			isAssassination: true,
+			bossId: 'aladv',
+			frameId: 'valkyr',
+		},
+		{
+			id: 'ropalolyst',
+			regionId: 'jupiter',
+			name: 'The Ropalolyst',
+			missionType: 'Assassination',
+			faction: 'Corpus',
+			isAssassination: true,
+			bossId: 'ropalolyst',
+			frameId: 'wisp',
+		},
+	],
+	bosses: [
+		{ id: 'aladv', name: 'Alad V', nodeId: 'themisto', faction: 'Corpus' },
+		{ id: 'ropalolyst', name: 'Ropalolyst', nodeId: 'ropalolyst', faction: 'Corpus' },
+	],
+	warframes: [
+		{
+			id: 'valkyr',
+			name: 'Valkyr',
+			nodeId: 'themisto',
+			parts: [
+				{ id: 'valkyr:bp', frameId: 'valkyr', slot: 'bp' },
+				{ id: 'valkyr:neuroptics', frameId: 'valkyr', slot: 'neuroptics' },
+				{ id: 'valkyr:chassis', frameId: 'valkyr', slot: 'chassis' },
+				{ id: 'valkyr:systems', frameId: 'valkyr', slot: 'systems' },
+			],
+		},
+		{
+			id: 'wisp',
+			name: 'Wisp',
+			nodeId: 'ropalolyst',
+			parts: [
+				{ id: 'wisp:bp', frameId: 'wisp', slot: 'bp' },
+				{ id: 'wisp:neuroptics', frameId: 'wisp', slot: 'neuroptics' },
+				{ id: 'wisp:chassis', frameId: 'wisp', slot: 'chassis' },
+				{ id: 'wisp:systems', frameId: 'wisp', slot: 'systems' },
+			],
+		},
+	],
+};
 
 describe('RegionPanel', () => {
 	it('shows the boss, frame, and faction for an assassination region', () => {
@@ -25,5 +94,17 @@ describe('RegionPanel', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'mercury', tracker });
 		expect(screen.getByText(/no assassination frame/i)).toBeInTheDocument();
+	});
+	it('renders a frame block per assassination node in a region with multiple (Jupiter-shaped)', () => {
+		const tracker = createTracker(multiNodeRegion.warframes);
+		render(RegionPanel, { dataset: multiNodeRegion, regionId: 'jupiter', tracker });
+
+		// Both frames render, not just the first matching node's.
+		expect(screen.getByText('Valkyr')).toBeInTheDocument();
+		expect(screen.getByText('Wisp')).toBeInTheDocument();
+
+		// Both frames' part rows are present.
+		expect(document.querySelector('[data-part="valkyr:chassis"]')).toBeInTheDocument();
+		expect(document.querySelector('[data-part="wisp:chassis"]')).toBeInTheDocument();
 	});
 });

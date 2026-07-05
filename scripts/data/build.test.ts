@@ -66,7 +66,7 @@ describe('buildFrames', () => {
 		const jackal = bosses.find((b) => b.nodeId === 'SolNode104')!;
 		expect(jackal).toMatchObject({ id: 'fossa', name: 'Jackal', faction: 'Corpus' });
 	});
-	it('never attaches a chance to the bp part even if Blueprint has an Assassination drop', () => {
+	it('never attaches a chance to the bp part even if Blueprint has an Assassination drop, and the node link comes only from the component drop', () => {
 		const wf: RawWarframe[] = [
 			{
 				name: 'Trinity',
@@ -75,16 +75,39 @@ describe('buildFrames', () => {
 				components: [
 					{
 						name: 'Blueprint',
-						drops: [
-							{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 50 },
-						],
+						drops: [{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 50 }],
+					},
+					{
+						name: 'Chassis',
+						drops: [{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 25 }],
 					},
 				],
 			},
 		];
 		const { frames } = buildFrames(wf, nodes);
-		const bp = frames.find((f) => f.id === 'trinity')!.parts.find((p) => p.slot === 'bp')!;
+		const trinity = frames.find((f) => f.id === 'trinity')!;
+		const bp = trinity.parts.find((p) => p.slot === 'bp')!;
 		expect(bp.dropSourceNodeId).toBeUndefined();
 		expect(bp.chance).toBeUndefined();
+		const chassis = trinity.parts.find((p) => p.slot === 'chassis')!;
+		expect(chassis.dropSourceNodeId).toBe('SolNode104');
+		expect(chassis.chance).toBe(25);
+	});
+	it('does not create a frame when only the Blueprint has an Assassination drop (no component drop to link a node)', () => {
+		const wf: RawWarframe[] = [
+			{
+				name: 'Loki',
+				uniqueName: '/Lotus/Powersuits/Loki/Loki',
+				type: 'Warframe',
+				components: [
+					{
+						name: 'Blueprint',
+						drops: [{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 50 }],
+					},
+				],
+			},
+		];
+		const { frames } = buildFrames(wf, nodes);
+		expect(frames.find((f) => f.id === 'loki')).toBeUndefined();
 	});
 });

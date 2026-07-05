@@ -30,7 +30,12 @@ test('tracking a part persists across reload', async ({ page }) => {
 
 test('works offline after first load (service worker)', async ({ page, context }) => {
 	await page.goto('/');
-	await expect(page.getByText('VENUS')).toBeVisible(); // data cached by SW
+	// Scoped to the star chart SVG: RegionPanel also renders a "Venus" region
+	// heading now (multi-frame regions need it to label the block of frames),
+	// and Playwright text matching is case-insensitive, so an unscoped
+	// getByText('VENUS') would match both and fail the strict-mode check.
+	const starChartVenus = page.locator('svg').getByText('VENUS');
+	await expect(starChartVenus).toBeVisible(); // data cached by SW
 
 	// Wait for the service worker to install, activate (skipWaiting +
 	// clients.claim() in src/service-worker.ts), and take control of this
@@ -40,6 +45,6 @@ test('works offline after first load (service worker)', async ({ page, context }
 
 	await context.setOffline(true);
 	await page.reload();
-	await expect(page.getByText('VENUS')).toBeVisible(); // served from cache
+	await expect(starChartVenus).toBeVisible(); // served from cache
 	await context.setOffline(false);
 });

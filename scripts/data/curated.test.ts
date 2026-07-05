@@ -13,6 +13,9 @@ describe('curated', () => {
 		expect(BOSS_BY_NODE[slugify('Fossa')]).toBe('Jackal');
 		expect(BOSS_BY_NODE[slugify('Oro')]).toBe('Councilor Vay Hek');
 	});
+	it('returns the known order for a known planet', () => {
+		expect(planetOrder('Earth')).toBe(1);
+	});
 	it('returns 999 for an unknown planet', () => {
 		expect(planetOrder('Nowhere')).toBe(999);
 	});
