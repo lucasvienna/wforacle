@@ -1,0 +1,3796 @@
+{
+	"version": "items@1.1274.72+worldstate-data@3.16.2",
+	"generatedAt": "2026-07-05T16:57:07.322Z",
+	"data": {
+		"regions": [
+			{
+				"id": "earth",
+				"name": "Earth",
+				"kind": "planet",
+				"progressionOrder": 1,
+				"factions": ["Grineer"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode15",
+					"SolNode24",
+					"SolNode26",
+					"SolNode27",
+					"SolNode39",
+					"SolNode59",
+					"SolNode63",
+					"SolNode75",
+					"SolNode79",
+					"SolNode85",
+					"SolNode89",
+					"SolNode228",
+					"SolNode903",
+					"EarthHUB",
+					"ClanNode2",
+					"ClanNode3",
+					"CrewBattleNode502",
+					"CrewBattleNode509",
+					"CrewBattleNode518",
+					"CrewBattleNode519",
+					"CrewBattleNode522"
+				]
+			},
+			{
+				"id": "venus",
+				"name": "Venus",
+				"kind": "planet",
+				"progressionOrder": 2,
+				"factions": ["Corpus"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode2",
+					"SolNode22",
+					"SolNode23",
+					"SolNode61",
+					"SolNode66",
+					"SolNode71",
+					"SolNode101",
+					"SolNode104",
+					"SolNode107",
+					"SolNode109",
+					"SolNode123",
+					"SolNode128",
+					"SolNode129",
+					"SolNode239",
+					"SolNode902",
+					"VenusHUB",
+					"ClanNode0",
+					"ClanNode1",
+					"CrewBattleNode503",
+					"CrewBattleNode511",
+					"CrewBattleNode512",
+					"CrewBattleNode513",
+					"CrewBattleNode514",
+					"CrewBattleNode515",
+					"SolarisUnitedHub1"
+				]
+			},
+			{
+				"id": "mercury",
+				"name": "Mercury",
+				"kind": "planet",
+				"progressionOrder": 3,
+				"factions": ["Grineer"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode12",
+					"SolNode28",
+					"SolNode94",
+					"SolNode103",
+					"SolNode108",
+					"SolNode119",
+					"SolNode130",
+					"SolNode221",
+					"SolNode222",
+					"SolNode223",
+					"SolNode224",
+					"SolNode225",
+					"SolNode226",
+					"SolNode227",
+					"MercuryHUB"
+				]
+			},
+			{
+				"id": "mars",
+				"name": "Mars",
+				"kind": "planet",
+				"progressionOrder": 4,
+				"factions": ["Grineer"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode11",
+					"SolNode14",
+					"SolNode16",
+					"SolNode30",
+					"SolNode35",
+					"SolNode36",
+					"SolNode41",
+					"SolNode45",
+					"SolNode46",
+					"SolNode54",
+					"SolNode58",
+					"SolNode65",
+					"SolNode68",
+					"SolNode99",
+					"SolNode106",
+					"SolNode113",
+					"SolNode115",
+					"SolNode450",
+					"SolNode904",
+					"TradeHUB1",
+					"ClanNode8",
+					"ClanNode9"
+				]
+			},
+			{
+				"id": "phobos",
+				"name": "Phobos",
+				"kind": "planet",
+				"progressionOrder": 5,
+				"factions": ["Corpus"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SettlementNode1",
+					"SettlementNode2",
+					"SettlementNode3",
+					"SettlementNode4",
+					"SettlementNode5",
+					"SettlementNode6",
+					"SettlementNode7",
+					"SettlementNode8",
+					"SettlementNode9",
+					"SettlementNode10",
+					"SettlementNode11",
+					"SettlementNode12",
+					"SettlementNode13",
+					"SettlementNode14",
+					"SettlementNode15",
+					"SettlementNode16",
+					"SettlementNode17",
+					"SettlementNode18",
+					"SettlementNode19",
+					"SettlementNode20",
+					"ClanNode10",
+					"ClanNode11"
+				]
+			},
+			{
+				"id": "ceres",
+				"name": "Ceres",
+				"kind": "planet",
+				"progressionOrder": 6,
+				"factions": ["Grineer"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode131",
+					"SolNode132",
+					"SolNode133",
+					"SolNode134",
+					"SolNode135",
+					"SolNode136",
+					"SolNode137",
+					"SolNode138",
+					"SolNode139",
+					"SolNode140",
+					"SolNode141",
+					"SolNode142",
+					"SolNode143",
+					"SolNode144",
+					"SolNode145",
+					"SolNode146",
+					"SolNode147",
+					"SolNode148",
+					"SolNode149",
+					"SolNode150",
+					"ClanNode22",
+					"ClanNode23"
+				]
+			},
+			{
+				"id": "jupiter",
+				"name": "Jupiter",
+				"kind": "planet",
+				"progressionOrder": 7,
+				"factions": ["Corpus"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode10",
+					"SolNode25",
+					"SolNode53",
+					"SolNode73",
+					"SolNode74",
+					"SolNode87",
+					"SolNode88",
+					"SolNode97",
+					"SolNode100",
+					"SolNode121",
+					"SolNode125",
+					"SolNode126",
+					"SolNode740",
+					"SolNode905",
+					"EventNode30",
+					"EventNode31",
+					"EventNode32",
+					"EventNode33",
+					"ClanNode4",
+					"ClanNode5"
+				]
+			},
+			{
+				"id": "europa",
+				"name": "Europa",
+				"kind": "planet",
+				"progressionOrder": 8,
+				"factions": ["Corpus"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode203",
+					"SolNode204",
+					"SolNode205",
+					"SolNode206",
+					"SolNode207",
+					"SolNode208",
+					"SolNode209",
+					"SolNode210",
+					"SolNode211",
+					"SolNode212",
+					"SolNode213",
+					"SolNode214",
+					"SolNode215",
+					"SolNode216",
+					"SolNode217",
+					"SolNode218",
+					"SolNode219",
+					"SolNode220",
+					"EuropaHUB",
+					"ClanNode6",
+					"ClanNode7"
+				]
+			},
+			{
+				"id": "saturn",
+				"name": "Saturn",
+				"kind": "planet",
+				"progressionOrder": 9,
+				"factions": ["Grineer"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode7",
+					"SolNode18",
+					"SolNode19",
+					"SolNode20",
+					"SolNode31",
+					"SolNode32",
+					"SolNode37",
+					"SolNode42",
+					"SolNode44",
+					"SolNode47",
+					"SolNode50",
+					"SolNode55",
+					"SolNode67",
+					"SolNode70",
+					"SolNode80",
+					"SolNode82",
+					"SolNode86",
+					"SolNode91",
+					"SolNode93",
+					"SolNode96",
+					"SolNode110",
+					"SolNode906",
+					"SaturnHUB",
+					"ClanNode12",
+					"ClanNode13",
+					"CrewBattleNode501",
+					"CrewBattleNode530",
+					"CrewBattleNode533",
+					"CrewBattleNode534",
+					"CrewBattleNode535"
+				]
+			},
+			{
+				"id": "uranus",
+				"name": "Uranus",
+				"kind": "planet",
+				"progressionOrder": 10,
+				"factions": ["Grineer"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode3",
+					"SolNode5",
+					"SolNode9",
+					"SolNode13",
+					"SolNode29",
+					"SolNode33",
+					"SolNode34",
+					"SolNode40",
+					"SolNode52",
+					"SolNode60",
+					"SolNode64",
+					"SolNode69",
+					"SolNode77",
+					"SolNode83",
+					"SolNode98",
+					"SolNode105",
+					"SolNode111",
+					"SolNode112",
+					"SolNode114",
+					"SolNode116",
+					"SolNode122",
+					"SolNode124",
+					"SolNode907",
+					"ClanNode16",
+					"ClanNode17",
+					"SolNode723"
+				]
+			},
+			{
+				"id": "neptune",
+				"name": "Neptune",
+				"kind": "planet",
+				"progressionOrder": 11,
+				"factions": ["Corpus"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode1",
+					"SolNode6",
+					"SolNode17",
+					"SolNode49",
+					"SolNode57",
+					"SolNode62",
+					"SolNode78",
+					"SolNode84",
+					"SolNode95",
+					"SolNode117",
+					"SolNode118",
+					"SolNode120",
+					"SolNode127",
+					"SolNode908",
+					"ClanNode20",
+					"ClanNode21",
+					"CrewBattleNode504",
+					"CrewBattleNode516",
+					"CrewBattleNode521",
+					"CrewBattleNode523",
+					"CrewBattleNode524",
+					"CrewBattleNode525"
+				]
+			},
+			{
+				"id": "pluto",
+				"name": "Pluto",
+				"kind": "planet",
+				"progressionOrder": 12,
+				"factions": ["Corpus"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode4",
+					"SolNode8",
+					"SolNode21",
+					"SolNode38",
+					"SolNode43",
+					"SolNode48",
+					"SolNode51",
+					"SolNode56",
+					"SolNode72",
+					"SolNode76",
+					"SolNode81",
+					"SolNode92",
+					"SolNode102",
+					"PlutoHUB",
+					"ClanNode24",
+					"ClanNode25",
+					"CrewBattleNode526",
+					"CrewBattleNode527",
+					"CrewBattleNode528",
+					"CrewBattleNode529",
+					"CrewBattleNode531",
+					"CrewBattleNode536"
+				]
+			},
+			{
+				"id": "eris",
+				"name": "Eris",
+				"kind": "planet",
+				"progressionOrder": 13,
+				"factions": ["Infested"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode151",
+					"SolNode152",
+					"SolNode153",
+					"SolNode154",
+					"SolNode155",
+					"SolNode156",
+					"SolNode157",
+					"SolNode158",
+					"SolNode159",
+					"SolNode160",
+					"SolNode161",
+					"SolNode162",
+					"SolNode163",
+					"SolNode164",
+					"SolNode165",
+					"SolNode166",
+					"SolNode167",
+					"SolNode168",
+					"SolNode169",
+					"SolNode170",
+					"SolNode171",
+					"SolNode172",
+					"SolNode173",
+					"SolNode174",
+					"SolNode175",
+					"SolNode176",
+					"ErisHUB",
+					"ClanNode18",
+					"ClanNode19"
+				]
+			},
+			{
+				"id": "sedna",
+				"name": "Sedna",
+				"kind": "planet",
+				"progressionOrder": 14,
+				"factions": ["Grineer"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode177",
+					"SolNode178",
+					"SolNode179",
+					"SolNode180",
+					"SolNode181",
+					"SolNode182",
+					"SolNode183",
+					"SolNode184",
+					"SolNode185",
+					"SolNode186",
+					"SolNode187",
+					"SolNode188",
+					"SolNode189",
+					"SolNode190",
+					"SolNode191",
+					"SolNode192",
+					"SolNode193",
+					"SolNode194",
+					"SolNode195",
+					"SolNode196",
+					"SolNode197",
+					"SolNode198",
+					"SolNode199",
+					"SolNode200",
+					"SolNode201",
+					"SolNode202",
+					"ClanNode14",
+					"ClanNode15"
+				]
+			},
+			{
+				"id": "deimos",
+				"name": "Deimos",
+				"kind": "planet",
+				"progressionOrder": 15,
+				"factions": ["Infested"],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode229",
+					"DeimosHub",
+					"SolNode706",
+					"SolNode707",
+					"SolNode708",
+					"SolNode709",
+					"SolNode710",
+					"SolNode711",
+					"SolNode712",
+					"SolNode713",
+					"SolNode714",
+					"SolNode715",
+					"SolNode716",
+					"SolNode717",
+					"SolNode718",
+					"SolNode719",
+					"SolNode720",
+					"SolNode721",
+					"SolNode251"
+				]
+			}
+		],
+		"nodes": [
+			{
+				"id": "SolNode1",
+				"regionId": "neptune",
+				"name": "Galatea",
+				"missionType": "Capture",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode2",
+				"regionId": "venus",
+				"name": "Aphrodite",
+				"missionType": "Mobile Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode3",
+				"regionId": "uranus",
+				"name": "Cordelia",
+				"missionType": "Ancient Retribution",
+				"faction": "Sentient",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode4",
+				"regionId": "pluto",
+				"name": "Acheron",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode5",
+				"regionId": "uranus",
+				"name": "Perdita",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode6",
+				"regionId": "neptune",
+				"name": "Despina",
+				"missionType": "Excavation",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode7",
+				"regionId": "saturn",
+				"name": "Epimetheus",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode8",
+				"regionId": "pluto",
+				"name": "Nix",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode9",
+				"regionId": "uranus",
+				"name": "Rosalind",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode10",
+				"regionId": "jupiter",
+				"name": "Thebe",
+				"missionType": "Sabotage",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode11",
+				"regionId": "mars",
+				"name": "Tharsis",
+				"missionType": "Mobile Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode12",
+				"regionId": "mercury",
+				"name": "Elion",
+				"missionType": "Capture",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode13",
+				"regionId": "uranus",
+				"name": "Bianca",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode14",
+				"regionId": "mars",
+				"name": "Ultor",
+				"missionType": "Extermination",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode15",
+				"regionId": "earth",
+				"name": "Pacific",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode16",
+				"regionId": "mars",
+				"name": "Augustus",
+				"missionType": "Excavation",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode17",
+				"regionId": "neptune",
+				"name": "Proteus",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode18",
+				"regionId": "saturn",
+				"name": "Rhea",
+				"missionType": "Interception",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode19",
+				"regionId": "saturn",
+				"name": "Enceladus",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode20",
+				"regionId": "saturn",
+				"name": "Telesto",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode21",
+				"regionId": "pluto",
+				"name": "Narcissus",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode22",
+				"regionId": "venus",
+				"name": "Tessera",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode23",
+				"regionId": "venus",
+				"name": "Cytherean",
+				"missionType": "Interception",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode24",
+				"regionId": "earth",
+				"name": "Oro",
+				"missionType": "Assassination",
+				"faction": "Grineer",
+				"isAssassination": true,
+				"bossId": "oro",
+				"frameId": "hydroid"
+			},
+			{
+				"id": "SolNode25",
+				"regionId": "jupiter",
+				"name": "Callisto",
+				"missionType": "Interception",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode26",
+				"regionId": "earth",
+				"name": "Lith",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode27",
+				"regionId": "earth",
+				"name": "E Prime",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode28",
+				"regionId": "mercury",
+				"name": "Terminus",
+				"missionType": "Sabotage",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode29",
+				"regionId": "uranus",
+				"name": "Oberon",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode30",
+				"regionId": "mars",
+				"name": "Olympus",
+				"missionType": "Disruption",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode31",
+				"regionId": "saturn",
+				"name": "Anthe",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode32",
+				"regionId": "saturn",
+				"name": "Tethys",
+				"missionType": "Assassination",
+				"faction": "Grineer",
+				"isAssassination": true,
+				"bossId": "tethys",
+				"frameId": "ember"
+			},
+			{
+				"id": "SolNode33",
+				"regionId": "uranus",
+				"name": "Ariel",
+				"missionType": "Capture",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode34",
+				"regionId": "uranus",
+				"name": "Sycorax",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode35",
+				"regionId": "mars",
+				"name": "Arcadia",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode36",
+				"regionId": "mars",
+				"name": "Martialis",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode37",
+				"regionId": "saturn",
+				"name": "Pallene",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode38",
+				"regionId": "pluto",
+				"name": "Minthe",
+				"missionType": "Mobile Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode39",
+				"regionId": "earth",
+				"name": "Everest",
+				"missionType": "Excavation",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode40",
+				"regionId": "uranus",
+				"name": "Prospero",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode41",
+				"regionId": "mars",
+				"name": "Arval",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode42",
+				"regionId": "saturn",
+				"name": "Helene",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode43",
+				"regionId": "pluto",
+				"name": "Cerberus",
+				"missionType": "Interception",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode44",
+				"regionId": "saturn",
+				"name": "Mimas",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode45",
+				"regionId": "mars",
+				"name": "Ara",
+				"missionType": "Capture",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode46",
+				"regionId": "mars",
+				"name": "Spear",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode47",
+				"regionId": "saturn",
+				"name": "Janus",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode48",
+				"regionId": "pluto",
+				"name": "Regna",
+				"missionType": "Rescue",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode49",
+				"regionId": "neptune",
+				"name": "Larissa",
+				"missionType": "Mobile Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode50",
+				"regionId": "saturn",
+				"name": "Numa",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode51",
+				"regionId": "pluto",
+				"name": "Hades",
+				"missionType": "Assassination",
+				"faction": "Corpus",
+				"isAssassination": true,
+				"bossId": "hades",
+				"frameId": "trinity"
+			},
+			{
+				"id": "SolNode52",
+				"regionId": "uranus",
+				"name": "Portia",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode53",
+				"regionId": "jupiter",
+				"name": "Themisto",
+				"missionType": "Assassination",
+				"faction": "Corpus",
+				"isAssassination": true,
+				"bossId": "themisto",
+				"frameId": "valkyr"
+			},
+			{
+				"id": "SolNode54",
+				"regionId": "mars",
+				"name": "Silvanus",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode55",
+				"regionId": "saturn",
+				"name": "Methone",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode56",
+				"regionId": "pluto",
+				"name": "Cypress",
+				"missionType": "Sabotage",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode57",
+				"regionId": "neptune",
+				"name": "Sao",
+				"missionType": "Sabotage",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode58",
+				"regionId": "mars",
+				"name": "Hellas",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode59",
+				"regionId": "earth",
+				"name": "Eurasia",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode60",
+				"regionId": "uranus",
+				"name": "Caliban",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode61",
+				"regionId": "venus",
+				"name": "Ishtar",
+				"missionType": "Sabotage",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode62",
+				"regionId": "neptune",
+				"name": "Neso",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode63",
+				"regionId": "earth",
+				"name": "Mantle",
+				"missionType": "Capture",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode64",
+				"regionId": "uranus",
+				"name": "Umbriel",
+				"missionType": "Interception",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode65",
+				"regionId": "mars",
+				"name": "Gradivus",
+				"missionType": "Sabotage",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode66",
+				"regionId": "venus",
+				"name": "Unda",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode67",
+				"regionId": "saturn",
+				"name": "Dione",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode68",
+				"regionId": "mars",
+				"name": "Vallis",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode69",
+				"regionId": "uranus",
+				"name": "Ophelia",
+				"missionType": "Survival",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode70",
+				"regionId": "saturn",
+				"name": "Cassini",
+				"missionType": "Capture",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode71",
+				"regionId": "venus",
+				"name": "Vesper",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode72",
+				"regionId": "pluto",
+				"name": "Outer Terminus",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode73",
+				"regionId": "jupiter",
+				"name": "Ananke",
+				"missionType": "Capture",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode74",
+				"regionId": "jupiter",
+				"name": "Carme",
+				"missionType": "Mobile Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode75",
+				"regionId": "earth",
+				"name": "Cervantes",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode76",
+				"regionId": "pluto",
+				"name": "Hydra",
+				"missionType": "Capture",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode77",
+				"regionId": "uranus",
+				"name": "Cupid",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode78",
+				"regionId": "neptune",
+				"name": "Triton",
+				"missionType": "Rescue",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode79",
+				"regionId": "earth",
+				"name": "Cambria",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode80",
+				"regionId": "saturn",
+				"name": "Phoebe",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode81",
+				"regionId": "pluto",
+				"name": "Palus",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode82",
+				"regionId": "saturn",
+				"name": "Calypso",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode83",
+				"regionId": "uranus",
+				"name": "Cressida",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode84",
+				"regionId": "neptune",
+				"name": "Nereid",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode85",
+				"regionId": "earth",
+				"name": "Gaia",
+				"missionType": "Interception",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode86",
+				"regionId": "saturn",
+				"name": "Aegaeon",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode87",
+				"regionId": "jupiter",
+				"name": "Ganymede",
+				"missionType": "Disruption",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode88",
+				"regionId": "jupiter",
+				"name": "Adrastea",
+				"missionType": "Sabotage",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode89",
+				"regionId": "earth",
+				"name": "Mariana",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode91",
+				"regionId": "saturn",
+				"name": "Iapetus",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode92",
+				"regionId": "pluto",
+				"name": "Charon",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode93",
+				"regionId": "saturn",
+				"name": "Keeler",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode94",
+				"regionId": "mercury",
+				"name": "Apollodorus",
+				"missionType": "Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode95",
+				"regionId": "neptune",
+				"name": "Thalassa",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode96",
+				"regionId": "saturn",
+				"name": "Titan",
+				"missionType": "Survival",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode97",
+				"regionId": "jupiter",
+				"name": "Amalthea",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode98",
+				"regionId": "uranus",
+				"name": "Desdemona",
+				"missionType": "Sabotage (Archwing)",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode99",
+				"regionId": "mars",
+				"name": "War",
+				"missionType": "Assassination",
+				"faction": "Grineer",
+				"isAssassination": true,
+				"bossId": "war",
+				"frameId": "excalibur"
+			},
+			{
+				"id": "SolNode100",
+				"regionId": "jupiter",
+				"name": "Elara",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode101",
+				"regionId": "venus",
+				"name": "Kiliken",
+				"missionType": "Excavation",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode102",
+				"regionId": "pluto",
+				"name": "Oceanum",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode103",
+				"regionId": "mercury",
+				"name": "M Prime",
+				"missionType": "Extermination",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode104",
+				"regionId": "venus",
+				"name": "Fossa",
+				"missionType": "Assassination",
+				"faction": "Corpus",
+				"isAssassination": true,
+				"bossId": "fossa",
+				"frameId": "rhino"
+			},
+			{
+				"id": "SolNode105",
+				"regionId": "uranus",
+				"name": "Titania",
+				"missionType": "Assassination",
+				"faction": "Grineer",
+				"isAssassination": true
+			},
+			{
+				"id": "SolNode106",
+				"regionId": "mars",
+				"name": "Alator",
+				"missionType": "Interception",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode107",
+				"regionId": "venus",
+				"name": "Venera",
+				"missionType": "Capture",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode108",
+				"regionId": "mercury",
+				"name": "Tolstoj",
+				"missionType": "Assassination",
+				"faction": "Grineer",
+				"isAssassination": true
+			},
+			{
+				"id": "SolNode109",
+				"regionId": "venus",
+				"name": "Linea",
+				"missionType": "Rescue",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode110",
+				"regionId": "saturn",
+				"name": "Hyperion",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode111",
+				"regionId": "uranus",
+				"name": "Juliet",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode112",
+				"regionId": "uranus",
+				"name": "Setebos",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode113",
+				"regionId": "mars",
+				"name": "Ares",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode114",
+				"regionId": "uranus",
+				"name": "Puck",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode115",
+				"regionId": "mars",
+				"name": "Quirinus",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode116",
+				"regionId": "uranus",
+				"name": "Mab",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode117",
+				"regionId": "neptune",
+				"name": "Naiad",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode118",
+				"regionId": "neptune",
+				"name": "Laomedeia",
+				"missionType": "Disruption",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode119",
+				"regionId": "mercury",
+				"name": "Caloris",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode120",
+				"regionId": "neptune",
+				"name": "Halimede",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode121",
+				"regionId": "jupiter",
+				"name": "Carpo",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode122",
+				"regionId": "uranus",
+				"name": "Stephano",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode123",
+				"regionId": "venus",
+				"name": "V Prime",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode124",
+				"regionId": "uranus",
+				"name": "Trinculo",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode125",
+				"regionId": "jupiter",
+				"name": "Io",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode126",
+				"regionId": "jupiter",
+				"name": "Metis",
+				"missionType": "Rescue",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode127",
+				"regionId": "neptune",
+				"name": "Psamathe",
+				"missionType": "Assassination",
+				"faction": "Corpus",
+				"isAssassination": true,
+				"bossId": "psamathe",
+				"frameId": "loki"
+			},
+			{
+				"id": "SolNode128",
+				"regionId": "venus",
+				"name": "E Gate",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode129",
+				"regionId": "venus",
+				"name": "Orb Vallis",
+				"missionType": "Free Roam",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode130",
+				"regionId": "mercury",
+				"name": "Lares",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode131",
+				"regionId": "ceres",
+				"name": "Pallas",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode132",
+				"regionId": "ceres",
+				"name": "Bode",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode133",
+				"regionId": "ceres",
+				"name": "Vedic",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode134",
+				"regionId": "ceres",
+				"name": "Varro",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode135",
+				"regionId": "ceres",
+				"name": "Thon",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode136",
+				"regionId": "ceres",
+				"name": "Olla",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode137",
+				"regionId": "ceres",
+				"name": "Nuovo",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode138",
+				"regionId": "ceres",
+				"name": "Ludi",
+				"missionType": "Hijack",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode139",
+				"regionId": "ceres",
+				"name": "Lex",
+				"missionType": "Capture",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode140",
+				"regionId": "ceres",
+				"name": "Kiste",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode141",
+				"regionId": "ceres",
+				"name": "Ker",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode142",
+				"regionId": "ceres",
+				"name": "Hapke",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode143",
+				"regionId": "ceres",
+				"name": "Gefion",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode144",
+				"regionId": "ceres",
+				"name": "Exta",
+				"missionType": "Assassination",
+				"faction": "Grineer",
+				"isAssassination": true,
+				"bossId": "exta",
+				"frameId": "frost"
+			},
+			{
+				"id": "SolNode145",
+				"regionId": "ceres",
+				"name": "Egeria",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode146",
+				"regionId": "ceres",
+				"name": "Draco",
+				"missionType": "Survival",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode147",
+				"regionId": "ceres",
+				"name": "Cinxia",
+				"missionType": "Interception",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode148",
+				"regionId": "ceres",
+				"name": "Cerium",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode149",
+				"regionId": "ceres",
+				"name": "Casta",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode150",
+				"regionId": "ceres",
+				"name": "Albedo",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode151",
+				"regionId": "eris",
+				"name": "Acanth",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode152",
+				"regionId": "eris",
+				"name": "Ascar",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode153",
+				"regionId": "eris",
+				"name": "Brugia",
+				"missionType": "Rescue",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode154",
+				"regionId": "eris",
+				"name": "Candiru",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode155",
+				"regionId": "eris",
+				"name": "Cosis",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode156",
+				"regionId": "eris",
+				"name": "Cyath",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode157",
+				"regionId": "eris",
+				"name": "Giardia",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode158",
+				"regionId": "eris",
+				"name": "Gnathos",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode159",
+				"regionId": "eris",
+				"name": "Lepis",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode160",
+				"regionId": "eris",
+				"name": "Histo",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode161",
+				"regionId": "eris",
+				"name": "Hymeno",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode162",
+				"regionId": "eris",
+				"name": "Isos",
+				"missionType": "Capture",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode163",
+				"regionId": "eris",
+				"name": "Ixodes",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode164",
+				"regionId": "eris",
+				"name": "Kala-azar",
+				"missionType": "Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode165",
+				"regionId": "eris",
+				"name": "Sporid",
+				"missionType": "Hive Sabotage",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode166",
+				"regionId": "eris",
+				"name": "Nimus",
+				"missionType": "Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode167",
+				"regionId": "eris",
+				"name": "Oestrus",
+				"missionType": "Infested Salvage",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode168",
+				"regionId": "eris",
+				"name": "Phalan",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode169",
+				"regionId": "eris",
+				"name": "Psoro",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode170",
+				"regionId": "eris",
+				"name": "Ranova",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode171",
+				"regionId": "eris",
+				"name": "Saxis",
+				"missionType": "Extermination",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode172",
+				"regionId": "eris",
+				"name": "Xini",
+				"missionType": "Interception",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode173",
+				"regionId": "eris",
+				"name": "Solium",
+				"missionType": "Mobile Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode174",
+				"regionId": "eris",
+				"name": "Sparga",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode175",
+				"regionId": "eris",
+				"name": "Naeglar",
+				"missionType": "Hive",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode176",
+				"regionId": "eris",
+				"name": "Viver",
+				"missionType": "Ancient Retribution",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode177",
+				"regionId": "sedna",
+				"name": "Kappa",
+				"missionType": "Disruption",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode178",
+				"regionId": "sedna",
+				"name": "Hyosube",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode179",
+				"regionId": "sedna",
+				"name": "Jengu",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode180",
+				"regionId": "sedna",
+				"name": "Undine",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode181",
+				"regionId": "sedna",
+				"name": "Adaro",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode182",
+				"regionId": "sedna",
+				"name": "Camenae",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode183",
+				"regionId": "sedna",
+				"name": "Vodyanoi",
+				"missionType": "Arena",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode184",
+				"regionId": "sedna",
+				"name": "Rusalka",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode185",
+				"regionId": "sedna",
+				"name": "Berehynia",
+				"missionType": "Interception",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode186",
+				"regionId": "sedna",
+				"name": "Phithale",
+				"missionType": "Sabotage",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode187",
+				"regionId": "sedna",
+				"name": "Selkie",
+				"missionType": "Survival",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode188",
+				"regionId": "sedna",
+				"name": "Kelpie",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode189",
+				"regionId": "sedna",
+				"name": "Naga",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode190",
+				"regionId": "sedna",
+				"name": "Nakki",
+				"missionType": "Arena",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode191",
+				"regionId": "sedna",
+				"name": "Marid",
+				"missionType": "Hijack",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode192",
+				"regionId": "sedna",
+				"name": "Tikoloshe",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode193",
+				"regionId": "sedna",
+				"name": "Merrow",
+				"missionType": "Assassination",
+				"faction": "Grineer",
+				"isAssassination": true,
+				"bossId": "merrow",
+				"frameId": "saryn"
+			},
+			{
+				"id": "SolNode194",
+				"regionId": "sedna",
+				"name": "Ponaturi",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode195",
+				"regionId": "sedna",
+				"name": "Hydron",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode196",
+				"regionId": "sedna",
+				"name": "Charybdis",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode197",
+				"regionId": "sedna",
+				"name": "Graeae",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode198",
+				"regionId": "sedna",
+				"name": "Scylla",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode199",
+				"regionId": "sedna",
+				"name": "Yam",
+				"missionType": "Arena",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode200",
+				"regionId": "sedna",
+				"name": "Veles",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode201",
+				"regionId": "sedna",
+				"name": "Tiamat",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode202",
+				"regionId": "sedna",
+				"name": "Yemaja",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode203",
+				"regionId": "europa",
+				"name": "Abaddon",
+				"missionType": "Capture",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode204",
+				"regionId": "europa",
+				"name": "Armaros",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode205",
+				"regionId": "europa",
+				"name": "Baal",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode206",
+				"regionId": "europa",
+				"name": "Eligor",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode207",
+				"regionId": "europa",
+				"name": "Gamygyn",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode208",
+				"regionId": "europa",
+				"name": "Lillith",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode209",
+				"regionId": "europa",
+				"name": "Morax",
+				"missionType": "Mobile Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode210",
+				"regionId": "europa",
+				"name": "Naamah",
+				"missionType": "Assassination",
+				"faction": "Corpus",
+				"isAssassination": true,
+				"bossId": "naamah",
+				"frameId": "nova"
+			},
+			{
+				"id": "SolNode211",
+				"regionId": "europa",
+				"name": "Ose",
+				"missionType": "Interception",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode212",
+				"regionId": "europa",
+				"name": "Paimon",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode213",
+				"regionId": "europa",
+				"name": "Shax",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode214",
+				"regionId": "europa",
+				"name": "Sorath",
+				"missionType": "Hijack",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode215",
+				"regionId": "europa",
+				"name": "Valac",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode216",
+				"regionId": "europa",
+				"name": "Valefor",
+				"missionType": "Excavation",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode217",
+				"regionId": "europa",
+				"name": "Orias",
+				"missionType": "Rescue",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode218",
+				"regionId": "europa",
+				"name": "Zagan",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode219",
+				"regionId": "europa",
+				"name": "Beleth",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode220",
+				"regionId": "europa",
+				"name": "Kokabiel",
+				"missionType": "Sabotage",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode221",
+				"regionId": "mercury",
+				"name": "Neruda",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode222",
+				"regionId": "mercury",
+				"name": "Eminescu",
+				"missionType": "Ancient Retribution",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode223",
+				"regionId": "mercury",
+				"name": "Boethius",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode224",
+				"regionId": "mercury",
+				"name": "Odin",
+				"missionType": "Interception",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode225",
+				"regionId": "mercury",
+				"name": "Suisei",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode226",
+				"regionId": "mercury",
+				"name": "Pantheon",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode227",
+				"regionId": "mercury",
+				"name": "Verdi",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode228",
+				"regionId": "earth",
+				"name": "Plains of Eidolon",
+				"missionType": "Free Roam",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode229",
+				"regionId": "deimos",
+				"name": "Cambion Drift",
+				"missionType": "Free Roam",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode239",
+				"regionId": "venus",
+				"name": "Vesper Relay",
+				"missionType": "Relay",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode450",
+				"regionId": "mars",
+				"name": "Tyana Pass",
+				"missionType": "Mirror Defense",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "DeimosHub",
+				"regionId": "deimos",
+				"name": "Necralisk",
+				"missionType": "Relay",
+				"faction": "Tenno",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode706",
+				"regionId": "deimos",
+				"name": "Horend",
+				"missionType": "Capture",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode707",
+				"regionId": "deimos",
+				"name": "Hyf",
+				"missionType": "Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode708",
+				"regionId": "deimos",
+				"name": "Phlegyas",
+				"missionType": "Extermination",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode709",
+				"regionId": "deimos",
+				"name": "Dirus",
+				"missionType": "Mobile Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode710",
+				"regionId": "deimos",
+				"name": "Formido",
+				"missionType": "Sabotage",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode711",
+				"regionId": "deimos",
+				"name": "Terrorem",
+				"missionType": "Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode712",
+				"regionId": "deimos",
+				"name": "Magnacidium",
+				"missionType": "Assassination",
+				"faction": "Infested",
+				"isAssassination": true,
+				"bossId": "magnacidium",
+				"frameId": "nekros"
+			},
+			{
+				"id": "SolNode713",
+				"regionId": "deimos",
+				"name": "Exequias",
+				"missionType": "Assassination",
+				"faction": "Infested",
+				"isAssassination": true
+			},
+			{
+				"id": "SolNode714",
+				"regionId": "deimos",
+				"name": "Sanctum Anatomica",
+				"missionType": "Relay",
+				"faction": "Tenno",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode715",
+				"regionId": "deimos",
+				"name": "Effervo",
+				"missionType": "Assassination",
+				"faction": "The Murmur",
+				"isAssassination": true
+			},
+			{
+				"id": "SolNode716",
+				"regionId": "deimos",
+				"name": "Nex",
+				"missionType": "Extermination",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode717",
+				"regionId": "deimos",
+				"name": "Persto",
+				"missionType": "Survival",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode718",
+				"regionId": "deimos",
+				"name": "Cambire",
+				"missionType": "Alchemy",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode719",
+				"regionId": "deimos",
+				"name": "Munio",
+				"missionType": "Mirror Defense",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode720",
+				"regionId": "deimos",
+				"name": "Testudo",
+				"missionType": "Netracells",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode721",
+				"regionId": "deimos",
+				"name": "Armatus",
+				"missionType": "Disruption",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode251",
+				"regionId": "deimos",
+				"name": "Dark Refactory",
+				"missionType": "The Perita Rebellion",
+				"faction": "Anarch",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode740",
+				"regionId": "jupiter",
+				"name": "The Ropalolyst",
+				"missionType": "Assassination",
+				"faction": "Sentient",
+				"isAssassination": true,
+				"bossId": "theropalolyst",
+				"frameId": "wisp"
+			},
+			{
+				"id": "SolNode902",
+				"regionId": "venus",
+				"name": "Montes",
+				"missionType": "Extermination (Archwing)",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode903",
+				"regionId": "earth",
+				"name": "Erpo",
+				"missionType": "Mobile Defense (Archwing)",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode904",
+				"regionId": "mars",
+				"name": "Syrtis",
+				"missionType": "Extermination (Archwing)",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode905",
+				"regionId": "jupiter",
+				"name": "Galilea",
+				"missionType": "Sabotage (Archwing)",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode906",
+				"regionId": "saturn",
+				"name": "Pandora",
+				"missionType": "Pursuit (Archwing)",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode907",
+				"regionId": "uranus",
+				"name": "Caelus",
+				"missionType": "Interception (Archwing)",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode908",
+				"regionId": "neptune",
+				"name": "Salacia",
+				"missionType": "Mobile Defense (Archwing)",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode1",
+				"regionId": "phobos",
+				"name": "Roche",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode2",
+				"regionId": "phobos",
+				"name": "Skyresh",
+				"missionType": "Capture",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode3",
+				"regionId": "phobos",
+				"name": "Stickney",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode4",
+				"regionId": "phobos",
+				"name": "Drunlo",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode5",
+				"regionId": "phobos",
+				"name": "Grildrig",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode6",
+				"regionId": "phobos",
+				"name": "Limtoc",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode7",
+				"regionId": "phobos",
+				"name": "Hall",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode8",
+				"regionId": "phobos",
+				"name": "Reldresal",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode9",
+				"regionId": "phobos",
+				"name": "Clustril",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode10",
+				"regionId": "phobos",
+				"name": "Kepler",
+				"missionType": "Rush (Archwing)",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode11",
+				"regionId": "phobos",
+				"name": "Gulliver",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode12",
+				"regionId": "phobos",
+				"name": "Monolith",
+				"missionType": "Rescue",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode13",
+				"regionId": "phobos",
+				"name": "D'Arrest",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode14",
+				"regionId": "phobos",
+				"name": "Shklovsky",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode15",
+				"regionId": "phobos",
+				"name": "Sharpless",
+				"missionType": "Mobile Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode16",
+				"regionId": "phobos",
+				"name": "Wendell",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode17",
+				"regionId": "phobos",
+				"name": "Flimnap",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode18",
+				"regionId": "phobos",
+				"name": "Opik",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode19",
+				"regionId": "phobos",
+				"name": "Todd",
+				"missionType": "Ancient Retribution",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SettlementNode20",
+				"regionId": "phobos",
+				"name": "Iliad",
+				"missionType": "Assassination",
+				"faction": "Corpus",
+				"isAssassination": true,
+				"bossId": "iliad",
+				"frameId": "mag"
+			},
+			{
+				"id": "MercuryHUB",
+				"regionId": "mercury",
+				"name": "Larunda Relay",
+				"missionType": "Relay",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "VenusHUB",
+				"regionId": "venus",
+				"name": "Vesper Relay",
+				"missionType": "Relay",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "EarthHUB",
+				"regionId": "earth",
+				"name": "Strata Relay",
+				"missionType": "Relay",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SaturnHUB",
+				"regionId": "saturn",
+				"name": "Kronia Relay",
+				"missionType": "Relay",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "ErisHUB",
+				"regionId": "eris",
+				"name": "Kuiper Relay",
+				"missionType": "Relay",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "EuropaHUB",
+				"regionId": "europa",
+				"name": "Leonov Relay",
+				"missionType": "Relay",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "PlutoHUB",
+				"regionId": "pluto",
+				"name": "Orcus Relay",
+				"missionType": "Relay",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "TradeHUB1",
+				"regionId": "mars",
+				"name": "Maroo's Bazaar",
+				"missionType": "Relay",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "EventNode30",
+				"regionId": "jupiter",
+				"name": "Ganymede",
+				"missionType": "Disruption",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "EventNode31",
+				"regionId": "jupiter",
+				"name": "Ganymede",
+				"missionType": "Disruption",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "EventNode32",
+				"regionId": "jupiter",
+				"name": "Ganymede",
+				"missionType": "Disruption",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "EventNode33",
+				"regionId": "jupiter",
+				"name": "Ganymede",
+				"missionType": "Disruption",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode0",
+				"regionId": "venus",
+				"name": "Romula",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode1",
+				"regionId": "venus",
+				"name": "Malva",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode2",
+				"regionId": "earth",
+				"name": "Coba",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode3",
+				"regionId": "earth",
+				"name": "Tikal",
+				"missionType": "Dark Sector Excavation",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode4",
+				"regionId": "jupiter",
+				"name": "Sinai",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode5",
+				"regionId": "jupiter",
+				"name": "Cameria",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode6",
+				"regionId": "europa",
+				"name": "Larzac",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode7",
+				"regionId": "europa",
+				"name": "Cholistan",
+				"missionType": "Dark Sector Excavation",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode8",
+				"regionId": "mars",
+				"name": "Kadesh",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode9",
+				"regionId": "mars",
+				"name": "Wahiba",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode10",
+				"regionId": "phobos",
+				"name": "Memphis",
+				"missionType": "Dark Sector Defection",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode11",
+				"regionId": "phobos",
+				"name": "Zeugma",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode12",
+				"regionId": "saturn",
+				"name": "Caracol",
+				"missionType": "Dark Sector Defection",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode13",
+				"regionId": "saturn",
+				"name": "Piscinas",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode14",
+				"regionId": "sedna",
+				"name": "Amarna",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode15",
+				"regionId": "sedna",
+				"name": "Sangeru",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode16",
+				"regionId": "uranus",
+				"name": "Ur",
+				"missionType": "Dark Sector Disruption",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode17",
+				"regionId": "uranus",
+				"name": "Assur",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode18",
+				"regionId": "eris",
+				"name": "Akkad",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode19",
+				"regionId": "eris",
+				"name": "Zabala",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode20",
+				"regionId": "neptune",
+				"name": "Yursa",
+				"missionType": "Dark Sector Defection",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode21",
+				"regionId": "neptune",
+				"name": "Kelashin",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode22",
+				"regionId": "ceres",
+				"name": "Seimeni",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode23",
+				"regionId": "ceres",
+				"name": "Gabii",
+				"missionType": "Dark Sector Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode24",
+				"regionId": "pluto",
+				"name": "Sechura",
+				"missionType": "Dark Sector Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "ClanNode25",
+				"regionId": "pluto",
+				"name": "Hieracon",
+				"missionType": "Dark Sector Excavation",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode501",
+				"regionId": "saturn",
+				"name": "Mordo Cluster",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode502",
+				"regionId": "earth",
+				"name": "Sover Strait",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode503",
+				"regionId": "venus",
+				"name": "Bifrost Echo",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode504",
+				"regionId": "neptune",
+				"name": "Arva Vector",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode509",
+				"regionId": "earth",
+				"name": "Iota Temple",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode511",
+				"regionId": "venus",
+				"name": "Beacon Shield Ring",
+				"missionType": "Volatile",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode512",
+				"regionId": "venus",
+				"name": "Orvin-Haarc",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode513",
+				"regionId": "venus",
+				"name": "Vesper Strait",
+				"missionType": "Orphix",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode514",
+				"regionId": "venus",
+				"name": "Falling Glory",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode515",
+				"regionId": "venus",
+				"name": "Luckless Expanse",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode516",
+				"regionId": "neptune",
+				"name": "Nu-gua Mines",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode518",
+				"regionId": "earth",
+				"name": "Ogal Cluster",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode519",
+				"regionId": "earth",
+				"name": "Korm's Belt",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode521",
+				"regionId": "neptune",
+				"name": "Enkidu Ice Drifts",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode522",
+				"regionId": "earth",
+				"name": "Bendar Cluster",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode523",
+				"regionId": "neptune",
+				"name": "Mammon's Prospect",
+				"missionType": "Orphix",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode524",
+				"regionId": "neptune",
+				"name": "Sovereign Grasp",
+				"missionType": "Volatile",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode525",
+				"regionId": "neptune",
+				"name": "Brom Cluster",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode526",
+				"regionId": "pluto",
+				"name": "Khufu Envoy",
+				"missionType": "Orphix",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode527",
+				"regionId": "pluto",
+				"name": "Seven Sirens",
+				"missionType": "Extermination",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode528",
+				"regionId": "pluto",
+				"name": "Obol Crossing",
+				"missionType": "Defense",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode529",
+				"regionId": "pluto",
+				"name": "Profit Margin",
+				"missionType": "Volatile",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode530",
+				"regionId": "saturn",
+				"name": "Kasio's Rest",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode531",
+				"regionId": "pluto",
+				"name": "Fenton's Field",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode533",
+				"regionId": "saturn",
+				"name": "Nodo Gap",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode534",
+				"regionId": "saturn",
+				"name": "Lupal Pass",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode535",
+				"regionId": "saturn",
+				"name": "Vand Cluster",
+				"missionType": "Skirmish",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "CrewBattleNode536",
+				"regionId": "pluto",
+				"name": "Peregrine Axis",
+				"missionType": "Spy",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode723",
+				"regionId": "uranus",
+				"name": "Brutus",
+				"missionType": "Ascension",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolarisUnitedHub1",
+				"regionId": "venus",
+				"name": "Fortuna",
+				"missionType": "Relay",
+				"faction": "Corpus",
+				"isAssassination": false
+			}
+		],
+		"bosses": [
+			{
+				"id": "tethys",
+				"name": "General Sargas Ruk",
+				"nodeId": "SolNode32",
+				"faction": "Grineer"
+			},
+			{
+				"id": "war",
+				"name": "Lieutenant Lech Kril",
+				"nodeId": "SolNode99",
+				"faction": "Grineer"
+			},
+			{
+				"id": "exta",
+				"name": "Captain Vor & Lt. Lech Kril",
+				"nodeId": "SolNode144",
+				"faction": "Grineer"
+			},
+			{
+				"id": "oro",
+				"name": "Councilor Vay Hek",
+				"nodeId": "SolNode24",
+				"faction": "Grineer"
+			},
+			{
+				"id": "psamathe",
+				"name": "Hyena Pack",
+				"nodeId": "SolNode127",
+				"faction": "Corpus"
+			},
+			{
+				"id": "iliad",
+				"name": "The Sergeant",
+				"nodeId": "SettlementNode20",
+				"faction": "Corpus"
+			},
+			{
+				"id": "magnacidium",
+				"name": "Lephantis",
+				"nodeId": "SolNode712",
+				"faction": "Infested"
+			},
+			{
+				"id": "naamah",
+				"name": "Raptors",
+				"nodeId": "SolNode210",
+				"faction": "Corpus"
+			},
+			{
+				"id": "fossa",
+				"name": "Jackal",
+				"nodeId": "SolNode104",
+				"faction": "Corpus"
+			},
+			{
+				"id": "merrow",
+				"name": "Kela De Thaym",
+				"nodeId": "SolNode193",
+				"faction": "Grineer"
+			},
+			{
+				"id": "hades",
+				"name": "Ambulas",
+				"nodeId": "SolNode51",
+				"faction": "Corpus"
+			},
+			{
+				"id": "themisto",
+				"name": "Alad V",
+				"nodeId": "SolNode53",
+				"faction": "Corpus"
+			},
+			{
+				"id": "theropalolyst",
+				"name": "Ropalolyst",
+				"nodeId": "SolNode740",
+				"faction": "Sentient"
+			}
+		],
+		"warframes": [
+			{
+				"id": "ember",
+				"name": "Ember",
+				"nodeId": "SolNode32",
+				"image": "Ember.png",
+				"parts": [
+					{
+						"id": "ember:bp",
+						"frameId": "ember",
+						"slot": "bp"
+					},
+					{
+						"id": "ember:neuroptics",
+						"frameId": "ember",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode32",
+						"chance": 38.72
+					},
+					{
+						"id": "ember:chassis",
+						"frameId": "ember",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode32",
+						"chance": 38.72
+					},
+					{
+						"id": "ember:systems",
+						"frameId": "ember",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode32",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "excalibur",
+				"name": "Excalibur",
+				"nodeId": "SolNode99",
+				"image": "Excalibur.png",
+				"parts": [
+					{
+						"id": "excalibur:bp",
+						"frameId": "excalibur",
+						"slot": "bp"
+					},
+					{
+						"id": "excalibur:neuroptics",
+						"frameId": "excalibur",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode99",
+						"chance": 38.72
+					},
+					{
+						"id": "excalibur:chassis",
+						"frameId": "excalibur",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode99",
+						"chance": 38.72
+					},
+					{
+						"id": "excalibur:systems",
+						"frameId": "excalibur",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode99",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "frost",
+				"name": "Frost",
+				"nodeId": "SolNode144",
+				"image": "Frost.png",
+				"parts": [
+					{
+						"id": "frost:bp",
+						"frameId": "frost",
+						"slot": "bp"
+					},
+					{
+						"id": "frost:neuroptics",
+						"frameId": "frost",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode144",
+						"chance": 38.72
+					},
+					{
+						"id": "frost:chassis",
+						"frameId": "frost",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode144",
+						"chance": 38.72
+					},
+					{
+						"id": "frost:systems",
+						"frameId": "frost",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode144",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "hydroid",
+				"name": "Hydroid",
+				"nodeId": "SolNode24",
+				"image": "Hydroid.png",
+				"parts": [
+					{
+						"id": "hydroid:bp",
+						"frameId": "hydroid",
+						"slot": "bp"
+					},
+					{
+						"id": "hydroid:neuroptics",
+						"frameId": "hydroid",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode24",
+						"chance": 38.72
+					},
+					{
+						"id": "hydroid:chassis",
+						"frameId": "hydroid",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode24",
+						"chance": 38.72
+					},
+					{
+						"id": "hydroid:systems",
+						"frameId": "hydroid",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode24",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "loki",
+				"name": "Loki",
+				"nodeId": "SolNode127",
+				"image": "Loki.png",
+				"parts": [
+					{
+						"id": "loki:bp",
+						"frameId": "loki",
+						"slot": "bp"
+					},
+					{
+						"id": "loki:neuroptics",
+						"frameId": "loki",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode127",
+						"chance": 38.72
+					},
+					{
+						"id": "loki:chassis",
+						"frameId": "loki",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode127",
+						"chance": 38.72
+					},
+					{
+						"id": "loki:systems",
+						"frameId": "loki",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode127",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "mag",
+				"name": "Mag",
+				"nodeId": "SettlementNode20",
+				"image": "Mag.png",
+				"parts": [
+					{
+						"id": "mag:bp",
+						"frameId": "mag",
+						"slot": "bp"
+					},
+					{
+						"id": "mag:neuroptics",
+						"frameId": "mag",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SettlementNode20",
+						"chance": 38.72
+					},
+					{
+						"id": "mag:chassis",
+						"frameId": "mag",
+						"slot": "chassis",
+						"dropSourceNodeId": "SettlementNode20",
+						"chance": 38.72
+					},
+					{
+						"id": "mag:systems",
+						"frameId": "mag",
+						"slot": "systems",
+						"dropSourceNodeId": "SettlementNode20",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "nekros",
+				"name": "Nekros",
+				"nodeId": "SolNode712",
+				"image": "Nekros.png",
+				"parts": [
+					{
+						"id": "nekros:bp",
+						"frameId": "nekros",
+						"slot": "bp"
+					},
+					{
+						"id": "nekros:neuroptics",
+						"frameId": "nekros",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode712",
+						"chance": 33.33
+					},
+					{
+						"id": "nekros:chassis",
+						"frameId": "nekros",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode712",
+						"chance": 33.33
+					},
+					{
+						"id": "nekros:systems",
+						"frameId": "nekros",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode712",
+						"chance": 33.33
+					}
+				]
+			},
+			{
+				"id": "nova",
+				"name": "Nova",
+				"nodeId": "SolNode210",
+				"image": "Nova.png",
+				"parts": [
+					{
+						"id": "nova:bp",
+						"frameId": "nova",
+						"slot": "bp"
+					},
+					{
+						"id": "nova:neuroptics",
+						"frameId": "nova",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode210",
+						"chance": 38.72
+					},
+					{
+						"id": "nova:chassis",
+						"frameId": "nova",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode210",
+						"chance": 38.72
+					},
+					{
+						"id": "nova:systems",
+						"frameId": "nova",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode210",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "rhino",
+				"name": "Rhino",
+				"nodeId": "SolNode104",
+				"image": "Rhino.png",
+				"parts": [
+					{
+						"id": "rhino:bp",
+						"frameId": "rhino",
+						"slot": "bp"
+					},
+					{
+						"id": "rhino:neuroptics",
+						"frameId": "rhino",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode104",
+						"chance": 38.72
+					},
+					{
+						"id": "rhino:chassis",
+						"frameId": "rhino",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode104",
+						"chance": 38.72
+					},
+					{
+						"id": "rhino:systems",
+						"frameId": "rhino",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode104",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "saryn",
+				"name": "Saryn",
+				"nodeId": "SolNode193",
+				"image": "Saryn.png",
+				"parts": [
+					{
+						"id": "saryn:bp",
+						"frameId": "saryn",
+						"slot": "bp"
+					},
+					{
+						"id": "saryn:neuroptics",
+						"frameId": "saryn",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode193",
+						"chance": 38.72
+					},
+					{
+						"id": "saryn:chassis",
+						"frameId": "saryn",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode193",
+						"chance": 38.72
+					},
+					{
+						"id": "saryn:systems",
+						"frameId": "saryn",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode193",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "trinity",
+				"name": "Trinity",
+				"nodeId": "SolNode51",
+				"image": "Trinity.png",
+				"parts": [
+					{
+						"id": "trinity:bp",
+						"frameId": "trinity",
+						"slot": "bp"
+					},
+					{
+						"id": "trinity:neuroptics",
+						"frameId": "trinity",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode51",
+						"chance": 38.72
+					},
+					{
+						"id": "trinity:chassis",
+						"frameId": "trinity",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode51",
+						"chance": 38.72
+					},
+					{
+						"id": "trinity:systems",
+						"frameId": "trinity",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode51",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "valkyr",
+				"name": "Valkyr",
+				"nodeId": "SolNode53",
+				"image": "Valkyr.png",
+				"parts": [
+					{
+						"id": "valkyr:bp",
+						"frameId": "valkyr",
+						"slot": "bp"
+					},
+					{
+						"id": "valkyr:neuroptics",
+						"frameId": "valkyr",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode53",
+						"chance": 38.72
+					},
+					{
+						"id": "valkyr:chassis",
+						"frameId": "valkyr",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode53",
+						"chance": 38.72
+					},
+					{
+						"id": "valkyr:systems",
+						"frameId": "valkyr",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode53",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "wisp",
+				"name": "Wisp",
+				"nodeId": "SolNode740",
+				"image": "Wisp.png",
+				"parts": [
+					{
+						"id": "wisp:bp",
+						"frameId": "wisp",
+						"slot": "bp"
+					},
+					{
+						"id": "wisp:neuroptics",
+						"frameId": "wisp",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode740",
+						"chance": 25.81
+					},
+					{
+						"id": "wisp:chassis",
+						"frameId": "wisp",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode740",
+						"chance": 25.81
+					},
+					{
+						"id": "wisp:systems",
+						"frameId": "wisp",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode740",
+						"chance": 25.81
+					}
+				]
+			}
+		]
+	}
+}

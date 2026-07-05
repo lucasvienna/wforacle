@@ -11,7 +11,10 @@ export function parseNodeValue(value: string): { node: string; planet: string } 
 export function parseDropLocation(
 	loc: string,
 ): { planet: string; node: string; type: string } | null {
-	const m = loc.match(/^([^/]+)\/(.+?)\s*\(([^)]+)\)\s*$/);
+	// Real WFCD drop locations sometimes append rotation info after the
+	// mission type, e.g. "Uranus/Titania (Assassination), Rotation A" — allow
+	// (and ignore) any trailing text after the closing paren.
+	const m = loc.match(/^([^/]+)\/(.+?)\s*\(([^)]+)\)/);
 	if (!m) return null;
 	return { planet: m[1].trim(), node: m[2].trim(), type: m[3].trim() };
 }

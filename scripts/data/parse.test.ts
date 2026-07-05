@@ -18,6 +18,13 @@ describe('parse', () => {
 	it('returns null for a non-node drop location', () => {
 		expect(parseDropLocation('Cetus Bounty Rewards')).toBeNull();
 	});
+	it('parses a drop location with trailing rotation info', () => {
+		expect(parseDropLocation('Uranus/Titania (Assassination), Rotation A')).toEqual({
+			planet: 'Uranus',
+			node: 'Titania',
+			type: 'Assassination',
+		});
+	});
 	it('slugifies names', () => {
 		expect(slugify('Kuva Fortress')).toBe('kuvafortress');
 		expect(slugify('Fossa')).toBe('fossa');

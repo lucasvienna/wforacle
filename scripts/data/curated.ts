@@ -15,6 +15,7 @@ export const PLANETS: { name: string; order: number; faction: string; spoilerGat
 	{ name: 'Pluto', order: 12, faction: 'Corpus', spoilerGated: false },
 	{ name: 'Eris', order: 13, faction: 'Infested', spoilerGated: false },
 	{ name: 'Sedna', order: 14, faction: 'Grineer', spoilerGated: false },
+	{ name: 'Deimos', order: 15, faction: 'Infested', spoilerGated: false },
 ];
 
 const PLANET_ORDER = new Map(PLANETS.map((p) => [p.name, p.order]));
@@ -22,7 +23,10 @@ export function planetOrder(planetName: string): number {
 	return PLANET_ORDER.get(planetName) ?? 999;
 }
 
-// node slug → boss display name (the ~18 node-linked Assassination frames)
+// node slug → boss display name, covering every real Assassination-type
+// SolNode across the 15 curated regions (17 nodes, verified against
+// warframe-worldstate-data's solNodes + @wfcd/items drop locations —
+// see .superpowers/sdd/task-7-report.md for the full breakdown).
 export const BOSS_BY_NODE: Record<string, string> = {
 	[slugify('Fossa')]: 'Jackal',
 	[slugify('Oro')]: 'Councilor Vay Hek',
@@ -37,6 +41,10 @@ export const BOSS_BY_NODE: Record<string, string> = {
 	[slugify('Psamathe')]: 'Hyena Pack',
 	[slugify('Hades')]: 'Ambulas',
 	[slugify('Merrow')]: 'Kela De Thaym',
+	// Deimos (added in this task — 3 Assassination nodes, the most of any planet)
 	[slugify('Magnacidium')]: 'Lephantis',
-	[slugify('Cameria')]: 'Alad V',
+	[slugify('Exequias')]: 'Zealoid Prelate',
+	[slugify('Effervo')]: 'The Fragmented',
+	// Mercury's assassination node; no Warframe currently drops here (Vor drops the Seer instead)
+	[slugify('Tolstoj')]: 'Captain Vor',
 };
