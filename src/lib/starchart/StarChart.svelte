@@ -20,6 +20,19 @@
 </script>
 
 <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" class="block select-none">
+	<defs>
+		<radialGradient id="wf-space" cx="50%" cy="34%" r="70%">
+			<stop offset="0%" stop-color="#12233b" />
+			<stop offset="55%" stop-color="#0a1420" />
+			<stop offset="100%" stop-color="#05080d" />
+		</radialGradient>
+		<radialGradient id="wf-core" cx="50%" cy="50%" r="50%">
+			<stop offset="0%" stop-color="rgba(230,184,84,0.5)" />
+			<stop offset="45%" stop-color="rgba(55,120,140,0.18)" />
+			<stop offset="100%" stop-color="rgba(5,8,13,0)" />
+		</radialGradient>
+	</defs>
+	<rect x="0" y="0" width={VBW} height={VBH} fill="url(#wf-space)" />
 	<ellipse
 		cx={VBW / 2}
 		cy="238"
@@ -30,6 +43,15 @@
 		stroke-width="1.5"
 		opacity="0.7"
 	/>
+	<ellipse cx={VBW / 2} cy="244" rx="150" ry="120" fill="url(#wf-core)" />
+	<text
+		x={VBW / 2}
+		y="234"
+		text-anchor="middle"
+		fill="rgba(230,240,255,0.28)"
+		font-size="34"
+		font-family="serif">&#10022;</text
+	>
 	{#each placed as p (p.region.id)}
 		{@const status = statusOf(p.region.id)}
 		{@const sel = p.region.id === selectedId}

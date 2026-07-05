@@ -1,1 +1,20 @@
 @import 'tailwindcss';
+
+/* Base theme. Tokenized so alternate (in-game) themes can drop in later. */
+@layer base {
+	:root {
+		--wf-bg: #080c12;
+		--wf-bg-glow: #0f1c2e;
+		--wf-text: #dce7f5;
+	}
+
+	html {
+		color-scheme: dark;
+	}
+
+	body {
+		min-height: 100vh;
+		background: radial-gradient(1200px 700px at 60% -10%, var(--wf-bg-glow) 0%, var(--wf-bg) 60%);
+		color: var(--wf-text);
+	}
+}

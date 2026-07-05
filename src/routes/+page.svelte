@@ -46,7 +46,7 @@
 		</span>
 	</header>
 
-	<div class="mb-4 rounded-xl border border-slate-700">
+	<div class="mb-4 overflow-hidden rounded-xl border border-slate-700">
 		<StarChart
 			regions={seed.regions}
 			{selectedId}
