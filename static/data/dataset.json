@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-05T21:02:47.777Z",
+	"generatedAt": "2026-07-05T22:02:13.251Z",
 	"data": {
 		"regions": [
 			{
@@ -3937,16 +3937,16 @@
 					{
 						"phase": "early",
 						"nodeLabel": "Mars — Hellas (Exterminate)",
-						"boostersApply": true,
-						"note": "Quick low-level Grineer Exterminate on one of Gallium’s two signature planets; good for a fast early supply.",
+						"boostersApply": false,
+						"note": "Quick low-level Grineer Exterminate on one of Gallium’s two signature planets. Gallium comes from mission-completion rewards and resource caches rather than an enemy drop table, so boosters do not increase it.",
 						"source": "https://wiki.warframe.com/w/Gallium",
 						"lastVerified": "2026-07-05"
 					},
 					{
 						"phase": "late",
 						"nodeLabel": "Uranus — Titania (Assassination, Tyl Regor, Steel Path)",
-						"boostersApply": true,
-						"note": "Tyl Regor has a dedicated Gallium drop on top of the planet’s signature-resource bonus; Steel Path repeat kills scale well for squads.",
+						"boostersApply": false,
+						"note": "Tyl Regor drops Gallium as an assassination reward on top of Uranus’ signature-resource bonus; Steel Path repeat runs scale well for squads. Gallium is reward/cache-based, not an enemy drop table, so boosters do not increase it.",
 						"source": "https://wiki.warframe.com/w/Gallium",
 						"lastVerified": "2026-07-05"
 					}
@@ -3964,16 +3964,16 @@
 					{
 						"phase": "early",
 						"nodeLabel": "Void — Hepit (Capture)",
-						"boostersApply": true,
-						"note": "The wiki flags the Void as having a higher Control Module drop chance than any main planet; Hepit is a short, low-level Capture to farm it in.",
+						"boostersApply": false,
+						"note": "The wiki flags the Void as having a higher Control Module drop chance than any main planet; Hepit is a short, low-level Capture. Control Modules come from mission-completion/rotation rewards, so boosters and the Steel Path passive do not increase them.",
 						"source": "https://wiki.warframe.com/w/Control_Module",
 						"lastVerified": "2026-07-05"
 					},
 					{
 						"phase": "late",
 						"nodeLabel": "Void — Mot (Survival, Steel Path)",
-						"boostersApply": true,
-						"note": "Extrapolated from the wiki’s general \"Void has better odds\" guidance (no distinct late-game node is called out on the resource page): an endless Void Survival gives Steel Path squads the longest uninterrupted enemy-drop window.",
+						"boostersApply": false,
+						"note": "Extrapolated from the wiki’s general \"Void has better odds\" guidance (no distinct late-game node is called out on the resource page): an endless Void Survival gives Steel Path squads the longest uninterrupted stream of completion/rotation rewards. Those rewards are not boosted.",
 						"source": "https://wiki.warframe.com/w/Control_Module",
 						"lastVerified": "2026-07-05"
 					}
@@ -3994,16 +3994,16 @@
 					{
 						"phase": "early",
 						"nodeLabel": "Phobos — Zeugma (Dark Sector Survival)",
-						"boostersApply": true,
-						"note": "The wiki cites roughly 250 Rubedo per 5 minutes here, among the best yields available to newer players on a signature Rubedo planet.",
+						"boostersApply": false,
+						"note": "The wiki cites roughly 250 Rubedo per 5 minutes here, among the best yields available to newer players on a signature Rubedo planet. Rubedo drops from containers and lockers rather than an enemy drop table, so boosters do not increase it.",
 						"source": "https://wiki.warframe.com/w/Rubedo",
 						"lastVerified": "2026-07-05"
 					},
 					{
 						"phase": "late",
 						"nodeLabel": "Void — Ani (Survival, Steel Path)",
-						"boostersApply": true,
-						"note": "The wiki recommends Orokin Void Survival/Defense generically for 1,000+ Rubedo per 20 minutes at endgame; Ani is a standard Void Survival node for that squad farm.",
+						"boostersApply": false,
+						"note": "The wiki recommends Orokin Void Survival/Defense generically for 1,000+ Rubedo per 20 minutes at endgame; Ani is a standard Void Survival node for that squad farm. Rubedo comes from containers/lockers, not an enemy drop table, so boosters do not increase it.",
 						"source": "https://wiki.warframe.com/w/Rubedo",
 						"lastVerified": "2026-07-05"
 					}

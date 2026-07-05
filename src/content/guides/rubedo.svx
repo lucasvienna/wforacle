@@ -11,9 +11,9 @@ density (not your squad's kill speed) that matters most here.
 The wiki's general endgame advice is simply "run Void Survival or Defense" —
 it cites over 1,000 Rubedo per 20 minutes from Orokin Void endless missions.
 **Ani** (Survival, Steel Path) is a standard Void node for putting that into
-practice with a squad. Since Rubedo is container/reward-based rather than an
-enemy drop, Resource Drop Boosters help with in-mission pickups but won't
-affect the end-of-mission rotation rewards.
+practice with a squad. Since Rubedo comes from containers and lockers rather
+than an enemy drop table, Resource Drop Boosters and the Steel Path passive
+don't increase it — the longer the run, the more containers you clear.
 
 ## Sources
 

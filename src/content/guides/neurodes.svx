@@ -1,12 +1,14 @@
 ## Early game
 
 Neurodes have a very low chance to drop from regular enemies, so the wiki's own
-advice is to hunt containers instead of grinding kills. On **Earth**, quick
-Exterminate and Excavation runs through the Grineer settlement tilesets (nodes
-like **Mariana** and **Tikal**) put you next to resource caches that reliably
-carry Neurodes without needing a boss fight or an endless mission — and because
-it's a container pickup, Resource Drop Boosters and the Steel Path drop-chance
-passive don't apply here, so there's no rush to save the farm for later.
+advice is to hunt containers instead of grinding kills. **Mantle** on Earth
+(Capture) runs through the Grineer cave tileset, where the green-glowing
+resource containers reliably carry Neurodes — a short Capture that's easy to
+repeat without needing a boss fight or an endless mission. Because it's a
+container pickup, Resource Drop Boosters and the Steel Path drop-chance passive
+don't apply here, so there's no rush to save the farm for later. Other Earth
+nodes with the same Grineer caves (**Mariana** Exterminate, **Tikal**
+Excavation) work as secondary stops.
 
 If you'd rather fight for them, **Magnacidium** on Deimos (Assassination,
 Lephantis) is one of the easiest boss-based sources, averaging 1-2 Neurodes per

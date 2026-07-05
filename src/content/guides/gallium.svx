@@ -9,11 +9,11 @@ carries a decent Gallium chance too.
 ## Mid & late game
 
 **Titania** on Uranus (Assassination, Tyl Regor, Steel Path) is the strongest
-endgame option: Tyl Regor has his own Gallium drop on top of Uranus being
-Gallium's other signature planet, so repeat boss kills with a Steel Path
-squad scale well per hour. Because Gallium mostly comes from mission
-completion and resource caches rather than regular enemy kills, a Resource
-Drop Booster is worth stacking on top for the cache-based portion of the run.
+endgame option: Tyl Regor drops Gallium as an assassination reward on top of
+Uranus being Gallium's other signature planet, so repeat boss runs with a
+Steel Path squad scale well per hour. Gallium comes from mission-completion
+rewards and resource caches rather than an enemy drop table, so Resource Drop
+Boosters and the Steel Path passive don't increase it.
 
 ## Sources
 

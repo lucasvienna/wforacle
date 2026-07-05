@@ -12,9 +12,10 @@ Hepit's matchmaking is slow.
 The wiki doesn't call out a distinct late-game Control Module node beyond
 "the Void has better odds," so the natural extension for a Steel Path squad is
 an endless Void Survival like **Mot** — it gives the longest uninterrupted
-window to rack up completion rewards and rotation drops in one sitting.
-Resource Drop Boosters still apply to whatever you pick up mid-mission, just
-not to the end-of-mission rewards themselves.
+window to rack up completion rewards and rotation drops in one sitting. Since
+Control Modules are reward-based rather than an enemy drop, neither Resource
+Drop Boosters nor the Steel Path passive increase them; run length is what
+matters.
 
 ## Sources
 
