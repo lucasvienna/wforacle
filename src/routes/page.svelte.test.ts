@@ -12,6 +12,7 @@ describe('home page', () => {
 			screen.getByText((_, element) => element?.textContent?.trim().toLowerCase() === 'wforacle'),
 		).toBeInTheDocument();
 		expect(screen.getByText('VENUS')).toBeInTheDocument(); // chart
-		expect(screen.getByText(/Jackal/)).toBeInTheDocument(); // panel (Venus selected)
+		// panel (Venus selected) — boss name appears in subtitle + part-source labels
+		expect(screen.getAllByText(/Jackal/).length).toBeGreaterThan(0);
 	});
 });

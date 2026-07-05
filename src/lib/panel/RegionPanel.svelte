@@ -15,6 +15,13 @@
 		systems: 'Systems',
 	} as const;
 
+	// Faction accent for the assassination tag. Extend as new factions appear.
+	const FACTION_TAG: Record<string, string> = {
+		Corpus: 'border-sky-500/40 bg-sky-500/10 text-sky-300',
+		Grineer: 'border-orange-500/40 bg-orange-500/10 text-orange-300',
+		Infested: 'border-lime-500/40 bg-lime-500/10 text-lime-300',
+	};
+
 	let region = $derived(dataset.regions.find((r) => r.id === regionId));
 	let node = $derived(
 		dataset.nodes.find((n) => n.regionId === regionId && n.isAssassination),
@@ -25,45 +32,101 @@
 	let frame = $derived(
 		node ? dataset.warframes.find((w) => w.id === node!.frameId) : undefined,
 	);
+	let count = $derived(
+		frame ? tracker.frameCount(frame.id) : { owned: 0, total: 0 },
+	);
+
+	// The main blueprint is bought from the Market; components drop from the boss.
+	// Drop rates arrive with the real dataset (Plan 2); the source slot is ready for them.
+	function sourceLabel(slot: string): string {
+		return slot === 'bp' ? 'Market' : (boss?.name ?? '');
+	}
 </script>
 
-<section class="rounded-xl border border-slate-700 bg-slate-900 p-4">
+<section class="rounded-xl border border-slate-700 bg-slate-900/70 p-5">
 	{#if node && boss && frame}
-		<h3 class="font-semibold">
-			{node.name} — <span class="text-sky-300">{boss.name}</span>
-		</h3>
-		{@const count = tracker.frameCount(frame.id)}
-		<p class="mb-3 text-sm text-slate-400">
-			Drops {frame.name}
-			· {count.owned}/{count.total} owned
-		</p>
-		{#each frame.parts as part (part.id)}
-			{@const owned = tracker.isOwned(part.id)}
-			<div
-				data-part={part.id}
-				data-owned={owned}
-				role="button"
-				tabindex="0"
-				class={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-slate-800 ${owned ? 'bg-emerald-500/15' : ''}`}
-				onclick={() => tracker.togglePart(part.id)}
-				onkeydown={(e) => {
-					if (e.key === 'Enter' || e.key === ' ') {
-						if (e.key === ' ') e.preventDefault();
-						tracker.togglePart(part.id);
-					}
-				}}
-			>
-				<span
-					class="inline-flex h-4 w-4 items-center justify-center rounded border"
-					class:border-emerald-400={owned}>{owned ? '✓' : ''}</span
-				>
-				<span>{SLOT_LABEL[part.slot]}</span>
+		<div class="mb-4 flex items-start justify-between gap-3">
+			<div>
+				<h3 class="text-base font-semibold text-slate-100">{node.name}</h3>
+				<p class="mt-0.5 text-xs text-slate-400">
+					Boss: <span class="text-slate-200">{boss.name}</span> — drops Warframe components
+				</p>
 			</div>
-		{/each}
+			<span
+				class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
+					node.faction
+				] ?? 'border-slate-600 text-slate-300'}"
+			>
+				{node.faction} · Assassination
+			</span>
+		</div>
+
+		<div class="mb-4 flex items-center gap-3">
+			<div
+				class="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-700 bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
+				aria-hidden="true"
+			>
+				{frame.name[0]}
+			</div>
+			<div>
+				<div class="font-semibold text-slate-100">
+					{frame.name}
+					<span
+						class="text-xs font-normal {count.owned === count.total
+							? 'text-emerald-400'
+							: 'text-slate-400'}"
+					>
+						· {count.owned}/{count.total} owned
+					</span>
+				</div>
+				<div class="text-xs text-slate-500">
+					Blueprint from Market · components from {boss.name}
+				</div>
+			</div>
+		</div>
+
+		<div class="space-y-1">
+			{#each frame.parts as part (part.id)}
+				{@const owned = tracker.isOwned(part.id)}
+				<div
+					data-part={part.id}
+					data-owned={owned}
+					role="button"
+					tabindex="0"
+					class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-slate-800 {owned
+						? 'border-emerald-500/30 bg-emerald-500/10'
+						: ''}"
+					onclick={() => tracker.togglePart(part.id)}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							if (e.key === ' ') e.preventDefault();
+							tracker.togglePart(part.id);
+						}
+					}}
+				>
+					<span
+						class="flex h-4 w-4 items-center justify-center rounded border text-[11px] {owned
+							? 'border-emerald-400 bg-emerald-400 text-slate-950'
+							: 'border-slate-500 text-transparent'}"
+					>
+						✓
+					</span>
+					<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
+						{SLOT_LABEL[part.slot]}
+					</span>
+					<span class="ml-auto text-xs text-slate-500"
+						>{sourceLabel(part.slot)}</span
+					>
+				</div>
+			{/each}
+		</div>
+
 		<button
-			class="mt-2 text-sm text-sky-300"
-			onclick={() => tracker.toggleFrame(frame!.id)}>Toggle whole frame</button
+			class="mt-3 text-xs font-medium text-sky-400 hover:text-sky-300"
+			onclick={() => tracker.toggleFrame(frame!.id)}
 		>
+			✓ Toggle whole frame
+		</button>
 	{:else}
 		<p class="text-sm text-slate-400">
 			{region?.name}: no Assassination frame here yet.
