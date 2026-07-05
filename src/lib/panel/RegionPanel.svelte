@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Boss, Dataset, StarNode, Warframe } from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
+	import { resourcesForRegion, bestPhaseRec } from '$lib/model/resources';
+	import { base } from '$app/paths';
 
 	let {
 		dataset,
@@ -23,6 +25,7 @@
 	};
 
 	let region = $derived(dataset.regions.find((r) => r.id === regionId));
+	let resources = $derived(resourcesForRegion(dataset, regionId));
 	// A region can have MULTIPLE Assassination nodes, each linking its own
 	// frame (e.g. Jupiter: Themisto→Valkyr and The Ropalolyst→Wisp) — render
 	// one frame block per node instead of only the first match.
@@ -147,5 +150,50 @@
 		<p class="text-sm text-slate-400">
 			{region?.name}: no Assassination frame here yet.
 		</p>
+	{/if}
+
+	{#if resources.length > 0}
+		<div class="mt-6 border-t border-slate-700 pt-4">
+			<h3 class="mb-3 text-sm font-semibold text-slate-100">Resources</h3>
+			<ul class="space-y-2">
+				{#each resources as r (r.id)}
+					{@const early = bestPhaseRec(r, 'early')}
+					{@const late = bestPhaseRec(r, 'late')}
+					<li
+						class="flex items-center gap-3 rounded-lg border border-slate-700 px-3 py-2"
+					>
+						<img
+							src="{base}/resources/{r.id}.webp"
+							alt=""
+							class="h-8 w-8 shrink-0 rounded"
+							loading="lazy"
+						/>
+						<span class="text-sm text-slate-200">{r.name}</span>
+						<div class="ml-auto flex items-center gap-2">
+							{#if early}
+								<span
+									class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-300"
+								>
+									⚡ early
+								</span>
+							{/if}
+							{#if late}
+								<span
+									class="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-300"
+								>
+									💀 late
+								</span>
+							{/if}
+							<a
+								href="{base}/guides/{r.id}"
+								class="text-xs font-medium text-sky-400 hover:text-sky-300"
+							>
+								farming ▸
+							</a>
+						</div>
+					</li>
+				{/each}
+			</ul>
+		</div>
 	{/if}
 </section>

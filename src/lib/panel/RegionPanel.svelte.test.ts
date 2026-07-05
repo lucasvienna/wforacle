@@ -19,6 +19,7 @@ const multiNodeRegion: Dataset = {
 			factions: ['Corpus'],
 			nodeIds: ['themisto', 'ropalolyst'],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 	],
 	nodes: [
@@ -71,6 +72,7 @@ const multiNodeRegion: Dataset = {
 			],
 		},
 	],
+	resources: [],
 };
 
 describe('RegionPanel', () => {
@@ -106,5 +108,59 @@ describe('RegionPanel', () => {
 		// Both frames' part rows are present.
 		expect(document.querySelector('[data-part="valkyr:chassis"]')).toBeInTheDocument();
 		expect(document.querySelector('[data-part="wisp:chassis"]')).toBeInTheDocument();
+	});
+	it('renders the region resources with phase badges and a guide link', () => {
+		const ds = {
+			regions: [
+				{
+					id: 'venus',
+					name: 'Venus',
+					kind: 'planet',
+					progressionOrder: 2,
+					factions: ['Corpus'],
+					nodeIds: [],
+					spoilerGated: false,
+					resourceIds: ['alloyplate'],
+				},
+			],
+			nodes: [],
+			bosses: [],
+			warframes: [],
+			resources: [
+				{
+					id: 'alloyplate',
+					name: 'Alloy Plate',
+					image: 'AlloyPlate.png',
+					regionIds: ['venus'],
+					recommendations: [
+						{
+							phase: 'early',
+							nodeLabel: 'A',
+							boostersApply: false,
+							note: '',
+							source: '',
+							lastVerified: '2026-07-05',
+						},
+						{
+							phase: 'late',
+							nodeLabel: 'B',
+							boostersApply: true,
+							note: '',
+							source: '',
+							lastVerified: '2026-07-05',
+						},
+					],
+				},
+			],
+		} as unknown as Dataset;
+		const tracker = createTracker([]);
+		render(RegionPanel, { dataset: ds, regionId: 'venus', tracker });
+		expect(screen.getByText('Alloy Plate')).toBeInTheDocument();
+		expect(screen.getByText('⚡ early')).toBeInTheDocument();
+		expect(screen.getByText('💀 late')).toBeInTheDocument();
+		expect(screen.getByRole('link', { name: /farming/i })).toHaveAttribute(
+			'href',
+			'/guides/alloyplate',
+		);
 	});
 });
