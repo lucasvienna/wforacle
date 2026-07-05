@@ -1,27 +1,32 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import { seed } from '$lib/data/seed';
+	import { loadDataset } from '$lib/data/dataset';
+	import type { Dataset } from '$lib/model/types';
 	import StarChart from '$lib/starchart/StarChart.svelte';
 	import RegionPanel from '$lib/panel/RegionPanel.svelte';
-	import { createTracker } from '$lib/tracker/tracker.svelte';
+	import { createTracker, type Tracker } from '$lib/tracker/tracker.svelte';
 	import { loadOwned, saveOwned } from '$lib/tracker/persistence';
 
-	let ready = false;
-	const tracker = createTracker(seed.warframes, (ids) => {
-		if (browser && ready) saveOwned(ids);
-	});
+	let data = $state<Dataset | null>(null);
+	let tracker = $state<Tracker | null>(null);
 	let selectedId = $state('venus');
+	let ready = false;
 
 	onMount(async () => {
-		tracker.load(await loadOwned());
+		const ds = await loadDataset();
+		const t = createTracker(ds.warframes, (ids) => {
+			if (browser && ready) saveOwned(ids);
+		});
+		t.load(await loadOwned());
 		ready = true;
+		data = ds;
+		tracker = t;
 	});
 
-	onDestroy(() => tracker.dispose());
-
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
-		const node = seed.nodes.find(
+		if (!data || !tracker) return 'none';
+		const node = data.nodes.find(
 			(n) => n.regionId === regionId && n.isAssassination,
 		);
 		if (!node?.frameId) return 'none';
@@ -39,23 +44,30 @@
 		<span class="text-lg font-bold"
 			>wf<span class="text-sky-400">oracle</span></span
 		>
-		<span class="ml-auto text-sm text-slate-400">
-			Node Frames <b class="text-slate-100"
-				>{tracker.total.owned} / {tracker.total.total}</b
-			>
-		</span>
+		{#if tracker}
+			<span class="ml-auto text-sm text-slate-400">
+				Node Frames <b class="text-slate-100"
+					>{tracker.total.owned} / {tracker.total.total}</b
+				>
+			</span>
+		{/if}
 	</header>
 
-	<div class="mb-4 overflow-hidden rounded-xl border border-slate-700">
-		<StarChart
-			regions={seed.regions}
-			{selectedId}
-			{statusOf}
-			onselect={(id) => (selectedId = id)}
-		/>
-	</div>
-
-	<RegionPanel dataset={seed} regionId={selectedId} {tracker} />
+	{#if data && tracker}
+		<div class="mb-4 overflow-hidden rounded-xl border border-slate-700">
+			<StarChart
+				regions={data.regions}
+				{selectedId}
+				{statusOf}
+				onselect={(id) => (selectedId = id)}
+			/>
+		</div>
+		<RegionPanel dataset={data} regionId={selectedId} {tracker} />
+	{:else}
+		<div class="flex h-96 items-center justify-center text-slate-500">
+			Loading Star Chart…
+		</div>
+	{/if}
 
 	<footer class="mt-8 text-center text-xs text-slate-600">
 		Planet art &amp; game data © Digital Extremes, via the Warframe wiki.
