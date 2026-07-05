@@ -3,6 +3,7 @@ import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { loadSources } from './data/sources';
 import { assembleDataset, validateDataset } from './data/assemble';
+import { PLANETS } from './data/curated';
 
 const OUT = 'static/data/dataset.json';
 
@@ -44,18 +45,26 @@ async function main() {
 	console.log(
 		`Regions: ${data.regions.length}, nodes: ${data.nodes.length}, node-linked frames: ${nodeFrames}`,
 	);
-	// Verified ceiling against the installed warframe-worldstate-data@3.16.2 +
-	// @wfcd/items@1.1274.72: of the 17 real Assassination-type SolNodes across
-	// our 15 curated regions, 14 have a Warframe blueprint drop tied to them
-	// (Tolstoj, Phorid, and the Eris "Assassinate"-key bosses Jordas Golem /
-	// Mutalist Alad V don't — they aren't modeled as normal SolNodes in this
-	// data source). Of those 14, Equinox's components are named "Day Aspect"
-	// / "Night Aspect" rather than the standard Chassis/Neuroptics/Systems
-	// buildFrames (build.ts, Task 6, out of scope here) matches on, so it
-	// isn't picked up either, leaving 13. See
-	// .superpowers/sdd/task-7-report.md for the full breakdown.
-	if (data.regions.length < 14 || nodeFrames < 13) {
-		console.error(`Sanity check failed (expected >=14 planets + >=13 node-linked frames)`);
+	// Every one of the 14 main planets must be present as a region (a
+	// stronger, spec-anchored check than a bare length comparison — it also
+	// guarantees no unexpected/special region snuck in with the same count).
+	const regionNames = new Set(data.regions.map((r) => r.name));
+	const missingPlanets = PLANETS.filter((p) => !regionNames.has(p.name)).map((p) => p.name);
+	if (missingPlanets.length) {
+		console.error(`Sanity check failed: missing main planets: ${missingPlanets.join(', ')}`);
+		process.exit(1);
+	}
+	// Node-linked-frame floor. Verified ceiling against the installed
+	// warframe-worldstate-data@3.16.2 + @wfcd/items@1.1274.72: of the real
+	// Assassination-type SolNodes on the 14 main planets, 13 have a Warframe
+	// blueprint drop, and Equinox is dropped by buildFrames because its
+	// components are named "Day Aspect" / "Night Aspect" rather than the
+	// standard Chassis/Neuroptics/Systems (build.ts, Task 6, out of scope
+	// here), leaving 12. (Deimos/Nekros, Phorid, and the Eris "Assassinate"-key
+	// bosses Jordas Golem / Mutalist Alad V are special/quest-locked regions
+	// deferred to a later plan.) See .superpowers/sdd/task-7-report.md.
+	if (nodeFrames < 12) {
+		console.error(`Sanity check failed (expected >=12 node-linked frames, got ${nodeFrames})`);
 		process.exit(1);
 	}
 	mkdirSync('static/data', { recursive: true });

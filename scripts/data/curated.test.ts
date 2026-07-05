@@ -3,11 +3,11 @@ import { PLANETS, BOSS_BY_NODE, planetOrder } from './curated';
 import { slugify } from './parse';
 
 describe('curated', () => {
-	it('lists 15 planets, Earth first, distinct orders', () => {
-		expect(PLANETS).toHaveLength(15);
+	it('lists 14 planets, Earth first, distinct orders', () => {
+		expect(PLANETS).toHaveLength(14);
 		const byOrder = [...PLANETS].sort((a, b) => a.order - b.order);
 		expect(byOrder[0].name).toBe('Earth');
-		expect(new Set(PLANETS.map((p) => p.order)).size).toBe(15);
+		expect(new Set(PLANETS.map((p) => p.order)).size).toBe(14);
 	});
 	it('maps known assassination nodes to boss names', () => {
 		expect(BOSS_BY_NODE[slugify('Fossa')]).toBe('Jackal');

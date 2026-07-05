@@ -15,7 +15,11 @@ export const PLANETS: { name: string; order: number; faction: string; spoilerGat
 	{ name: 'Pluto', order: 12, faction: 'Corpus', spoilerGated: false },
 	{ name: 'Eris', order: 13, faction: 'Infested', spoilerGated: false },
 	{ name: 'Sedna', order: 14, faction: 'Grineer', spoilerGated: false },
-	{ name: 'Deimos', order: 15, faction: 'Infested', spoilerGated: false },
+	// Special/quest-locked regions (Deimos, Lua, Kuva Fortress, Zariman, ...)
+	// are intentionally NOT listed here: they are deferred to a later plan
+	// where they're modeled as kind:'special' / spoilerGated:true and rendered
+	// off-ring. Adding them to PLANETS would ship them as unhidden main planets
+	// and leak spoilers the disclosure feature depends on avoiding.
 ];
 
 const PLANET_ORDER = new Map(PLANETS.map((p) => [p.name, p.order]));
@@ -23,10 +27,13 @@ export function planetOrder(planetName: string): number {
 	return PLANET_ORDER.get(planetName) ?? 999;
 }
 
-// node slug → boss display name, covering every real Assassination-type
-// SolNode across the 15 curated regions (17 nodes, verified against
-// warframe-worldstate-data's solNodes + @wfcd/items drop locations —
-// see .superpowers/sdd/task-7-report.md for the full breakdown).
+// node slug → boss display name, covering the real Assassination-type
+// SolNodes on the 14 main planets (verified against warframe-worldstate-data's
+// solNodes + @wfcd/items drop locations — see
+// .superpowers/sdd/task-7-report.md for the full breakdown). Special-region
+// assassination nodes (e.g. Deimos: Magnacidium/Lephantis,
+// Exequias/Zealoid Prelate, Effervo/The Fragmented) are deferred with those
+// regions to a later plan.
 export const BOSS_BY_NODE: Record<string, string> = {
 	[slugify('Fossa')]: 'Jackal',
 	[slugify('Oro')]: 'Councilor Vay Hek',
@@ -41,10 +48,6 @@ export const BOSS_BY_NODE: Record<string, string> = {
 	[slugify('Psamathe')]: 'Hyena Pack',
 	[slugify('Hades')]: 'Ambulas',
 	[slugify('Merrow')]: 'Kela De Thaym',
-	// Deimos (added in this task — 3 Assassination nodes, the most of any planet)
-	[slugify('Magnacidium')]: 'Lephantis',
-	[slugify('Exequias')]: 'Zealoid Prelate',
-	[slugify('Effervo')]: 'The Fragmented',
 	// Mercury's assassination node; no Warframe currently drops here (Vor drops the Seer instead)
 	[slugify('Tolstoj')]: 'Captain Vor',
 };

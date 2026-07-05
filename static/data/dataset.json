@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-05T16:57:07.322Z",
+	"generatedAt": "2026-07-05T17:08:51.775Z",
 	"data": {
 		"regions": [
 			{
@@ -466,35 +466,6 @@
 					"SolNode202",
 					"ClanNode14",
 					"ClanNode15"
-				]
-			},
-			{
-				"id": "deimos",
-				"name": "Deimos",
-				"kind": "planet",
-				"progressionOrder": 15,
-				"factions": ["Infested"],
-				"spoilerGated": false,
-				"nodeIds": [
-					"SolNode229",
-					"DeimosHub",
-					"SolNode706",
-					"SolNode707",
-					"SolNode708",
-					"SolNode709",
-					"SolNode710",
-					"SolNode711",
-					"SolNode712",
-					"SolNode713",
-					"SolNode714",
-					"SolNode715",
-					"SolNode716",
-					"SolNode717",
-					"SolNode718",
-					"SolNode719",
-					"SolNode720",
-					"SolNode721",
-					"SolNode251"
 				]
 			}
 		],
@@ -2326,14 +2297,6 @@
 				"isAssassination": false
 			},
 			{
-				"id": "SolNode229",
-				"regionId": "deimos",
-				"name": "Cambion Drift",
-				"missionType": "Free Roam",
-				"faction": "Infested",
-				"isAssassination": false
-			},
-			{
 				"id": "SolNode239",
 				"regionId": "venus",
 				"name": "Vesper Relay",
@@ -2347,152 +2310,6 @@
 				"name": "Tyana Pass",
 				"missionType": "Mirror Defense",
 				"faction": "Crossfire",
-				"isAssassination": false
-			},
-			{
-				"id": "DeimosHub",
-				"regionId": "deimos",
-				"name": "Necralisk",
-				"missionType": "Relay",
-				"faction": "Tenno",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode706",
-				"regionId": "deimos",
-				"name": "Horend",
-				"missionType": "Capture",
-				"faction": "Infested",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode707",
-				"regionId": "deimos",
-				"name": "Hyf",
-				"missionType": "Defense",
-				"faction": "Infested",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode708",
-				"regionId": "deimos",
-				"name": "Phlegyas",
-				"missionType": "Extermination",
-				"faction": "Infested",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode709",
-				"regionId": "deimos",
-				"name": "Dirus",
-				"missionType": "Mobile Defense",
-				"faction": "Infested",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode710",
-				"regionId": "deimos",
-				"name": "Formido",
-				"missionType": "Sabotage",
-				"faction": "Infested",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode711",
-				"regionId": "deimos",
-				"name": "Terrorem",
-				"missionType": "Survival",
-				"faction": "Infested",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode712",
-				"regionId": "deimos",
-				"name": "Magnacidium",
-				"missionType": "Assassination",
-				"faction": "Infested",
-				"isAssassination": true,
-				"bossId": "magnacidium",
-				"frameId": "nekros"
-			},
-			{
-				"id": "SolNode713",
-				"regionId": "deimos",
-				"name": "Exequias",
-				"missionType": "Assassination",
-				"faction": "Infested",
-				"isAssassination": true
-			},
-			{
-				"id": "SolNode714",
-				"regionId": "deimos",
-				"name": "Sanctum Anatomica",
-				"missionType": "Relay",
-				"faction": "Tenno",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode715",
-				"regionId": "deimos",
-				"name": "Effervo",
-				"missionType": "Assassination",
-				"faction": "The Murmur",
-				"isAssassination": true
-			},
-			{
-				"id": "SolNode716",
-				"regionId": "deimos",
-				"name": "Nex",
-				"missionType": "Extermination",
-				"faction": "The Murmur",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode717",
-				"regionId": "deimos",
-				"name": "Persto",
-				"missionType": "Survival",
-				"faction": "The Murmur",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode718",
-				"regionId": "deimos",
-				"name": "Cambire",
-				"missionType": "Alchemy",
-				"faction": "The Murmur",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode719",
-				"regionId": "deimos",
-				"name": "Munio",
-				"missionType": "Mirror Defense",
-				"faction": "The Murmur",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode720",
-				"regionId": "deimos",
-				"name": "Testudo",
-				"missionType": "Netracells",
-				"faction": "The Murmur",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode721",
-				"regionId": "deimos",
-				"name": "Armatus",
-				"missionType": "Disruption",
-				"faction": "The Murmur",
-				"isAssassination": false
-			},
-			{
-				"id": "SolNode251",
-				"regionId": "deimos",
-				"name": "Dark Refactory",
-				"missionType": "The Perita Rebellion",
-				"faction": "Anarch",
 				"isAssassination": false
 			},
 			{
@@ -3306,12 +3123,6 @@
 				"faction": "Corpus"
 			},
 			{
-				"id": "magnacidium",
-				"name": "Lephantis",
-				"nodeId": "SolNode712",
-				"faction": "Infested"
-			},
-			{
 				"id": "naamah",
 				"name": "Raptors",
 				"nodeId": "SolNode210",
@@ -3550,40 +3361,6 @@
 						"slot": "systems",
 						"dropSourceNodeId": "SettlementNode20",
 						"chance": 22.56
-					}
-				]
-			},
-			{
-				"id": "nekros",
-				"name": "Nekros",
-				"nodeId": "SolNode712",
-				"image": "Nekros.png",
-				"parts": [
-					{
-						"id": "nekros:bp",
-						"frameId": "nekros",
-						"slot": "bp"
-					},
-					{
-						"id": "nekros:neuroptics",
-						"frameId": "nekros",
-						"slot": "neuroptics",
-						"dropSourceNodeId": "SolNode712",
-						"chance": 33.33
-					},
-					{
-						"id": "nekros:chassis",
-						"frameId": "nekros",
-						"slot": "chassis",
-						"dropSourceNodeId": "SolNode712",
-						"chance": 33.33
-					},
-					{
-						"id": "nekros:systems",
-						"frameId": "nekros",
-						"slot": "systems",
-						"dropSourceNodeId": "SolNode712",
-						"chance": 33.33
 					}
 				]
 			},
