@@ -34,17 +34,7 @@ export function assembleDataset(
 		n.bossId = bossByNode.get(n.id)?.id;
 		n.frameId = frameByNode.get(n.id)?.id;
 	}
-	// buildResources derives regionIds from the full curated PLANET_RESOURCES
-	// map (production truth: all 14 main planets), independent of which
-	// regions this particular solNodes input actually produced. Intersect
-	// with the regions actually built here so a partial/fixture-sized
-	// solNodes input (e.g. in tests) can't leave a resource pointing at a
-	// region that doesn't exist in this dataset.
-	const builtRegionIds = new Set(regions.map((r) => r.id));
-	const resources = buildResources(rawResources).map((r) => ({
-		...r,
-		regionIds: r.regionIds.filter((id) => builtRegionIds.has(id)),
-	}));
+	const resources = buildResources(rawResources);
 	return { regions, nodes, bosses, warframes: frames, resources };
 }
 
