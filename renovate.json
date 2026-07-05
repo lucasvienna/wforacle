@@ -3,7 +3,7 @@
 	"extends": ["config:recommended"],
 	"packageRules": [
 		{
-			"matchPackagePatterns": ["^@wfcd/", "^warframe-"],
+			"matchPackageNames": ["/^@wfcd\\//", "/^warframe-/"],
 			"groupName": "wfcd data",
 			"schedule": ["at any time"],
 			"automerge": false
