@@ -103,18 +103,26 @@ Mercury (11), Venus (14), Earth (14), Mars (17), Phobos (11), Ceres (14), Jupite
 - Only **~18 non-Prime frames** map cleanly to an Assassination node/boss. Quest/bounty/dojo/vendor/Railjack/Duviri frames have no single-node source; **all Primes** route through the Void Relic system. v1 tracks the node-linked set; the rest are modeled with an `acquisition` type and shown, but Primes/weapons are deferred.
 - Node→boss and boss→drop are **many-to-many** (e.g., Ceres/Exta = Vor + Kril → Frost).
 
-## 6. Data pipeline (build-time)
+## 6. Data pipeline & freshness (CI-automated, static + service worker)
 
-A script under `scripts/` produces the app's committed JSON. No runtime API calls — the app ships with its data.
+The data architecture has three layers, each using the tool that fits how fast the data moves. The expensive node↔drop↔item **join happens once, in CI** — never per browser or per edge request.
 
-1. **Fetch** WFCD sources: `warframe-worldstate-data/solNodes.json` (Star Chart skeleton), `warframe-drop-data` `missionRewards.json` + reverse indexes (drops with rarity/chance), `warframe-items` `Warframes.json` + `Resources.json` (metadata/images). Pull via `raw.githubusercontent.com/.../gh-pages/data/*.json` (avoids Cloudflare 403) with a normal User-Agent.
+**Layer 1 — Production (CI pipeline).** A script under `scripts/` generates the app's normalized JSON:
+
+1. **Source** WFCD: `@wfcd/warframe-worldstate-data` (npm) → `solNodes.json` (Star Chart skeleton); `@wfcd/items` (npm) → `Warframes.json` + `Resources.json` (metadata/images); `warframe-drop-data` (not on npm) → `missionRewards.json` + reverse indexes fetched from `drops.warframestat.us/data/*.json` or `raw.githubusercontent.com/.../gh-pages/data/*.json` (normal User-Agent).
 2. **Normalize + join** the three datasets (node string ↔ `SolNode` id ↔ item `uniqueName`) with a small **manual alias-override file** for the handful that don't auto-match.
-3. **Merge curated overlay** — hand-authored `recommendations` (early/late, boostersApply, note, source, `lastVerified`) + farming-guide prose (mdsvex). Strategy sourced from current `wiki.warframe.com/w/<Resource>_Farming_Guide` pages (maintained), not the dated Reddit/Steam guides.
-4. **Emit** compact, app-shaped JSON: a small global bundle (regions, frames, resources) + **per-region slices** for lazy drill-down.
-5. **Images** — download the needed subset (~18 frames + ~25 resources + faction/rarity icons), optimize, self-host in `/static` for edge speed (avoid hotlinking).
-6. **Refresh** — re-run gated on WFCD `info.json` hash; every recommendation surfaces its `lastVerified` date in the UI.
+3. **Emit** compact, app-shaped JSON as a **versioned static asset** (hash/timestamp in the payload), served from `/static` — fetched at runtime (not bundled), so data updates don't require an app-shell redeploy.
+4. **Images** — download the needed subset (planet globes done; ~18 frames + ~25 resources + faction/rarity icons next), optimize to WebP, self-host in `/static/` (no hotlinking).
 
-**Scoping win:** because v1 needs only the ~18 node-linked frames + ~25 resources + Assassination nodes, the dataset is **hand-verifiable end-to-end**. The scary cross-dataset name-join is largely a Primes/weapons problem, deferred with them.
+**Layer 2 — Delivery + caching (service worker).** The client fetches the data JSON through a service worker using **cache-first + stale-while-revalidate**: first load hits the edge, every load after is instant from cache, and a background fetch silently pulls the newer version after a CI deploy. Offline support falls out for free.
+
+**Layer 3 — Freshness (CI cron).** A **scheduled GitHub Action** checks the WFCD `info.json` hash + npm versions; if changed, it regenerates the JSON and Cloudflare Pages **auto-deploys** — zero manual work on game patches. Renovate/Dependabot bot-bumps `@wfcd/items` to trigger the same path.
+
+**Deferred — live data (edge Worker).** The genuinely _hourly_ data (worldstate: active fissures/sorties/invasions) is out of scope here; when added, it gets a **Cloudflare Worker + KV** (cron-refreshed) — the one place edge-runtime is the right tool. Static-generated data for the slow stuff, edge Worker for the live stuff.
+
+**Curated overlay (Plan 3, not the pipeline).** Hand-authored farming `recommendations` (early/late, boostersApply, note, source, `lastVerified`) + mdsvex guide prose are layered on _top_ of the generated data in a later plan — machine data and human judgment stay separate (different sources, review criteria, and failure modes).
+
+**Scoping win:** because the node-frame slice needs only the ~18 node-linked frames + ~25 resources + Assassination nodes, the generated dataset is **hand-verifiable end-to-end**. The scary cross-dataset name-join is largely a Primes/weapons problem, deferred with them.
 
 ## 7. Local-first tracking
 
