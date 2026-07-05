@@ -8,6 +8,7 @@ import type {
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
 import { PLANETS, BOSS_BY_NODE } from './curated';
+import { PLANET_RESOURCES } from './farming';
 import { partId } from '../../src/lib/model/completion';
 
 export type SolNodes = Record<string, { value: string; enemy: string; type: string }>;
@@ -49,6 +50,7 @@ export function buildRegions(solNodes: SolNodes): Region[] {
 			factions: [p.faction],
 			spoilerGated: p.spoilerGated,
 			nodeIds: rn.map((n) => n.id),
+			resourceIds: PLANET_RESOURCES[id] ?? [],
 		});
 	}
 	return regions.sort((a, b) => a.progressionOrder - b.progressionOrder);

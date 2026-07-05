@@ -34,8 +34,8 @@ function sourceVersion(): string {
 }
 
 async function main() {
-	const { solNodes, warframes } = await loadSources();
-	const data = assembleDataset(solNodes, warframes);
+	const { solNodes, warframes, rawResources } = await loadSources();
+	const data = assembleDataset(solNodes, warframes, rawResources);
 	const problems = validateDataset(data);
 	if (problems.length) {
 		console.error('Dataset invalid:\n' + problems.join('\n'));
@@ -65,6 +65,14 @@ async function main() {
 	// deferred to a later plan.) See .superpowers/sdd/task-7-report.md.
 	if (nodeFrames < 12) {
 		console.error(`Sanity check failed (expected >=12 node-linked frames, got ${nodeFrames})`);
+		process.exit(1);
+	}
+	// Floor matching the curated RESOURCES list size (scripts/data/farming.ts,
+	// Task 2): all 12 curated resources are built regardless of @wfcd/items
+	// match success, so this guards against buildResources silently returning
+	// far fewer entries (e.g. an empty/malformed rawResources source).
+	if (data.resources.length < 10) {
+		console.error(`Sanity check failed (expected >=10 resources, got ${data.resources.length})`);
 		process.exit(1);
 	}
 	mkdirSync('static/data', { recursive: true });

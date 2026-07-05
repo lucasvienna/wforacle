@@ -1,4 +1,5 @@
 import type { SolNodes, RawWarframe } from './build';
+import type { RawResource } from './assemble';
 
 /**
  * Loads the real WFCD data used to build the dataset.
@@ -16,8 +17,16 @@ import type { SolNodes, RawWarframe } from './build';
  * `type === 'Warframe'` (not `category === 'Warframes'`, which also includes
  * Archwings/Pets/Sentinels) yields playable Warframes whose `components[]`
  * carry `drops[].location` / `drops[].chance`, matching `RawWarframe`.
+ *
+ * Likewise, `category: ['Resources']` includes non-Resource items (e.g.
+ * Fish, Gems), so it's filtered to `type === 'Resource'` to match
+ * `RawResource` (each item carries `name` and `imageName`).
  */
-export async function loadSources(): Promise<{ solNodes: SolNodes; warframes: RawWarframe[] }> {
+export async function loadSources(): Promise<{
+	solNodes: SolNodes;
+	warframes: RawWarframe[];
+	rawResources: RawResource[];
+}> {
 	const worldstateData = (await import('warframe-worldstate-data')).default;
 	const solNodes = worldstateData.solNodes as unknown as SolNodes;
 
@@ -25,5 +34,10 @@ export async function loadSources(): Promise<{ solNodes: SolNodes; warframes: Ra
 	const items = new Items({ category: ['Warframes'] });
 	const warframes = items.filter((i) => i.type === 'Warframe') as unknown as RawWarframe[];
 
-	return { solNodes, warframes };
+	const resourceItems = new Items({ category: ['Resources'] });
+	const rawResources = resourceItems.filter(
+		(i) => i.type === 'Resource',
+	) as unknown as RawResource[];
+
+	return { solNodes, warframes, rawResources };
 }
