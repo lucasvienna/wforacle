@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { loadDataset } from '$lib/data/dataset';
 	import type { Dataset } from '$lib/model/types';
@@ -23,6 +23,8 @@
 		data = ds;
 		tracker = t;
 	});
+
+	onDestroy(() => tracker?.dispose());
 
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
 		if (!data || !tracker) return 'none';
