@@ -2,10 +2,17 @@ import type { Dataset, Resource } from '../../src/lib/model/types';
 import { buildRegions, buildNodes, buildFrames, type SolNodes, type RawWarframe } from './build';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
 
-export type RawResource = { name: string; imageName?: string; type?: string };
+export type RawResource = { name: string; imageName?: string };
 
 export function buildResources(raw: RawResource[]): Resource[] {
-	const imgByName = new Map(raw.map((r) => [r.name, r.imageName]));
+	// Prefer the first match for a given name and skip entries without an
+	// imageName: a name can appear in both the 'Resources' and 'Misc'
+	// categories (see sources.ts), and we don't want a later, image-less or
+	// unrelated entry to overwrite an earlier, correct one.
+	const imgByName = new Map<string, string>();
+	for (const r of raw) {
+		if (r.imageName && !imgByName.has(r.name)) imgByName.set(r.name, r.imageName);
+	}
 	const regionsByResource = new Map<string, string[]>();
 	for (const [region, rids] of Object.entries(PLANET_RESOURCES))
 		for (const rid of rids)

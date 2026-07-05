@@ -12,8 +12,8 @@ const warframes: RawWarframe[] = JSON.parse(
 	readFileSync(join(__dirname, './fixtures/warframes.sample.json'), 'utf8'),
 );
 const rawResources = [
-	{ name: 'Alloy Plate', imageName: 'AlloyPlate.png', type: 'Resource' },
-	{ name: 'Orokin Cell', imageName: 'ComponentCell.png', type: 'Resource' },
+	{ name: 'Alloy Plate', imageName: 'AlloyPlate.png' },
+	{ name: 'Orokin Cell', imageName: 'ComponentCell.png' },
 ];
 
 // Inline solNodes with one node on every main planet the curated
