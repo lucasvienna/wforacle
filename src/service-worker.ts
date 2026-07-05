@@ -42,10 +42,17 @@ sw.addEventListener('fetch', (e) => {
 				const cached = await cache.match(req);
 				const network = fetch(req)
 					.then((res) => {
-						cache.put(req, res.clone());
+						// Only cache successful responses — a transient non-2xx must
+						// not overwrite a good cached dataset and get served forever.
+						if (res.ok) cache.put(req, res.clone());
 						return res;
 					})
 					.catch(() => cached);
+				// Keep the worker alive until the background revalidation settles;
+				// once respondWith resolves from cache the browser is free to kill
+				// the SW, which would drop the cache write. The `.catch` prevents
+				// an offline fetch failure from rejecting waitUntil.
+				e.waitUntil(network.catch(() => {}));
 				return cached ?? network;
 			}),
 		);
