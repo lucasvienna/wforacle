@@ -22,6 +22,7 @@ export const seed: Dataset = {
 			factions: ['Grineer'],
 			nodeIds: ['oro'],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 		{
 			id: 'venus',
@@ -31,6 +32,7 @@ export const seed: Dataset = {
 			factions: ['Corpus'],
 			nodeIds: ['fossa'],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 		{
 			id: 'mercury',
@@ -40,6 +42,7 @@ export const seed: Dataset = {
 			factions: ['Grineer'],
 			nodeIds: [],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 		{
 			id: 'mars',
@@ -49,6 +52,7 @@ export const seed: Dataset = {
 			factions: ['Grineer'],
 			nodeIds: ['war'],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 		{
 			id: 'phobos',
@@ -58,6 +62,7 @@ export const seed: Dataset = {
 			factions: ['Corpus'],
 			nodeIds: [],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 		{
 			id: 'ceres',
@@ -67,6 +72,7 @@ export const seed: Dataset = {
 			factions: ['Grineer'],
 			nodeIds: [],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 		{
 			id: 'jupiter',
@@ -76,6 +82,7 @@ export const seed: Dataset = {
 			factions: ['Corpus'],
 			nodeIds: [],
 			spoilerGated: false,
+			resourceIds: [],
 		},
 	],
 	nodes: [
@@ -120,4 +127,5 @@ export const seed: Dataset = {
 		frame('rhino', 'Rhino', 'fossa'),
 		frame('excalibur', 'Excalibur', 'war'),
 	],
+	resources: [],
 };

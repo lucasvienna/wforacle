@@ -34,6 +34,24 @@ export interface StarNode {
 	frameId?: string;
 }
 
+export interface Recommendation {
+	phase: 'early' | 'late';
+	nodeLabel: string;
+	nodeId?: string;
+	boostersApply: boolean;
+	note: string;
+	source: string;
+	lastVerified: string;
+}
+
+export interface Resource {
+	id: string;
+	name: string;
+	image?: string;
+	regionIds: string[];
+	recommendations: Recommendation[];
+}
+
 export interface Region {
 	id: string;
 	name: string;
@@ -42,6 +60,7 @@ export interface Region {
 	factions: string[];
 	nodeIds: string[];
 	spoilerGated: boolean;
+	resourceIds: string[];
 }
 
 export interface Dataset {
@@ -49,4 +68,5 @@ export interface Dataset {
 	nodes: StarNode[];
 	bosses: Boss[];
 	warframes: Warframe[];
+	resources: Resource[];
 }
