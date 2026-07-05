@@ -1,0 +1,36 @@
+## Early game
+
+The moment Saturn is unlocked, **Tethys** (Assassination, General Sargas Ruk) is the
+fastest reliable Orokin Cell source: it's a short, repeatable boss fight rather than
+an endless mission, so a fresh account can farm it on-repeat without needing a
+levelled-up squad or a long survival/defense grind. Sargas Ruk's Orokin Cell drop
+chance is high enough that most runs return at least one, and the mission length
+(a couple of minutes once the boss room is reached) keeps the farm efficient even
+solo.
+
+If Tethys' rewards are running dry on a given day, the general Grineer tileset on
+Ceres, Jupiter, Pluto and Sedna also drops Orokin Cells from regular enemies and
+containers, so any mission on those planets is a secondary source while working
+toward Steel Path.
+
+## Mid & late game
+
+Once a squad can comfortably run Steel Path, **Gabii** on Ceres (Dark Sector
+Survival) becomes the best per-hour source. Dark Sector missions carry an
+intrinsic +35% resource drop chance bonus on top of the Steel Path resource-drop
+passive, and stacking a Resourceful Retriever pet mod or a Resource Drop Chance
+Booster on top of that compounds further — unlike container/deposit farms,
+enemy-drop-based Orokin Cell sources fully benefit from boosters and drop-chance
+buffs. A loot-frame (Nekros, Khora, Hydroid) in the squad meaningfully increases
+yield per rotation by re-rolling extra enemy drop tables.
+
+Longer Steel Path Survival or Disruption runs on the same planets (Jupiter,
+Pluto, Sedna) are a solid alternative if Gabii's matchmaking or tileset isn't
+available, since Orokin Cells drop from the general Grineer/Corpus enemy tables
+on all of them — Gabii is simply the highest-density option because of the Dark
+Sector bonus.
+
+## Sources
+
+- [Orokin Cell Farming Guide — Warframe Wiki](https://wiki.warframe.com/w/Orokin_Cell_Farming_Guide)
+- [Orokin Cell — Warframe Wiki](https://wiki.warframe.com/w/Orokin_Cell)
