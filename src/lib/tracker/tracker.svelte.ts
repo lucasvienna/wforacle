@@ -2,9 +2,17 @@ import { SvelteSet } from 'svelte/reactivity';
 import type { Warframe } from '$lib/model/types';
 import { frameCompletion, datasetCompletion } from '$lib/model/completion';
 
-export function createTracker(frames: Warframe[]) {
+export function createTracker(frames: Warframe[], persist?: (ids: string[]) => void) {
 	const owned = new SvelteSet<string>();
 	const byId = new Map(frames.map((f) => [f.id, f]));
+
+	if (persist) {
+		$effect.root(() => {
+			$effect(() => {
+				persist([...owned]);
+			});
+		});
+	}
 
 	function togglePart(id: string) {
 		if (owned.has(id)) owned.delete(id);
