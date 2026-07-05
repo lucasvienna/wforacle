@@ -56,4 +56,9 @@
 	</div>
 
 	<RegionPanel dataset={seed} regionId={selectedId} {tracker} />
+
+	<footer class="mt-8 text-center text-xs text-slate-600">
+		Planet art &amp; game data © Digital Extremes, via the Warframe wiki.
+		Fan-made tool — not affiliated with Digital Extremes.
+	</footer>
 </div>

@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { Region } from '$lib/model/types';
+	import { base } from '$app/paths';
 	import { layoutRing } from './geometry';
+
+	const planetSrc = (id: string) => `${base}/planets/${id}.webp`;
 
 	let {
 		regions,
@@ -68,36 +71,44 @@
 				}
 			}}
 		>
+			<!-- transparent hit area so the whole planet region is clickable -->
+			<circle cx={p.x} cy={p.y} r={p.r + 9} fill="transparent" />
 			{#if sel}
 				<circle
 					cx={p.x}
 					cy={p.y}
-					r={p.r + 7}
+					r={p.r + 8}
 					fill="none"
 					stroke="#37d2e6"
-					stroke-width="2"
+					stroke-width="2.5"
+				/>
+				<circle
+					cx={p.x}
+					cy={p.y}
+					r={p.r + 13}
+					fill="none"
+					stroke="#37d2e6"
+					stroke-width="1"
+					opacity="0.35"
 				/>
 			{:else if status !== 'none'}
 				<circle
 					cx={p.x}
 					cy={p.y}
-					r={p.r + 4}
+					r={p.r + 6}
 					fill="none"
 					stroke={status === 'done' ? '#2ee6a0' : '#e6b854'}
-					stroke-width="2"
-					opacity="0.7"
+					stroke-width="2.5"
+					opacity="0.85"
 				/>
 			{/if}
-			<circle
-				cx={p.x}
-				cy={p.y}
-				r={p.r}
-				fill={status === 'done'
-					? '#2ee6a0'
-					: status === 'part'
-						? '#c99a4a'
-						: '#33506f'}
-				stroke="#0a1018"
+			<image
+				href={planetSrc(p.region.id)}
+				x={p.x - p.r * 1.05}
+				y={p.y - p.r * 1.05}
+				width={p.r * 2.1}
+				height={p.r * 2.1}
+				preserveAspectRatio="xMidYMid meet"
 			/>
 			<text
 				x={p.x}
