@@ -76,10 +76,10 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 	[R['Neurodes']]: [
 		{
 			phase: 'early',
-			nodeLabel: 'Earth — Mantle (Sabotage, Grineer cave containers)',
+			nodeLabel: 'Earth — Mantle (Capture, Grineer cave containers)',
 			nodeId: undefined,
 			boostersApply: false,
-			note: 'Breaking the green-glowing resource containers in the Grineer cave tileset around Mantle guarantees Neurodes, no boss or high level required.',
+			note: 'Breaking the green-glowing resource containers in the Grineer cave tileset on this quick Capture run guarantees Neurodes, no boss or high level required.',
 			source: 'https://wiki.warframe.com/w/Neurodes',
 			lastVerified: '2026-07-05',
 		},
