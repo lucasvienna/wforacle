@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-05T17:08:51.775Z",
+	"generatedAt": "2026-07-05T21:02:47.777Z",
 	"data": {
 		"regions": [
 			{
@@ -8,7 +8,9 @@
 				"name": "Earth",
 				"kind": "planet",
 				"progressionOrder": 1,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode15",
@@ -32,6 +34,10 @@
 					"CrewBattleNode518",
 					"CrewBattleNode519",
 					"CrewBattleNode522"
+				],
+				"resourceIds": [
+					"neurodes",
+					"rubedo"
 				]
 			},
 			{
@@ -39,7 +45,9 @@
 				"name": "Venus",
 				"kind": "planet",
 				"progressionOrder": 2,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode2",
@@ -67,6 +75,12 @@
 					"CrewBattleNode514",
 					"CrewBattleNode515",
 					"SolarisUnitedHub1"
+				],
+				"resourceIds": [
+					"alloyplate",
+					"polymerbundle",
+					"oxium",
+					"neurodes"
 				]
 			},
 			{
@@ -74,7 +88,9 @@
 				"name": "Mercury",
 				"kind": "planet",
 				"progressionOrder": 3,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode12",
@@ -92,6 +108,9 @@
 					"SolNode226",
 					"SolNode227",
 					"MercuryHUB"
+				],
+				"resourceIds": [
+					"polymerbundle"
 				]
 			},
 			{
@@ -99,7 +118,9 @@
 				"name": "Mars",
 				"kind": "planet",
 				"progressionOrder": 4,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode11",
@@ -124,6 +145,10 @@
 					"TradeHUB1",
 					"ClanNode8",
 					"ClanNode9"
+				],
+				"resourceIds": [
+					"gallium",
+					"oxium"
 				]
 			},
 			{
@@ -131,7 +156,9 @@
 				"name": "Phobos",
 				"kind": "planet",
 				"progressionOrder": 5,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SettlementNode1",
@@ -156,6 +183,11 @@
 					"SettlementNode20",
 					"ClanNode10",
 					"ClanNode11"
+				],
+				"resourceIds": [
+					"alloyplate",
+					"plastids",
+					"rubedo"
 				]
 			},
 			{
@@ -163,7 +195,9 @@
 				"name": "Ceres",
 				"kind": "planet",
 				"progressionOrder": 6,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode131",
@@ -188,6 +222,10 @@
 					"SolNode150",
 					"ClanNode22",
 					"ClanNode23"
+				],
+				"resourceIds": [
+					"alloyplate",
+					"orokincell"
 				]
 			},
 			{
@@ -195,7 +233,9 @@
 				"name": "Jupiter",
 				"kind": "planet",
 				"progressionOrder": 7,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode10",
@@ -218,6 +258,12 @@
 					"EventNode33",
 					"ClanNode4",
 					"ClanNode5"
+				],
+				"resourceIds": [
+					"alloyplate",
+					"neuralsensors",
+					"oxium",
+					"orokincell"
 				]
 			},
 			{
@@ -225,7 +271,9 @@
 				"name": "Europa",
 				"kind": "planet",
 				"progressionOrder": 8,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode203",
@@ -249,6 +297,11 @@
 					"EuropaHUB",
 					"ClanNode6",
 					"ClanNode7"
+				],
+				"resourceIds": [
+					"oxium",
+					"controlmodule",
+					"rubedo"
 				]
 			},
 			{
@@ -256,7 +309,9 @@
 				"name": "Saturn",
 				"kind": "planet",
 				"progressionOrder": 9,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode7",
@@ -289,6 +344,11 @@
 					"CrewBattleNode533",
 					"CrewBattleNode534",
 					"CrewBattleNode535"
+				],
+				"resourceIds": [
+					"orokincell",
+					"nanospores",
+					"plastids"
 				]
 			},
 			{
@@ -296,7 +356,9 @@
 				"name": "Uranus",
 				"kind": "planet",
 				"progressionOrder": 10,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode3",
@@ -325,6 +387,11 @@
 					"ClanNode16",
 					"ClanNode17",
 					"SolNode723"
+				],
+				"resourceIds": [
+					"plastids",
+					"polymerbundle",
+					"gallium"
 				]
 			},
 			{
@@ -332,7 +399,9 @@
 				"name": "Neptune",
 				"kind": "planet",
 				"progressionOrder": 11,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode1",
@@ -357,6 +426,11 @@
 					"CrewBattleNode523",
 					"CrewBattleNode524",
 					"CrewBattleNode525"
+				],
+				"resourceIds": [
+					"nanospores",
+					"oxium",
+					"controlmodule"
 				]
 			},
 			{
@@ -364,7 +438,9 @@
 				"name": "Pluto",
 				"kind": "planet",
 				"progressionOrder": 12,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode4",
@@ -389,6 +465,13 @@
 					"CrewBattleNode529",
 					"CrewBattleNode531",
 					"CrewBattleNode536"
+				],
+				"resourceIds": [
+					"alloyplate",
+					"plastids",
+					"oxium",
+					"orokincell",
+					"rubedo"
 				]
 			},
 			{
@@ -396,7 +479,9 @@
 				"name": "Eris",
 				"kind": "planet",
 				"progressionOrder": 13,
-				"factions": ["Infested"],
+				"factions": [
+					"Infested"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode151",
@@ -428,6 +513,12 @@
 					"ErisHUB",
 					"ClanNode18",
 					"ClanNode19"
+				],
+				"resourceIds": [
+					"plastids",
+					"nanospores",
+					"oxium",
+					"neurodes"
 				]
 			},
 			{
@@ -435,7 +526,9 @@
 				"name": "Sedna",
 				"kind": "planet",
 				"progressionOrder": 14,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode177",
@@ -466,6 +559,11 @@
 					"SolNode202",
 					"ClanNode14",
 					"ClanNode15"
+				],
+				"resourceIds": [
+					"alloyplate",
+					"orokincell",
+					"rubedo"
 				]
 			}
 		],
@@ -3565,6 +3663,349 @@
 						"slot": "systems",
 						"dropSourceNodeId": "SolNode740",
 						"chance": 25.81
+					}
+				]
+			}
+		],
+		"resources": [
+			{
+				"id": "orokincell",
+				"name": "Orokin Cell",
+				"image": "ComponentCell.png",
+				"regionIds": [
+					"ceres",
+					"jupiter",
+					"saturn",
+					"pluto",
+					"sedna"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Saturn — Tethys (Assassination, General Sargas Ruk)",
+						"boostersApply": true,
+						"note": "Fast, repeatable boss kill with a solid Orokin Cell drop chance; accessible as soon as Saturn is unlocked.",
+						"source": "https://wiki.warframe.com/w/Orokin_Cell_Farming_Guide",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Ceres — Gabii (Dark Sector Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Dark Sector +35% resource drop chance stacks with the Steel Path drop-chance passive and Resourceful Retriever/boosters for sustained squad farming.",
+						"source": "https://wiki.warframe.com/w/Orokin_Cell_Farming_Guide",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "neurodes",
+				"name": "Neurodes",
+				"image": "ComponentNeurode.png",
+				"regionIds": [
+					"earth",
+					"venus",
+					"eris"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Earth — Mantle (Capture, Grineer cave containers)",
+						"boostersApply": false,
+						"note": "Breaking the green-glowing resource containers in the Grineer cave tileset on this quick Capture run guarantees Neurodes, no boss or high level required.",
+						"source": "https://wiki.warframe.com/w/Neurodes",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Lua — Circulus (Void Storm/Fissure Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "One of the most popular full-squad Steel Path fissure farms; dense Sentient/Corpus enemy spawns drop Neurodes alongside Rubedo and relics.",
+						"source": "https://wiki.warframe.com/w/User:Megazawr/Resource_Farming_Guide",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "neuralsensors",
+				"name": "Neural Sensors",
+				"image": "NeuralSensor.png",
+				"regionIds": [
+					"jupiter"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Jupiter — Elara (Survival)",
+						"boostersApply": true,
+						"note": "Low-level Corpus Survival that new players can rotate for a while; enemy drops feed Neural Sensors at an accessible level range.",
+						"source": "https://wiki.warframe.com/w/Neural_Sensors",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Jupiter — Cameria (Dark Sector Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Dark Sector +20% resource drop chance plus Steel Path enemy density against Infested hordes makes this the best endgame squad spot.",
+						"source": "https://wiki.warframe.com/w/Neural_Sensors",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "nanospores",
+				"name": "Nano Spores",
+				"image": "ComponentNanospores.png",
+				"regionIds": [
+					"saturn",
+					"neptune",
+					"eris"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Eris — Akkad (Defense, Spore Culture containers)",
+						"boostersApply": false,
+						"note": "Spore Culture containers scattered through the level are a guaranteed Nano Spore source and are easy to clear in the first few Defense waves.",
+						"source": "https://wiki.warframe.com/w/Nano_Spores",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Saturn — Piscinas (Dark Sector Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Steel Path Infested density with a Khora/Nekros loot squad on this Dark Sector node yields large Nano Spore hauls per rotation.",
+						"source": "https://wiki.warframe.com/w/Nano_Spores",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "alloyplate",
+				"name": "Alloy Plate",
+				"image": "AlloyPlate.png",
+				"regionIds": [
+					"venus",
+					"phobos",
+					"ceres",
+					"jupiter",
+					"pluto",
+					"sedna"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Venus — Tessera (Defense)",
+						"boostersApply": true,
+						"note": "Low-level Corpus Defense on Venus, one of Alloy Plate’s signature planets, gives steady drops from the very start of the star chart.",
+						"source": "https://wiki.warframe.com/w/Alloy_Plate",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Zariman Ten Zero — Tuvul Commons (Void Cascade)",
+						"boostersApply": true,
+						"note": "Endless Void Cascade enemy density makes this the highest-yield Alloy Plate farm for geared squads; Ceres Gabii Steel Path with a booster is a solid alternative.",
+						"source": "https://wiki.warframe.com/w/Alloy_Plate",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "plastids",
+				"name": "Plastids",
+				"image": "ComponentPlastids.png",
+				"regionIds": [
+					"phobos",
+					"saturn",
+					"uranus",
+					"pluto",
+					"eris"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Phobos — Gulliver (Defense)",
+						"boostersApply": true,
+						"note": "Accessible low-level Corpus Defense; Phobos is one of the few main planets with a decent Plastids drop chance early on.",
+						"source": "https://wiki.warframe.com/w/Plastids",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Uranus — Assur (Dark Sector Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Plastids are notoriously low-yield, so a Dark Sector Steel Path Survival squad farm (with Nekros/Hydroid) is worth the endgame investment.",
+						"source": "https://wiki.warframe.com/w/Plastids",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "polymerbundle",
+				"name": "Polymer Bundle",
+				"image": "PolymerBundle.png",
+				"regionIds": [
+					"venus",
+					"mercury",
+					"uranus"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Uranus — Ophelia (Survival)",
+						"boostersApply": true,
+						"note": "Uranus is Polymer Bundle’s primary planet, so nearly every resource drop here is a bundle; Ophelia also nets Tellurium on the side.",
+						"source": "https://wiki.warframe.com/w/Polymer_Bundle",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Uranus — Assur (Dark Sector Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Same Dark Sector Grineer Galleon chokepoints used for Plastids double as an efficient Steel Path Polymer Bundle squad farm.",
+						"source": "https://wiki.warframe.com/w/Polymer_Bundle",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "oxium",
+				"name": "Oxium",
+				"image": "ComponentOxium.png",
+				"regionIds": [
+					"venus",
+					"mars",
+					"jupiter",
+					"europa",
+					"neptune",
+					"pluto",
+					"eris"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Jupiter — Io (Defense)",
+						"boostersApply": true,
+						"note": "Reliable early Oxium Osprey spawns; the wiki cites roughly 80 Oxium over 10 waves on this low-level Corpus Defense.",
+						"source": "https://wiki.warframe.com/w/Oxium",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Lua — Tycho (Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Higher-level Corpus spawns more Oxium Ospreys per minute; running long Survival rotations beats resetting missions repeatedly.",
+						"source": "https://wiki.warframe.com/w/Oxium",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "argoncrystal",
+				"name": "Argon Crystal",
+				"image": "ArgonCrystal.png",
+				"regionIds": [],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Void — Hepit (Capture, Argon Deposits)",
+						"boostersApply": false,
+						"note": "Every non-Defense Void tileset has ~2 static Argon Deposit containers worth 1-2 crystals each, no high level needed; remember they decay daily at 00:00 GMT.",
+						"source": "https://wiki.warframe.com/w/Argon_Crystal",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Void — Mot (Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Endless Void Survival lets a squad bank as many crystals as they can spend before the daily decay; Resourceful Retriever and boosters help enemy drops here.",
+						"source": "https://wiki.warframe.com/w/Argon_Crystal",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "gallium",
+				"name": "Gallium",
+				"image": "ComponentGallium.png",
+				"regionIds": [
+					"mars",
+					"uranus"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Mars — Hellas (Exterminate)",
+						"boostersApply": true,
+						"note": "Quick low-level Grineer Exterminate on one of Gallium’s two signature planets; good for a fast early supply.",
+						"source": "https://wiki.warframe.com/w/Gallium",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Uranus — Titania (Assassination, Tyl Regor, Steel Path)",
+						"boostersApply": true,
+						"note": "Tyl Regor has a dedicated Gallium drop on top of the planet’s signature-resource bonus; Steel Path repeat kills scale well for squads.",
+						"source": "https://wiki.warframe.com/w/Gallium",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "controlmodule",
+				"name": "Control Module",
+				"image": "ControlModule.png",
+				"regionIds": [
+					"europa",
+					"neptune"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Void — Hepit (Capture)",
+						"boostersApply": true,
+						"note": "The wiki flags the Void as having a higher Control Module drop chance than any main planet; Hepit is a short, low-level Capture to farm it in.",
+						"source": "https://wiki.warframe.com/w/Control_Module",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Void — Mot (Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Extrapolated from the wiki’s general \"Void has better odds\" guidance (no distinct late-game node is called out on the resource page): an endless Void Survival gives Steel Path squads the longest uninterrupted enemy-drop window.",
+						"source": "https://wiki.warframe.com/w/Control_Module",
+						"lastVerified": "2026-07-05"
+					}
+				]
+			},
+			{
+				"id": "rubedo",
+				"name": "Rubedo",
+				"image": "ComponentRubedo.png",
+				"regionIds": [
+					"earth",
+					"phobos",
+					"europa",
+					"pluto",
+					"sedna"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Phobos — Zeugma (Dark Sector Survival)",
+						"boostersApply": true,
+						"note": "The wiki cites roughly 250 Rubedo per 5 minutes here, among the best yields available to newer players on a signature Rubedo planet.",
+						"source": "https://wiki.warframe.com/w/Rubedo",
+						"lastVerified": "2026-07-05"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Void — Ani (Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "The wiki recommends Orokin Void Survival/Defense generically for 1,000+ Rubedo per 20 minutes at endgame; Ani is a standard Void Survival node for that squad farm.",
+						"source": "https://wiki.warframe.com/w/Rubedo",
+						"lastVerified": "2026-07-05"
 					}
 				]
 			}

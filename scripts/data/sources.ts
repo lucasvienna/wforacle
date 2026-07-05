@@ -18,9 +18,16 @@ import type { RawResource } from './assemble';
  * Archwings/Pets/Sentinels) yields playable Warframes whose `components[]`
  * carry `drops[].location` / `drops[].chance`, matching `RawWarframe`.
  *
- * Likewise, `category: ['Resources']` includes non-Resource items (e.g.
- * Fish, Gems), so it's filtered to `type === 'Resource'` to match
- * `RawResource` (each item carries `name` and `imageName`).
+ * Likewise, resources: verified against node_modules/@wfcd/items that every
+ * curated RESOURCES name (scripts/data/farming.ts) — Orokin Cell, Alloy
+ * Plate, Rubedo, etc. — lives under `category: 'Misc'`, not `'Resources'`
+ * (that category instead holds Gems/Fish/event items); and even within
+ * Misc, `type` is inconsistent (`'Resource'` for most, but `'Misc'` for
+ * Neurodes, whose top-level entry is oddly shaped like a blueprint recipe
+ * yet still carries the correct `imageName`). So both categories are
+ * queried with no `type` filter, and `buildResources` (assemble.ts) does
+ * the real filtering by matching `raw.name` against the curated RESOURCES
+ * list — any unrelated Misc/Resources items just go unmatched and unused.
  */
 export async function loadSources(): Promise<{
 	solNodes: SolNodes;
@@ -34,10 +41,8 @@ export async function loadSources(): Promise<{
 	const items = new Items({ category: ['Warframes'] });
 	const warframes = items.filter((i) => i.type === 'Warframe') as unknown as RawWarframe[];
 
-	const resourceItems = new Items({ category: ['Resources'] });
-	const rawResources = resourceItems.filter(
-		(i) => i.type === 'Resource',
-	) as unknown as RawResource[];
+	const resourceItems = new Items({ category: ['Resources', 'Misc'] });
+	const rawResources = resourceItems as unknown as RawResource[];
 
 	return { solNodes, warframes, rawResources };
 }
