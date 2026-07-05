@@ -66,4 +66,25 @@ describe('buildFrames', () => {
 		const jackal = bosses.find((b) => b.nodeId === 'SolNode104')!;
 		expect(jackal).toMatchObject({ id: 'fossa', name: 'Jackal', faction: 'Corpus' });
 	});
+	it('never attaches a chance to the bp part even if Blueprint has an Assassination drop', () => {
+		const wf: RawWarframe[] = [
+			{
+				name: 'Trinity',
+				uniqueName: '/Lotus/Powersuits/Trinity/Trinity',
+				type: 'Warframe',
+				components: [
+					{
+						name: 'Blueprint',
+						drops: [
+							{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 50 },
+						],
+					},
+				],
+			},
+		];
+		const { frames } = buildFrames(wf, nodes);
+		const bp = frames.find((f) => f.id === 'trinity')!.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.dropSourceNodeId).toBeUndefined();
+		expect(bp.chance).toBeUndefined();
+	});
 });

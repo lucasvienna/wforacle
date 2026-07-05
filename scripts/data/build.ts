@@ -85,7 +85,7 @@ export function buildFrames(
 				const n = nodeByKey.get(key);
 				if (!n) continue;
 				node = n;
-				if (d.chance != null) chanceBySlot.set(slot, d.chance);
+				if (d.chance != null && slot !== 'bp') chanceBySlot.set(slot, d.chance);
 			}
 		}
 		if (!node) continue;
