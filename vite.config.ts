@@ -9,15 +9,16 @@ export default defineConfig({
 		sveltekit({
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
-				runes: ({ filename }) => filename.split(/[/\\]/).includes('node_modules') ? undefined : true
+				runes: ({ filename }) =>
+					filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
 			},
-			adapter: adapter()
-		})
+			adapter: adapter(),
+		}),
 	],
 	test: {
 		environment: 'jsdom',
 		setupFiles: ['./vitest-setup.ts'],
-		exclude: ['e2e/**', 'node_modules/**']
+		exclude: ['e2e/**', 'node_modules/**'],
 	},
-	resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined
+	resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined,
 });

@@ -4,7 +4,7 @@
 
 **Goal:** Ship a usable SvelteKit app that renders the Warframe Star Chart as an interactive SVG ring and lets the user click-to-track Warframe parts, persisted locally to IndexedDB.
 
-**Architecture:** SvelteKit (static/prerendered, Cloudflare adapter) with Svelte 5 runes. A small hand-authored *seed* dataset (real subset: Earth/Venus/Mars + their Assassination frames) stands in for the full WFCD pipeline (Plan 2), so this plan produces a working vertical slice. Tracking state is a runes-backed store provided via context, hydrated from and written through to IndexedDB (`idb`) in the browser only. The Star Chart is pure SVG generated from region data via an ellipse geometry helper.
+**Architecture:** SvelteKit (static/prerendered, Cloudflare adapter) with Svelte 5 runes. A small hand-authored _seed_ dataset (real subset: Earth/Venus/Mars + their Assassination frames) stands in for the full WFCD pipeline (Plan 2), so this plan produces a working vertical slice. Tracking state is a runes-backed store provided via context, hydrated from and written through to IndexedDB (`idb`) in the browser only. The Star Chart is pure SVG generated from region data via an ellipse geometry helper.
 
 **Tech Stack:** SvelteKit, Svelte 5 (runes), TypeScript, Tailwind CSS, `idb`, Vitest (unit), Playwright (e2e), `@sveltejs/adapter-cloudflare`.
 
@@ -23,37 +23,43 @@
 ### Task 1: Scaffold SvelteKit project
 
 **Files:**
+
 - Create: whole project skeleton (`package.json`, `svelte.config.js`, `vite.config.ts`, `src/routes/+layout.ts`, `src/routes/+page.svelte`, `tsconfig.json`, `tailwind.config.*`, `src/app.css`)
 - Test: `src/routes/page.svelte.test.ts` (smoke)
 
 **Interfaces:**
+
 - Produces: a running dev server and a passing test harness (Vitest + Playwright) that later tasks extend.
 
 - [ ] **Step 1: Scaffold with the Svelte CLI**
 
 Run (non-interactive; accepts prompts for TypeScript, Vitest, Playwright, Tailwind):
+
 ```bash
 pnpm dlx sv create . --template minimal --types ts --no-install
 pnpm add -D @sveltejs/adapter-cloudflare @testing-library/svelte @testing-library/jest-dom jsdom vitest @playwright/test tailwindcss @tailwindcss/vite
 pnpm add idb
 pnpm install
 ```
+
 If `sv create .` refuses a non-empty dir, scaffold in a temp dir and move files in (keep existing `.git`, `.gitignore`, `docs/`).
 
 - [ ] **Step 2: Configure the Cloudflare adapter + prerender**
 
 `svelte.config.js`:
+
 ```js
 import adapter from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 export default {
-  preprocess: vitePreprocess(),
-  kit: { adapter: adapter() }
+	preprocess: vitePreprocess(),
+	kit: { adapter: adapter() },
 };
 ```
 
 `src/routes/+layout.ts`:
+
 ```ts
 export const prerender = true;
 ```
@@ -61,25 +67,32 @@ export const prerender = true;
 - [ ] **Step 3: Wire Tailwind**
 
 `src/app.css`:
+
 ```css
 @import 'tailwindcss';
 ```
+
 `vite.config.ts` — add the Tailwind plugin alongside SvelteKit and Vitest config:
+
 ```ts
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  plugins: [tailwindcss(), sveltekit()],
-  test: { environment: 'jsdom', setupFiles: ['./vitest-setup.ts'] }
+	plugins: [tailwindcss(), sveltekit()],
+	test: { environment: 'jsdom', setupFiles: ['./vitest-setup.ts'] },
 });
 ```
+
 `vitest-setup.ts`:
+
 ```ts
 import '@testing-library/jest-dom/vitest';
 ```
+
 Ensure `src/routes/+layout.svelte` imports the stylesheet:
+
 ```svelte
 <script lang="ts">
   import '../app.css';
@@ -91,19 +104,22 @@ Ensure `src/routes/+layout.svelte` imports the stylesheet:
 - [ ] **Step 4: Write the smoke test**
 
 `src/routes/page.svelte.test.ts`:
+
 ```ts
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
 import Page from './+page.svelte';
 
 describe('home page', () => {
-  it('renders the brand', () => {
-    render(Page);
-    expect(screen.getByText(/wforacle/i)).toBeInTheDocument();
-  });
+	it('renders the brand', () => {
+		render(Page);
+		expect(screen.getByText(/wforacle/i)).toBeInTheDocument();
+	});
 });
 ```
+
 `src/routes/+page.svelte` (minimal to pass):
+
 ```svelte
 <h1>wf<span>oracle</span></h1>
 ```
@@ -125,11 +141,13 @@ git commit -m "chore: scaffold SvelteKit app (Svelte 5, Tailwind, Cloudflare ada
 ### Task 2: Domain types + completion helper
 
 **Files:**
+
 - Create: `src/lib/model/types.ts`
 - Create: `src/lib/model/completion.ts`
 - Test: `src/lib/model/completion.test.ts`
 
 **Interfaces:**
+
 - Produces:
   - `type Slot = 'bp' | 'neuroptics' | 'chassis' | 'systems'`
   - `interface WarframePart { id: string; frameId: string; slot: Slot; dropSourceNodeId?: string }`
@@ -145,30 +163,35 @@ git commit -m "chore: scaffold SvelteKit app (Svelte 5, Tailwind, Cloudflare ada
 - [ ] **Step 1: Write the failing test**
 
 `src/lib/model/completion.test.ts`:
+
 ```ts
 import { describe, it, expect } from 'vitest';
 import { partId, frameCompletion, datasetCompletion } from './completion';
 import type { Warframe } from './types';
 
 const rhino: Warframe = {
-  id: 'rhino', name: 'Rhino', nodeId: 'fossa',
-  parts: (['bp','neuroptics','chassis','systems'] as const).map((slot) => ({
-    id: partId('rhino', slot), frameId: 'rhino', slot
-  }))
+	id: 'rhino',
+	name: 'Rhino',
+	nodeId: 'fossa',
+	parts: (['bp', 'neuroptics', 'chassis', 'systems'] as const).map((slot) => ({
+		id: partId('rhino', slot),
+		frameId: 'rhino',
+		slot,
+	})),
 };
 
 describe('completion', () => {
-  it('builds a stable part id', () => {
-    expect(partId('rhino', 'chassis')).toBe('rhino:chassis');
-  });
-  it('counts owned parts for a frame', () => {
-    const owned = new Set(['rhino:bp', 'rhino:neuroptics']);
-    expect(frameCompletion(rhino, owned)).toEqual({ owned: 2, total: 4 });
-  });
-  it('aggregates across frames', () => {
-    const owned = new Set(['rhino:bp']);
-    expect(datasetCompletion([rhino, rhino], owned)).toEqual({ owned: 2, total: 8 });
-  });
+	it('builds a stable part id', () => {
+		expect(partId('rhino', 'chassis')).toBe('rhino:chassis');
+	});
+	it('counts owned parts for a frame', () => {
+		const owned = new Set(['rhino:bp', 'rhino:neuroptics']);
+		expect(frameCompletion(rhino, owned)).toEqual({ owned: 2, total: 4 });
+	});
+	it('aggregates across frames', () => {
+		const owned = new Set(['rhino:bp']);
+		expect(datasetCompletion([rhino, rhino], owned)).toEqual({ owned: 2, total: 8 });
+	});
 });
 ```
 
@@ -181,25 +204,26 @@ Expected: FAIL (module not found).
 
 `src/lib/model/types.ts`: define every interface/type listed under Interfaces above.
 `src/lib/model/completion.ts`:
+
 ```ts
 import type { Slot, Warframe } from './types';
 
 export function partId(frameId: string, slot: Slot): string {
-  return `${frameId}:${slot}`;
+	return `${frameId}:${slot}`;
 }
 export function frameCompletion(frame: Warframe, owned: ReadonlySet<string>) {
-  const total = frame.parts.length;
-  const ownedCount = frame.parts.filter((p) => owned.has(p.id)).length;
-  return { owned: ownedCount, total };
+	const total = frame.parts.length;
+	const ownedCount = frame.parts.filter((p) => owned.has(p.id)).length;
+	return { owned: ownedCount, total };
 }
 export function datasetCompletion(frames: Warframe[], owned: ReadonlySet<string>) {
-  return frames.reduce(
-    (acc, f) => {
-      const c = frameCompletion(f, owned);
-      return { owned: acc.owned + c.owned, total: acc.total + c.total };
-    },
-    { owned: 0, total: 0 }
-  );
+	return frames.reduce(
+		(acc, f) => {
+			const c = frameCompletion(f, owned);
+			return { owned: acc.owned + c.owned, total: acc.total + c.total };
+		},
+		{ owned: 0, total: 0 },
+	);
 }
 ```
 
@@ -220,40 +244,43 @@ git commit -m "feat: domain types and completion helpers"
 ### Task 3: Seed dataset
 
 **Files:**
+
 - Create: `src/lib/data/seed.ts`
 - Test: `src/lib/data/seed.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Dataset`, `Warframe`, `partId` from Task 2.
 - Produces: `export const seed: Dataset` — Earth, Venus, Mars (+ a few dim/unreached planets Mercury, Phobos, Ceres, Jupiter as regions with no assassination frame yet) and node-linked frames Hydroid (Earth/Oro/Vay Hek), Rhino (Venus/Fossa/Jackal), Excalibur (Mars/War/Lech Kril), each with 4 parts via `partId`.
 
 - [ ] **Step 1: Write the failing test**
 
 `src/lib/data/seed.test.ts`:
+
 ```ts
 import { describe, it, expect } from 'vitest';
 import { seed } from './seed';
 
 describe('seed dataset', () => {
-  it('has planets in progression order starting with Earth', () => {
-    const ordered = [...seed.regions].sort((a, b) => a.progressionOrder - b.progressionOrder);
-    expect(ordered[0].name).toBe('Earth');
-  });
-  it('links each assassination node to a boss and a frame', () => {
-    const assass = seed.nodes.filter((n) => n.isAssassination);
-    expect(assass.length).toBeGreaterThanOrEqual(3);
-    for (const n of assass) {
-      expect(n.bossId).toBeTruthy();
-      expect(n.frameId).toBeTruthy();
-      expect(seed.warframes.find((w) => w.id === n.frameId)).toBeTruthy();
-    }
-  });
-  it('gives every frame exactly four parts with unique ids', () => {
-    for (const w of seed.warframes) {
-      expect(w.parts).toHaveLength(4);
-      expect(new Set(w.parts.map((p) => p.id)).size).toBe(4);
-    }
-  });
+	it('has planets in progression order starting with Earth', () => {
+		const ordered = [...seed.regions].sort((a, b) => a.progressionOrder - b.progressionOrder);
+		expect(ordered[0].name).toBe('Earth');
+	});
+	it('links each assassination node to a boss and a frame', () => {
+		const assass = seed.nodes.filter((n) => n.isAssassination);
+		expect(assass.length).toBeGreaterThanOrEqual(3);
+		for (const n of assass) {
+			expect(n.bossId).toBeTruthy();
+			expect(n.frameId).toBeTruthy();
+			expect(seed.warframes.find((w) => w.id === n.frameId)).toBeTruthy();
+		}
+	});
+	it('gives every frame exactly four parts with unique ids', () => {
+		for (const w of seed.warframes) {
+			expect(w.parts).toHaveLength(4);
+			expect(new Set(w.parts.map((p) => p.id)).size).toBe(4);
+		}
+	});
 });
 ```
 
@@ -265,37 +292,130 @@ Expected: FAIL (module not found).
 - [ ] **Step 3: Implement the seed**
 
 `src/lib/data/seed.ts` — build a `Dataset`. Helper to make parts:
+
 ```ts
 import type { Dataset, Slot, Warframe } from '$lib/model/types';
 import { partId } from '$lib/model/completion';
 
 const SLOTS: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems'];
 function frame(id: string, name: string, nodeId: string): Warframe {
-  return { id, name, nodeId, parts: SLOTS.map((slot) => ({ id: partId(id, slot), frameId: id, slot })) };
+	return {
+		id,
+		name,
+		nodeId,
+		parts: SLOTS.map((slot) => ({ id: partId(id, slot), frameId: id, slot })),
+	};
 }
 // regions: Earth(3) Venus(2) Mercury(1) Mars(4) Phobos(5) Ceres(6) Jupiter(7) — progressionOrder
 // assassination nodes: oro→Vay Hek→hydroid, fossa→Jackal→rhino, war→Lech Kril→excalibur
 export const seed: Dataset = {
-  regions: [
-    { id: 'earth', name: 'Earth', kind: 'planet', progressionOrder: 3, factions: ['Grineer'], nodeIds: ['oro'], spoilerGated: false },
-    { id: 'venus', name: 'Venus', kind: 'planet', progressionOrder: 2, factions: ['Corpus'], nodeIds: ['fossa'], spoilerGated: false },
-    { id: 'mercury', name: 'Mercury', kind: 'planet', progressionOrder: 1, factions: ['Grineer'], nodeIds: [], spoilerGated: false },
-    { id: 'mars', name: 'Mars', kind: 'planet', progressionOrder: 4, factions: ['Grineer'], nodeIds: ['war'], spoilerGated: false },
-    { id: 'phobos', name: 'Phobos', kind: 'planet', progressionOrder: 5, factions: ['Corpus'], nodeIds: [], spoilerGated: false },
-    { id: 'ceres', name: 'Ceres', kind: 'planet', progressionOrder: 6, factions: ['Grineer'], nodeIds: [], spoilerGated: false },
-    { id: 'jupiter', name: 'Jupiter', kind: 'planet', progressionOrder: 7, factions: ['Corpus'], nodeIds: [], spoilerGated: false }
-  ],
-  nodes: [
-    { id: 'oro', regionId: 'earth', name: 'Oro', missionType: 'Assassination', faction: 'Grineer', isAssassination: true, bossId: 'vayhek', frameId: 'hydroid' },
-    { id: 'fossa', regionId: 'venus', name: 'Fossa', missionType: 'Assassination', faction: 'Corpus', isAssassination: true, bossId: 'jackal', frameId: 'rhino' },
-    { id: 'war', regionId: 'mars', name: 'War', missionType: 'Assassination', faction: 'Grineer', isAssassination: true, bossId: 'lechkril', frameId: 'excalibur' }
-  ],
-  bosses: [
-    { id: 'vayhek', name: 'Councilor Vay Hek', nodeId: 'oro', faction: 'Grineer' },
-    { id: 'jackal', name: 'Jackal', nodeId: 'fossa', faction: 'Corpus' },
-    { id: 'lechkril', name: 'Lieutenant Lech Kril', nodeId: 'war', faction: 'Grineer' }
-  ],
-  warframes: [frame('hydroid', 'Hydroid', 'oro'), frame('rhino', 'Rhino', 'fossa'), frame('excalibur', 'Excalibur', 'war')]
+	regions: [
+		{
+			id: 'earth',
+			name: 'Earth',
+			kind: 'planet',
+			progressionOrder: 3,
+			factions: ['Grineer'],
+			nodeIds: ['oro'],
+			spoilerGated: false,
+		},
+		{
+			id: 'venus',
+			name: 'Venus',
+			kind: 'planet',
+			progressionOrder: 2,
+			factions: ['Corpus'],
+			nodeIds: ['fossa'],
+			spoilerGated: false,
+		},
+		{
+			id: 'mercury',
+			name: 'Mercury',
+			kind: 'planet',
+			progressionOrder: 1,
+			factions: ['Grineer'],
+			nodeIds: [],
+			spoilerGated: false,
+		},
+		{
+			id: 'mars',
+			name: 'Mars',
+			kind: 'planet',
+			progressionOrder: 4,
+			factions: ['Grineer'],
+			nodeIds: ['war'],
+			spoilerGated: false,
+		},
+		{
+			id: 'phobos',
+			name: 'Phobos',
+			kind: 'planet',
+			progressionOrder: 5,
+			factions: ['Corpus'],
+			nodeIds: [],
+			spoilerGated: false,
+		},
+		{
+			id: 'ceres',
+			name: 'Ceres',
+			kind: 'planet',
+			progressionOrder: 6,
+			factions: ['Grineer'],
+			nodeIds: [],
+			spoilerGated: false,
+		},
+		{
+			id: 'jupiter',
+			name: 'Jupiter',
+			kind: 'planet',
+			progressionOrder: 7,
+			factions: ['Corpus'],
+			nodeIds: [],
+			spoilerGated: false,
+		},
+	],
+	nodes: [
+		{
+			id: 'oro',
+			regionId: 'earth',
+			name: 'Oro',
+			missionType: 'Assassination',
+			faction: 'Grineer',
+			isAssassination: true,
+			bossId: 'vayhek',
+			frameId: 'hydroid',
+		},
+		{
+			id: 'fossa',
+			regionId: 'venus',
+			name: 'Fossa',
+			missionType: 'Assassination',
+			faction: 'Corpus',
+			isAssassination: true,
+			bossId: 'jackal',
+			frameId: 'rhino',
+		},
+		{
+			id: 'war',
+			regionId: 'mars',
+			name: 'War',
+			missionType: 'Assassination',
+			faction: 'Grineer',
+			isAssassination: true,
+			bossId: 'lechkril',
+			frameId: 'excalibur',
+		},
+	],
+	bosses: [
+		{ id: 'vayhek', name: 'Councilor Vay Hek', nodeId: 'oro', faction: 'Grineer' },
+		{ id: 'jackal', name: 'Jackal', nodeId: 'fossa', faction: 'Corpus' },
+		{ id: 'lechkril', name: 'Lieutenant Lech Kril', nodeId: 'war', faction: 'Grineer' },
+	],
+	warframes: [
+		frame('hydroid', 'Hydroid', 'oro'),
+		frame('rhino', 'Rhino', 'fossa'),
+		frame('excalibur', 'Excalibur', 'war'),
+	],
 };
 ```
 
@@ -316,10 +436,12 @@ git commit -m "feat: seed dataset (Earth/Venus/Mars assassination frames)"
 ### Task 4: Tracking store (in-memory runes)
 
 **Files:**
+
 - Create: `src/lib/tracker/tracker.svelte.ts`
 - Test: `src/lib/tracker/tracker.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Warframe`, `frameCompletion`, `datasetCompletion` from Tasks 2.
 - Produces: `createTracker(frames: Warframe[]): Tracker` where
   - `Tracker.isOwned(partId: string): boolean`
@@ -332,38 +454,39 @@ git commit -m "feat: seed dataset (Earth/Venus/Mars assassination frames)"
 - [ ] **Step 1: Write the failing test**
 
 `src/lib/tracker/tracker.svelte.test.ts`:
+
 ```ts
 import { describe, it, expect } from 'vitest';
 import { createTracker } from './tracker.svelte';
 import { seed } from '$lib/data/seed';
 
 describe('tracker', () => {
-  it('toggles a single part', () => {
-    const t = createTracker(seed.warframes);
-    expect(t.isOwned('rhino:bp')).toBe(false);
-    t.togglePart('rhino:bp');
-    expect(t.isOwned('rhino:bp')).toBe(true);
-    t.togglePart('rhino:bp');
-    expect(t.isOwned('rhino:bp')).toBe(false);
-  });
-  it('toggleFrame owns all then clears all', () => {
-    const t = createTracker(seed.warframes);
-    t.toggleFrame('rhino');
-    expect(t.frameCount('rhino')).toEqual({ owned: 4, total: 4 });
-    t.toggleFrame('rhino');
-    expect(t.frameCount('rhino')).toEqual({ owned: 0, total: 4 });
-  });
-  it('aggregates a reactive total', () => {
-    const t = createTracker(seed.warframes);
-    t.togglePart('rhino:bp');
-    t.togglePart('hydroid:chassis');
-    expect(t.total).toEqual({ owned: 2, total: 12 });
-  });
-  it('round-trips a snapshot', () => {
-    const t = createTracker(seed.warframes);
-    t.load(['rhino:bp', 'excalibur:systems']);
-    expect(t.snapshot().sort()).toEqual(['excalibur:systems', 'rhino:bp']);
-  });
+	it('toggles a single part', () => {
+		const t = createTracker(seed.warframes);
+		expect(t.isOwned('rhino:bp')).toBe(false);
+		t.togglePart('rhino:bp');
+		expect(t.isOwned('rhino:bp')).toBe(true);
+		t.togglePart('rhino:bp');
+		expect(t.isOwned('rhino:bp')).toBe(false);
+	});
+	it('toggleFrame owns all then clears all', () => {
+		const t = createTracker(seed.warframes);
+		t.toggleFrame('rhino');
+		expect(t.frameCount('rhino')).toEqual({ owned: 4, total: 4 });
+		t.toggleFrame('rhino');
+		expect(t.frameCount('rhino')).toEqual({ owned: 0, total: 4 });
+	});
+	it('aggregates a reactive total', () => {
+		const t = createTracker(seed.warframes);
+		t.togglePart('rhino:bp');
+		t.togglePart('hydroid:chassis');
+		expect(t.total).toEqual({ owned: 2, total: 12 });
+	});
+	it('round-trips a snapshot', () => {
+		const t = createTracker(seed.warframes);
+		t.load(['rhino:bp', 'excalibur:systems']);
+		expect(t.snapshot().sort()).toEqual(['excalibur:systems', 'rhino:bp']);
+	});
 });
 ```
 
@@ -375,40 +498,46 @@ Expected: FAIL (module not found).
 - [ ] **Step 3: Implement the tracker**
 
 `src/lib/tracker/tracker.svelte.ts`:
+
 ```ts
 import { SvelteSet } from 'svelte/reactivity';
 import type { Warframe } from '$lib/model/types';
 import { frameCompletion, datasetCompletion } from '$lib/model/completion';
 
 export function createTracker(frames: Warframe[]) {
-  const owned = new SvelteSet<string>();
-  const byId = new Map(frames.map((f) => [f.id, f]));
+	const owned = new SvelteSet<string>();
+	const byId = new Map(frames.map((f) => [f.id, f]));
 
-  function togglePart(id: string) {
-    if (owned.has(id)) owned.delete(id);
-    else owned.add(id);
-  }
-  function toggleFrame(frameId: string) {
-    const f = byId.get(frameId);
-    if (!f) return;
-    const anyMissing = f.parts.some((p) => !owned.has(p.id));
-    for (const p of f.parts) {
-      if (anyMissing) owned.add(p.id);
-      else owned.delete(p.id);
-    }
-  }
-  return {
-    isOwned: (id: string) => owned.has(id),
-    togglePart,
-    toggleFrame,
-    frameCount: (frameId: string) => {
-      const f = byId.get(frameId);
-      return f ? frameCompletion(f, owned) : { owned: 0, total: 0 };
-    },
-    get total() { return datasetCompletion(frames, owned); },
-    snapshot: () => [...owned],
-    load: (ids: string[]) => { owned.clear(); for (const id of ids) owned.add(id); }
-  };
+	function togglePart(id: string) {
+		if (owned.has(id)) owned.delete(id);
+		else owned.add(id);
+	}
+	function toggleFrame(frameId: string) {
+		const f = byId.get(frameId);
+		if (!f) return;
+		const anyMissing = f.parts.some((p) => !owned.has(p.id));
+		for (const p of f.parts) {
+			if (anyMissing) owned.add(p.id);
+			else owned.delete(p.id);
+		}
+	}
+	return {
+		isOwned: (id: string) => owned.has(id),
+		togglePart,
+		toggleFrame,
+		frameCount: (frameId: string) => {
+			const f = byId.get(frameId);
+			return f ? frameCompletion(f, owned) : { owned: 0, total: 0 };
+		},
+		get total() {
+			return datasetCompletion(frames, owned);
+		},
+		snapshot: () => [...owned],
+		load: (ids: string[]) => {
+			owned.clear();
+			for (const id of ids) owned.add(id);
+		},
+	};
 }
 export type Tracker = ReturnType<typeof createTracker>;
 ```
@@ -430,11 +559,13 @@ git commit -m "feat: in-memory runes tracking store"
 ### Task 5: IndexedDB persistence
 
 **Files:**
+
 - Create: `src/lib/tracker/persistence.ts`
 - Modify: `src/lib/tracker/tracker.svelte.ts` (add optional persistence wiring)
 - Test: `src/lib/tracker/persistence.test.ts`
 
 **Interfaces:**
+
 - Consumes: `idb`'s `openDB`.
 - Produces:
   - `loadOwned(): Promise<string[]>`
@@ -445,6 +576,7 @@ git commit -m "feat: in-memory runes tracking store"
 
 Run: `pnpm add -D fake-indexeddb`
 Append to `vitest-setup.ts`:
+
 ```ts
 import 'fake-indexeddb/auto';
 ```
@@ -452,20 +584,23 @@ import 'fake-indexeddb/auto';
 - [ ] **Step 2: Write the failing test**
 
 `src/lib/tracker/persistence.test.ts`:
+
 ```ts
 import { describe, it, expect, beforeEach } from 'vitest';
 import { loadOwned, saveOwned } from './persistence';
 
 describe('persistence', () => {
-  beforeEach(async () => { await saveOwned([]); });
-  it('persists and reloads owned ids', async () => {
-    await saveOwned(['rhino:bp', 'rhino:chassis']);
-    expect((await loadOwned()).sort()).toEqual(['rhino:bp', 'rhino:chassis']);
-  });
-  it('returns empty when nothing stored', async () => {
-    await saveOwned([]);
-    expect(await loadOwned()).toEqual([]);
-  });
+	beforeEach(async () => {
+		await saveOwned([]);
+	});
+	it('persists and reloads owned ids', async () => {
+		await saveOwned(['rhino:bp', 'rhino:chassis']);
+		expect((await loadOwned()).sort()).toEqual(['rhino:bp', 'rhino:chassis']);
+	});
+	it('returns empty when nothing stored', async () => {
+		await saveOwned([]);
+		expect(await loadOwned()).toEqual([]);
+	});
 });
 ```
 
@@ -477,6 +612,7 @@ Expected: FAIL (module not found).
 - [ ] **Step 4: Implement persistence**
 
 `src/lib/tracker/persistence.ts`:
+
 ```ts
 import { browser } from '$app/environment';
 import { openDB, type IDBPDatabase } from 'idb';
@@ -487,18 +623,24 @@ const KEY = 'ownedParts';
 
 let dbp: Promise<IDBPDatabase> | null = null;
 function db() {
-  if (!dbp) dbp = openDB(DB, 1, { upgrade(d) { d.createObjectStore(STORE); } });
-  return dbp;
+	if (!dbp)
+		dbp = openDB(DB, 1, {
+			upgrade(d) {
+				d.createObjectStore(STORE);
+			},
+		});
+	return dbp;
 }
 export async function loadOwned(): Promise<string[]> {
-  if (!browser && typeof indexedDB === 'undefined') return [];
-  return (await (await db()).get(STORE, KEY)) ?? [];
+	if (!browser && typeof indexedDB === 'undefined') return [];
+	return (await (await db()).get(STORE, KEY)) ?? [];
 }
 export async function saveOwned(ids: string[]): Promise<void> {
-  if (!browser && typeof indexedDB === 'undefined') return;
-  await (await db()).put(STORE, ids, KEY);
+	if (!browser && typeof indexedDB === 'undefined') return;
+	await (await db()).put(STORE, ids, KEY);
 }
 ```
+
 (The `typeof indexedDB` guard lets the fake-indexeddb tests run under Vitest while the `browser` guard protects real SSR.)
 
 - [ ] **Step 5: Run test — expect PASS**
@@ -509,16 +651,19 @@ Expected: 2 passed.
 - [ ] **Step 6: Wire persistence into the tracker (browser-only auto-save)**
 
 Add to `createTracker` an optional autosave via `$effect.root`, invoked only when a persist callback is supplied:
+
 ```ts
 // in tracker.svelte.ts, extend signature:
 export function createTracker(frames: Warframe[], persist?: (ids: string[]) => void) {
-  // ...existing...
-  if (persist) {
-    $effect.root(() => {
-      $effect(() => { persist([...owned]); });
-    });
-  }
-  // ...return...
+	// ...existing...
+	if (persist) {
+		$effect.root(() => {
+			$effect(() => {
+				persist([...owned]);
+			});
+		});
+	}
+	// ...return...
 }
 ```
 
@@ -539,10 +684,12 @@ git commit -m "feat: IndexedDB persistence with browser guards + autosave"
 ### Task 6: Star Chart geometry helper
 
 **Files:**
+
 - Create: `src/lib/starchart/geometry.ts`
 - Test: `src/lib/starchart/geometry.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Region` from Task 2.
 - Produces: `layoutRing(regions: Region[], opts?: { cx?: number; cy?: number; rx?: number; ry?: number; phase?: number }): PlacedPlanet[]` where
   - `interface PlacedPlanet { region: Region; x: number; y: number; r: number; front: number }`
@@ -551,33 +698,34 @@ git commit -m "feat: IndexedDB persistence with browser guards + autosave"
 - [ ] **Step 1: Write the failing test**
 
 `src/lib/starchart/geometry.test.ts`:
+
 ```ts
 import { describe, it, expect } from 'vitest';
 import { layoutRing } from './geometry';
 import { seed } from '$lib/data/seed';
 
 describe('layoutRing', () => {
-  const placed = layoutRing(seed.regions, { cx: 100, cy: 100, rx: 80, ry: 40 });
-  it('places every region once', () => {
-    expect(placed).toHaveLength(seed.regions.length);
-    expect(new Set(placed.map((p) => p.region.id)).size).toBe(seed.regions.length);
-  });
-  it('keeps points within the ellipse bounds', () => {
-    for (const p of placed) {
-      expect(p.x).toBeGreaterThanOrEqual(100 - 80 - p.r);
-      expect(p.x).toBeLessThanOrEqual(100 + 80 + p.r);
-    }
-  });
-  it('paints back-to-front (ascending front)', () => {
-    for (let i = 1; i < placed.length; i++) {
-      expect(placed[i].front).toBeGreaterThanOrEqual(placed[i - 1].front);
-    }
-  });
-  it('makes front planets larger than back planets', () => {
-    const front = placed[placed.length - 1];
-    const back = placed[0];
-    expect(front.r).toBeGreaterThan(back.r);
-  });
+	const placed = layoutRing(seed.regions, { cx: 100, cy: 100, rx: 80, ry: 40 });
+	it('places every region once', () => {
+		expect(placed).toHaveLength(seed.regions.length);
+		expect(new Set(placed.map((p) => p.region.id)).size).toBe(seed.regions.length);
+	});
+	it('keeps points within the ellipse bounds', () => {
+		for (const p of placed) {
+			expect(p.x).toBeGreaterThanOrEqual(100 - 80 - p.r);
+			expect(p.x).toBeLessThanOrEqual(100 + 80 + p.r);
+		}
+	});
+	it('paints back-to-front (ascending front)', () => {
+		for (let i = 1; i < placed.length; i++) {
+			expect(placed[i].front).toBeGreaterThanOrEqual(placed[i - 1].front);
+		}
+	});
+	it('makes front planets larger than back planets', () => {
+		const front = placed[placed.length - 1];
+		const back = placed[0];
+		expect(front.r).toBeGreaterThan(back.r);
+	});
 });
 ```
 
@@ -589,27 +737,34 @@ Expected: FAIL (module not found).
 - [ ] **Step 3: Implement geometry**
 
 `src/lib/starchart/geometry.ts`:
+
 ```ts
 import type { Region } from '$lib/model/types';
 
-export interface PlacedPlanet { region: Region; x: number; y: number; r: number; front: number }
+export interface PlacedPlanet {
+	region: Region;
+	x: number;
+	y: number;
+	r: number;
+	front: number;
+}
 
 export function layoutRing(
-  regions: Region[],
-  opts: { cx?: number; cy?: number; rx?: number; ry?: number; phase?: number } = {}
+	regions: Region[],
+	opts: { cx?: number; cy?: number; rx?: number; ry?: number; phase?: number } = {},
 ): PlacedPlanet[] {
-  const { cx = 560, cy = 238, rx = 500, ry = 150, phase = 0.18 } = opts;
-  const ordered = [...regions].sort((a, b) => a.progressionOrder - b.progressionOrder);
-  const n = ordered.length;
-  const placed = ordered.map((region, i) => {
-    const t = (i / n) * 2 * Math.PI + phase;
-    const x = cx + rx * Math.cos(t);
-    const y = cy + ry * Math.sin(t);
-    const front = (Math.sin(t) + 1) / 2;
-    const r = 13 + 17 * front;
-    return { region, x, y, r, front };
-  });
-  return placed.sort((a, b) => a.front - b.front);
+	const { cx = 560, cy = 238, rx = 500, ry = 150, phase = 0.18 } = opts;
+	const ordered = [...regions].sort((a, b) => a.progressionOrder - b.progressionOrder);
+	const n = ordered.length;
+	const placed = ordered.map((region, i) => {
+		const t = (i / n) * 2 * Math.PI + phase;
+		const x = cx + rx * Math.cos(t);
+		const y = cy + ry * Math.sin(t);
+		const front = (Math.sin(t) + 1) / 2;
+		const r = 13 + 17 * front;
+		return { region, x, y, r, front };
+	});
+	return placed.sort((a, b) => a.front - b.front);
 }
 ```
 
@@ -630,10 +785,12 @@ git commit -m "feat: star chart ring geometry helper"
 ### Task 7: StarChart SVG component
 
 **Files:**
+
 - Create: `src/lib/starchart/StarChart.svelte`
 - Test: `src/lib/starchart/StarChart.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `layoutRing`, `Region`, `Tracker`.
 - Props: `{ regions: Region[]; selectedId: string; statusOf: (regionId: string) => 'done'|'part'|'none'; onselect: (regionId: string) => void }`
 - Behavior: renders one `<g data-region={id}>` per planet with a `<text>` label; clicking a group calls `onselect`; selected planet gets a `sel` class; status drives a color class.
@@ -641,6 +798,7 @@ git commit -m "feat: star chart ring geometry helper"
 - [ ] **Step 1: Write the failing test**
 
 `src/lib/starchart/StarChart.svelte.test.ts`:
+
 ```ts
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
@@ -648,18 +806,18 @@ import StarChart from './StarChart.svelte';
 import { seed } from '$lib/data/seed';
 
 describe('StarChart', () => {
-  const base = { regions: seed.regions, selectedId: 'venus', statusOf: () => 'none' as const };
-  it('renders a label per region', () => {
-    render(StarChart, { ...base, onselect: () => {} });
-    expect(screen.getByText('EARTH')).toBeInTheDocument();
-    expect(screen.getByText('VENUS')).toBeInTheDocument();
-  });
-  it('fires onselect with the region id on click', async () => {
-    const onselect = vi.fn();
-    render(StarChart, { ...base, onselect });
-    await screen.getByText('MARS').click();
-    expect(onselect).toHaveBeenCalledWith('mars');
-  });
+	const base = { regions: seed.regions, selectedId: 'venus', statusOf: () => 'none' as const };
+	it('renders a label per region', () => {
+		render(StarChart, { ...base, onselect: () => {} });
+		expect(screen.getByText('EARTH')).toBeInTheDocument();
+		expect(screen.getByText('VENUS')).toBeInTheDocument();
+	});
+	it('fires onselect with the region id on click', async () => {
+		const onselect = vi.fn();
+		render(StarChart, { ...base, onselect });
+		await screen.getByText('MARS').click();
+		expect(onselect).toHaveBeenCalledWith('mars');
+	});
 });
 ```
 
@@ -671,6 +829,7 @@ Expected: FAIL (module not found).
 - [ ] **Step 3: Implement the component**
 
 `src/lib/starchart/StarChart.svelte`:
+
 ```svelte
 <script lang="ts">
   import type { Region } from '$lib/model/types';
@@ -727,10 +886,12 @@ git commit -m "feat: StarChart SVG ring component"
 ### Task 8: RegionPanel (assassination + part tracking)
 
 **Files:**
+
 - Create: `src/lib/panel/RegionPanel.svelte`
 - Test: `src/lib/panel/RegionPanel.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Dataset`, `Tracker`.
 - Props: `{ dataset: Dataset; regionId: string; tracker: Tracker }`
 - Behavior: for the selected region's assassination node, shows boss + frame; renders a clickable row per part; clicking a row calls `tracker.togglePart`; owned rows carry `data-owned="true"`. Shows a "Toggle whole frame" control calling `tracker.toggleFrame`. Shows "No Assassination frame here yet" when the region has none.
@@ -738,6 +899,7 @@ git commit -m "feat: StarChart SVG ring component"
 - [ ] **Step 1: Write the failing test**
 
 `src/lib/panel/RegionPanel.svelte.test.ts`:
+
 ```ts
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
@@ -746,25 +908,25 @@ import { seed } from '$lib/data/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
 
 describe('RegionPanel', () => {
-  it('shows the boss and frame for an assassination region', () => {
-    const tracker = createTracker(seed.warframes);
-    render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
-    expect(screen.getByText(/Jackal/)).toBeInTheDocument();
-    expect(screen.getByText(/Rhino/)).toBeInTheDocument();
-  });
-  it('toggles a part on row click', async () => {
-    const tracker = createTracker(seed.warframes);
-    render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
-    const row = screen.getByText('Chassis').closest('[data-part]') as HTMLElement;
-    expect(row.getAttribute('data-owned')).toBe('false');
-    await row.click();
-    expect(tracker.isOwned('rhino:chassis')).toBe(true);
-  });
-  it('shows an empty state for a region with no assassination frame', () => {
-    const tracker = createTracker(seed.warframes);
-    render(RegionPanel, { dataset: seed, regionId: 'mercury', tracker });
-    expect(screen.getByText(/no assassination frame/i)).toBeInTheDocument();
-  });
+	it('shows the boss and frame for an assassination region', () => {
+		const tracker = createTracker(seed.warframes);
+		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+		expect(screen.getByText(/Jackal/)).toBeInTheDocument();
+		expect(screen.getByText(/Rhino/)).toBeInTheDocument();
+	});
+	it('toggles a part on row click', async () => {
+		const tracker = createTracker(seed.warframes);
+		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+		const row = screen.getByText('Chassis').closest('[data-part]') as HTMLElement;
+		expect(row.getAttribute('data-owned')).toBe('false');
+		await row.click();
+		expect(tracker.isOwned('rhino:chassis')).toBe(true);
+	});
+	it('shows an empty state for a region with no assassination frame', () => {
+		const tracker = createTracker(seed.warframes);
+		render(RegionPanel, { dataset: seed, regionId: 'mercury', tracker });
+		expect(screen.getByText(/no assassination frame/i)).toBeInTheDocument();
+	});
 });
 ```
 
@@ -776,6 +938,7 @@ Expected: FAIL (module not found).
 - [ ] **Step 3: Implement the panel**
 
 `src/lib/panel/RegionPanel.svelte`:
+
 ```svelte
 <script lang="ts">
   import type { Dataset } from '$lib/model/types';
@@ -833,17 +996,20 @@ git commit -m "feat: RegionPanel with click-to-track parts"
 ### Task 9: Compose the home page + context wiring
 
 **Files:**
+
 - Modify: `src/routes/+page.svelte`
 - Create: `src/lib/tracker/context.ts`
 - Modify: `src/routes/page.svelte.test.ts` (extend smoke to assert chart + panel present)
 
 **Interfaces:**
+
 - Consumes: `StarChart`, `RegionPanel`, `createTracker`, `loadOwned`, `saveOwned`, `seed`.
 - Produces: a working page: top bar with completion readout, StarChart, RegionPanel; tracker created once, hydrated from IndexedDB on mount, autosaving on change; selection state via `$state`.
 
 - [ ] **Step 1: Add a tiny context helper**
 
 `src/lib/tracker/context.ts`:
+
 ```ts
 import { getContext, setContext } from 'svelte';
 import type { Tracker } from './tracker.svelte';
@@ -856,6 +1022,7 @@ export const useTracker = () => getContext<Tracker>(KEY);
 - [ ] **Step 2: Implement the page**
 
 `src/routes/+page.svelte`:
+
 ```svelte
 <script lang="ts">
   import { onMount } from 'svelte';
@@ -898,18 +1065,19 @@ export const useTracker = () => getContext<Tracker>(KEY);
 - [ ] **Step 3: Extend the smoke test**
 
 Replace `src/routes/page.svelte.test.ts` body:
+
 ```ts
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
 import Page from './+page.svelte';
 
 describe('home page', () => {
-  it('renders brand, chart and panel', () => {
-    render(Page);
-    expect(screen.getByText(/wforacle/i)).toBeInTheDocument();
-    expect(screen.getByText('VENUS')).toBeInTheDocument();      // chart
-    expect(screen.getByText(/Jackal/)).toBeInTheDocument();     // panel (Venus selected)
-  });
+	it('renders brand, chart and panel', () => {
+		render(Page);
+		expect(screen.getByText(/wforacle/i)).toBeInTheDocument();
+		expect(screen.getByText('VENUS')).toBeInTheDocument(); // chart
+		expect(screen.getByText(/Jackal/)).toBeInTheDocument(); // panel (Venus selected)
+	});
 });
 ```
 
@@ -930,36 +1098,40 @@ git commit -m "feat: compose home page (chart + panel + tracker + persistence)"
 ### Task 10: End-to-end persistence test + build verify
 
 **Files:**
+
 - Create: `e2e/tracking.test.ts`
 - Modify: `playwright.config.ts` (ensure `webServer` runs `pnpm preview` on the built app)
 
 **Interfaces:**
+
 - Consumes: the running app.
 - Produces: a Playwright test proving click-to-track persists across reloads, and a green production build.
 
 - [ ] **Step 1: Write the e2e test**
 
 `e2e/tracking.test.ts`:
+
 ```ts
 import { test, expect } from '@playwright/test';
 
 test('tracking a part persists across reload', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.getByText('Node Frames 0 / 12')).toBeVisible();
+	await page.goto('/');
+	await expect(page.getByText('Node Frames 0 / 12')).toBeVisible();
 
-  // Venus selected by default → toggle Rhino Chassis
-  await page.locator('[data-part="rhino:chassis"]').click();
-  await expect(page.getByText('Node Frames 1 / 12')).toBeVisible();
+	// Venus selected by default → toggle Rhino Chassis
+	await page.locator('[data-part="rhino:chassis"]').click();
+	await expect(page.getByText('Node Frames 1 / 12')).toBeVisible();
 
-  await page.reload();
-  await expect(page.getByText('Node Frames 1 / 12')).toBeVisible();
-  await expect(page.locator('[data-part="rhino:chassis"]')).toHaveAttribute('data-owned', 'true');
+	await page.reload();
+	await expect(page.getByText('Node Frames 1 / 12')).toBeVisible();
+	await expect(page.locator('[data-part="rhino:chassis"]')).toHaveAttribute('data-owned', 'true');
 });
 ```
 
 - [ ] **Step 2: Confirm Playwright serves the built app**
 
 `playwright.config.ts` `webServer`:
+
 ```ts
 webServer: { command: 'pnpm build && pnpm preview', port: 4173 },
 testDir: 'e2e'
@@ -987,6 +1159,7 @@ git commit -m "test: e2e click-to-track persistence + build verify"
 ## Self-Review
 
 **Spec coverage (Plan 1 slice):**
+
 - Hero Star Chart SVG ring, completion-colored, clickable → Tasks 6, 7, 9. ✅
 - Local-first Warframe-part tracking (per-part + whole-frame), IndexedDB, completion readout → Tasks 4, 5, 8, 9. ✅
 - SvelteKit + Svelte 5 runes + Tailwind + Cloudflare adapter + prerender → Task 1. ✅

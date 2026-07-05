@@ -21,23 +21,38 @@
 	onDestroy(() => tracker.dispose());
 
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
-		const node = seed.nodes.find((n) => n.regionId === regionId && n.isAssassination);
+		const node = seed.nodes.find(
+			(n) => n.regionId === regionId && n.isAssassination,
+		);
 		if (!node?.frameId) return 'none';
 		const c = tracker.frameCount(node.frameId);
-		return c.owned === c.total && c.total > 0 ? 'done' : c.owned > 0 ? 'part' : 'none';
+		return c.owned === c.total && c.total > 0
+			? 'done'
+			: c.owned > 0
+				? 'part'
+				: 'none';
 	}
 </script>
 
 <div class="mx-auto max-w-6xl p-6 text-slate-100">
 	<header class="mb-4 flex items-center gap-4">
-		<span class="text-lg font-bold">wf<span class="text-sky-400">oracle</span></span>
+		<span class="text-lg font-bold"
+			>wf<span class="text-sky-400">oracle</span></span
+		>
 		<span class="ml-auto text-sm text-slate-400">
-			Node Frames <b class="text-slate-100">{tracker.total.owned} / {tracker.total.total}</b>
+			Node Frames <b class="text-slate-100"
+				>{tracker.total.owned} / {tracker.total.total}</b
+			>
 		</span>
 	</header>
 
 	<div class="mb-4 rounded-xl border border-slate-700">
-		<StarChart regions={seed.regions} {selectedId} {statusOf} onselect={(id) => (selectedId = id)} />
+		<StarChart
+			regions={seed.regions}
+			{selectedId}
+			{statusOf}
+			onselect={(id) => (selectedId = id)}
+		/>
 	</div>
 
 	<RegionPanel dataset={seed} regionId={selectedId} {tracker} />

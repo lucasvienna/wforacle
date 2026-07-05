@@ -11,7 +11,7 @@ function db() {
 		dbp = openDB(DB, 1, {
 			upgrade(d) {
 				d.createObjectStore(STORE);
-			}
+			},
 		});
 	return dbp;
 }

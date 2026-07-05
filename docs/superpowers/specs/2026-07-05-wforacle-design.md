@@ -10,9 +10,10 @@
 
 **wforacle** is a fast, local-first web app for tracking Warframe farming progression, built around a visual, in-game-styled Star Chart. It is both a personal progression tracker and a farming reference.
 
-**One-sentence core:** *Browse the Star Chart, see each planet's Warframe drops and resources at a glance, tick off what you've earned, and get an opinionated "best place to farm this" — split early-game vs. Steel-Path-squad — all instantly and stored locally.*
+**One-sentence core:** _Browse the Star Chart, see each planet's Warframe drops and resources at a glance, tick off what you've earned, and get an opinionated "best place to farm this" — split early-game vs. Steel-Path-squad — all instantly and stored locally._
 
 The app blends three lenses over a single canonical entity (the Star Chart node):
+
 1. **Drops** — trackable (checkboxes), primarily Warframe parts from Assassination bosses.
 2. **Resources** — informational, per planet, with best-farm badges.
 3. **Farming quality** — early-game vs. mid/late-game recommendations, surfaced as badges and drill-downs.
@@ -20,14 +21,16 @@ The app blends three lenses over a single canonical entity (the Star Chart node)
 ## 2. Goals & non-goals
 
 ### v1 goals
+
 - A visual, in-game-styled Star Chart as the hero surface (elliptical ring of planet spheres, completion-colored).
 - Local-first progression tracking of **Warframe parts** (per-part and whole-frame toggles), persisted to IndexedDB, with an always-visible completion readout.
 - Per-planet **resource** display (informational) with early-game / mid-late best-spot badges and a drill-down to farming detail.
 - Docs-quality shell: command palette (Ctrl-K), keyboard-friendly, editorial calm, edge-fast.
-- **Spoiler-aware progressive disclosure:** default to the fresh, post-*Awakening* starting chart; hide quest-locked regions (and their drops) until the player toggles the relevant quest as complete. Never spoil late-game/story content by default.
+- **Spoiler-aware progressive disclosure:** default to the fresh, post-_Awakening_ starting chart; hide quest-locked regions (and their drops) until the player toggles the relevant quest as complete. Never spoil late-game/story content by default.
 - "Loads at the speed of thought" — prerendered static, CDN/edge-served.
 
 ### Non-goals (deferred to v2/v3)
+
 - **Prime Warframes** + the Void Relic / Fissure / vault subsystem (a separate acquisition path; see §5).
 - **Weapons, companions, full Mastery** tracking.
 - **Live worldstate overlays** ("fissures/sorties active now").
@@ -52,13 +55,14 @@ Islands-style interactivity over mostly-static content, no backend in v1.
 - **State + tracking:** Svelte 5 runes in a shared store handed down via `setContext`/`getContext` (SSR-safe — no module-level server singleton), hydrated in the browser from IndexedDB (guarded with `browser` from `$app/environment`). Write-through to IndexedDB via **`idb`**. Optimistic/synchronous UI; persistence follows.
 - **Deploy:** Cloudflare Pages via the Cloudflare adapter. Prerendered static now; door open to edge SSR later (e.g., account sync).
 
-**Rejected alternatives:** *Astro* (islands-first pays off for ~90% static sites; ours is pervasively interactive, and the Astro↔Svelte bridge adds friction). *Next.js* (heavier baseline for ~static content; no SSR need without a backend). *nanostores* (framework-agnostic store unnecessary in a single-framework SvelteKit app; native runes suffice).
+**Rejected alternatives:** _Astro_ (islands-first pays off for ~90% static sites; ours is pervasively interactive, and the Astro↔Svelte bridge adds friction). _Next.js_ (heavier baseline for ~static content; no SSR need without a backend). _nanostores_ (framework-agnostic store unnecessary in a single-framework SvelteKit app; native runes suffice).
 
 ## 5. Data model
 
 The app defines its own normalized shape (not WFCD's raw shape).
 
 ### Entities
+
 - **Region** — `id, name, kind (planet | special), progressionOrder, unlock {via: junction|quest|key, questId?, junction?}, spoilerGated (bool), factions[], resourceIds[], nodeIds[]`
 - **Quest** — `id, name, revealsRegionIds[], revealsFrameIds[]` — the gate for progressive disclosure. Minimal metadata only (name + what it reveals); no story content stored.
 - **Node** — `id (SolNode), regionId, name, missionType, faction, isAssassination, bossId?, drops[]`
@@ -69,29 +73,33 @@ The app defines its own normalized shape (not WFCD's raw shape).
 - **Recommendation** (curated) — `resourceId, nodeId, phase (early | late), boostersApply (bool), note, source, lastVerified`
 
 ### Tracking state (IndexedDB)
+
 - `owned` — set of `WarframePart.id`s. Whole-frame toggle = set/clear all four parts. Completion % = owned parts ÷ total.
 - `completedQuests` — set of `Quest.id`s. Drives spoiler-aware disclosure (§8.1): a spoiler-gated region/frame is revealed once its gating quest is in this set.
 
 Structured storage now = trivial extension to weapons/Primes later.
 
 ### Star Chart region taxonomy (complete)
+
 The data model includes **all node-based regions**, even where v1 only surfaces some prominently.
 
 **Main planetary rail (14, Junction-locked progression):**
-Mercury (11), Venus (14), Earth (14), Mars (17), Phobos (11), Ceres (14), Jupiter (16), Europa (14), Saturn (15), Uranus (14), Neptune (13), Pluto (13), Eris (13), Sedna (16). *(node counts approximate; verified from live data at build.)*
+Mercury (11), Venus (14), Earth (14), Mars (17), Phobos (11), Ceres (14), Jupiter (16), Europa (14), Saturn (15), Uranus (14), Neptune (13), Pluto (13), Eris (13), Sedna (16). _(node counts approximate; verified from live data at build.)_
 
 **Special / quest-locked regions (node-based, off the junction rail):**
+
 - **Void** (~13 nodes) — relic/Void missions; accessible after initial progression.
-- **Lua** (~8) — *The Second Dream*.
-- **Deimos** (~9 + open-world Cambion Drift) — *Heart of Deimos*.
-- **Kuva Fortress** (~8) — *The War Within*.
-- **Zariman** (~5) — *Angels of the Zariman*.
-- **Höllvania** (1999 content) — *The Hex*.
+- **Lua** (~8) — _The Second Dream_.
+- **Deimos** (~9 + open-world Cambion Drift) — _Heart of Deimos_.
+- **Kuva Fortress** (~8) — _The War Within_.
+- **Zariman** (~5) — _Angels of the Zariman_.
+- **Höllvania** (1999 content) — _The Hex_.
 
 **Out of scope for the v1 ring (separate systems, deferred):** Duviri/Circuit (open-world, not node-based), Railjack/Proxima (Earth/Venus/Saturn/Neptune/Pluto/Veil Proxima), Dojo/Relays (social, no farming nodes).
 
 **Modeling notes (from research):**
-- Progression is a **branching tree**, not a linear chain. Mercury unlocks via *Vor's Prize* (no Junction); Europa branches off Jupiter; Deimos/Void have no Junction. Model Junctions as `(hostRegion, unlocksRegion, specter)`, not one-per-planet.
+
+- Progression is a **branching tree**, not a linear chain. Mercury unlocks via _Vor's Prize_ (no Junction); Europa branches off Jupiter; Deimos/Void have no Junction. Model Junctions as `(hostRegion, unlocksRegion, specter)`, not one-per-planet.
 - Only **~18 non-Prime frames** map cleanly to an Assassination node/boss. Quest/bounty/dojo/vendor/Railjack/Duviri frames have no single-node source; **all Primes** route through the Void Relic system. v1 tracks the node-linked set; the rest are modeled with an `acquisition` type and shown, but Primes/weapons are deferred.
 - Node→boss and boss→drop are **many-to-many** (e.g., Ceres/Exta = Vor + Kril → Frost).
 
@@ -119,27 +127,32 @@ A script under `scripts/` produces the app's committed JSON. No runtime API call
 ## 8. UI
 
 ### 8.1 Spoiler-aware progressive disclosure
+
 The tracker mirrors the player's real progression and avoids spoiling later content.
 
-- **Default state = post-*Awakening* starting chart.** A brand-new install shows the main planetary rail (planets not yet reached render dim/locked, as they do in-game — the rail itself isn't a spoiler) but **hides all spoiler-gated special regions** (Void, Lua, Deimos, Kuva Fortress, Zariman, Höllvania) and any quest-locked frames. Their mere existence can spoil story, so they stay hidden until earned.
+- **Default state = post-_Awakening_ starting chart.** A brand-new install shows the main planetary rail (planets not yet reached render dim/locked, as they do in-game — the rail itself isn't a spoiler) but **hides all spoiler-gated special regions** (Void, Lua, Deimos, Kuva Fortress, Zariman, Höllvania) and any quest-locked frames. Their mere existence can spoil story, so they stay hidden until earned.
 - **Quest toggle.** A "Quests / Progress" panel (also reachable via Ctrl-K) lists the small set of gating quests by name only. Marking a quest complete adds it to `completedQuests`, which reveals its `revealsRegionIds` on the ring and its `revealsFrameIds` in tracking — with a subtle reveal animation. Un-toggling re-hides them.
 - **No accidental spoilers.** Hidden regions/frames are omitted entirely (not shown greyed with names), and the command palette excludes un-revealed entities. Quest names themselves are the only forward-reference, and are opt-in to read.
 - **Escape hatch.** A single "Reveal everything (show spoilers)" switch in settings unhides all regions for players who don't care — off by default.
 
 ### Shell
+
 Top bar: brand, **Ctrl-K command palette** ("jump to planet/frame/resource"), always-visible completion readout. One dark theme in v1 (tokenized CSS for future in-game themes). Keyboard-friendly; editorial calm.
 
 ### Hero — Star Chart (direction "C", hybrid)
+
 - **Elliptical ring of planet spheres** (SVG), generated from the region data array: angle → position, front-ness → size/brightness/paint-order, giving pseudo-depth like the in-game chart. Central glow stands in for the seated frame (v1); curved orbital arcs connect worlds.
 - **Special regions** (Void, Lua, Deimos, Kuva Fortress, Zariman) render as smaller off-ring "anomaly" nodes, echoing how the game floats them off the main ring — **but only once revealed** via their gating quest (§8.1). A fresh chart shows none of them.
 - **Completion is shown as color** on each world: green = complete, gold = in progress, dim = untouched, cyan halo = selected.
 - Clicking a world selects it; its detail loads in a **panel below the ring** (not a modal, not a separate page) — browse and track stay on one surface.
 
 ### Detail panel (per selected region)
+
 - **Left — Assassination + tracking:** boss → frame, with click-to-toggle part rows (owned fills green), drop % from WFCD, part source annotations, "toggle whole frame."
 - **Right — Resources (informational):** each resource with early (⚡) / mid-late (💀) best-spot badges, the booster nuance inline, and a `farming ▸` drill-down to the full guide. Read-only (no checkbox) — matches "purely informational."
 
 ### Farming guides
+
 Editorial mdsvex pages (organized early/mid/late, echoing thersguide.com's structure) that the resource drill-downs link into. The opinionated "best node per resource" verdict also surfaces as the ring badges.
 
 ## 9. Deployment & performance
@@ -151,6 +164,7 @@ Prerendered static site on Cloudflare Pages (edge/CDN). Content routes ship zero
 Data derived from WFCD (MIT) open datasets, themselves parsed from Digital Extremes' public drop tables. Credit WFCD; display "not affiliated with Digital Extremes." Warframe and related assets © Digital Extremes.
 
 ## 11. Deferred / open (v2+)
+
 - Primes + Void Relic/Fissure/vault tracking (per-part vault status).
 - Weapons / companions / full Mastery.
 - Live worldstate overlay (active fissures/sorties/invasions).

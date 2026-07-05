@@ -1,11 +1,8 @@
 {
 	"name": "wforacle",
-	"private": true,
 	"version": "0.0.1",
+	"private": true,
 	"type": "module",
-	"engines": {
-		"node": ">=20"
-	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "wrangler types && vite build",
@@ -16,7 +13,14 @@
 		"test:unit": "vitest",
 		"test": "pnpm test:unit --run && pnpm test:e2e",
 		"test:e2e": "playwright test",
-		"gen": "wrangler types"
+		"gen": "wrangler types",
+		"lint": "oxlint",
+		"lint:fix": "oxlint --fix",
+		"format": "oxfmt . && prettier --write \"**/*.svelte\"",
+		"format:check": "oxfmt --check . && prettier --check \"**/*.svelte\""
+	},
+	"dependencies": {
+		"idb": "^8.0.3"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.60.0",
@@ -29,7 +33,11 @@
 		"@types/node": "^26.1.0",
 		"fake-indexeddb": "^6.2.5",
 		"jsdom": "^29.1.1",
+		"oxfmt": "^0.57.0",
+		"oxlint": "^1.72.0",
 		"playwright": "^1.60.0",
+		"prettier": "^3.9.4",
+		"prettier-plugin-svelte": "^4.1.1",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
 		"tailwindcss": "^4.3.0",
@@ -38,7 +46,7 @@
 		"vitest": "^4.1.8",
 		"wrangler": "^4.97.0"
 	},
-	"dependencies": {
-		"idb": "^8.0.3"
+	"engines": {
+		"node": ">=24"
 	}
 }

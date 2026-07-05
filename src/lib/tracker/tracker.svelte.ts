@@ -44,7 +44,7 @@ export function createTracker(frames: Warframe[], persist?: (ids: string[]) => v
 			owned.clear();
 			for (const id of ids) owned.add(id);
 		},
-		dispose
+		dispose,
 	};
 }
 export type Tracker = ReturnType<typeof createTracker>;

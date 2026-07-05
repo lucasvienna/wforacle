@@ -9,7 +9,7 @@ describe('home page', () => {
 		// getByText (which only checks direct text nodes) can't match it directly;
 		// use a matcher function that checks the element's full textContent instead.
 		expect(
-			screen.getByText((_, element) => element?.textContent?.trim().toLowerCase() === 'wforacle')
+			screen.getByText((_, element) => element?.textContent?.trim().toLowerCase() === 'wforacle'),
 		).toBeInTheDocument();
 		expect(screen.getByText('VENUS')).toBeInTheDocument(); // chart
 		expect(screen.getByText(/Jackal/)).toBeInTheDocument(); // panel (Venus selected)
