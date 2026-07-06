@@ -52,18 +52,24 @@ async function main() {
 		console.error(`Sanity check failed: missing main planets: ${missingPlanets.join(', ')}`);
 		process.exit(1);
 	}
-	// Node-linked-frame floor. Verified ceiling against the installed
-	// warframe-worldstate-data@3.16.2 + @wfcd/items@1.1274.72: of the real
-	// Assassination-type SolNodes on the 14 main planets plus the special
-	// regions, 13 have a Warframe blueprint drop. Nekros now links at
-	// Deimos/Magnacidium; Equinox is still dropped by buildFrames because its
-	// components are named "Day Aspect" / "Night Aspect" rather than the
-	// standard Chassis/Neuroptics/Systems (build.ts, Task 6, out of scope
-	// here); Phorid, Jordas Golem, and Mutalist Alad V still have no linked
-	// frame. See .superpowers/sdd/task-7-report.md.
-	if (nodeFrames < 13) {
-		console.error(`Sanity check failed (expected >=13 node-linked frames, got ${nodeFrames})`);
+	// Node-linked-frame floor. Verified against the installed
+	// warframe-worldstate-data@3.16.2 + @wfcd/items@1.1274.72: 16
+	// node-linked frames. Nekros links at Deimos/Magnacidium; Equinox now
+	// links via its Day Aspect / Night Aspect components at Uranus/Titania
+	// (buildFrames generalized to handle non-standard slot names, Task 3);
+	// Mesa and Atlas link via the curated Eris key-boss nodes "Mutalist Alad
+	// V Assassinate" and "Jordas Golem Assassinate" (Task 3 curation).
+	if (nodeFrames < 16) {
+		console.error(`Sanity check failed (expected >=16 node-linked frames, got ${nodeFrames})`);
 		process.exit(1);
+	}
+	// Equinox, Mesa, and Atlas must all be linked now that Uranus/Titania and
+	// the curated Eris key-boss nodes are wired into the pipeline.
+	for (const id of ['equinox', 'mesa', 'atlas']) {
+		if (!data.warframes.some((f) => f.id === id)) {
+			console.error(`Sanity check failed: frame ${id} not linked`);
+			process.exit(1);
+		}
 	}
 	// Special regions (Deimos, Void, Lua, Kuva Fortress, Zariman) must all be
 	// present alongside the 14 main planets.

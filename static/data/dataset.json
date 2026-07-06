@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T15:33:38.190Z",
+	"generatedAt": "2026-07-06T21:26:12.995Z",
 	"data": {
 		"regions": [
 			{
@@ -535,7 +535,9 @@
 					"SolNode176",
 					"ErisHUB",
 					"ClanNode18",
-					"ClanNode19"
+					"ClanNode19",
+					"CuratedMutalistAladV",
+					"CuratedJordasGolem"
 				],
 				"resourceIds": [
 					"nanospores",
@@ -1569,7 +1571,9 @@
 				"name": "Titania",
 				"missionType": "Assassination",
 				"faction": "Grineer",
-				"isAssassination": true
+				"isAssassination": true,
+				"bossId": "titania",
+				"frameId": "equinox"
 			},
 			{
 				"id": "SolNode106",
@@ -3806,13 +3810,45 @@
 				"missionType": "Relay",
 				"faction": "Corpus",
 				"isAssassination": false
+			},
+			{
+				"id": "CuratedMutalistAladV",
+				"regionId": "eris",
+				"name": "Mutalist Alad V",
+				"missionType": "Assassination",
+				"faction": "Infested",
+				"isAssassination": true,
+				"bossId": "mutalistaladv",
+				"frameId": "mesa"
+			},
+			{
+				"id": "CuratedJordasGolem",
+				"regionId": "eris",
+				"name": "Jordas Golem",
+				"missionType": "Assassination",
+				"faction": "Infested",
+				"isAssassination": true,
+				"bossId": "jordasgolem",
+				"frameId": "atlas"
 			}
 		],
 		"bosses": [
 			{
+				"id": "jordasgolem",
+				"name": "Jordas Golem",
+				"nodeId": "CuratedJordasGolem",
+				"faction": "Infested"
+			},
+			{
 				"id": "tethys",
 				"name": "General Sargas Ruk",
 				"nodeId": "SolNode32",
+				"faction": "Grineer"
+			},
+			{
+				"id": "titania",
+				"name": "Tyl Regor",
+				"nodeId": "SolNode105",
 				"faction": "Grineer"
 			},
 			{
@@ -3844,6 +3880,12 @@
 				"name": "The Sergeant",
 				"nodeId": "SettlementNode20",
 				"faction": "Corpus"
+			},
+			{
+				"id": "mutalistaladv",
+				"name": "Mutalist Alad V",
+				"nodeId": "CuratedMutalistAladV",
+				"faction": "Infested"
 			},
 			{
 				"id": "magnacidium",
@@ -3890,6 +3932,40 @@
 		],
 		"warframes": [
 			{
+				"id": "atlas",
+				"name": "Atlas",
+				"nodeId": "CuratedJordasGolem",
+				"image": "Atlas.png",
+				"parts": [
+					{
+						"id": "atlas:bp",
+						"frameId": "atlas",
+						"slot": "bp"
+					},
+					{
+						"id": "atlas:neuroptics",
+						"frameId": "atlas",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "CuratedJordasGolem",
+						"chance": 38.72
+					},
+					{
+						"id": "atlas:chassis",
+						"frameId": "atlas",
+						"slot": "chassis",
+						"dropSourceNodeId": "CuratedJordasGolem",
+						"chance": 38.72
+					},
+					{
+						"id": "atlas:systems",
+						"frameId": "atlas",
+						"slot": "systems",
+						"dropSourceNodeId": "CuratedJordasGolem",
+						"chance": 22.56
+					}
+				]
+			},
+			{
 				"id": "ember",
 				"name": "Ember",
 				"nodeId": "SolNode32",
@@ -3919,6 +3995,33 @@
 						"frameId": "ember",
 						"slot": "systems",
 						"dropSourceNodeId": "SolNode32",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "equinox",
+				"name": "Equinox",
+				"nodeId": "SolNode105",
+				"image": "Equinox.png",
+				"parts": [
+					{
+						"id": "equinox:bp",
+						"frameId": "equinox",
+						"slot": "bp"
+					},
+					{
+						"id": "equinox:dayaspect",
+						"frameId": "equinox",
+						"slot": "dayaspect",
+						"dropSourceNodeId": "SolNode105",
+						"chance": 22.56
+					},
+					{
+						"id": "equinox:nightaspect",
+						"frameId": "equinox",
+						"slot": "nightaspect",
+						"dropSourceNodeId": "SolNode105",
 						"chance": 22.56
 					}
 				]
@@ -4089,6 +4192,40 @@
 						"frameId": "mag",
 						"slot": "systems",
 						"dropSourceNodeId": "SettlementNode20",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "mesa",
+				"name": "Mesa",
+				"nodeId": "CuratedMutalistAladV",
+				"image": "Mesa.png",
+				"parts": [
+					{
+						"id": "mesa:bp",
+						"frameId": "mesa",
+						"slot": "bp"
+					},
+					{
+						"id": "mesa:neuroptics",
+						"frameId": "mesa",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "CuratedMutalistAladV",
+						"chance": 38.72
+					},
+					{
+						"id": "mesa:chassis",
+						"frameId": "mesa",
+						"slot": "chassis",
+						"dropSourceNodeId": "CuratedMutalistAladV",
+						"chance": 38.72
+					},
+					{
+						"id": "mesa:systems",
+						"frameId": "mesa",
+						"slot": "systems",
+						"dropSourceNodeId": "CuratedMutalistAladV",
 						"chance": 22.56
 					}
 				]
