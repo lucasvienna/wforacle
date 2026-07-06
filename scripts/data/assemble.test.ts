@@ -36,6 +36,17 @@ const solNodes: SolNodes = {
 	SolNodePluto: { value: 'Hieracon (Pluto)', enemy: 'Corpus', type: 'Excavation' },
 	SolNodeEris: { value: 'Akkad (Eris)', enemy: 'Infested', type: 'Defense' },
 	SolNodeSedna: { value: 'Kelpie (Sedna)', enemy: 'Grineer', type: 'Survival' },
+	// Special regions: present so QUESTS' revealsRegionIds all resolve and
+	// validateDataset's spoilerGated→questId check passes for each.
+	SolNodeDeimos: { value: 'Magnacidium (Deimos)', enemy: 'Infested', type: 'Assassination' },
+	SolNodeVoid: { value: 'Hepit (Void)', enemy: 'Orokin', type: 'Capture' },
+	SolNodeLua: { value: 'Tycho (Lua)', enemy: 'Corpus', type: 'Survival' },
+	SolNodeKuva: { value: 'Taveuni (Kuva Fortress)', enemy: 'Grineer', type: 'Survival' },
+	SolNodeZariman: {
+		value: 'Halako Perimeter (Zariman)',
+		enemy: 'Crossfire',
+		type: 'Extermination',
+	},
 };
 
 describe('assembleDataset', () => {
@@ -62,6 +73,19 @@ describe('assembleDataset', () => {
 		const broken = structuredClone(ds);
 		broken.resources[0].regionIds = ['ghostplanet'];
 		expect(validateDataset(broken).join(' ')).toMatch(/ghostplanet/);
+	});
+	it('includes quests', () => {
+		expect(ds.quests.length).toBeGreaterThan(0);
+	});
+	it('links Nekros to the Deimos Assassination node', () => {
+		const deimosNode = ds.nodes.find((n) => n.id === 'SolNodeDeimos')!;
+		expect(deimosNode.frameId).toBe('nekros');
+		expect(ds.warframes.some((f) => f.id === 'nekros')).toBe(true);
+	});
+	it('detects a quest revealing a nonexistent frame', () => {
+		const broken = structuredClone(ds);
+		broken.quests[0].revealsFrameIds = ['ghostframe'];
+		expect(validateDataset(broken).join(' ')).toMatch(/ghostframe/);
 	});
 });
 

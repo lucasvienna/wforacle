@@ -2,6 +2,7 @@ import type { Dataset, Resource } from '../../src/lib/model/types';
 import { buildRegions, buildNodes, buildFrames, type SolNodes, type RawWarframe } from './build';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
 import { PLANETS } from './curated';
+import { QUESTS } from './special';
 import { slugify } from './parse';
 
 export type RawResource = { name: string; imageName?: string };
@@ -57,7 +58,7 @@ export function assembleDataset(
 		n.frameId = frameByNode.get(n.id)?.id;
 	}
 	const resources = buildResources(rawResources);
-	return { regions, nodes, bosses, warframes: frames, resources };
+	return { regions, nodes, bosses, warframes: frames, resources, quests: QUESTS };
 }
 
 export function validateDataset(ds: Dataset): string[] {
@@ -91,5 +92,18 @@ export function validateDataset(ds: Dataset): string[] {
 	}
 	const allIds = [...ds.regions.map((r) => r.id), ...frameIds];
 	if (new Set(allIds).size !== allIds.length) problems.push('duplicate region/frame ids');
+
+	const questIds = new Set(ds.quests.map((q) => q.id));
+	for (const q of ds.quests) {
+		for (const rid of q.revealsRegionIds)
+			if (!regionIds.has(rid)) problems.push(`quest ${q.id} → missing region ${rid}`);
+		for (const fid of q.revealsFrameIds)
+			if (!frameIds.has(fid)) problems.push(`quest ${q.id} → missing frame ${fid}`);
+	}
+	for (const r of ds.regions) {
+		if (r.spoilerGated && (!r.questId || !questIds.has(r.questId)))
+			problems.push(`region ${r.id} → missing gating quest`);
+	}
+
 	return problems;
 }

@@ -30,10 +30,10 @@ export function planetOrder(planetName: string): number {
 // node slug → boss display name, covering the real Assassination-type
 // SolNodes on the 14 main planets (verified against warframe-worldstate-data's
 // solNodes + @wfcd/items drop locations — see
-// .superpowers/sdd/task-7-report.md for the full breakdown). Special-region
-// assassination nodes (e.g. Deimos: Magnacidium/Lephantis,
-// Exequias/Zealoid Prelate, Effervo/The Fragmented) are deferred with those
-// regions to a later plan.
+// .superpowers/sdd/task-7-report.md for the full breakdown), plus Deimos'
+// Magnacidium (Lephantis). Other special-region assassination nodes (e.g.
+// Deimos: Exequias/Zealoid Prelate, Effervo/The Fragmented) are deferred to a
+// later plan.
 export const BOSS_BY_NODE: Record<string, string> = {
 	[slugify('Fossa')]: 'Jackal',
 	[slugify('Oro')]: 'Councilor Vay Hek',
@@ -50,4 +50,6 @@ export const BOSS_BY_NODE: Record<string, string> = {
 	[slugify('Merrow')]: 'Kela De Thaym',
 	// Mercury's assassination node; no Warframe currently drops here (Vor drops the Seer instead)
 	[slugify('Tolstoj')]: 'Captain Vor',
+	// Deimos' assassination node (special region)
+	[slugify('Magnacidium')]: 'Lephantis',
 };

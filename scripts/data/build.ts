@@ -8,18 +8,19 @@ import type {
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
 import { PLANETS, BOSS_BY_NODE } from './curated';
+import { SPECIAL_REGIONS, SPECIAL_REGION_NAMES } from './special';
 import { PLANET_RESOURCES } from './farming';
 import { partId } from '../../src/lib/model/completion';
 
 export type SolNodes = Record<string, { value: string; enemy: string; type: string }>;
 
-const PLANET_META = new Map(PLANETS.map((p) => [p.name, p]));
+const ACCEPTED_PLANETS = new Set([...PLANETS.map((p) => p.name), ...SPECIAL_REGION_NAMES]);
 
 export function buildNodes(solNodes: SolNodes): StarNode[] {
 	const out: StarNode[] = [];
 	for (const [id, v] of Object.entries(solNodes)) {
 		const parsed = parseNodeValue(v.value);
-		if (!parsed || !PLANET_META.has(parsed.planet)) continue;
+		if (!parsed || !ACCEPTED_PLANETS.has(parsed.planet)) continue;
 		out.push({
 			id,
 			regionId: slugify(parsed.planet),
@@ -51,6 +52,22 @@ export function buildRegions(solNodes: SolNodes): Region[] {
 			spoilerGated: p.spoilerGated,
 			nodeIds: rn.map((n) => n.id),
 			resourceIds: PLANET_RESOURCES[id] ?? [],
+		});
+	}
+	for (const sr of SPECIAL_REGIONS) {
+		const id = slugify(sr.name);
+		const rn = byRegion.get(id);
+		if (!rn) continue;
+		regions.push({
+			id,
+			name: sr.name,
+			kind: 'special',
+			progressionOrder: sr.order,
+			factions: [sr.faction],
+			spoilerGated: sr.spoilerGated,
+			nodeIds: rn.map((n) => n.id),
+			resourceIds: PLANET_RESOURCES[id] ?? [],
+			questId: sr.questId,
 		});
 	}
 	return regions.sort((a, b) => a.progressionOrder - b.progressionOrder);

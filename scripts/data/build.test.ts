@@ -111,3 +111,45 @@ describe('buildFrames', () => {
 		expect(frames.find((f) => f.id === 'loki')).toBeUndefined();
 	});
 });
+
+describe('special regions (Deimos)', () => {
+	const deimosNodes: SolNodes = {
+		SolNodeMag: { value: 'Magnacidium (Deimos)', enemy: 'Infested', type: 'Assassination' },
+		SolNodeRelay: { value: 'Necralisk (Deimos)', enemy: 'Tenno', type: 'Relay' },
+	};
+
+	it('buildRegions includes deimos as a special region, unfiltered relay node included', () => {
+		const regions = buildRegions(deimosNodes);
+		const deimos = regions.find((r) => r.id === 'deimos')!;
+		expect(deimos).toMatchObject({
+			kind: 'special',
+			spoilerGated: true,
+			questId: 'heartofdeimos',
+		});
+		expect(deimos.nodeIds.sort()).toEqual(['SolNodeMag', 'SolNodeRelay']);
+	});
+
+	it('buildFrames links Nekros to the Deimos Assassination node', () => {
+		const nekrosWarframes: RawWarframe[] = [
+			{
+				name: 'Nekros',
+				uniqueName: '/Lotus/Powersuits/Nekros/Nekros',
+				type: 'Warframe',
+				components: [
+					{ name: 'Blueprint', drops: [] },
+					{
+						name: 'Chassis',
+						drops: [
+							{ location: 'Deimos/Magnacidium (Assassination)', rarity: 'Common', chance: 33.33 },
+						],
+					},
+				],
+			},
+		];
+		const nodes = buildNodes(deimosNodes);
+		const { frames } = buildFrames(nekrosWarframes, nodes);
+		const nekros = frames.find((f) => f.id === 'nekros')!;
+		expect(nekros).toBeDefined();
+		expect(nekros.nodeId).toBe('SolNodeMag');
+	});
+});

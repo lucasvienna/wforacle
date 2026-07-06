@@ -54,5 +54,32 @@
 		"type": "Warframe",
 		"imageName": "volt.png",
 		"components": [{ "name": "Blueprint", "drops": [] }]
+	},
+	{
+		"name": "Nekros",
+		"uniqueName": "/Lotus/Powersuits/Nekros/Nekros",
+		"type": "Warframe",
+		"imageName": "nekros.png",
+		"components": [
+			{ "name": "Blueprint", "drops": [] },
+			{
+				"name": "Chassis",
+				"drops": [
+					{ "location": "Deimos/Magnacidium (Assassination)", "rarity": "Common", "chance": 33.33 }
+				]
+			},
+			{
+				"name": "Neuroptics",
+				"drops": [
+					{ "location": "Deimos/Magnacidium (Assassination)", "rarity": "Common", "chance": 33.33 }
+				]
+			},
+			{
+				"name": "Systems",
+				"drops": [
+					{ "location": "Deimos/Magnacidium (Assassination)", "rarity": "Common", "chance": 33.33 }
+				]
+			}
+		]
 	}
 ]
