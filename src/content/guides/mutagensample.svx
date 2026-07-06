@@ -1,0 +1,24 @@
+## Early game
+
+**Naeglar** on Eris (Hive) is the only documented Mutagen Sample source on
+the planet: the wiki's drop tables show a Rotation B Hive Sabotage resource
+cache with roughly a 15.5% chance for 3 samples. Mutagen Sample has no enemy
+drop table, so this cache is effectively the entire farm — clear the Hive
+efficiently, bank the Rotation B reward, and reset.
+
+## Mid & late game
+
+Since Eris doesn't have a second Mutagen Sample node, the endgame upgrade is
+running **Naeglar** (Hive, Steel Path) with a full 4-player squad instead of
+solo. Each player's own mission completion rolls the resource cache table
+independently, so a full squad effectively multiplies the number of caches
+found per run. Because Mutagen Sample comes from an end-of-mission resource
+cache rather than an enemy drop, Resource Drop Boosters and the Steel Path
+passive don't apply here — squad size, not drop-chance buffs, is what scales
+the farm. (Deimos' Formido has a similar cache for players who've reached the
+Cambion Drift, but Eris is the self-contained option for this planet's
+farming path.)
+
+## Sources
+
+- [Mutagen Sample — Warframe Wiki](https://wiki.warframe.com/w/Mutagen_Sample)

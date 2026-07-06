@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T04:40:54.652Z",
+	"generatedAt": "2026-07-06T05:01:40.071Z",
 	"data": {
 		"regions": [
 			{
@@ -3596,7 +3596,26 @@
 				"name": "Ferrite",
 				"image": "ComponentFerrite.png",
 				"regionIds": ["mercury", "earth", "neptune"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Mercury — Apollodorus (Survival)",
+						"boostersApply": false,
+						"note": "The wiki calls this \"probably one of the best ways to farm Ferrite,\" citing 4,000+ per 10-minute rotation; Ferrite has no enemy drop table, so the yield comes entirely from breaking containers and lockers around the Survival tileset.",
+						"source": "https://wiki.warframe.com/w/Ferrite",
+						"lastVerified": "2026-07-06",
+						"regionId": "mercury"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Earth — Tikal (Dark Sector Excavation, Steel Path)",
+						"boostersApply": false,
+						"note": "A long Steel Path Excavation run cracks open far more cryo-pods, crates and lockers per hour than resetting short missions; since Ferrite only comes from those containers (no enemy drop table), the gain here is mission length, not the Steel Path drop-chance passive.",
+						"source": "https://wiki.warframe.com/w/Ferrite",
+						"lastVerified": "2026-07-06",
+						"regionId": "earth"
+					}
+				]
 			},
 			{
 				"id": "alloyplate",
@@ -3654,14 +3673,52 @@
 				"name": "Salvage",
 				"image": "ComponentSalvage.png",
 				"regionIds": ["mars", "jupiter", "sedna"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Mars — Wahiba (Dark Sector Survival)",
+						"boostersApply": false,
+						"note": "A low-level Dark Sector Survival on one of Salvage’s signature planets; Salvage has no dedicated enemy drop table, so looting every storage container and locker along the way is what drives the yield.",
+						"source": "https://wiki.warframe.com/w/Salvage",
+						"lastVerified": "2026-07-06",
+						"regionId": "mars"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Jupiter — Carme (Mobile Defense, Steel Path)",
+						"boostersApply": false,
+						"note": "The wiki reports up to 3,000 Salvage in a single run here if every container and locker in the Corpus tileset is opened; still a container-based pickup, not an enemy drop, so boosters don’t change the math — thoroughness does.",
+						"source": "https://wiki.warframe.com/w/Salvage",
+						"lastVerified": "2026-07-06",
+						"regionId": "jupiter"
+					}
+				]
 			},
 			{
 				"id": "circuits",
 				"name": "Circuits",
 				"image": "ComponentCircuits.png",
 				"regionIds": ["venus", "ceres"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Venus — Tessera (Defense)",
+						"boostersApply": false,
+						"note": "Short, low-level Corpus Defense on one of Circuits’ two signature planets; Circuits come from in-mission resource caches rather than enemy kills, so boosters and the Steel Path passive don’t add anything here.",
+						"source": "https://wiki.warframe.com/w/Circuits",
+						"lastVerified": "2026-07-06",
+						"regionId": "venus"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Ceres — Gabii (Dark Sector Survival, Steel Path)",
+						"boostersApply": false,
+						"note": "The wiki flags Ceres Dark Sector nodes like Gabii as the higher-drop-rate endgame spot for Circuits; the resource is still cache-based rather than an enemy drop, so a long Steel Path Survival run mainly buys more caches to find, not a booster multiplier.",
+						"source": "https://wiki.warframe.com/w/Circuits",
+						"lastVerified": "2026-07-06",
+						"regionId": "ceres"
+					}
+				]
 			},
 			{
 				"id": "polymerbundle",
@@ -3745,7 +3802,26 @@
 				"name": "Morphics",
 				"image": "ComponentMorphic.png",
 				"regionIds": ["mercury", "mars", "phobos", "europa", "pluto"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Mars — Hellas (Extermination)",
+						"boostersApply": false,
+						"note": "The wiki notes Morphics have a much higher chance to drop on Mars than anywhere else, making this quick low-level Exterminate an efficient early source. Morphics have no enemy drop table, so the resource comes from the mission’s caches, not from kills.",
+						"source": "https://wiki.warframe.com/w/Morphics",
+						"lastVerified": "2026-07-06",
+						"regionId": "mars"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Mars — Olympus (Disruption, Steel Path)",
+						"boostersApply": false,
+						"note": "Mars stays the best Morphics planet at every progression stage per the wiki, and Steel Path Disruption gives a squad more rotations to loot per hour than short missions; the resource itself is still cache-based, so boosters don’t change the per-cache odds.",
+						"source": "https://wiki.warframe.com/w/Morphics",
+						"lastVerified": "2026-07-06",
+						"regionId": "mars"
+					}
+				]
 			},
 			{
 				"id": "gallium",
@@ -3904,35 +3980,130 @@
 				"name": "Tellurium",
 				"image": "Tellurium.png",
 				"regionIds": ["uranus"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Uranus — Ophelia (Survival)",
+						"boostersApply": true,
+						"note": "The wiki also documents Tellurium coming from enemies in any \"Submersible\"-tagged tileset (Uranus’ Grineer Sealab is one), so this Survival’s ever-growing enemy density genuinely adds to the haul on top of its resource caches, unlike a pure container farm.",
+						"source": "https://wiki.warframe.com/w/Tellurium",
+						"lastVerified": "2026-07-06",
+						"regionId": "uranus"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Uranus — Assur (Dark Sector Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "The wiki states Steel Path’s higher enemy density and resource drop chance give \"anecdotally around 4x\" the Tellurium of a regular run on this Sealab tileset, so — unlike most Uranus resources — boosters and the Steel Path passive are worth stacking here.",
+						"source": "https://wiki.warframe.com/w/Tellurium",
+						"lastVerified": "2026-07-06",
+						"regionId": "uranus"
+					}
+				]
 			},
 			{
 				"id": "hexenon",
 				"name": "Hexenon",
 				"image": "ComponentConcentratedGas.png",
 				"regionIds": ["jupiter"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Jupiter — Io (Defense)",
+						"boostersApply": true,
+						"note": "Hexenon has no resource-deposit variant at all — the wiki notes it comes only from Amalgam enemies (~7.2% drop chance) and mission-completion rewards, so this accessible low-level Corpus Defense is an early, enemy-drop-based source.",
+						"source": "https://wiki.warframe.com/w/Hexenon",
+						"lastVerified": "2026-07-06",
+						"regionId": "jupiter"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Jupiter — Ganymede (Disruption, Steel Path)",
+						"boostersApply": true,
+						"note": "The wiki calls out Ganymede’s Disruption Amalgam spawns as the most consistent Hexenon source (27–30% per rotation); since it’s purely an enemy drop, Resource Drop Chance Boosters and the Steel Path passive both meaningfully increase yield here.",
+						"source": "https://wiki.warframe.com/w/Hexenon",
+						"lastVerified": "2026-07-06",
+						"regionId": "jupiter"
+					}
+				]
 			},
 			{
 				"id": "mutagensample",
 				"name": "Mutagen Sample",
 				"image": "InfestedFragment.png",
 				"regionIds": ["eris"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Eris — Naeglar (Hive)",
+						"boostersApply": false,
+						"note": "The wiki lists Naeglar’s Hive Sabotage resource cache (Rotation B, ~15.5% for 3) as the only documented Mutagen Sample source on Eris; Mutagen Sample has no enemy drop table, so this cache is the whole farm.",
+						"source": "https://wiki.warframe.com/w/Mutagen_Sample",
+						"lastVerified": "2026-07-06",
+						"regionId": "eris"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Eris — Naeglar (Hive, Steel Path)",
+						"boostersApply": false,
+						"note": "Eris only has the one documented Mutagen Sample cache, so the late-game upgrade is running Naeglar in a full 4-player Steel Path squad: each player’s own rotation-B completion rolls the cache table independently, multiplying caches found per run rather than any per-cache boost, since boosters don’t affect end-of-mission caches.",
+						"source": "https://wiki.warframe.com/w/Mutagen_Sample",
+						"lastVerified": "2026-07-06",
+						"regionId": "eris"
+					}
+				]
 			},
 			{
 				"id": "detoniteampule",
 				"name": "Detonite Ampule",
 				"image": "GrineerFragment.png",
 				"regionIds": ["mercury", "earth", "ceres", "saturn", "uranus", "sedna"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Earth — Cervantes (Sabotage)",
+						"boostersApply": false,
+						"note": "The wiki’s only documented Detonite Ampule drop table is Cervantes’ Rotation B resource cache (~12.2%); Detonite Ampule has no enemy drop table, so this quick Sabotage is the clearest early source.",
+						"source": "https://wiki.warframe.com/w/Detonite_Ampule",
+						"lastVerified": "2026-07-06",
+						"regionId": "earth"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Saturn — Piscinas (Dark Sector Survival, Steel Path)",
+						"boostersApply": false,
+						"note": "The wiki’s farming notes point to Dark Sector Survival nodes like Piscinas for better endgame yields; the resource is still cache-based rather than an enemy drop, so the benefit is a longer run with more caches to find, not a booster or Steel Path drop-chance bonus.",
+						"source": "https://wiki.warframe.com/w/Detonite_Ampule",
+						"lastVerified": "2026-07-06",
+						"regionId": "saturn"
+					}
+				]
 			},
 			{
 				"id": "fieldronsample",
 				"name": "Fieldron Sample",
 				"image": "CorpusFragment.png",
 				"regionIds": ["venus", "mars", "europa", "neptune", "pluto"],
-				"recommendations": []
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Mars — Kadesh (Dark Sector Defense)",
+						"boostersApply": false,
+						"note": "The wiki names this low-level Dark Sector Defense as an early Fieldron Sample spot; the resource has no mission or enemy drop table at all, so it’s picked up as an environmental resource item in the tileset rather than farmed off kills.",
+						"source": "https://wiki.warframe.com/w/Fieldron_Sample",
+						"lastVerified": "2026-07-06",
+						"regionId": "mars"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Neptune — Kelashin (Dark Sector Survival, Steel Path)",
+						"boostersApply": false,
+						"note": "The wiki’s recommended endgame spot for Fieldron Sample; a longer Steel Path Survival simply gives more time to sweep the Infested Ship tileset for pickups, since — like the early spot — this is an environmental resource item, not an enemy or booster-affected drop.",
+						"source": "https://wiki.warframe.com/w/Fieldron_Sample",
+						"lastVerified": "2026-07-06",
+						"regionId": "neptune"
+					}
+				]
 			},
 			{
 				"id": "carbides",

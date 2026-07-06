@@ -1,0 +1,24 @@
+## Early game
+
+**Apollodorus** on Mercury (Survival) is one of the best Ferrite spots at any
+gear level — the wiki calls it "probably one of the best ways to farm
+Ferrite," citing over 4,000 per 10-minute rotation. Ferrite has no enemy drop
+table at all, so every bit of that comes from breaking the containers and
+lockers scattered through the Grineer Asteroid tileset; running Master Thief
+and popping every locker on the way to extraction matters more than kill
+speed. **M Prime** (Extermination), also on Mercury, is a quick secondary stop
+when you just need a fast top-up.
+
+## Mid & late game
+
+Once Steel Path is unlocked, **Tikal** on Earth (Dark Sector Excavation) is a
+strong endgame spot: a long Excavation run cracks open far more cryo-pods,
+crates and lockers per hour than resetting short missions. Because Ferrite
+only comes from containers rather than an enemy drop table, Resource Drop
+Boosters and the Steel Path resource-drop passive don't change the odds per
+container — the gain here is purely mission length and thoroughness, so
+squads that split up and loot everything benefit the most.
+
+## Sources
+
+- [Ferrite — Warframe Wiki](https://wiki.warframe.com/w/Ferrite)

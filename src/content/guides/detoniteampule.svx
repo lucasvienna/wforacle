@@ -1,0 +1,20 @@
+## Early game
+
+**Cervantes** on Earth (Sabotage) has the wiki's only documented Detonite
+Ampule drop table: a Rotation B resource cache with roughly a 12.2% chance.
+Detonite Ampule has no enemy drop table, so this quick Sabotage — clear the
+tileset, grab the Rotation B cache, reset — is the clearest way to farm it
+early.
+
+## Mid & late game
+
+**Piscinas** on Saturn (Dark Sector Survival) is the wiki's recommended
+endgame spot, run with a Steel Path squad for longer rotations than a
+standalone Sabotage reset allows. Detonite Ampule is still a resource-cache
+pickup rather than an enemy drop, so Resource Drop Boosters and the Steel
+Path passive don't raise the odds per cache — the payoff here is simply more
+survival rotations, and therefore more caches, per hour.
+
+## Sources
+
+- [Detonite Ampule — Warframe Wiki](https://wiki.warframe.com/w/Detonite_Ampule)

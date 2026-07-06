@@ -1,0 +1,23 @@
+## Early game
+
+**Ophelia** on Uranus (Survival, Grineer Sealab) is the standard early
+Tellurium farm. Unlike most of Uranus' other resources, Tellurium isn't
+purely a container pickup: the wiki documents it also dropping from enemies
+encountered in any "Submersible"-tagged tileset, and Ophelia's Sealab
+tileset is one of them. That means the longer the Survival runs and the more
+enemies your squad clears, the more Tellurium comes in on top of the
+mission's resource caches.
+
+## Mid & late game
+
+**Assur** (Dark Sector Survival, Steel Path) is the endgame upgrade on the
+same planet. The wiki states plainly that "Steel Path grants much higher
+enemy density and +100% resource drop chance," and anecdotally reports
+around 4x the Tellurium drop rate compared to a regular run on Ophelia. Since
+part of Tellurium's supply genuinely comes from enemy kills, this is one of
+the few Uranus resources where stacking a Resource Drop Chance Booster with
+the Steel Path passive is actually worth it.
+
+## Sources
+
+- [Tellurium — Warframe Wiki](https://wiki.warframe.com/w/Tellurium)

@@ -1,0 +1,23 @@
+## Early game
+
+**Io** on Jupiter (Defense) is an accessible early Hexenon source. Hexenon has
+no resource-deposit variant at all — the wiki notes it comes only from
+Amalgam enemy kills (roughly a 7.2% drop chance) and mission-completion
+rewards in Disruption missions — so this is a genuinely enemy-drop-based
+farm from the start, and Resource Drop Boosters help even at this level.
+**Elara** (Survival), also on Jupiter, is a good low-level alternative if
+Io's matchmaking isn't available.
+
+## Mid & late game
+
+**Ganymede** (Disruption, Steel Path) is the wiki's top pick for consistent
+Hexenon, citing 27-30% drop chances per rotation from its Amalgam spawns —
+5 to 15 units per completion. Because Hexenon is purely an enemy/reward drop
+rather than a container pickup, both Resource Drop Chance Boosters and the
+Steel Path resource-drop passive meaningfully increase yield here, on top of
+Steel Path's higher enemy density putting more Amalgams on the field per
+minute.
+
+## Sources
+
+- [Hexenon — Warframe Wiki](https://wiki.warframe.com/w/Hexenon)

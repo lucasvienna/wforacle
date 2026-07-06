@@ -1,0 +1,24 @@
+## Early game
+
+**Wahiba** on Mars (Dark Sector Survival) is an easy early Salvage source —
+Mars is one of Salvage's three signature planets, and this low-level Dark
+Sector node is safe to run before a squad is fully geared. Salvage has no
+dedicated enemy drop table, so the wiki's own advice applies here too:
+"endless missions have a higher concentration of mobs and also a decent
+amount of storage containers and lockers," and it's those containers, not the
+mobs, that actually drop Salvage.
+
+## Mid & late game
+
+**Carme** on Jupiter (Mobile Defense) is the wiki's standout late-game pick,
+citing up to 3,000 Salvage in a single run if every container and locker in
+the Corpus tileset gets opened. Since Salvage is still a container-based
+pickup rather than an enemy drop, Resource Drop Boosters and the Steel Path
+passive don't add anything on top — a squad that splits up and loots
+thoroughly will out-farm one that just fights through to the objective.
+**Elara** (Survival), also on Jupiter, is a solid endless alternative with a
+Nekros or other loot-enhancing frame along for the ride.
+
+## Sources
+
+- [Salvage — Warframe Wiki](https://wiki.warframe.com/w/Salvage)

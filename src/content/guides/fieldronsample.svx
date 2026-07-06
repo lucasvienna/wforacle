@@ -1,0 +1,20 @@
+## Early game
+
+**Kadesh** on Mars (Dark Sector Defense) is an accessible early Fieldron
+Sample spot. The wiki lists no mission or enemy drop table for this resource
+at all — it's picked up as an environmental resource item scattered through
+the Dark Sector tileset, so simply exploring the level between Defense waves
+matters more than kill count.
+
+## Mid & late game
+
+**Kelashin** on Neptune (Dark Sector Survival) is the wiki's recommended
+endgame spot. Running it in Steel Path mainly buys a squad more time to sweep
+the Infested Ship tileset for pickups on a longer Survival timer — since
+Fieldron Sample is neither an enemy drop nor a resource cache, Resource Drop
+Boosters and the Steel Path passive don't change how often it turns up.
+Thorough exploration, not drop-chance buffs, is what raises the count here.
+
+## Sources
+
+- [Fieldron Sample — Warframe Wiki](https://wiki.warframe.com/w/Fieldron_Sample)
