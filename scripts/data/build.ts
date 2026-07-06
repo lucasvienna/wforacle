@@ -86,6 +86,8 @@ const SLOT_BY_COMPONENT: Record<string, Slot> = {
 	Neuroptics: 'neuroptics',
 	Chassis: 'chassis',
 	Systems: 'systems',
+	'Day Aspect': 'dayaspect',
+	'Night Aspect': 'nightaspect',
 };
 
 export function buildFrames(

@@ -15,6 +15,8 @@
 		neuroptics: 'Neuroptics',
 		chassis: 'Chassis',
 		systems: 'Systems',
+		dayaspect: 'Day Aspect',
+		nightaspect: 'Night Aspect',
 	} as const;
 
 	// Faction accent for the assassination tag. Extend as new factions appear.

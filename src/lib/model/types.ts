@@ -1,4 +1,4 @@
-export type Slot = 'bp' | 'neuroptics' | 'chassis' | 'systems';
+export type Slot = 'bp' | 'neuroptics' | 'chassis' | 'systems' | 'dayaspect' | 'nightaspect';
 
 export interface WarframePart {
 	id: string;
