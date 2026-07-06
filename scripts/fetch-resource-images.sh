@@ -25,3 +25,14 @@ dl argoncrystal.webp ArgonCrystal.png
 dl gallium.webp ComponentGallium.png
 dl controlmodule.webp ControlModule.png
 dl rubedo.webp ComponentRubedo.png
+dl ferrite.webp ComponentFerrite.png
+dl morphics.webp ComponentMorphic.png
+dl detoniteampule.webp GrineerFragment.png
+dl circuits.webp ComponentCircuits.png
+dl fieldronsample.webp CorpusFragment.png
+dl salvage.webp ComponentSalvage.png
+dl carbides.webp RailjackComponentCarbides.png
+dl hexenon.webp ComponentConcentratedGas.png
+dl cubicdiodes.webp RailjackComponentCubics.png
+dl tellurium.webp Tellurium.png
+dl mutagensample.webp InfestedFragment.png

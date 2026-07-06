@@ -1,46 +1,74 @@
 import type { Recommendation } from '../../src/lib/model/types';
 import { slugify } from './parse';
 
-// The ~12 "starter" resources most new players need for early Warframe/weapon
-// blueprints. id = slugify(name) so this stays consistent with every other
-// slug in the dataset (regions, nodes, bosses).
+// Every resource that appears in a main-planet's resource pool, plus the
+// curated-only ones (Argon Crystal — Void). id = slugify(name), and each name
+// matches its @wfcd/items entry so the pipeline resolves its icon.
+// A resource having farming RECOMMENDATIONS (below) is a curated subset; the
+// rest are informational-only (they show which planet drops them, no guide).
 export const RESOURCES = [
-	{ id: slugify('Orokin Cell'), name: 'Orokin Cell' },
+	{ id: slugify('Ferrite'), name: 'Ferrite' },
+	{ id: slugify('Alloy Plate'), name: 'Alloy Plate' },
+	{ id: slugify('Nano Spores'), name: 'Nano Spores' },
+	{ id: slugify('Salvage'), name: 'Salvage' },
+	{ id: slugify('Circuits'), name: 'Circuits' },
+	{ id: slugify('Polymer Bundle'), name: 'Polymer Bundle' },
+	{ id: slugify('Plastids'), name: 'Plastids' },
+	{ id: slugify('Rubedo'), name: 'Rubedo' },
+	{ id: slugify('Morphics'), name: 'Morphics' },
+	{ id: slugify('Gallium'), name: 'Gallium' },
 	{ id: slugify('Neurodes'), name: 'Neurodes' },
 	{ id: slugify('Neural Sensors'), name: 'Neural Sensors' },
-	{ id: slugify('Nano Spores'), name: 'Nano Spores' },
-	{ id: slugify('Alloy Plate'), name: 'Alloy Plate' },
-	{ id: slugify('Plastids'), name: 'Plastids' },
-	{ id: slugify('Polymer Bundle'), name: 'Polymer Bundle' },
-	{ id: slugify('Oxium'), name: 'Oxium' },
-	{ id: slugify('Argon Crystal'), name: 'Argon Crystal' },
-	{ id: slugify('Gallium'), name: 'Gallium' },
 	{ id: slugify('Control Module'), name: 'Control Module' },
-	{ id: slugify('Rubedo'), name: 'Rubedo' },
+	{ id: slugify('Orokin Cell'), name: 'Orokin Cell' },
+	{ id: slugify('Oxium'), name: 'Oxium' },
+	{ id: slugify('Tellurium'), name: 'Tellurium' },
+	{ id: slugify('Hexenon'), name: 'Hexenon' },
+	{ id: slugify('Mutagen Sample'), name: 'Mutagen Sample' },
+	{ id: slugify('Detonite Ampule'), name: 'Detonite Ampule' },
+	{ id: slugify('Fieldron Sample'), name: 'Fieldron Sample' },
+	{ id: slugify('Carbides'), name: 'Carbides' },
+	{ id: slugify('Cubic Diodes'), name: 'Cubic Diodes' },
+	{ id: slugify('Argon Crystal'), name: 'Argon Crystal' },
 ];
 
 const R = Object.fromEntries(RESOURCES.map((r) => [r.name, r.id])) as Record<string, string>;
 
-// regionId -> signature resource ids, curated from each resource's wiki page
-// "Location:" line / drop-location table, restricted to the 14 main planets.
-// Argon Crystal is intentionally absent: per wiki.warframe.com/w/Argon_Crystal
-// it is a Void-only resource ("A Void based radioactive resource... Location:
-// Missions in the Void"), not a signature drop of any main planet.
+// regionId -> the resources a planet yields. Base = the planet-page infobox
+// "Region Resources" pool (verified against wiki.warframe.com for all 14
+// planets). Oxium is added on top for the planets where its Oxium Osprey drops
+// (Venus/Jupiter/Mars/Neptune/Pluto/Eris/Europa) — it's an enemy drop, not an
+// infobox pool item, but is a resource you genuinely farm there.
+// Argon Crystal is intentionally absent: it is Void-only, not a main-planet drop.
 export const PLANET_RESOURCES: Record<string, string[]> = {
-	earth: [R['Neurodes'], R['Rubedo']],
-	venus: [R['Alloy Plate'], R['Polymer Bundle'], R['Oxium'], R['Neurodes']],
-	mercury: [R['Polymer Bundle']],
-	mars: [R['Gallium'], R['Oxium']],
-	phobos: [R['Alloy Plate'], R['Plastids'], R['Rubedo']],
-	ceres: [R['Alloy Plate'], R['Orokin Cell']],
-	jupiter: [R['Alloy Plate'], R['Neural Sensors'], R['Oxium'], R['Orokin Cell']],
-	europa: [R['Oxium'], R['Control Module'], R['Rubedo']],
-	saturn: [R['Orokin Cell'], R['Nano Spores'], R['Plastids']],
-	uranus: [R['Plastids'], R['Polymer Bundle'], R['Gallium']],
-	neptune: [R['Nano Spores'], R['Oxium'], R['Control Module']],
-	pluto: [R['Alloy Plate'], R['Plastids'], R['Oxium'], R['Orokin Cell'], R['Rubedo']],
-	eris: [R['Plastids'], R['Nano Spores'], R['Oxium'], R['Neurodes']],
-	sedna: [R['Alloy Plate'], R['Orokin Cell'], R['Rubedo']],
+	mercury: [R['Ferrite'], R['Polymer Bundle'], R['Morphics'], R['Detonite Ampule']],
+	venus: [R['Alloy Plate'], R['Polymer Bundle'], R['Circuits'], R['Fieldron Sample'], R['Oxium']],
+	earth: [R['Ferrite'], R['Rubedo'], R['Neurodes'], R['Detonite Ampule']],
+	mars: [R['Gallium'], R['Morphics'], R['Salvage'], R['Fieldron Sample'], R['Oxium']],
+	phobos: [R['Rubedo'], R['Morphics'], R['Plastids'], R['Alloy Plate']],
+	ceres: [R['Alloy Plate'], R['Circuits'], R['Orokin Cell'], R['Detonite Ampule'], R['Carbides']],
+	jupiter: [R['Salvage'], R['Hexenon'], R['Neural Sensors'], R['Alloy Plate'], R['Oxium']],
+	europa: [
+		R['Morphics'],
+		R['Rubedo'],
+		R['Fieldron Sample'],
+		R['Control Module'],
+		R['Cubic Diodes'],
+		R['Oxium'],
+	],
+	saturn: [R['Nano Spores'], R['Plastids'], R['Orokin Cell'], R['Detonite Ampule']],
+	uranus: [R['Gallium'], R['Plastids'], R['Polymer Bundle'], R['Detonite Ampule'], R['Tellurium']],
+	neptune: [R['Nano Spores'], R['Ferrite'], R['Control Module'], R['Fieldron Sample'], R['Oxium']],
+	pluto: [
+		R['Rubedo'],
+		R['Morphics'],
+		R['Plastids'],
+		R['Alloy Plate'],
+		R['Fieldron Sample'],
+		R['Oxium'],
+	],
+	eris: [R['Nano Spores'], R['Plastids'], R['Neurodes'], R['Mutagen Sample'], R['Oxium']],
+	sedna: [R['Alloy Plate'], R['Rubedo'], R['Salvage'], R['Detonite Ampule']],
 };
 
 // Early + late farming recommendations per resource, authored from

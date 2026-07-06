@@ -5,12 +5,13 @@ import { slugify } from './parse';
 const ids = new Set(RESOURCES.map((r) => r.id));
 
 describe('curated farming data', () => {
-	it('has ~12 starter resources with slug ids', () => {
-		expect(RESOURCES.length).toBeGreaterThanOrEqual(10);
+	it('has a full resource set with unique slug ids', () => {
+		expect(RESOURCES.length).toBeGreaterThanOrEqual(14);
 		for (const r of RESOURCES) expect(r.id).toBe(slugify(r.name));
+		expect(new Set(RESOURCES.map((r) => r.id)).size).toBe(RESOURCES.length);
 	});
-	it('maps only known resource ids to planets, on the 14 main regions', () => {
-		const mains = new Set([
+	it('maps all 14 main planets to known resource ids only', () => {
+		const mains = [
 			'earth',
 			'venus',
 			'mercury',
@@ -25,15 +26,15 @@ describe('curated farming data', () => {
 			'pluto',
 			'eris',
 			'sedna',
-		]);
-		for (const [region, rids] of Object.entries(PLANET_RESOURCES)) {
-			expect(mains.has(region)).toBe(true);
+		];
+		expect(Object.keys(PLANET_RESOURCES).sort()).toEqual([...mains].sort());
+		for (const rids of Object.values(PLANET_RESOURCES)) {
 			for (const rid of rids) expect(ids.has(rid)).toBe(true);
 		}
 	});
-	it('every resource has an early and a late rec with required fields', () => {
-		for (const r of RESOURCES) {
-			const recs = RECOMMENDATIONS[r.id] ?? [];
+	it('each curated recommendation targets a real resource with an early + late rec', () => {
+		for (const [rid, recs] of Object.entries(RECOMMENDATIONS)) {
+			expect(ids.has(rid)).toBe(true);
 			expect(recs.some((x) => x.phase === 'early')).toBe(true);
 			expect(recs.some((x) => x.phase === 'late')).toBe(true);
 			for (const x of recs) {

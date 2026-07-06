@@ -27,12 +27,18 @@ export const load: PageLoad = async ({ params, fetch }) => {
 // would 404 at `/guides/argoncrystal` without an explicit entries() list.
 // Enumerate every resource id from the dataset so all of them prerender.
 //
-// The dataset is imported dynamically here (rather than as a top-level
-// static import) so Vite treats it as build-time-only: a static import in
-// this universal load module would get bundled into the client-side guides
-// chunk, duplicating the ~70KB dataset that `load()` already `fetch`es at
-// runtime via `loadDataset(fetch)`.
+// Only resources with a curated recommendation get a guide page (Argon Crystal
+// has recs but no panel link — regionIds: [] — so it still needs an explicit
+// entry). Informational-only resources (Ferrite, Salvage, …) have no guide and
+// aren't linked from the panel, so they are not prerendered here.
+//
+// The dataset is imported dynamically (rather than as a top-level static
+// import) so Vite treats it as build-time-only: a static import in this
+// universal load module would get bundled into the client-side guides chunk,
+// duplicating the dataset that `load()` already `fetch`es at runtime.
 export async function entries() {
 	const raw = (await import('../../../../static/data/dataset.json')).default;
-	return raw.data.resources.map((r) => ({ resource: r.id }));
+	return raw.data.resources
+		.filter((r) => r.recommendations.length > 0)
+		.map((r) => ({ resource: r.id }));
 }

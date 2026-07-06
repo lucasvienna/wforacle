@@ -215,12 +215,14 @@
 								</p>
 							{/if}
 						</div>
-						<a
-							href="{base}/guides/{r.id}"
-							class="mt-0.5 shrink-0 self-start text-xs font-medium text-sky-400 hover:text-sky-300"
-						>
-							farming ▸
-						</a>
+						{#if r.recommendations.length > 0}
+							<a
+								href="{base}/guides/{r.id}"
+								class="mt-0.5 shrink-0 self-start text-xs font-medium text-sky-400 hover:text-sky-300"
+							>
+								farming ▸
+							</a>
+						{/if}
 					</li>
 				{/each}
 			</ul>
