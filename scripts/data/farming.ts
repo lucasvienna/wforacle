@@ -39,7 +39,8 @@ const R = Object.fromEntries(RESOURCES.map((r) => [r.name, r.id])) as Record<str
 // planets). Oxium is added on top for the planets where its Oxium Osprey drops
 // (Venus/Jupiter/Mars/Neptune/Pluto/Eris/Europa) — it's an enemy drop, not an
 // infobox pool item, but is a resource you genuinely farm there.
-// Argon Crystal is intentionally absent: it is Void-only, not a main-planet drop.
+// Special regions carry their own pools too: Deimos (Infested) and the Void,
+// whose signature resource is the Void-exclusive Argon Crystal.
 export const PLANET_RESOURCES: Record<string, string[]> = {
 	mercury: [R['Ferrite'], R['Polymer Bundle'], R['Morphics'], R['Detonite Ampule']],
 	venus: [R['Alloy Plate'], R['Polymer Bundle'], R['Circuits'], R['Fieldron Sample'], R['Oxium']],
@@ -73,6 +74,9 @@ export const PLANET_RESOURCES: Record<string, string[]> = {
 	// the modern home of Mutagen Sample plus the standard Infested drops. Keyed
 	// by the special-region slug so buildRegions picks it up like a planet's.
 	deimos: [R['Mutagen Sample'], R['Nano Spores'], R['Plastids'], R['Neurodes']],
+	// The Void's signature drop is the Void-exclusive Argon Crystal (also the
+	// only resource that decays over time).
+	void: [R['Argon Crystal']],
 };
 
 // Early + late farming recommendations per resource, authored from
