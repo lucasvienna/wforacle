@@ -2,7 +2,35 @@ import { render, screen, waitFor } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
 import { seed } from '$lib/data/seed';
 
-vi.mock('$lib/data/dataset', () => ({ loadDataset: () => Promise.resolve(seed) }));
+const withDeimos = {
+	...seed,
+	regions: [
+		...seed.regions,
+		{
+			id: 'deimos',
+			name: 'Deimos',
+			kind: 'special' as const,
+			progressionOrder: 15,
+			factions: ['Infested'],
+			nodeIds: [],
+			spoilerGated: true,
+			questId: 'heartofdeimos',
+			resourceIds: [],
+		},
+	],
+	quests: [
+		{
+			id: 'heartofdeimos',
+			name: 'Heart of Deimos',
+			revealsRegionIds: ['deimos'],
+			revealsFrameIds: ['nekros'],
+		},
+	],
+};
+
+vi.mock('$lib/data/dataset', () => ({
+	loadDataset: () => Promise.resolve(withDeimos),
+}));
 
 import Page from './+page.svelte';
 
@@ -25,5 +53,17 @@ describe('home page', () => {
 		await waitFor(() => expect(screen.getByText('VENUS')).toBeInTheDocument());
 		// panel (Venus selected) — boss name appears in subtitle + part-source labels
 		expect(screen.getAllByText(/Jackal/).length).toBeGreaterThan(0);
+
+		// Deimos is spoiler-gated behind the Heart of Deimos quest — hidden by default.
+		expect(screen.queryByText('DEIMOS')).toBeNull();
+		// The Quests panel renders the quest for the player to toggle.
+		expect(screen.getByText('Heart of Deimos')).toBeInTheDocument();
+
+		// Toggling the quest reveals Deimos on the chart via the reactive
+		// revealedRegions() derivation.
+		const questRow = document.querySelector('[data-quest="heartofdeimos"]');
+		expect(questRow).not.toBeNull();
+		(questRow as HTMLElement).click();
+		await waitFor(() => expect(screen.getByText('DEIMOS')).toBeInTheDocument());
 	});
 });
