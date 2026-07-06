@@ -1,21 +1,23 @@
 ## Early game
 
-Voidgel Orb is a **Zariman regional drop**, best farmed at **Tuvul Commons**
-running **Void Cascade**. It's an in-mission pickup with a relatively low
-individual chance (roughly 9.76% as a mission reward roll), so plan on
-running several Cascade rotations rather than expecting one per mission.
+Voidgel Orb is a **Zariman regional reward**, best farmed at **Tuvul Commons**
+running **Void Cascade**. It comes from the mission's end-of-run reward table
+with a relatively low fixed chance (roughly 9.76%), so plan on running
+several Cascade rotations rather than expecting one per mission.
 
-Because it's a resource pickup, a **Resource Drop Booster boosts your Orb
-drop rate** — worth popping one if you're stacking up Zariman crafting
-requirements in the same session.
+Because it's a **reward-table roll** rather than an in-mission resource
+pickup, a **Resource Drop Booster does not increase your Orb drop rate** —
+the only way to get more is to run more (or faster) Void Cascade rotations
+and bounties.
 
 ## Mid & late game
 
 **Steel Path Tuvul Commons** is the sustained late-game farm: tougher enemies
-and longer Cascade rotations mean more roll opportunities per hour, and the
-Steel Path Resource Drop Chance Booster stacks with a regular Resource Drop
-Booster on every roll. Running full Cascade rotations back-to-back on Steel
-Path is the most efficient way to stockpile Voidgel Orbs for Zariman gear and
+mean faster, more consistent Cascade rotations, so a full squad can bank more
+reward-table rolls per hour. Steel Path doesn't change the reward-table odds
+themselves — it just lets you complete more rotations in the same time.
+Running full Cascade rotations back-to-back, along with Zariman bounties, is
+the most efficient way to stockpile Voidgel Orbs for Zariman gear and
 Deimos/Zariman crafting alike.
 
 ## Sources

@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T21:46:12.966Z",
+	"generatedAt": "2026-07-06T22:02:27.918Z",
 	"data": {
 		"regions": [
 			{
@@ -5216,8 +5216,8 @@
 					{
 						"phase": "early",
 						"nodeLabel": "Zariman — Tuvul Commons (Void Cascade)",
-						"boostersApply": true,
-						"note": "Voidgel Orb is one of the Zariman’s regional mission rewards (roughly a 9.76% end-of-mission chance); running Void Cascade rotations on Tuvul Commons is the standard way to farm it as soon as the Zariman is unlocked.",
+						"boostersApply": false,
+						"note": "Voidgel Orb is one of the Zariman’s regional mission rewards (roughly a 9.76% end-of-mission chance) drawn from a fixed reward table, not a resource pickup, so resource drop boosters don’t affect it; running Void Cascade rotations on Tuvul Commons is the standard way to farm it as soon as the Zariman is unlocked.",
 						"source": "https://wiki.warframe.com/w/Voidgel_Orb",
 						"lastVerified": "2026-07-06",
 						"regionId": "zariman"
@@ -5225,8 +5225,8 @@
 					{
 						"phase": "late",
 						"nodeLabel": "Zariman — Tuvul Commons (Void Cascade, Steel Path)",
-						"boostersApply": true,
-						"note": "Steel Path Void Cascade runs the same reward table faster with denser Void Angel/Sentient spawns, so a full squad can bank multiple rotations’ worth of Voidgel Orb rolls per hour.",
+						"boostersApply": false,
+						"note": "Steel Path Void Cascade runs the same fixed reward table faster with denser Void Angel/Sentient spawns, so a full squad can bank multiple rotations’ worth of Voidgel Orb rolls per hour; boosters still don’t apply since it’s a mission/bounty reward-table roll, not a resource pickup.",
 						"source": "https://wiki.warframe.com/w/Voidgel_Orb",
 						"lastVerified": "2026-07-06",
 						"regionId": "zariman"
@@ -5244,8 +5244,8 @@
 					{
 						"phase": "early",
 						"nodeLabel": "Zariman — Halako Perimeter (Extermination)",
-						"boostersApply": true,
-						"note": "Entrati Lanthorn is a Zariman mission reward (about a 9.76% chance) alongside Voidgel Orb, so a quick Halako Perimeter Extermination repeated a few times is an efficient early source.",
+						"boostersApply": false,
+						"note": "Entrati Lanthorn is a Zariman mission reward (about a 9.76% chance) alongside Voidgel Orb, so a quick Halako Perimeter Extermination repeated a few times is an efficient early source; it’s a fixed-table mission reward roll, so resource drop boosters don’t apply.",
 						"source": "https://wiki.warframe.com/w/Entrati_Lanthorn",
 						"lastVerified": "2026-07-06",
 						"regionId": "zariman"

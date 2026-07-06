@@ -27,8 +27,8 @@
 	};
 
 	// Bosses that require crafting a key item before the node can be played
-	// (e.g. Derelict/Orokin Vault keys). Presentational hint only — not a
-	// spoiler gate.
+	// (e.g. Mutalist Alad V Assassinate key, Jordas Golem key). Presentational
+	// hint only — not a spoiler gate.
 	const KEY_BOSSES = new Set(['Mutalist Alad V', 'Jordas Golem']);
 
 	let region = $derived(dataset.regions.find((r) => r.id === regionId));

@@ -1,25 +1,24 @@
 ## Early game
 
-Entrati Lanthorn drops on the **Zariman** from **Halako Perimeter**
+Entrati Lanthorn is a **Zariman mission reward** from **Halako Perimeter**
 (Extermination), and also shows up as a **bounty reward** on both the
 Zariman and Deimos's **Cambion Drift**. Running Halako Perimeter
-Extermination gives you direct enemy-drop access, while rotating through a
-few Entrati or Zariman bounty stages tends to net a Lanthorn or two per
-bounty chain.
+Extermination gives you a shot at its end-of-mission reward-table roll (about
+9.76%), while rotating through a few Entrati or Zariman bounty stages tends
+to net a Lanthorn or two per bounty chain.
 
-Bounty rewards come from a fixed reward table roll at bounty completion, so
-**Resource Drop Boosters don't affect bounty-sourced Lanthorns** — they only
-help if you're picking them up as in-mission drops on Halako Perimeter.
+Both sources are fixed reward-table rolls (mission-end and bounty-completion
+rewards), not in-mission resource pickups, so **Resource Drop Boosters don't
+affect Entrati Lanthorn from either source**.
 
 ## Mid & late game
 
 Once you're deep into Entrati and Holdfast crafting, alternate between
-**Halako Perimeter Extermination** runs (for the boosted in-mission drop) and
-stacking **Cambion Drift / Zariman bounties** back-to-back for their
-Lanthorn reward slots. Since bounty rewards aren't booster-affected, the
-efficient late-game loop is to save your Resource Drop Booster for
-Extermination sessions and just grind bounty chains raw for the reward-table
-copies.
+**Halako Perimeter Extermination** runs and stacking **Cambion Drift /
+Zariman bounties** back-to-back for their Lanthorn reward slots. Since
+neither source is booster-affected, the efficient late-game loop is simply
+to run more missions and bounty chains rather than saving boosters for this
+resource.
 
 ## Sources
 
