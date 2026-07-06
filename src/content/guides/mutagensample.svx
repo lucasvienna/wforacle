@@ -1,24 +1,32 @@
 ## Early game
 
-**Naeglar** on Eris (Hive) is the only documented Mutagen Sample source on
-the planet: the wiki's drop tables show a Rotation B Hive Sabotage resource
-cache with roughly a 15.5% chance for 3 samples. That cache rolls from a
-reward table rather than enemy kills, so a Resource Drop Booster and the Steel
-Path passive don't affect it — the cache itself is the farm. Clear the Hive
-efficiently, bank the Rotation B reward, and reset.
+Mutagen Sample is a **Deimos regional drop** — the wiki classes it "uncommon"
+on Deimos versus "rare" elsewhere, which makes Deimos the best sustained
+source. Farm any endless Infested node — **Terrorem** (Survival) or **Hyf**
+(Defense) — or run **Cambion Drift** bounties and free roam, killing in bulk.
+These are in-mission enemy/tileset pickups, so a **Resource Drop Booster and
+the Steel Path resource passive do boost them**.
+
+No Deimos access yet (pre–_Heart of Deimos_)? **Naeglar** on Eris (Hive
+Sabotage) drops a Rotation-B resource cache at roughly 15.5% for 3 samples — a
+quest-free fallback, though the cache is an end-of-mission reward that boosters
+don't affect.
 
 ## Mid & late game
 
-Since Eris doesn't have a second Mutagen Sample node, the endgame upgrade is
-running **Naeglar** (Hive, Steel Path) with a full 4-player squad instead of
-solo. Each player's own mission completion rolls the resource cache table
-independently, so a full squad multiplies the number of caches found per run.
-Because those caches are reward tables rather than enemy drops, boosters and
-the Steel Path passive still don't change the per-cache odds — squad size, not
-drop-chance buffs, is what scales this farm. (Deimos' Formido has a similar
-cache for players who've reached the Cambion Drift, but Eris is the
-self-contained option for this planet's farming path.)
+**Steel Path Deimos** scales the same farm: denser, tankier Infested drop more
+samples per minute, and the Steel Path Resource Drop Chance Booster stacks on
+the in-mission pickups. Terrorem (Survival) or Cambion Drift on Steel Path is
+the highest sustained throughput.
+
+When you'd rather bank guaranteed caches, the Eris **Sabotage cache** nodes —
+Naeglar, Candiru, Lepis, Psoro, Viver (Rotation B, ~15.5% for 3) — and
+**Formido** on Deimos (Rotation A, ~14.3% for 3) each hand out a cache per run.
+Caches are reward-table rolls, so only the Steel Path drop-chance booster
+affects them, not resource boosters — squad size (each player's own cache roll)
+is what multiplies them.
 
 ## Sources
 
 - [Mutagen Sample — Warframe Wiki](https://wiki.warframe.com/w/Mutagen_Sample)
+- [Mutagen Sample drops — WarframeLocator](https://warframelocator.com/drop-Mutagen-Sample/)

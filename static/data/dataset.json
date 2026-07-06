@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T14:00:43.287Z",
+	"generatedAt": "2026-07-06T14:31:10.482Z",
 	"data": {
 		"regions": [
 			{
@@ -4842,21 +4842,19 @@
 				"recommendations": [
 					{
 						"phase": "early",
-						"nodeLabel": "Eris — Naeglar (Hive)",
-						"boostersApply": false,
-						"note": "The wiki lists Naeglar’s Hive Sabotage resource cache (Rotation B, ~15.5% for 3) as the only documented Mutagen Sample source on Eris. Resource caches roll from a reward table rather than enemy drops, so a Resource Drop Booster and the Steel Path passive don’t affect this pickup — the cache itself is the whole farm.",
+						"nodeLabel": "Deimos — Terrorem (Survival)",
+						"boostersApply": true,
+						"note": "Mutagen Sample is a Deimos regional drop — the wiki classes it “uncommon” on Deimos (vs “rare” elsewhere), making Deimos the best sustained source. Farm any endless Infested node — Terrorem (Survival) or Hyf (Defense) — or Cambion Drift bounties/free roam, killing in bulk. These are in-mission enemy/tileset pickups, so a Resource Drop Booster and the Steel Path resource passive DO boost them. No Deimos yet? Eris — Naeglar (Hive Sabotage) drops a Rotation-B cache (~15.5% for 3) as a quest-free fallback.",
 						"source": "https://wiki.warframe.com/w/Mutagen_Sample",
-						"lastVerified": "2026-07-06",
-						"regionId": "eris"
+						"lastVerified": "2026-07-06"
 					},
 					{
 						"phase": "late",
-						"nodeLabel": "Eris — Naeglar (Hive, Steel Path)",
-						"boostersApply": false,
-						"note": "Eris only has the one documented Mutagen Sample cache, so the late-game upgrade is running Naeglar in a full 4-player squad: each player’s own rotation-B completion rolls the cache table independently, multiplying caches found per run. It’s still a reward-table cache, not an enemy drop, so boosters and the Steel Path passive don’t change the per-cache odds.",
+						"nodeLabel": "Deimos — Terrorem (Survival, Steel Path)",
+						"boostersApply": true,
+						"note": "Steel Path Deimos scales the same regional farm: denser, tankier Infested drop more samples per minute, and the Steel Path Resource Drop Chance Booster stacks on the in-mission pickups. For guaranteed bulk instead, run the Eris Sabotage caches (Naeglar/Candiru/Lepis/Psoro/Viver, Rotation B ~15.5% for 3) or Deimos — Formido (Rotation A ~14.3% for 3) — but caches are end-of-mission rewards, so only the Steel Path drop-chance booster affects those, not resource boosters.",
 						"source": "https://wiki.warframe.com/w/Mutagen_Sample",
-						"lastVerified": "2026-07-06",
-						"regionId": "eris"
+						"lastVerified": "2026-07-06"
 					}
 				]
 			},
