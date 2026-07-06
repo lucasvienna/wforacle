@@ -85,11 +85,13 @@ async function main() {
 		process.exit(1);
 	}
 	// Floor matching the curated RESOURCES list size (scripts/data/farming.ts,
-	// Task 2): all 12 curated resources are built regardless of @wfcd/items
-	// match success, so this guards against buildResources silently returning
-	// far fewer entries (e.g. an empty/malformed rawResources source).
-	if (data.resources.length < 10) {
-		console.error(`Sanity check failed (expected >=10 resources, got ${data.resources.length})`);
+	// Task 6): all 27 curated resources — including the 4 special-region ones
+	// (Somatic Fibers, Kuva, Voidgel Orb, Entrati Lanthorn) — are built
+	// regardless of @wfcd/items match success, so this guards against
+	// buildResources silently returning far fewer entries (e.g. an
+	// empty/malformed rawResources source).
+	if (data.resources.length < 27) {
+		console.error(`Sanity check failed (expected >=27 resources, got ${data.resources.length})`);
 		process.exit(1);
 	}
 	mkdirSync('static/data', { recursive: true });

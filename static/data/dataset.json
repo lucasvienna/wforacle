@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T21:26:12.995Z",
+	"generatedAt": "2026-07-06T21:46:12.966Z",
 	"data": {
 		"regions": [
 			{
@@ -681,7 +681,13 @@
 					"SolNode309",
 					"SolNode310"
 				],
-				"resourceIds": [],
+				"resourceIds": [
+					"neurodes",
+					"ferrite",
+					"rubedo",
+					"detoniteampule",
+					"somaticfibers"
+				],
 				"questId": "theseconddream"
 			},
 			{
@@ -703,7 +709,14 @@
 					"SolNode747",
 					"SolNode748"
 				],
-				"resourceIds": [],
+				"resourceIds": [
+					"salvage",
+					"circuits",
+					"neuralsensors",
+					"detoniteampule",
+					"tellurium",
+					"kuva"
+				],
 				"questId": "thewarwithin"
 			},
 			{
@@ -724,7 +737,10 @@
 					"SolNode235",
 					"ZarimanHub"
 				],
-				"resourceIds": [],
+				"resourceIds": [
+					"voidgelorb",
+					"entratilanthorn"
+				],
 				"questId": "angelsofthezariman"
 			}
 		],
@@ -4477,7 +4493,8 @@
 				"regionIds": [
 					"mercury",
 					"earth",
-					"neptune"
+					"neptune",
+					"lua"
 				],
 				"recommendations": [
 					{
@@ -4570,7 +4587,8 @@
 				"regionIds": [
 					"mars",
 					"jupiter",
-					"sedna"
+					"sedna",
+					"kuvafortress"
 				],
 				"recommendations": [
 					{
@@ -4599,7 +4617,8 @@
 				"image": "ComponentCircuits.png",
 				"regionIds": [
 					"venus",
-					"ceres"
+					"ceres",
+					"kuvafortress"
 				],
 				"recommendations": [
 					{
@@ -4694,7 +4713,8 @@
 					"phobos",
 					"europa",
 					"pluto",
-					"sedna"
+					"sedna",
+					"lua"
 				],
 				"recommendations": [
 					{
@@ -4785,7 +4805,8 @@
 				"regionIds": [
 					"earth",
 					"eris",
-					"deimos"
+					"deimos",
+					"lua"
 				],
 				"recommendations": [
 					{
@@ -4813,7 +4834,8 @@
 				"name": "Neural Sensors",
 				"image": "NeuralSensor.png",
 				"regionIds": [
-					"jupiter"
+					"jupiter",
+					"kuvafortress"
 				],
 				"recommendations": [
 					{
@@ -4933,7 +4955,8 @@
 				"name": "Tellurium",
 				"image": "Tellurium.png",
 				"regionIds": [
-					"uranus"
+					"uranus",
+					"kuvafortress"
 				],
 				"recommendations": [
 					{
@@ -5023,7 +5046,9 @@
 					"ceres",
 					"saturn",
 					"uranus",
-					"sedna"
+					"sedna",
+					"lua",
+					"kuvafortress"
 				],
 				"recommendations": [
 					{
@@ -5121,6 +5146,118 @@
 						"source": "https://wiki.warframe.com/w/Argon_Crystal",
 						"lastVerified": "2026-07-05",
 						"regionId": "void"
+					}
+				]
+			},
+			{
+				"id": "somaticfibers",
+				"name": "Somatic Fibers",
+				"image": "MemoryCryptoFragment.png",
+				"regionIds": [
+					"lua"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Lua — Apollo (Disruption)",
+						"boostersApply": true,
+						"note": "Somatic Fibers (a Lua Lens component) drop from the Demolisher units that spawn in Lua Disruption; killing Demolishers quickly is the whole farm, so a Resource Drop Booster and a loot frame raise the enemy-drop chance.",
+						"source": "https://wiki.warframe.com/w/Somatic_Fibers",
+						"lastVerified": "2026-07-06",
+						"regionId": "lua"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Lua — Apollo (Disruption, Steel Path)",
+						"boostersApply": true,
+						"note": "Steel Path Disruption spawns more Demolishers per rotation for the same Somatic Fibers drop, so the Steel Path passive stacks with a Resource Drop Booster for a faster Lens-farming squad run.",
+						"source": "https://wiki.warframe.com/w/Somatic_Fibers",
+						"lastVerified": "2026-07-06",
+						"regionId": "lua"
+					}
+				]
+			},
+			{
+				"id": "kuva",
+				"name": "Kuva",
+				"image": "Kuva.png",
+				"regionIds": [
+					"kuvafortress"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Kuva Fortress — Taveuni (Survival, Kuva Harvester)",
+						"boostersApply": false,
+						"note": "Escorting/guarding the Kuva Harvester in this Survival awards a fixed 200 Kuva when it finishes draining, regardless of drop chance boosters — a reliable, repeatable chunk as soon as the Kuva Fortress is unlocked.",
+						"source": "https://wiki.warframe.com/w/Kuva",
+						"lastVerified": "2026-07-06",
+						"regionId": "kuvafortress"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Kuva Fortress — Taveuni (Survival, Steel Path)",
+						"boostersApply": false,
+						"note": "The Harvester’s fixed 200 Kuva payout is unaffected by Steel Path or boosters, but for endgame bulk Kuva the real source is rotating daily Kuva Siphon/Flood missions (any planet) with a Requiem relic equipped — each Siphon/Flood nets 500–810+ Kuva per run.",
+						"source": "https://wiki.warframe.com/w/Kuva",
+						"lastVerified": "2026-07-06",
+						"regionId": "kuvafortress"
+					}
+				]
+			},
+			{
+				"id": "voidgelorb",
+				"name": "Voidgel Orb",
+				"image": "ZarimanMiscItemA.png",
+				"regionIds": [
+					"zariman"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Zariman — Tuvul Commons (Void Cascade)",
+						"boostersApply": true,
+						"note": "Voidgel Orb is one of the Zariman’s regional mission rewards (roughly a 9.76% end-of-mission chance); running Void Cascade rotations on Tuvul Commons is the standard way to farm it as soon as the Zariman is unlocked.",
+						"source": "https://wiki.warframe.com/w/Voidgel_Orb",
+						"lastVerified": "2026-07-06",
+						"regionId": "zariman"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Zariman — Tuvul Commons (Void Cascade, Steel Path)",
+						"boostersApply": true,
+						"note": "Steel Path Void Cascade runs the same reward table faster with denser Void Angel/Sentient spawns, so a full squad can bank multiple rotations’ worth of Voidgel Orb rolls per hour.",
+						"source": "https://wiki.warframe.com/w/Voidgel_Orb",
+						"lastVerified": "2026-07-06",
+						"regionId": "zariman"
+					}
+				]
+			},
+			{
+				"id": "entratilanthorn",
+				"name": "Entrati Lanthorn",
+				"image": "ZarimanMiscItemB.png",
+				"regionIds": [
+					"zariman"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Zariman — Halako Perimeter (Extermination)",
+						"boostersApply": true,
+						"note": "Entrati Lanthorn is a Zariman mission reward (about a 9.76% chance) alongside Voidgel Orb, so a quick Halako Perimeter Extermination repeated a few times is an efficient early source.",
+						"source": "https://wiki.warframe.com/w/Entrati_Lanthorn",
+						"lastVerified": "2026-07-06",
+						"regionId": "zariman"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Deimos — Cambion Drift (Bounties)",
+						"boostersApply": false,
+						"note": "Entrati Lanthorn also appears in the Cambion Drift bounty reward tables (as it does in Zariman bounties), giving a steady endgame supply alongside standing and other bounty rewards; bounty rewards are fixed-table payouts, so resource drop boosters don’t apply here.",
+						"source": "https://wiki.warframe.com/w/Entrati_Lanthorn",
+						"lastVerified": "2026-07-06",
+						"regionId": "deimos"
 					}
 				]
 			}
