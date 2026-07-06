@@ -39,4 +39,30 @@ describe('tracker', () => {
 		expect(calls[calls.length - 1]).toContain('rhino:bp');
 		t.dispose();
 	});
+	it('toggles a completed quest', () => {
+		const t = createTracker(seed.warframes);
+		expect(t.isQuestDone('heartofdeimos')).toBe(false);
+		t.toggleQuest('heartofdeimos');
+		expect(t.isQuestDone('heartofdeimos')).toBe(true);
+		expect(t.completedQuests.has('heartofdeimos')).toBe(true);
+		t.toggleQuest('heartofdeimos');
+		expect(t.isQuestDone('heartofdeimos')).toBe(false);
+		expect(t.completedQuests.has('heartofdeimos')).toBe(false);
+	});
+	it('round-trips a quest snapshot', () => {
+		const t = createTracker(seed.warframes);
+		t.loadQuestState(['heartofdeimos', 'thewarwithin']);
+		expect(t.questSnapshot().sort()).toEqual(['heartofdeimos', 'thewarwithin']);
+	});
+	it('wires persistQuests to fire on quest changes', () => {
+		const calls: string[][] = [];
+		const t = createTracker(seed.warframes, undefined, (ids) =>
+			calls.push([...ids]),
+		);
+		flushSync();
+		t.toggleQuest('heartofdeimos');
+		flushSync();
+		expect(calls[calls.length - 1]).toContain('heartofdeimos');
+		t.dispose();
+	});
 });
