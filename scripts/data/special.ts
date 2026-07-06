@@ -18,7 +18,7 @@ export const SPECIAL_REGIONS: {
 		order: 17,
 		faction: 'Corpus',
 		spoilerGated: true,
-		questId: 'thesecondddream',
+		questId: 'theseconddream',
 	},
 	{
 		name: 'Kuva Fortress',
@@ -49,7 +49,7 @@ export const QUESTS: {
 		revealsFrameIds: ['nekros'],
 	},
 	{
-		id: 'thesecondddream',
+		id: 'theseconddream',
 		name: 'The Second Dream',
 		revealsRegionIds: ['lua'],
 		revealsFrameIds: [],

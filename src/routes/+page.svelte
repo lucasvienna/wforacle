@@ -63,6 +63,12 @@
 	);
 	let planetRegions = $derived(visible.filter((r) => r.kind === 'planet'));
 	let specialRegions = $derived(visible.filter((r) => r.kind === 'special'));
+
+	$effect(() => {
+		if (visible.length && !visible.some((r) => r.id === selectedId)) {
+			selectedId = 'venus';
+		}
+	});
 </script>
 
 <div class="mx-auto max-w-6xl p-6 text-slate-100">

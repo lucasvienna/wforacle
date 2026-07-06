@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T06:06:01.417Z",
+	"generatedAt": "2026-07-06T14:00:43.287Z",
 	"data": {
 		"regions": [
 			{
@@ -673,7 +673,7 @@
 					"SolNode310"
 				],
 				"resourceIds": [],
-				"questId": "thesecondddream"
+				"questId": "theseconddream"
 			},
 			{
 				"id": "kuvafortress",
@@ -4980,7 +4980,7 @@
 				]
 			},
 			{
-				"id": "thesecondddream",
+				"id": "theseconddream",
 				"name": "The Second Dream",
 				"revealsRegionIds": [
 					"lua"
