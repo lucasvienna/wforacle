@@ -111,7 +111,11 @@ describe('recRegionId', () => {
 		expect(recRegionId('Uranus — Ophelia (Survival)')).toBe('uranus');
 		expect(recRegionId('Earth — Mantle (Capture, Grineer cave containers)')).toBe('earth');
 	});
-	it('returns undefined for a special-region node', () => {
-		expect(recRegionId('Void — Hepit')).toBeUndefined();
+	it('resolves special-region nodes too (Deimos/Void)', () => {
+		expect(recRegionId('Deimos — Terrorem (Survival)')).toBe('deimos');
+		expect(recRegionId('Void — Hepit')).toBe('void');
+	});
+	it('returns undefined for an unknown leading token', () => {
+		expect(recRegionId('Nowhere — Somenode')).toBeUndefined();
 	});
 });

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
 import { slugify } from './parse';
+import { SPECIAL_REGIONS } from './special';
 
 const ids = new Set(RESOURCES.map((r) => r.id));
 
@@ -10,7 +11,7 @@ describe('curated farming data', () => {
 		for (const r of RESOURCES) expect(r.id).toBe(slugify(r.name));
 		expect(new Set(RESOURCES.map((r) => r.id)).size).toBe(RESOURCES.length);
 	});
-	it('maps all 14 main planets to known resource ids only', () => {
+	it('maps every main planet (plus curated special regions) to known resource ids only', () => {
 		const mains = [
 			'earth',
 			'venus',
@@ -27,7 +28,14 @@ describe('curated farming data', () => {
 			'eris',
 			'sedna',
 		];
-		expect(Object.keys(PLANET_RESOURCES).sort()).toEqual([...mains].sort());
+		const keys = Object.keys(PLANET_RESOURCES);
+		// every main planet must be present
+		for (const m of mains) expect(keys).toContain(m);
+		// every key must be a real region slug — a main planet or a curated
+		// special region (e.g. deimos), never a typo'd/unknown id
+		const validRegionIds = new Set([...mains, ...SPECIAL_REGIONS.map((r) => slugify(r.name))]);
+		for (const k of keys) expect(validRegionIds.has(k)).toBe(true);
+		// all mapped values must be known resource ids
 		for (const rids of Object.values(PLANET_RESOURCES)) {
 			for (const rid of rids) expect(ids.has(rid)).toBe(true);
 		}

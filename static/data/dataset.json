@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T14:31:10.482Z",
+	"generatedAt": "2026-07-06T14:43:06.216Z",
 	"data": {
 		"regions": [
 			{
@@ -621,7 +621,12 @@
 					"SolNode721",
 					"SolNode251"
 				],
-				"resourceIds": [],
+				"resourceIds": [
+					"mutagensample",
+					"nanospores",
+					"plastids",
+					"neurodes"
+				],
 				"questId": "heartofdeimos"
 			},
 			{
@@ -4395,7 +4400,8 @@
 				"regionIds": [
 					"saturn",
 					"neptune",
-					"eris"
+					"eris",
+					"deimos"
 				],
 				"recommendations": [
 					{
@@ -4516,7 +4522,8 @@
 					"saturn",
 					"uranus",
 					"pluto",
-					"eris"
+					"eris",
+					"deimos"
 				],
 				"recommendations": [
 					{
@@ -4566,7 +4573,8 @@
 						"boostersApply": true,
 						"note": "The wiki recommends Orokin Void endless missions for 1,000+ Rubedo per 20 minutes; Ani is a standard Void Survival for that squad farm, and since Rubedo is an enemy drop the Steel Path passive and a Resource Drop Booster compound it.",
 						"source": "https://wiki.warframe.com/w/Rubedo",
-						"lastVerified": "2026-07-06"
+						"lastVerified": "2026-07-06",
+						"regionId": "void"
 					}
 				]
 			},
@@ -4637,7 +4645,8 @@
 				"image": "ComponentNeurode.png",
 				"regionIds": [
 					"earth",
-					"eris"
+					"eris",
+					"deimos"
 				],
 				"recommendations": [
 					{
@@ -4655,7 +4664,8 @@
 						"boostersApply": true,
 						"note": "One of the most popular full-squad Steel Path fissure farms; dense Sentient/Corpus enemy spawns drop Neurodes alongside Rubedo and relics.",
 						"source": "https://wiki.warframe.com/w/User:Megazawr/Resource_Farming_Guide",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "lua"
 					}
 				]
 			},
@@ -4702,7 +4712,8 @@
 						"boostersApply": true,
 						"note": "The Void’s Corrupted enemies carry a higher Control Module drop chance than any main-planet foe; Hepit is a fast, low-level Void Capture to farm them, and since it is an enemy drop a Resource Drop Booster and Nekros Desecrate both help.",
 						"source": "https://wiki.warframe.com/w/Control_Module",
-						"lastVerified": "2026-07-06"
+						"lastVerified": "2026-07-06",
+						"regionId": "void"
 					},
 					{
 						"phase": "late",
@@ -4710,7 +4721,8 @@
 						"boostersApply": true,
 						"note": "An endless Void Survival keeps a Steel Path squad killing Corrupted for the longest uninterrupted Control Module stream; the drops are enemy-based, so a Resource Drop Booster, the Steel Path passive and a loot frame all stack.",
 						"source": "https://wiki.warframe.com/w/Control_Module",
-						"lastVerified": "2026-07-06"
+						"lastVerified": "2026-07-06",
+						"regionId": "void"
 					}
 				]
 			},
@@ -4772,7 +4784,8 @@
 						"boostersApply": true,
 						"note": "Higher-level Corpus spawns more Oxium Ospreys per minute; running long Survival rotations beats resetting missions repeatedly.",
 						"source": "https://wiki.warframe.com/w/Oxium",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "lua"
 					}
 				]
 			},
@@ -4837,7 +4850,8 @@
 				"name": "Mutagen Sample",
 				"image": "InfestedFragment.png",
 				"regionIds": [
-					"eris"
+					"eris",
+					"deimos"
 				],
 				"recommendations": [
 					{
@@ -4846,7 +4860,8 @@
 						"boostersApply": true,
 						"note": "Mutagen Sample is a Deimos regional drop — the wiki classes it “uncommon” on Deimos (vs “rare” elsewhere), making Deimos the best sustained source. Farm any endless Infested node — Terrorem (Survival) or Hyf (Defense) — or Cambion Drift bounties/free roam, killing in bulk. These are in-mission enemy/tileset pickups, so a Resource Drop Booster and the Steel Path resource passive DO boost them. No Deimos yet? Eris — Naeglar (Hive Sabotage) drops a Rotation-B cache (~15.5% for 3) as a quest-free fallback.",
 						"source": "https://wiki.warframe.com/w/Mutagen_Sample",
-						"lastVerified": "2026-07-06"
+						"lastVerified": "2026-07-06",
+						"regionId": "deimos"
 					},
 					{
 						"phase": "late",
@@ -4854,7 +4869,8 @@
 						"boostersApply": true,
 						"note": "Steel Path Deimos scales the same regional farm: denser, tankier Infested drop more samples per minute, and the Steel Path Resource Drop Chance Booster stacks on the in-mission pickups. For guaranteed bulk instead, run the Eris Sabotage caches (Naeglar/Candiru/Lepis/Psoro/Viver, Rotation B ~15.5% for 3) or Deimos — Formido (Rotation A ~14.3% for 3) — but caches are end-of-mission rewards, so only the Steel Path drop-chance booster affects those, not resource boosters.",
 						"source": "https://wiki.warframe.com/w/Mutagen_Sample",
-						"lastVerified": "2026-07-06"
+						"lastVerified": "2026-07-06",
+						"regionId": "deimos"
 					}
 				]
 			},
@@ -4953,7 +4969,8 @@
 						"boostersApply": false,
 						"note": "Every non-Defense Void tileset has ~2 static Argon Deposit containers worth 1-2 crystals each, no high level needed; remember they decay daily at 00:00 GMT.",
 						"source": "https://wiki.warframe.com/w/Argon_Crystal",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "void"
 					},
 					{
 						"phase": "late",
@@ -4961,7 +4978,8 @@
 						"boostersApply": true,
 						"note": "Endless Void Survival lets a squad bank as many crystals as they can spend before the daily decay; Resourceful Retriever and boosters help enemy drops here.",
 						"source": "https://wiki.warframe.com/w/Argon_Crystal",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "void"
 					}
 				]
 			}

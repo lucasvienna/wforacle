@@ -69,6 +69,10 @@ export const PLANET_RESOURCES: Record<string, string[]> = {
 	],
 	eris: [R['Nano Spores'], R['Plastids'], R['Neurodes'], R['Mutagen Sample'], R['Oxium']],
 	sedna: [R['Alloy Plate'], R['Rubedo'], R['Salvage'], R['Detonite Ampule']],
+	// Deimos (special region, Infested moon of Mars) has its own regional pool —
+	// the modern home of Mutagen Sample plus the standard Infested drops. Keyed
+	// by the special-region slug so buildRegions picks it up like a planet's.
+	deimos: [R['Mutagen Sample'], R['Nano Spores'], R['Plastids'], R['Neurodes']],
 };
 
 // Early + late farming recommendations per resource, authored from

@@ -2,19 +2,24 @@ import type { Dataset, Resource } from '../../src/lib/model/types';
 import { buildRegions, buildNodes, buildFrames, type SolNodes, type RawWarframe } from './build';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
 import { PLANETS } from './curated';
-import { QUESTS } from './special';
+import { QUESTS, SPECIAL_REGIONS } from './special';
 import { slugify } from './parse';
 
 export type RawResource = { name: string; imageName?: string };
 
-const MAIN_REGION_IDS = new Set(PLANETS.map((p) => slugify(p.name)));
+// Every real region slug — main planets AND curated special regions (Deimos,
+// Void, …) — so a rec on a special region resolves its "best farm here" badge.
+const REGION_IDS = new Set([
+	...PLANETS.map((p) => slugify(p.name)),
+	...SPECIAL_REGIONS.map((r) => slugify(r.name)),
+]);
 
-/** Parse the main-planet region id a recommendation's node is on, from its
- * nodeLabel ("Uranus — Ophelia (Survival)" → "uranus"). Returns undefined for
- * special regions (e.g. "Void — Hepit") which aren't main planets. */
+/** Parse the region id a recommendation's node is on, from its nodeLabel
+ * ("Uranus — Ophelia (Survival)" → "uranus", "Deimos — Terrorem (Survival)" →
+ * "deimos"). Returns undefined when the leading token isn't a known region. */
 export function recRegionId(nodeLabel: string): string | undefined {
 	const planet = slugify(nodeLabel.split('—')[0]);
-	return MAIN_REGION_IDS.has(planet) ? planet : undefined;
+	return REGION_IDS.has(planet) ? planet : undefined;
 }
 
 export function buildResources(raw: RawResource[]): Resource[] {
