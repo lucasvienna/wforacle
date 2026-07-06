@@ -1,19 +1,19 @@
 ## Early game
 
-**Hellas** on Mars (Exterminate, Grineer Settlement, levels 8-10) is a quick
-way to stock up early: Mars is one of Gallium's two signature planets, and a
-short Exterminate is easy to repeat for a fresh account. **Gradivus**
-(Sabotage) on the same planet is a good secondary stop — its resource cache
-carries a decent Gallium chance too.
+**Hellas** on Mars (Extermination, Grineer Settlement, levels 8-10) is a quick
+way to stock up early: Mars is one of Gallium's two signature planets, and its
+enemies drop Gallium from the region resource pool, so a short Extermination
+you clear repeatedly — with a Resource Drop Booster and Nekros Desecrate
+re-rolling kills — adds up fast for a fresh account.
 
 ## Mid & late game
 
 **Titania** on Uranus (Assassination, Tyl Regor, Steel Path) is the strongest
-endgame option: Tyl Regor drops Gallium as an assassination reward on top of
-Uranus being Gallium's other signature planet, so repeat boss runs with a
-Steel Path squad scale well per hour. Gallium comes from mission-completion
-rewards and resource caches rather than an enemy drop table, so Resource Drop
-Boosters and the Steel Path passive don't increase it.
+endgame option: Tyl Regor and the Grineer around him drop Gallium as enemy
+loot on Uranus, Gallium's other signature planet, so repeat boss runs with a
+Steel Path squad scale well per hour. Because it's an enemy drop, the Steel
+Path passive, a Resource Drop Booster and a loot frame all stack to raise the
+per-run yield.
 
 ## Sources
 

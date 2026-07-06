@@ -2,24 +2,20 @@
 
 **Wahiba** on Mars (Dark Sector Survival) is an easy early Salvage source —
 Mars is one of Salvage's three signature planets, and this low-level Dark
-Sector node is safe to run before a squad is fully geared. Salvage has no
-dedicated enemy drop table, so the wiki's own advice applies here too:
-"endless missions have a higher concentration of mobs and also a decent
-amount of storage containers and lockers," and it's those containers, not the
-mobs, that actually drop Salvage.
+Sector node is safe to run before a squad is fully geared. Salvage drops from
+the enemies you kill, so an endless mission with its higher concentration of
+mobs is ideal: a Nekros loot squad and a Resource Drop Booster raise the haul,
+and cracking the containers you pass is a bonus on top.
 
 ## Mid & late game
 
 **Carme** on Jupiter (Mobile Defense) is the wiki's standout late-game pick,
-citing up to 3,000 Salvage in a single run if every container and locker in
-the Corpus tileset gets opened. Since Salvage is still a container-based
-pickup rather than an enemy drop, Resource Drop Boosters and the Steel Path
-passive don't add anything on top, and loot frames like Nekros don't help
-either — their abilities re-roll enemy drop tables, not container loot. What
-does help is a Loot Detector / Thief's Wit mod to mark every crate on the
-minimap and a squad that splits up to crack them all open. **Elara**
-(Survival), also on Jupiter, is a solid endless alternative when you'd rather
-let a long run pile up container spawns than reset short missions.
+with a high-throughput Corpus tileset. Salvage is a common enemy drop, so the
+fastest way to bank thousands per run is to pair Steel Path enemy density with
+a Nekros or Khora loot squad (Desecrate/Pilfer re-roll every kill) and a
+Resource Drop Booster. **Elara** (Survival), also on Jupiter, is a solid
+endless alternative when you'd rather let a long run pile up enemy kills than
+reset short missions.
 
 ## Sources
 

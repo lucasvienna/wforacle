@@ -1,21 +1,19 @@
 ## Early game
 
-The Void has a noticeably better Control Module drop chance than any main
-planet, and **Hepit** (Capture, levels 10-15) is a short, low-level way to
-farm it: Control Modules come from mission-completion rewards rather than
-regular enemy kills, so a couple of quick runs back-to-back beats a long
-mission. **Teshub** (Exterminate) on the same tileset is a good alternative if
-Hepit's matchmaking is slow.
+The Void's Corrupted enemies carry a noticeably higher Control Module drop
+chance than any main-planet foe, and **Hepit** (Capture, levels 10-15) is a
+short, low-level way to farm them. Because it's an enemy drop, a Resource Drop
+Booster and Nekros Desecrate both help; a couple of quick runs back-to-back
+also keeps the pace up. **Teshub** (Exterminate) on the same tileset is a good
+alternative if Hepit's matchmaking is slow.
 
 ## Mid & late game
 
-The wiki doesn't call out a distinct late-game Control Module node beyond
-"the Void has better odds," so the natural extension for a Steel Path squad is
-an endless Void Survival like **Mot** — it gives the longest uninterrupted
-window to rack up completion rewards and rotation drops in one sitting. Since
-Control Modules are reward-based rather than an enemy drop, neither Resource
-Drop Boosters nor the Steel Path passive increase them; run length is what
-matters.
+The natural extension for a Steel Path squad is an endless Void Survival like
+**Mot** — it keeps you killing Corrupted for the longest uninterrupted window
+in one sitting. Since Control Modules drop from those enemies, a Resource Drop
+Booster, the Steel Path passive and a loot frame (Nekros/Khora) all stack, and
+longer runs compound the total.
 
 ## Sources
 

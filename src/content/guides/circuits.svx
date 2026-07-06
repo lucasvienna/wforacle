@@ -2,20 +2,17 @@
 
 **Tessera** on Venus (Defense) is a short, low-level Corpus Defense on one of
 Circuits' two signature planets, making it an easy repeat farm for a fresh
-account. Circuits come from in-mission resource caches rather than an enemy
-drop table, so Resource Drop Boosters and the Steel Path passive don't
-increase them here — it's the number of caches found, not kills, that
-matters.
+account. Circuits drop from the enemies you kill, so a Resource Drop Booster
+and a loot frame add Circuits to every wave you clear.
 
 ## Mid & late game
 
 **Gabii** on Ceres (Dark Sector Survival) is the wiki's higher-drop-rate
 endgame pick, with Steel Path squads running it for longer per rotation than
-a standard mission. Circuits are still cache-based rather than an enemy
-drop, so the benefit of Steel Path here is simply a longer run with more
-caches to loot, not a booster or drop-chance multiplier. Deploying a Titan
-Extractor on Venus or Ceres is also a passive way to stock up Circuits
-without actively farming.
+a standard mission. Circuits are a common enemy drop, so the Grineer density
+on Steel Path plus a Resource Drop Booster and a Nekros loot squad make this
+a strong endless farm. Deploying a Titan Extractor on Venus or Ceres is also
+a passive way to stock up Circuits without actively farming.
 
 ## Sources
 

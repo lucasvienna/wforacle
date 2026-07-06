@@ -1,19 +1,17 @@
 ## Early game
 
 **Kadesh** on Mars (Dark Sector Defense) is an accessible early Fieldron
-Sample spot. The wiki lists no mission or enemy drop table for this resource
-at all — it's picked up as an environmental resource item scattered through
-the Dark Sector tileset, so simply exploring the level between Defense waves
-matters more than kill count.
+Sample spot. Fieldron Sample is in Mars' region resource pool, so it drops
+from the enemies you kill each round; a Resource Drop Booster and a loot frame
+add to every wave, and the Dark Sector's resource-chance bonus helps too.
 
 ## Mid & late game
 
 **Kelashin** on Neptune (Dark Sector Survival) is the wiki's recommended
-endgame spot. Running it in Steel Path mainly buys a squad more time to sweep
-the Infested Ship tileset for pickups on a longer Survival timer — since
-Fieldron Sample is neither an enemy drop nor a resource cache, Resource Drop
-Boosters and the Steel Path passive don't change how often it turns up.
-Thorough exploration, not drop-chance buffs, is what raises the count here.
+endgame spot — Neptune is another Fieldron Sample planet, and its Infested
+density drops the resource as enemy loot. Because it's an enemy drop, a
+Resource Drop Booster, the Steel Path passive and a Nekros loot squad all
+stack, so long Survival rotations with a high kill count give the best yield.
 
 ## Sources
 

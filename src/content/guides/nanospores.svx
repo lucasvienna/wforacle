@@ -1,21 +1,21 @@
 ## Early game
 
-**Akkad** on Eris (Defense, Infested Ship tileset, levels 35-45) is thick with
-Spore Culture containers — the glowing Infested pods that reliably burst into
-Nano Spores when destroyed. Clearing the first few Defense waves is enough to
-break several of them, and because these are container pickups rather than
-enemy drops, Resource Drop Boosters and the Steel Path passive don't affect
-the yield here.
+**Akkad** on Eris (Dark Sector Defense, Infested Ship tileset) is a classic
+low-level Nano Spore farm: its dense Infested waves drop Nano Spores as enemy
+loot, and the Dark Sector's resource-chance bonus stacks on top. Because it's
+an enemy drop, a Resource Drop Booster and a Nekros or Khora in the squad
+(re-rolling extra drops with Desecrate/Pilfer) meaningfully raise the haul —
+a few rounds already yield thousands.
 
 ## Mid & late game
 
 **Piscinas** on Saturn (Dark Sector Survival, Grineer Asteroid tileset, levels
 26-36) is the best per-hour spot once a squad can run Steel Path: the Dark
-Sector's resource-chance bonus plus Infested enemy density means a Nekros or
-Khora in the squad meaningfully boosts the haul by re-rolling extra drops on
-top of what the mission caches already provide. Long Survival rotations
-outperform resetting the mission, since Nano Spores accumulate quickly the
-longer you stay.
+Sector's resource-chance bonus plus Steel Path Infested density means a Nekros
+or Khora meaningfully boosts the haul by re-rolling the enemy drops. Long
+Survival rotations outperform resetting the mission, since Nano Spores
+accumulate quickly the longer you stay — and boosters, the Steel Path passive
+and the loot frame all stack because these are enemy drops.
 
 ## Sources
 

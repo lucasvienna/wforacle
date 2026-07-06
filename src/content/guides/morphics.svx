@@ -4,18 +4,18 @@
 from the very start of the star chart — the wiki notes Morphics have a much
 higher drop chance on Mars than anywhere else, "making it one of the easiest
 rare components to obtain" there despite the rare-resource label. Morphics
-have no enemy drop table, so this comes from the mission's resource caches
-rather than kill speed. **Lares** on Mercury (Defense) is a fine secondary
-stop if you're farming before Mars is unlocked.
+drop from Mars' enemies, so a Resource Drop Booster and Nekros Desecrate
+multiply what you get per run. **Lares** on Mercury (Defense) is a fine
+secondary stop if you're farming before Mars is unlocked.
 
 ## Mid & late game
 
 Mars stays the best Morphics planet at every progression stage, per the
 wiki, so **Olympus** (Disruption, Steel Path) is the natural endgame upgrade:
-a Steel Path squad gets more Disruption rotations completed per hour than
-short missions elsewhere. Morphics are still cache-based rather than an
-enemy drop, so Resource Drop Boosters and the Steel Path passive don't change
-the per-cache odds — running more rotations is what raises the yield.
+Steel Path keeps dense Grineer (and Demolysts) spawning across rotations.
+Since Morphics are an enemy drop, a Resource Drop Booster, the Steel Path
+passive and a loot frame all stack — more kills across more rotations is what
+raises the yield.
 
 ## Sources
 
