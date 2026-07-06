@@ -1,0 +1,23 @@
+## Early game
+
+Voidgel Orb is a **Zariman regional drop**, best farmed at **Tuvul Commons**
+running **Void Cascade**. It's an in-mission pickup with a relatively low
+individual chance (roughly 9.76% as a mission reward roll), so plan on
+running several Cascade rotations rather than expecting one per mission.
+
+Because it's a resource pickup, a **Resource Drop Booster boosts your Orb
+drop rate** — worth popping one if you're stacking up Zariman crafting
+requirements in the same session.
+
+## Mid & late game
+
+**Steel Path Tuvul Commons** is the sustained late-game farm: tougher enemies
+and longer Cascade rotations mean more roll opportunities per hour, and the
+Steel Path Resource Drop Chance Booster stacks with a regular Resource Drop
+Booster on every roll. Running full Cascade rotations back-to-back on Steel
+Path is the most efficient way to stockpile Voidgel Orbs for Zariman gear and
+Deimos/Zariman crafting alike.
+
+## Sources
+
+- [Voidgel Orb — Warframe Wiki](https://wiki.warframe.com/w/Voidgel_Orb)

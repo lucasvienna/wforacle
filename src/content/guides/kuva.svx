@@ -1,0 +1,28 @@
+## Early game
+
+Kuva is farmed at the **Kuva Fortress** — the most reliable node is
+**Taveuni** (Survival), where a roaming **Kuva Harvester** periodically drills
+a deposit. Killing the Harvester while it's drilling drops a **fixed 200
+Kuva** per kill, independent of mission duration, so extending a Survival run
+mainly buys you more Harvester spawns rather than passive tick income.
+
+The Harvester's 200 Kuva payout is a **guaranteed kill reward, not a resource
+pickup**, so **Resource Drop Boosters do not affect it** — don't waste a
+booster expecting extra Kuva from Harvesters.
+
+## Mid & late game
+
+Once you have Requiem Mods and access to Void Fissures, the broader endgame
+Kuva source is **Kuva Siphon and Kuva Flood fissure missions**: complete the
+mission objective, then extract a Siphon/Flood carrier for a lump Kuva
+reward, or push a Flood to its end for a larger bonus. These rotate across
+the Origin System rather than being tied to Taveuni, and are the main way
+players accumulate Kuva for rerolling Riven Mods at scale.
+
+Steel Path Taveuni still works as a Harvester farm if you'd rather grind
+missions directly, but most veteran players lean on Siphon/Flood relic runs
+for volume once Requiem relics are in steady supply.
+
+## Sources
+
+- [Kuva — Warframe Wiki](https://wiki.warframe.com/w/Kuva)

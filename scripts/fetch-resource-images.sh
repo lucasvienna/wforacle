@@ -36,3 +36,7 @@ dl hexenon.webp ComponentConcentratedGas.png
 dl cubicdiodes.webp RailjackComponentCubics.png
 dl tellurium.webp Tellurium.png
 dl mutagensample.webp InfestedFragment.png
+dl somaticfibers.webp MemoryCryptoFragment.png
+dl kuva.webp Kuva.png
+dl voidgelorb.webp ZarimanMiscItemA.png
+dl entratilanthorn.webp ZarimanMiscItemB.png

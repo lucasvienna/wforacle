@@ -1,0 +1,26 @@
+## Early game
+
+Somatic Fibers is a **Lua regional drop**, dropped by **Sentient
+Demolishers** on the Moon's Disruption node, **Apollo**. Run Disruption
+rounds and clear Demolishers as they spawn to farm a steady trickle alongside
+your conduit defense duties. These are in-mission enemy drops, so a
+**Resource Drop Booster does boost them**.
+
+The main early-game reason to farm Somatic Fibers is crafting **Lua Lenses**,
+so plan a handful of Apollo runs whenever you're pushing focus school progress
+rather than treating it as a background farm.
+
+## Mid & late game
+
+**Steel Path Apollo** is the sustained endgame farm: Demolishers hit harder
+but still drop the same fibers, and the Steel Path Resource Drop Chance
+Booster stacks with a regular booster on every Demolisher kill. Running
+Disruption for full rounds (not just rushing conduits) maximizes Demolisher
+spawns and therefore Somatic Fibers per hour.
+
+Since the resource is scoped to a single node, there's no alternate mission
+type to rotate into if you tire of Disruption — Apollo is the farm.
+
+## Sources
+
+- [Somatic Fibers — Warframe Wiki](https://wiki.warframe.com/w/Somatic_Fibers)
