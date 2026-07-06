@@ -56,9 +56,7 @@ describe('tracker', () => {
 	});
 	it('wires persistQuests to fire on quest changes', () => {
 		const calls: string[][] = [];
-		const t = createTracker(seed.warframes, undefined, (ids) =>
-			calls.push([...ids]),
-		);
+		const t = createTracker(seed.warframes, undefined, (ids) => calls.push([...ids]));
 		flushSync();
 		t.toggleQuest('heartofdeimos');
 		flushSync();

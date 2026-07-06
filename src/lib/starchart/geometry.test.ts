@@ -7,9 +7,7 @@ describe('layoutRing', () => {
 	const placed = layoutRing(seed.regions, { cx: 100, cy: 100, rx: 80, ry: 40 });
 	it('places every region once', () => {
 		expect(placed).toHaveLength(seed.regions.length);
-		expect(new Set(placed.map((p) => p.region.id)).size).toBe(
-			seed.regions.length,
-		);
+		expect(new Set(placed.map((p) => p.region.id)).size).toBe(seed.regions.length);
 	});
 	it('keeps points within the ellipse bounds', () => {
 		for (const p of placed) {
@@ -112,9 +110,7 @@ describe('layoutAnomalies', () => {
 
 	it('places every region once', () => {
 		expect(placed).toHaveLength(specialRegions.length);
-		expect(new Set(placed.map((p) => p.region.id)).size).toBe(
-			specialRegions.length,
-		);
+		expect(new Set(placed.map((p) => p.region.id)).size).toBe(specialRegions.length);
 	});
 
 	it('keeps radii within the documented anomaly range', () => {

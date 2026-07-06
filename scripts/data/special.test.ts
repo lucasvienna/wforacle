@@ -8,9 +8,7 @@ describe('special regions + quests', () => {
 		const deimos = SPECIAL_REGIONS.find((r) => r.name === 'Deimos')!;
 		expect(deimos.spoilerGated).toBe(true);
 		expect(deimos.questId).toBe('heartofdeimos');
-		expect(SPECIAL_REGIONS.find((r) => r.name === 'Void')!.spoilerGated).toBe(
-			false,
-		);
+		expect(SPECIAL_REGIONS.find((r) => r.name === 'Void')!.spoilerGated).toBe(false);
 	});
 	it('every gated region has a quest that reveals it', () => {
 		for (const r of SPECIAL_REGIONS.filter((x) => x.spoilerGated)) {
@@ -20,8 +18,6 @@ describe('special regions + quests', () => {
 		}
 	});
 	it('Heart of Deimos reveals nekros', () => {
-		expect(
-			QUESTS.find((q) => q.id === 'heartofdeimos')!.revealsFrameIds,
-		).toContain('nekros');
+		expect(QUESTS.find((q) => q.id === 'heartofdeimos')!.revealsFrameIds).toContain('nekros');
 	});
 });

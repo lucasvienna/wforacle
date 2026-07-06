@@ -19,9 +19,7 @@ export function layoutRing(
 	} = {},
 ): PlacedPlanet[] {
 	const { cx = 560, cy = 238, rx = 500, ry = 150, phase = 0.18 } = opts;
-	const ordered = [...regions].sort(
-		(a, b) => a.progressionOrder - b.progressionOrder,
-	);
+	const ordered = [...regions].sort((a, b) => a.progressionOrder - b.progressionOrder);
 	const n = ordered.length;
 	const placed = ordered.map((region, i) => {
 		const t = (i / n) * 2 * Math.PI + phase;
@@ -45,9 +43,7 @@ export function layoutAnomalies(
 	} = {},
 ): PlacedPlanet[] {
 	const { cx = 560, cy = 238, rx = 250, ry = 78, phase = 0.6 } = opts;
-	const ordered = [...regions].sort(
-		(a, b) => a.progressionOrder - b.progressionOrder,
-	);
+	const ordered = [...regions].sort((a, b) => a.progressionOrder - b.progressionOrder);
 	const n = ordered.length;
 	const placed = ordered.map((region, i) => {
 		const t = (i / n) * 2 * Math.PI + phase;

@@ -68,6 +68,4 @@ export const QUESTS: {
 	},
 ];
 
-export const SPECIAL_REGION_NAMES: Set<string> = new Set(
-	SPECIAL_REGIONS.map((r) => r.name),
-);
+export const SPECIAL_REGION_NAMES: Set<string> = new Set(SPECIAL_REGIONS.map((r) => r.name));
