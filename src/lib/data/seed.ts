@@ -128,4 +128,5 @@ export const seed: Dataset = {
 		frame('excalibur', 'Excalibur', 'war'),
 	],
 	resources: [],
+	quests: [],
 };

@@ -55,6 +55,13 @@ export interface Resource {
 	recommendations: Recommendation[];
 }
 
+export interface Quest {
+	id: string;
+	name: string;
+	revealsRegionIds: string[];
+	revealsFrameIds: string[];
+}
+
 export interface Region {
 	id: string;
 	name: string;
@@ -64,6 +71,7 @@ export interface Region {
 	nodeIds: string[];
 	spoilerGated: boolean;
 	resourceIds: string[];
+	questId?: string;
 }
 
 export interface Dataset {
@@ -72,4 +80,5 @@ export interface Dataset {
 	bosses: Boss[];
 	warframes: Warframe[];
 	resources: Resource[];
+	quests: Quest[];
 }

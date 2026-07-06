@@ -4,18 +4,18 @@
 
 **Goal:** Add the quest-locked special regions (Deimos, Void, Lua, Kuva Fortress, Zariman) with spoiler-aware progressive disclosure — hidden by default, revealed when the player toggles the gating quest — restoring Nekros (Deimos → Magnacidium) to the tracker.
 
-**Architecture:** Two small curated inputs (`SPECIAL_REGIONS` + `QUESTS`) extend the pipeline so it emits special regions/nodes (and the Deimos→Nekros frame) alongside the 14 main planets, each flagged `kind:'special'`/`spoilerGated`. A `completedQuests` set (IndexedDB, alongside `owned`) drives a pure `isRegionRevealed` gate; the Star Chart renders revealed special regions as off-ring "anomaly" nodes, and a Quests panel toggles them. Default (no quests done) = the post-*Awakening* main-planet chart, no spoilers.
+**Architecture:** Two small curated inputs (`SPECIAL_REGIONS` + `QUESTS`) extend the pipeline so it emits special regions/nodes (and the Deimos→Nekros frame) alongside the 14 main planets, each flagged `kind:'special'`/`spoilerGated`. A `completedQuests` set (IndexedDB, alongside `owned`) drives a pure `isRegionRevealed` gate; the Star Chart renders revealed special regions as off-ring "anomaly" nodes, and a Quests panel toggles them. Default (no quests done) = the post-_Awakening_ main-planet chart, no spoilers.
 
 **Tech Stack:** TypeScript, Svelte 5 runes, Tailwind, `@wfcd/items` + `warframe-worldstate-data`, `idb`, Vitest, Playwright.
 
 ## Global Constraints
 
 - **Additive types.** `Region` gains `questId?: string`; add `Quest { id; name; revealsRegionIds; revealsFrameIds }` and `Dataset.quests: Quest[]`. Existing Plan 1–3 tests stay green; `seed.ts` gets `quests: []`.
-- **Special regions are curated, machine data is joined.** `SPECIAL_REGIONS` (Deimos/Void/Lua/Kuva Fortress/Zariman: id, name, order, faction, `spoilerGated`, `questId?`) and `QUESTS` are hand-authored; their *nodes* and the Deimos→Nekros *frame* come from the pipeline (solNodes + @wfcd/items) exactly like main planets.
+- **Special regions are curated, machine data is joined.** `SPECIAL_REGIONS` (Deimos/Void/Lua/Kuva Fortress/Zariman: id, name, order, faction, `spoilerGated`, `questId?`) and `QUESTS` are hand-authored; their _nodes_ and the Deimos→Nekros _frame_ come from the pipeline (solNodes + @wfcd/items) exactly like main planets.
 - **Spoiler default.** With `completedQuests` empty, no `spoilerGated: true` region is shown anywhere (Star Chart, command surfaces). Void is `spoilerGated: false` (early-accessible via relics, no story gate) so it always shows; Deimos/Lua/Kuva Fortress/Zariman are `spoilerGated: true` behind their quest.
 - **Reveal rule (single source of truth):** a region is revealed iff `!region.spoilerGated || completedQuests.has(region.questId)`.
 - **`completedQuests`** persists to IndexedDB next to `owned`, browser-only, same optimistic pattern.
-- Special-region *resource* lists are OUT of scope (Plan 5 polish) — special regions show their frame(s)/nodes; their Resources card shows "No notable resources.".
+- Special-region _resource_ lists are OUT of scope (Plan 5 polish) — special regions show their frame(s)/nodes; their Resources card shows "No notable resources.".
 - Package manager `pnpm`; unit `pnpm test:unit --run`; e2e `pnpm exec playwright test`. TDD; commit per green task (signed). `pnpm lint`/`format` clean.
 
 ---
@@ -23,12 +23,14 @@
 ### Task 1: Quest type + reveal helper
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts` (add `Quest`, `Dataset.quests`, `Region.questId?`)
 - Create: `src/lib/model/reveal.ts`
 - Test: `src/lib/model/reveal.test.ts`
 - Modify: `src/lib/data/seed.ts` (add `quests: []`)
 
 **Interfaces:**
+
 - Produces:
   - `interface Quest { id: string; name: string; revealsRegionIds: string[]; revealsFrameIds: string[] }`
   - `Dataset.quests: Quest[]`; `Region.questId?: string`.
@@ -36,6 +38,7 @@
   - `revealedRegions(dataset: Dataset, completedQuests: ReadonlySet<string>): Region[]`.
 
 - [ ] **Step 1: Write the failing test**
+
 ```ts
 import { describe, it, expect } from 'vitest';
 import { isRegionRevealed, revealedRegions } from './reveal';
@@ -55,12 +58,17 @@ describe('reveal', () => {
 	it('filters a dataset to revealed regions', () => {
 		const ds = { regions: [main, deimos] } as Dataset;
 		expect(revealedRegions(ds, new Set()).map((r) => r.id)).toEqual(['venus']);
-		expect(revealedRegions(ds, new Set(['heartofdeimos'])).map((r) => r.id)).toEqual(['venus', 'deimos']);
+		expect(revealedRegions(ds, new Set(['heartofdeimos'])).map((r) => r.id)).toEqual([
+			'venus',
+			'deimos',
+		]);
 	});
 });
 ```
+
 - [ ] **Step 2: Run — expect FAIL** (`pnpm vitest run src/lib/model/reveal.test.ts`).
 - [ ] **Step 3: Implement** — add the types to `types.ts`; `reveal.ts`:
+
 ```ts
 import type { Dataset, Region } from './types';
 export function isRegionRevealed(region: Region, completedQuests: ReadonlySet<string>): boolean {
@@ -70,7 +78,9 @@ export function revealedRegions(dataset: Dataset, completedQuests: ReadonlySet<s
 	return dataset.regions.filter((r) => isRegionRevealed(r, completedQuests));
 }
 ```
+
 Add `quests: []` to `seed.ts`.
+
 - [ ] **Step 4: Run — expect PASS** (`pnpm test:unit --run`).
 - [ ] **Step 5: Commit** — `feat: Quest type + region reveal helper`.
 
@@ -79,10 +89,12 @@ Add `quests: []` to `seed.ts`.
 ### Task 2: Curated special regions + quests
 
 **Files:**
+
 - Create: `scripts/data/special.ts`
 - Test: `scripts/data/special.test.ts`
 
 **Interfaces:**
+
 - Consumes: `slugify` (`./parse`).
 - Produces:
   - `SPECIAL_REGIONS: { name: string; order: number; faction: string; spoilerGated: boolean; questId?: string }[]` — Deimos(15,Infested,gated,heartofdeimos), Void(16,Orokin,not gated), Lua(17,Corpus,gated,thesecondddream), 'Kuva Fortress'(18,Grineer,gated,thewarwithin), Zariman(19,Corpus,gated,angelsofthezariman).
@@ -90,6 +102,7 @@ Add `quests: []` to `seed.ts`.
   - `SPECIAL_REGION_NAMES: Set<string>` — the raw planet strings as they appear in solNodes values (`'Deimos'`, `'Void'`, `'Lua'`, `'Kuva Fortress'`, `'Zariman'`).
 
 - [ ] **Step 1: Write the failing test**
+
 ```ts
 import { describe, it, expect } from 'vitest';
 import { SPECIAL_REGIONS, QUESTS, SPECIAL_REGION_NAMES } from './special';
@@ -115,6 +128,7 @@ describe('special regions + quests', () => {
 	});
 });
 ```
+
 - [ ] **Step 2: Run — expect FAIL**.
 - [ ] **Step 3: Implement** `scripts/data/special.ts` with the data above (`SPECIAL_REGION_NAMES = new Set(SPECIAL_REGIONS.map((r) => r.name))`).
 - [ ] **Step 4: Run — expect PASS**.
@@ -125,11 +139,13 @@ describe('special regions + quests', () => {
 ### Task 3: Pipeline builds special regions, nodes, and the Deimos frame
 
 **Files:**
+
 - Modify: `scripts/data/build.ts` (regions/nodes accept special regions; frames un-filtered)
 - Modify: `scripts/data/assemble.ts` (include `quests`; extend validate)
 - Test: `scripts/data/build.test.ts`, `scripts/data/assemble.test.ts`
 
 **Interfaces:**
+
 - Consumes: `SPECIAL_REGIONS`, `SPECIAL_REGION_NAMES`, `QUESTS` (Task 2); `PLANETS` (curated).
 - Produces:
   - `buildNodes` now includes nodes whose planet is a main planet OR a `SPECIAL_REGION_NAMES` member.
@@ -150,6 +166,7 @@ describe('special regions + quests', () => {
 ### Task 4: Regenerate the real dataset (special regions + Nekros back)
 
 **Files:**
+
 - Modify: `static/data/dataset.json` (regenerated)
 - Modify: `scripts/build-data.ts` (sanity: expect 5 special regions + `nekros`)
 
@@ -164,11 +181,13 @@ describe('special regions + quests', () => {
 ### Task 5: Track completed quests (IndexedDB)
 
 **Files:**
+
 - Modify: `src/lib/tracker/persistence.ts` (quests store)
 - Modify: `src/lib/tracker/tracker.svelte.ts` (quest state)
 - Test: `src/lib/tracker/tracker.svelte.test.ts`, `src/lib/tracker/persistence.test.ts`
 
 **Interfaces:**
+
 - Produces:
   - `loadQuests(): Promise<string[]>` / `saveQuests(ids: string[]): Promise<void>` (same guards/pattern as `loadOwned`/`saveOwned`).
   - `createTracker` gains: `completedQuests` (a `$derived`-friendly getter returning a `ReadonlySet<string>`), `isQuestDone(id)`, `toggleQuest(id)`, `loadQuestState(ids)`, `questSnapshot()`; the optional `persist` gains a sibling `persistQuests?` callback wired through the same `$effect.root`.
@@ -184,11 +203,13 @@ describe('special regions + quests', () => {
 ### Task 6: Star Chart renders revealed special regions as anomaly nodes
 
 **Files:**
+
 - Modify: `src/lib/starchart/geometry.ts` (anomaly placement)
 - Modify: `src/lib/starchart/StarChart.svelte` (render special regions)
 - Test: `src/lib/starchart/geometry.test.ts`, `src/lib/starchart/StarChart.svelte.test.ts`
 
 **Interfaces:**
+
 - Produces:
   - `layoutAnomalies(specialRegions: Region[], opts?): PlacedPlanet[]` — positions special regions on an inner arc (smaller `r`, distinct from the main ellipse), deterministic by `progressionOrder`.
   - `StarChart` gains a `specialRegions: Region[]` prop (already-filtered to revealed) and renders each as a smaller anomaly node (same click/keyboard/status semantics, a subtly different style — e.g. a diamond halo or dimmer ring) with its label.
@@ -204,10 +225,12 @@ describe('special regions + quests', () => {
 ### Task 7: Quests panel (toggle to reveal)
 
 **Files:**
+
 - Create: `src/lib/panel/QuestsPanel.svelte`
 - Test: `src/lib/panel/QuestsPanel.svelte.test.ts`
 
 **Interfaces:**
+
 - Props: `{ dataset: Dataset; tracker: Tracker }`. Lists `dataset.quests` by name with a checkbox/toggle bound to `tracker.isQuestDone(q.id)` / `tracker.toggleQuest(q.id)`; a one-line "Reveals: ⟨region names⟩". A short spoiler-safe note ("Toggle the quests you've completed to reveal their regions.").
 
 - [ ] **Step 1: Test** — render with the seed + a tracker (created from `seed.warframes`), assert each quest name renders; clicking a quest's toggle calls `tracker.toggleQuest(id)` and flips its `data-done` attribute.
@@ -221,10 +244,12 @@ describe('special regions + quests', () => {
 ### Task 8: Wire disclosure into the home page
 
 **Files:**
+
 - Modify: `src/routes/+page.svelte`
 - Modify: `src/routes/page.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `revealedRegions`, `isRegionRevealed`, `QuestsPanel`, the quest-aware tracker.
 - Behavior: the page computes `visible = revealedRegions(data, tracker.completedQuests)`; the Star Chart gets `regions = visible.filter(kind==='planet')` and `specialRegions = visible.filter(kind==='special')`; a Quests panel is shown (e.g. below the chart or in a toggleable drawer). On load, `tracker.loadQuestState(await loadQuests())` alongside `loadOwned`; `persistQuests` saves on change (behind the same `ready` guard). Selecting a special region shows its `RegionPanel` (Deimos → Nekros).
 
@@ -238,6 +263,7 @@ describe('special regions + quests', () => {
 ### Task 9: End-to-end — reveal Deimos, track Nekros
 
 **Files:**
+
 - Modify: `e2e/tracking.test.ts` (or new `e2e/spoiler.test.ts`)
 
 **Interfaces:** the running app.
@@ -251,14 +277,15 @@ describe('special regions + quests', () => {
 ## Self-Review
 
 **Spec coverage (Plan 4 slice):**
+
 - Special regions (Deimos/Void/Lua/Kuva Fortress/Zariman) modeled `kind:'special'`/`spoilerGated` → Tasks 2–4. ✅
 - Spoiler-aware disclosure: default hidden, quest toggle reveals; `isRegionRevealed` single source of truth → Tasks 1, 5–8. ✅
 - Deimos → Nekros restored → Tasks 3–4, verified in Task 9. ✅
 - `completedQuests` persisted (IndexedDB, browser-only, ready-guarded) → Tasks 5, 8. ✅
 - Off-ring anomaly rendering → Task 6. ✅
-- **Deferred to Plan 5 (correctly absent):** Ctrl-K command palette, additional in-game themes, special-region *resource* lists.
+- **Deferred to Plan 5 (correctly absent):** Ctrl-K command palette, additional in-game themes, special-region _resource_ lists.
 
-**Placeholder scan:** every code step carries complete code or an exact, testable contract; special-region *data* (Task 2) has a passing-test contract + concrete values. ✅
+**Placeholder scan:** every code step carries complete code or an exact, testable contract; special-region _data_ (Task 2) has a passing-test contract + concrete values. ✅
 
 **Type consistency:** `Quest`/`Region.questId`/`Dataset.quests` used consistently across Tasks 1–3/8; `isRegionRevealed` signature stable (Tasks 1/6/8); tracker's `completedQuests`/`toggleQuest`/`isQuestDone`/`loadQuestState` names consistent (Tasks 5/7/8); `slugify(name)` region ids (`deimos`, `kuvafortress`, `zariman`) match between `special.ts`, quests' `revealsRegionIds`, and the pipeline. ✅
 
