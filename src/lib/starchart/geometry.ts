@@ -32,8 +32,17 @@ export function layoutRing(
 	return placed.sort((a, b) => a.front - b.front);
 }
 
+// Special regions positioned next to a thematically-related planet (moon/orbit).
+// Regions absent here fall back to the inner anomaly arc.
+const ANOMALY_ANCHORS: Record<string, string> = {
+	deimos: 'mars',
+	kuvafortress: 'mars',
+	lua: 'earth',
+};
+
 export function layoutAnomalies(
 	regions: Region[],
+	planets: PlacedPlanet[] = [],
 	opts: {
 		cx?: number;
 		cy?: number;
@@ -43,9 +52,48 @@ export function layoutAnomalies(
 	} = {},
 ): PlacedPlanet[] {
 	const { cx = 560, cy = 238, rx = 250, ry = 78, phase = 0.6 } = opts;
-	const ordered = [...regions].sort((a, b) => a.progressionOrder - b.progressionOrder);
+	const planetById = new Map(planets.map((p) => [p.region.id, p]));
+
+	const anchored: Region[] = [];
+	const free: Region[] = [];
+	for (const region of regions) {
+		const anchorId = ANOMALY_ANCHORS[region.id];
+		if (anchorId && planetById.has(anchorId)) {
+			anchored.push(region);
+		} else {
+			free.push(region);
+		}
+	}
+
+	// Group anchored regions by their anchor planet, then fan them out horizontally
+	// below the planet so multiple anomalies on the same planet don't overlap.
+	const groups = new Map<string, Region[]>();
+	for (const region of anchored) {
+		const anchorId = ANOMALY_ANCHORS[region.id];
+		const group = groups.get(anchorId) ?? [];
+		group.push(region);
+		groups.set(anchorId, group);
+	}
+	const anchoredPlaced: PlacedPlanet[] = [];
+	for (const [anchorId, group] of groups) {
+		const a = planetById.get(anchorId)!;
+		const m = group.length;
+		group.forEach((region, j) => {
+			const dx = (j - (m - 1) / 2) * 30;
+			anchoredPlaced.push({
+				region,
+				x: a.x + dx,
+				y: a.y + a.r + 26,
+				r: 12,
+				front: a.front,
+			});
+		});
+	}
+
+	// Remaining special regions keep the original inner-arc placement.
+	const ordered = [...free].sort((a, b) => a.progressionOrder - b.progressionOrder);
 	const n = ordered.length;
-	const placed = ordered.map((region, i) => {
+	const freePlaced = ordered.map((region, i) => {
 		const t = (i / n) * 2 * Math.PI + phase;
 		const x = cx + rx * Math.cos(t);
 		const y = cy + ry * Math.sin(t);
@@ -53,5 +101,6 @@ export function layoutAnomalies(
 		const r = 9 + 7 * front; // [9,16] — smaller than planets, an inner anomaly arc
 		return { region, x, y, r, front };
 	});
-	return placed.sort((a, b) => a.front - b.front);
+
+	return [...anchoredPlaced, ...freePlaced].sort((a, b) => a.front - b.front);
 }

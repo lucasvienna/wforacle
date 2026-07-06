@@ -23,7 +23,7 @@
 		VBH = 480;
 	let placed = $derived(layoutRing(regions, { cx: VBW / 2 }));
 	let placedAnomalies = $derived(
-		layoutAnomalies(specialRegions, { cx: VBW / 2 }),
+		layoutAnomalies(specialRegions, placed, { cx: VBW / 2 }),
 	);
 </script>
 

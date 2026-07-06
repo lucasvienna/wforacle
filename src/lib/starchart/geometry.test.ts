@@ -68,40 +68,62 @@ describe('layoutRing', () => {
 });
 
 describe('layoutAnomalies', () => {
-	const specialRegions: Region[] = [
-		{
-			id: 'deimos',
-			name: 'Deimos',
-			kind: 'special',
-			progressionOrder: 15,
-			factions: ['Infested'],
-			nodeIds: [],
-			spoilerGated: true,
-			resourceIds: [],
-			questId: 'heartofdeimos',
-		},
-		{
-			id: 'void',
-			name: 'Void',
-			kind: 'special',
-			progressionOrder: 16,
-			factions: ['Corrupted'],
-			nodeIds: [],
-			spoilerGated: true,
-			resourceIds: [],
-		},
-		{
-			id: 'lua',
-			name: 'Lua',
-			kind: 'special',
-			progressionOrder: 17,
-			factions: ['Sentient'],
-			nodeIds: [],
-			spoilerGated: true,
-			resourceIds: [],
-		},
-	];
-	const placed = layoutAnomalies(specialRegions, {
+	const planets = layoutRing(seed.regions, { cx: 100, cy: 100, rx: 80, ry: 40 });
+
+	const deimos: Region = {
+		id: 'deimos',
+		name: 'Deimos',
+		kind: 'special',
+		progressionOrder: 15,
+		factions: ['Infested'],
+		nodeIds: [],
+		spoilerGated: true,
+		resourceIds: [],
+		questId: 'heartofdeimos',
+	};
+	const kuvafortress: Region = {
+		id: 'kuvafortress',
+		name: 'Kuva Fortress',
+		kind: 'special',
+		progressionOrder: 18,
+		factions: ['Grineer'],
+		nodeIds: [],
+		spoilerGated: true,
+		resourceIds: [],
+	};
+	const lua: Region = {
+		id: 'lua',
+		name: 'Lua',
+		kind: 'special',
+		progressionOrder: 17,
+		factions: ['Sentient'],
+		nodeIds: [],
+		spoilerGated: true,
+		resourceIds: [],
+	};
+	const void_: Region = {
+		id: 'void',
+		name: 'Void',
+		kind: 'special',
+		progressionOrder: 16,
+		factions: ['Corrupted'],
+		nodeIds: [],
+		spoilerGated: true,
+		resourceIds: [],
+	};
+	const zariman: Region = {
+		id: 'zariman',
+		name: 'Zariman',
+		kind: 'special',
+		progressionOrder: 19,
+		factions: ['Sentient'],
+		nodeIds: [],
+		spoilerGated: false,
+		resourceIds: [],
+	};
+
+	const specialRegions = [deimos, kuvafortress, lua, void_, zariman];
+	const placed = layoutAnomalies(specialRegions, planets, {
 		cx: 100,
 		cy: 100,
 		rx: 60,
@@ -120,18 +142,43 @@ describe('layoutAnomalies', () => {
 		}
 	});
 
-	it('keeps points within the inner ellipse bounds', () => {
-		for (const p of placed) {
+	it('paints back-to-front (ascending front)', () => {
+		for (let i = 1; i < placed.length; i++) {
+			expect(placed[i].front).toBeGreaterThanOrEqual(placed[i - 1].front);
+		}
+	});
+
+	it('anchors Deimos and Kuva Fortress near Mars, fanned apart', () => {
+		const mars = planets.find((p) => p.region.id === 'mars')!;
+		const deimosPlaced = placed.find((p) => p.region.id === 'deimos')!;
+		const kuvaPlaced = placed.find((p) => p.region.id === 'kuvafortress')!;
+
+		for (const p of [deimosPlaced, kuvaPlaced]) {
+			expect(p.x).toBeGreaterThanOrEqual(mars.x - 45);
+			expect(p.x).toBeLessThanOrEqual(mars.x + 45);
+			expect(p.y).toBeGreaterThan(mars.y);
+		}
+		expect(deimosPlaced.x).not.toBe(kuvaPlaced.x);
+	});
+
+	it('anchors Lua near Earth', () => {
+		const earth = planets.find((p) => p.region.id === 'earth')!;
+		const luaPlaced = placed.find((p) => p.region.id === 'lua')!;
+
+		expect(luaPlaced.x).toBeGreaterThanOrEqual(earth.x - 45);
+		expect(luaPlaced.x).toBeLessThanOrEqual(earth.x + 45);
+		expect(luaPlaced.y).toBeGreaterThan(earth.y);
+	});
+
+	it('keeps unanchored special regions (Void, Zariman) on the inner arc', () => {
+		const voidPlaced = placed.find((p) => p.region.id === 'void')!;
+		const zarimanPlaced = placed.find((p) => p.region.id === 'zariman')!;
+
+		for (const p of [voidPlaced, zarimanPlaced]) {
 			expect(p.x).toBeGreaterThanOrEqual(100 - 60 - p.r);
 			expect(p.x).toBeLessThanOrEqual(100 + 60 + p.r);
 			expect(p.y).toBeGreaterThanOrEqual(100 - 40 - p.r);
 			expect(p.y).toBeLessThanOrEqual(100 + 40 + p.r);
-		}
-	});
-
-	it('paints back-to-front (ascending front)', () => {
-		for (let i = 1; i < placed.length; i++) {
-			expect(placed[i].front).toBeGreaterThanOrEqual(placed[i - 1].front);
 		}
 	});
 });
