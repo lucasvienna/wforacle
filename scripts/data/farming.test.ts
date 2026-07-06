@@ -11,6 +11,11 @@ describe('curated farming data', () => {
 		for (const r of RESOURCES) expect(r.id).toBe(slugify(r.name));
 		expect(new Set(RESOURCES.map((r) => r.id)).size).toBe(RESOURCES.length);
 	});
+	it('includes the curated special-region resources', () => {
+		const names = new Set(RESOURCES.map((r) => r.name));
+		for (const name of ['Somatic Fibers', 'Kuva', 'Voidgel Orb', 'Entrati Lanthorn'])
+			expect(names.has(name)).toBe(true);
+	});
 	it('maps every main planet (plus curated special regions) to known resource ids only', () => {
 		const mains = [
 			'earth',

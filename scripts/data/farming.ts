@@ -30,6 +30,10 @@ export const RESOURCES = [
 	{ id: slugify('Carbides'), name: 'Carbides' },
 	{ id: slugify('Cubic Diodes'), name: 'Cubic Diodes' },
 	{ id: slugify('Argon Crystal'), name: 'Argon Crystal' },
+	{ id: slugify('Somatic Fibers'), name: 'Somatic Fibers' },
+	{ id: slugify('Kuva'), name: 'Kuva' },
+	{ id: slugify('Voidgel Orb'), name: 'Voidgel Orb' },
+	{ id: slugify('Entrati Lanthorn'), name: 'Entrati Lanthorn' },
 ];
 
 const R = Object.fromEntries(RESOURCES.map((r) => [r.name, r.id])) as Record<string, string>;
@@ -77,6 +81,22 @@ export const PLANET_RESOURCES: Record<string, string[]> = {
 	// The Void's signature drop is the Void-exclusive Argon Crystal (also the
 	// only resource that decays over time).
 	void: [R['Argon Crystal']],
+	// Lua (Corpus/Sentient moon, revealed by The Second Dream) reuses several
+	// planet-pool resources plus its own Somatic Fibers (Lua Lens component).
+	lua: [R['Neurodes'], R['Ferrite'], R['Rubedo'], R['Detonite Ampule'], R['Somatic Fibers']],
+	// Kuva Fortress (Grineer, The War Within) is the home of Kuva itself,
+	// alongside its shared Grineer-tileset resource pool.
+	kuvafortress: [
+		R['Salvage'],
+		R['Circuits'],
+		R['Neural Sensors'],
+		R['Detonite Ampule'],
+		R['Tellurium'],
+		R['Kuva'],
+	],
+	// The Zariman (Angels of the Zariman) has its own small regional pool:
+	// Voidgel Orb and Entrati Lanthorn.
+	zariman: [R['Voidgel Orb'], R['Entrati Lanthorn']],
 };
 
 // Early + late farming recommendations per resource, authored from
@@ -506,6 +526,86 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 			boostersApply: true,
 			note: 'A Dark Sector Steel Path Survival on another Fieldron Sample planet; the Infested density there drops Fieldron Sample as enemy loot, so a Resource Drop Booster, the Steel Path passive and a Nekros loot squad all stack for a squad farm.',
 			source: 'https://wiki.warframe.com/w/Fieldron_Sample',
+			lastVerified: '2026-07-06',
+		},
+	],
+	[R['Somatic Fibers']]: [
+		{
+			phase: 'early',
+			nodeLabel: 'Lua — Apollo (Disruption)',
+			nodeId: undefined,
+			boostersApply: true,
+			note: 'Somatic Fibers (a Lua Lens component) drop from the Demolisher units that spawn in Lua Disruption; killing Demolishers quickly is the whole farm, so a Resource Drop Booster and a loot frame raise the enemy-drop chance.',
+			source: 'https://wiki.warframe.com/w/Somatic_Fibers',
+			lastVerified: '2026-07-06',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Lua — Apollo (Disruption, Steel Path)',
+			nodeId: undefined,
+			boostersApply: true,
+			note: 'Steel Path Disruption spawns more Demolishers per rotation for the same Somatic Fibers drop, so the Steel Path passive stacks with a Resource Drop Booster for a faster Lens-farming squad run.',
+			source: 'https://wiki.warframe.com/w/Somatic_Fibers',
+			lastVerified: '2026-07-06',
+		},
+	],
+	[R['Kuva']]: [
+		{
+			phase: 'early',
+			nodeLabel: 'Kuva Fortress — Taveuni (Survival, Kuva Harvester)',
+			nodeId: undefined,
+			boostersApply: false,
+			note: 'Escorting/guarding the Kuva Harvester in this Survival awards a fixed 200 Kuva when it finishes draining, regardless of drop chance boosters — a reliable, repeatable chunk as soon as the Kuva Fortress is unlocked.',
+			source: 'https://wiki.warframe.com/w/Kuva',
+			lastVerified: '2026-07-06',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Kuva Fortress — Taveuni (Survival, Steel Path)',
+			nodeId: undefined,
+			boostersApply: false,
+			note: 'The Harvester’s fixed 200 Kuva payout is unaffected by Steel Path or boosters, but for endgame bulk Kuva the real source is rotating daily Kuva Siphon/Flood missions (any planet) with a Requiem relic equipped — each Siphon/Flood nets 500–810+ Kuva per run.',
+			source: 'https://wiki.warframe.com/w/Kuva',
+			lastVerified: '2026-07-06',
+		},
+	],
+	[R['Voidgel Orb']]: [
+		{
+			phase: 'early',
+			nodeLabel: 'Zariman — Tuvul Commons (Void Cascade)',
+			nodeId: undefined,
+			boostersApply: true,
+			note: 'Voidgel Orb is one of the Zariman’s regional mission rewards (roughly a 9.76% end-of-mission chance); running Void Cascade rotations on Tuvul Commons is the standard way to farm it as soon as the Zariman is unlocked.',
+			source: 'https://wiki.warframe.com/w/Voidgel_Orb',
+			lastVerified: '2026-07-06',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Zariman — Tuvul Commons (Void Cascade, Steel Path)',
+			nodeId: undefined,
+			boostersApply: true,
+			note: 'Steel Path Void Cascade runs the same reward table faster with denser Void Angel/Sentient spawns, so a full squad can bank multiple rotations’ worth of Voidgel Orb rolls per hour.',
+			source: 'https://wiki.warframe.com/w/Voidgel_Orb',
+			lastVerified: '2026-07-06',
+		},
+	],
+	[R['Entrati Lanthorn']]: [
+		{
+			phase: 'early',
+			nodeLabel: 'Zariman — Halako Perimeter (Extermination)',
+			nodeId: undefined,
+			boostersApply: true,
+			note: 'Entrati Lanthorn is a Zariman mission reward (about a 9.76% chance) alongside Voidgel Orb, so a quick Halako Perimeter Extermination repeated a few times is an efficient early source.',
+			source: 'https://wiki.warframe.com/w/Entrati_Lanthorn',
+			lastVerified: '2026-07-06',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Deimos — Cambion Drift (Bounties)',
+			nodeId: undefined,
+			boostersApply: false,
+			note: 'Entrati Lanthorn also appears in the Cambion Drift bounty reward tables (as it does in Zariman bounties), giving a steady endgame supply alongside standing and other bounty rewards; bounty rewards are fixed-table payouts, so resource drop boosters don’t apply here.',
+			source: 'https://wiki.warframe.com/w/Entrati_Lanthorn',
 			lastVerified: '2026-07-06',
 		},
 	],
