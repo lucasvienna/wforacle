@@ -14,10 +14,12 @@ mobs, that actually drop Salvage.
 citing up to 3,000 Salvage in a single run if every container and locker in
 the Corpus tileset gets opened. Since Salvage is still a container-based
 pickup rather than an enemy drop, Resource Drop Boosters and the Steel Path
-passive don't add anything on top — a squad that splits up and loots
-thoroughly will out-farm one that just fights through to the objective.
-**Elara** (Survival), also on Jupiter, is a solid endless alternative with a
-Nekros or other loot-enhancing frame along for the ride.
+passive don't add anything on top, and loot frames like Nekros don't help
+either — their abilities re-roll enemy drop tables, not container loot. What
+does help is a Loot Detector / Thief's Wit mod to mark every crate on the
+minimap and a squad that splits up to crack them all open. **Elara**
+(Survival), also on Jupiter, is a solid endless alternative when you'd rather
+let a long run pile up container spawns than reset short missions.
 
 ## Sources
 
