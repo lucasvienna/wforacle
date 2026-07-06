@@ -73,6 +73,7 @@ const multiNodeRegion: Dataset = {
 		},
 	],
 	resources: [],
+	quests: [],
 };
 
 describe('RegionPanel', () => {
