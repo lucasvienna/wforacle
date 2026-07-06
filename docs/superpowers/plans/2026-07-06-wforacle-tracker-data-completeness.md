@@ -30,12 +30,14 @@
 ### Task 1: Extend the Slot model with Day/Night Aspect
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts` (`Slot` union)
 - Modify: `scripts/data/build.ts` (`SLOT_BY_COMPONENT`)
 - Modify: `src/lib/panel/RegionPanel.svelte` (`SLOT_LABEL`)
 - Test: `src/lib/model/completion.test.ts` (or the nearest existing completion test)
 
 **Interfaces:**
+
 - Produces: `Slot = 'bp' | 'neuroptics' | 'chassis' | 'systems' | 'dayaspect' | 'nightaspect'`.
 - `SLOT_BY_COMPONENT` gains `'Day Aspect': 'dayaspect'`, `'Night Aspect': 'nightaspect'`.
 - `SLOT_LABEL` (RegionPanel) gains `dayaspect: 'Day Aspect'`, `nightaspect: 'Night Aspect'`.
@@ -51,10 +53,12 @@
 ### Task 2: Derive frame parts from actual components (Equinox links)
 
 **Files:**
+
 - Modify: `scripts/data/build.ts` (`buildFrames`)
 - Test: `scripts/data/build.test.ts`
 
 **Interfaces:**
+
 - Consumes: `SLOT_BY_COMPONENT` (Task 1).
 - Produces: `buildFrames` builds each frame's `parts` from the slots present in its components — always include `'bp'`, then every slot any component maps to — emitted in the canonical order `['bp','neuroptics','chassis','systems','dayaspect','nightaspect']` filtered to those present. Standard frames are unchanged (still `bp/neuroptics/chassis/systems`); Equinox yields `bp/dayaspect/nightaspect`. Node link + `chanceBySlot` still come only from non-bp component Assassination drops (unchanged).
 
@@ -70,11 +74,13 @@
 ### Task 3: Curated Eris key-boss nodes (Mesa, Atlas link)
 
 **Files:**
+
 - Modify: `scripts/data/curated.ts` (key-boss pseudo-nodes + drop-loc map + bosses)
 - Modify: `scripts/data/build.ts` (merge pseudo-nodes; resolve non-standard drop locations)
 - Test: `scripts/data/build.test.ts`
 
 **Interfaces:**
+
 - Produces:
   - `curated.ts`: `KEY_BOSS_SOLNODES: SolNodes` — `{ CuratedMutalistAladV: { value: 'Mutalist Alad V (Eris)', enemy: 'Infested', type: 'Assassination' }, CuratedJordasGolem: { value: 'Jordas Golem (Eris)', enemy: 'Infested', type: 'Assassination' } }`. `KEY_BOSS_DROP_LOCATIONS: Record<string, { planet: string; node: string; type: string }>` mapping the raw WFCD strings `'Mutalist Alad V Assassinate'` → `{ planet: 'Eris', node: 'Mutalist Alad V', type: 'Assassination' }` and `'Jordas Golem Assassinate'` → `{ planet: 'Eris', node: 'Jordas Golem', type: 'Assassination' }`. `BOSS_BY_NODE` gains `[slugify('Mutalist Alad V')]: 'Mutalist Alad V'`, `[slugify('Jordas Golem')]: 'Jordas Golem'`.
   - `build.ts`: `buildNodes` merges `KEY_BOSS_SOLNODES` into the input (so Eris gets the two Assassination nodes). A `resolveDropLocation(loc)` helper tries `parseDropLocation(loc)` first, then `KEY_BOSS_DROP_LOCATIONS[loc.split(',')[0].trim()]` (the WFCD strings carry a trailing `, Rotation C`); `buildFrames` uses it in place of the bare `parseDropLocation`.
@@ -90,6 +96,7 @@
 ### Task 4: Regenerate dataset with the three frames
 
 **Files:**
+
 - Modify: `static/data/dataset.json` (regenerated)
 - Modify: `scripts/build-data.ts` (frame-floor + sanity)
 
@@ -104,10 +111,12 @@
 ### Task 5: Panel polish — aspect rows + key-boss hint
 
 **Files:**
+
 - Modify: `src/lib/panel/RegionPanel.svelte`
 - Test: `src/lib/panel/RegionPanel.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: the regenerated dataset shape (Equinox 3 parts; Mesa/Atlas nodes on Eris).
 - Produces: RegionPanel renders any frame's parts generically (already does — confirm the widened `SLOT_LABEL` covers aspects, no fixed 4-row assumption). Add a subtle "· key" tag next to the Assassination tag when the boss is a key mission — derive from a small `KEY_BOSSES = new Set(['Mutalist Alad V','Jordas Golem'])` in the component (presentational only).
 
@@ -120,10 +129,12 @@
 ### Task 6: Curated data for the 4 new resources
 
 **Files:**
+
 - Modify: `scripts/data/farming.ts` (`RESOURCES`, `PLANET_RESOURCES`, `RECOMMENDATIONS`)
 - Test: `scripts/data/farming.test.ts`
 
 **Interfaces:**
+
 - Produces:
   - `RESOURCES` gains `{ id: slugify('Somatic Fibers'), name: 'Somatic Fibers' }`, `Kuva`, `Voidgel Orb`, `Entrati Lanthorn`.
   - `PLANET_RESOURCES` gains the `lua`/`kuvafortress`/`zariman` entries from Global Constraints.
@@ -144,6 +155,7 @@
 ### Task 7: Icons + guides for the 4 new resources
 
 **Files:**
+
 - Modify: `scripts/fetch-resource-images.sh` (4 new `dl` lines)
 - Create: `static/resources/{somaticfibers,kuva,voidgelorb,entratilanthorn}.webp`
 - Create: `src/content/guides/{somaticfibers,kuva,voidgelorb,entratilanthorn}.svx`
@@ -159,6 +171,7 @@
 ### Task 8: Regenerate dataset; verify special-region resource cards
 
 **Files:**
+
 - Modify: `static/data/dataset.json` (regenerated)
 - Modify: `scripts/build-data.ts` (resource-floor bump)
 
@@ -173,6 +186,7 @@
 ### Task 9: End-to-end — new frames + region resources
 
 **Files:**
+
 - Modify: `e2e/tracking.test.ts` or new `e2e/completeness.test.ts`
 
 **Interfaces:** the running app.
@@ -186,6 +200,7 @@
 ## Self-Review
 
 **Spec coverage:**
+
 - Equinox trackable (model extension + derived parts) → Tasks 1, 2, 4, 5, 9. ✅
 - Mesa & Atlas trackable (curated Eris key-boss nodes) → Tasks 3, 4, 5, 9. ✅
 - Lua/Kuva Fortress/Zariman resource cards (4 new resources + existing) → Tasks 6, 7, 8, 9. ✅
