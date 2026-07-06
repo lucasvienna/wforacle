@@ -76,6 +76,103 @@ const multiNodeRegion: Dataset = {
 	quests: [],
 };
 
+// Equinox-shaped fixture: Uranus region with a Titania Assassination node
+// linking Equinox, whose parts include the widened dayaspect/nightaspect
+// slots (instead of the usual neuroptics/chassis/systems).
+const equinoxRegion: Dataset = {
+	regions: [
+		{
+			id: 'uranus',
+			name: 'Uranus',
+			kind: 'planet',
+			progressionOrder: 6,
+			factions: ['Grineer'],
+			nodeIds: ['titania'],
+			spoilerGated: false,
+			resourceIds: [],
+		},
+	],
+	nodes: [
+		{
+			id: 'titania',
+			regionId: 'uranus',
+			name: 'Titania',
+			missionType: 'Assassination',
+			faction: 'Grineer',
+			isAssassination: true,
+			bossId: 'tylregor',
+			frameId: 'equinox',
+		},
+	],
+	bosses: [{ id: 'tylregor', name: 'Tyl Regor', nodeId: 'titania', faction: 'Grineer' }],
+	warframes: [
+		{
+			id: 'equinox',
+			name: 'Equinox',
+			nodeId: 'titania',
+			parts: [
+				{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp' },
+				{ id: 'equinox:dayaspect', frameId: 'equinox', slot: 'dayaspect' },
+				{ id: 'equinox:nightaspect', frameId: 'equinox', slot: 'nightaspect' },
+			],
+		},
+	],
+	resources: [],
+	quests: [],
+} as unknown as Dataset;
+
+// Mesa-shaped fixture: Eris region with a Mutalist Alad V Assassination node
+// — this boss requires crafting a key, so the panel should show a "· key" hint.
+const mesaKeyRegion: Dataset = {
+	regions: [
+		{
+			id: 'eris',
+			name: 'Eris',
+			kind: 'planet',
+			progressionOrder: 10,
+			factions: ['Infested'],
+			nodeIds: ['oceanum'],
+			spoilerGated: false,
+			resourceIds: [],
+		},
+	],
+	nodes: [
+		{
+			id: 'oceanum',
+			regionId: 'eris',
+			name: 'Oceanum',
+			missionType: 'Assassination',
+			faction: 'Infested',
+			isAssassination: true,
+			bossId: 'mutalistaladv',
+			frameId: 'mesa',
+		},
+	],
+	bosses: [
+		{
+			id: 'mutalistaladv',
+			name: 'Mutalist Alad V',
+			nodeId: 'oceanum',
+			faction: 'Infested',
+		},
+	],
+	warframes: [
+		{
+			id: 'mesa',
+			name: 'Mesa',
+			nodeId: 'oceanum',
+			parts: [
+				{ id: 'mesa:bp', frameId: 'mesa', slot: 'bp' },
+				{ id: 'mesa:neuroptics', frameId: 'mesa', slot: 'neuroptics' },
+				{ id: 'mesa:chassis', frameId: 'mesa', slot: 'chassis' },
+				{ id: 'mesa:systems', frameId: 'mesa', slot: 'systems' },
+			],
+		},
+	],
+	resources: [],
+	quests: [],
+} as unknown as Dataset;
+
 describe('RegionPanel', () => {
 	it('shows the boss, frame, and faction for an assassination region', () => {
 		const tracker = createTracker(seed.warframes);
@@ -169,5 +266,22 @@ describe('RegionPanel', () => {
 			'href',
 			'/guides/alloyplate',
 		);
+	});
+	it('renders Equinox day/night aspect parts (widened SLOT_LABEL, no fixed 4-row assumption)', () => {
+		const tracker = createTracker(equinoxRegion.warframes);
+		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
+		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
+		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
+		expect(document.querySelector('[data-part="equinox:dayaspect"]')).toBeInTheDocument();
+	});
+	it('shows a "key" hint for bosses that require crafting a key (Mutalist Alad V)', () => {
+		const tracker = createTracker(mesaKeyRegion.warframes);
+		render(RegionPanel, { dataset: mesaKeyRegion, regionId: 'eris', tracker });
+		expect(document.querySelector('[data-key]')).toBeInTheDocument();
+	});
+	it('does not show a "key" hint for a normal (non-key) boss node', () => {
+		const tracker = createTracker(seed.warframes);
+		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+		expect(document.querySelector('[data-key]')).toBeNull();
 	});
 });

@@ -26,6 +26,11 @@
 		Infested: 'border-lime-500/40 bg-lime-500/10 text-lime-300',
 	};
 
+	// Bosses that require crafting a key item before the node can be played
+	// (e.g. Derelict/Orokin Vault keys). Presentational hint only — not a
+	// spoiler gate.
+	const KEY_BOSSES = new Set(['Mutalist Alad V', 'Jordas Golem']);
+
 	let region = $derived(dataset.regions.find((r) => r.id === regionId));
 	let resources = $derived(resourcesForRegion(dataset, regionId));
 	// A region can have MULTIPLE Assassination nodes, each linking its own
@@ -73,6 +78,9 @@
 								] ?? 'border-slate-600 text-slate-300'}"
 							>
 								{node.faction} · Assassination
+								{#if KEY_BOSSES.has(boss.name)}
+									<span data-key class="text-slate-400">· key</span>
+								{/if}
 							</span>
 						</div>
 
