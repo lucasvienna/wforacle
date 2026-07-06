@@ -38,6 +38,9 @@ export interface Recommendation {
 	phase: 'early' | 'late';
 	nodeLabel: string;
 	nodeId?: string;
+	/** Main-planet region id the recommended node is on (parsed from nodeLabel);
+	 * undefined for special-region nodes (Void/Lua/…). Drives the "best farm here" badge. */
+	regionId?: string;
 	boostersApply: boolean;
 	note: string;
 	source: string;

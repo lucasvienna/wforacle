@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-05T22:02:13.251Z",
+	"generatedAt": "2026-07-06T04:18:42.231Z",
 	"data": {
 		"regions": [
 			{
@@ -8,9 +8,7 @@
 				"name": "Earth",
 				"kind": "planet",
 				"progressionOrder": 1,
-				"factions": [
-					"Grineer"
-				],
+				"factions": ["Grineer"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode15",
@@ -35,19 +33,14 @@
 					"CrewBattleNode519",
 					"CrewBattleNode522"
 				],
-				"resourceIds": [
-					"neurodes",
-					"rubedo"
-				]
+				"resourceIds": ["neurodes", "rubedo"]
 			},
 			{
 				"id": "venus",
 				"name": "Venus",
 				"kind": "planet",
 				"progressionOrder": 2,
-				"factions": [
-					"Corpus"
-				],
+				"factions": ["Corpus"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode2",
@@ -76,21 +69,14 @@
 					"CrewBattleNode515",
 					"SolarisUnitedHub1"
 				],
-				"resourceIds": [
-					"alloyplate",
-					"polymerbundle",
-					"oxium",
-					"neurodes"
-				]
+				"resourceIds": ["alloyplate", "polymerbundle", "oxium", "neurodes"]
 			},
 			{
 				"id": "mercury",
 				"name": "Mercury",
 				"kind": "planet",
 				"progressionOrder": 3,
-				"factions": [
-					"Grineer"
-				],
+				"factions": ["Grineer"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode12",
@@ -109,18 +95,14 @@
 					"SolNode227",
 					"MercuryHUB"
 				],
-				"resourceIds": [
-					"polymerbundle"
-				]
+				"resourceIds": ["polymerbundle"]
 			},
 			{
 				"id": "mars",
 				"name": "Mars",
 				"kind": "planet",
 				"progressionOrder": 4,
-				"factions": [
-					"Grineer"
-				],
+				"factions": ["Grineer"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode11",
@@ -146,19 +128,14 @@
 					"ClanNode8",
 					"ClanNode9"
 				],
-				"resourceIds": [
-					"gallium",
-					"oxium"
-				]
+				"resourceIds": ["gallium", "oxium"]
 			},
 			{
 				"id": "phobos",
 				"name": "Phobos",
 				"kind": "planet",
 				"progressionOrder": 5,
-				"factions": [
-					"Corpus"
-				],
+				"factions": ["Corpus"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SettlementNode1",
@@ -184,20 +161,14 @@
 					"ClanNode10",
 					"ClanNode11"
 				],
-				"resourceIds": [
-					"alloyplate",
-					"plastids",
-					"rubedo"
-				]
+				"resourceIds": ["alloyplate", "plastids", "rubedo"]
 			},
 			{
 				"id": "ceres",
 				"name": "Ceres",
 				"kind": "planet",
 				"progressionOrder": 6,
-				"factions": [
-					"Grineer"
-				],
+				"factions": ["Grineer"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode131",
@@ -223,19 +194,14 @@
 					"ClanNode22",
 					"ClanNode23"
 				],
-				"resourceIds": [
-					"alloyplate",
-					"orokincell"
-				]
+				"resourceIds": ["alloyplate", "orokincell"]
 			},
 			{
 				"id": "jupiter",
 				"name": "Jupiter",
 				"kind": "planet",
 				"progressionOrder": 7,
-				"factions": [
-					"Corpus"
-				],
+				"factions": ["Corpus"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode10",
@@ -259,21 +225,14 @@
 					"ClanNode4",
 					"ClanNode5"
 				],
-				"resourceIds": [
-					"alloyplate",
-					"neuralsensors",
-					"oxium",
-					"orokincell"
-				]
+				"resourceIds": ["alloyplate", "neuralsensors", "oxium", "orokincell"]
 			},
 			{
 				"id": "europa",
 				"name": "Europa",
 				"kind": "planet",
 				"progressionOrder": 8,
-				"factions": [
-					"Corpus"
-				],
+				"factions": ["Corpus"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode203",
@@ -298,20 +257,14 @@
 					"ClanNode6",
 					"ClanNode7"
 				],
-				"resourceIds": [
-					"oxium",
-					"controlmodule",
-					"rubedo"
-				]
+				"resourceIds": ["oxium", "controlmodule", "rubedo"]
 			},
 			{
 				"id": "saturn",
 				"name": "Saturn",
 				"kind": "planet",
 				"progressionOrder": 9,
-				"factions": [
-					"Grineer"
-				],
+				"factions": ["Grineer"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode7",
@@ -345,20 +298,14 @@
 					"CrewBattleNode534",
 					"CrewBattleNode535"
 				],
-				"resourceIds": [
-					"orokincell",
-					"nanospores",
-					"plastids"
-				]
+				"resourceIds": ["orokincell", "nanospores", "plastids"]
 			},
 			{
 				"id": "uranus",
 				"name": "Uranus",
 				"kind": "planet",
 				"progressionOrder": 10,
-				"factions": [
-					"Grineer"
-				],
+				"factions": ["Grineer"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode3",
@@ -388,20 +335,14 @@
 					"ClanNode17",
 					"SolNode723"
 				],
-				"resourceIds": [
-					"plastids",
-					"polymerbundle",
-					"gallium"
-				]
+				"resourceIds": ["plastids", "polymerbundle", "gallium"]
 			},
 			{
 				"id": "neptune",
 				"name": "Neptune",
 				"kind": "planet",
 				"progressionOrder": 11,
-				"factions": [
-					"Corpus"
-				],
+				"factions": ["Corpus"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode1",
@@ -427,20 +368,14 @@
 					"CrewBattleNode524",
 					"CrewBattleNode525"
 				],
-				"resourceIds": [
-					"nanospores",
-					"oxium",
-					"controlmodule"
-				]
+				"resourceIds": ["nanospores", "oxium", "controlmodule"]
 			},
 			{
 				"id": "pluto",
 				"name": "Pluto",
 				"kind": "planet",
 				"progressionOrder": 12,
-				"factions": [
-					"Corpus"
-				],
+				"factions": ["Corpus"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode4",
@@ -466,22 +401,14 @@
 					"CrewBattleNode531",
 					"CrewBattleNode536"
 				],
-				"resourceIds": [
-					"alloyplate",
-					"plastids",
-					"oxium",
-					"orokincell",
-					"rubedo"
-				]
+				"resourceIds": ["alloyplate", "plastids", "oxium", "orokincell", "rubedo"]
 			},
 			{
 				"id": "eris",
 				"name": "Eris",
 				"kind": "planet",
 				"progressionOrder": 13,
-				"factions": [
-					"Infested"
-				],
+				"factions": ["Infested"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode151",
@@ -514,21 +441,14 @@
 					"ClanNode18",
 					"ClanNode19"
 				],
-				"resourceIds": [
-					"plastids",
-					"nanospores",
-					"oxium",
-					"neurodes"
-				]
+				"resourceIds": ["plastids", "nanospores", "oxium", "neurodes"]
 			},
 			{
 				"id": "sedna",
 				"name": "Sedna",
 				"kind": "planet",
 				"progressionOrder": 14,
-				"factions": [
-					"Grineer"
-				],
+				"factions": ["Grineer"],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode177",
@@ -560,11 +480,7 @@
 					"ClanNode14",
 					"ClanNode15"
 				],
-				"resourceIds": [
-					"alloyplate",
-					"orokincell",
-					"rubedo"
-				]
+				"resourceIds": ["alloyplate", "orokincell", "rubedo"]
 			}
 		],
 		"nodes": [
@@ -3672,13 +3588,7 @@
 				"id": "orokincell",
 				"name": "Orokin Cell",
 				"image": "ComponentCell.png",
-				"regionIds": [
-					"ceres",
-					"jupiter",
-					"saturn",
-					"pluto",
-					"sedna"
-				],
+				"regionIds": ["ceres", "jupiter", "saturn", "pluto", "sedna"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3686,7 +3596,8 @@
 						"boostersApply": true,
 						"note": "Fast, repeatable boss kill with a solid Orokin Cell drop chance; accessible as soon as Saturn is unlocked.",
 						"source": "https://wiki.warframe.com/w/Orokin_Cell_Farming_Guide",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "saturn"
 					},
 					{
 						"phase": "late",
@@ -3694,7 +3605,8 @@
 						"boostersApply": true,
 						"note": "Dark Sector +35% resource drop chance stacks with the Steel Path drop-chance passive and Resourceful Retriever/boosters for sustained squad farming.",
 						"source": "https://wiki.warframe.com/w/Orokin_Cell_Farming_Guide",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "ceres"
 					}
 				]
 			},
@@ -3702,11 +3614,7 @@
 				"id": "neurodes",
 				"name": "Neurodes",
 				"image": "ComponentNeurode.png",
-				"regionIds": [
-					"earth",
-					"venus",
-					"eris"
-				],
+				"regionIds": ["earth", "venus", "eris"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3714,7 +3622,8 @@
 						"boostersApply": false,
 						"note": "Breaking the green-glowing resource containers in the Grineer cave tileset on this quick Capture run guarantees Neurodes, no boss or high level required.",
 						"source": "https://wiki.warframe.com/w/Neurodes",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "earth"
 					},
 					{
 						"phase": "late",
@@ -3730,9 +3639,7 @@
 				"id": "neuralsensors",
 				"name": "Neural Sensors",
 				"image": "NeuralSensor.png",
-				"regionIds": [
-					"jupiter"
-				],
+				"regionIds": ["jupiter"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3740,7 +3647,8 @@
 						"boostersApply": true,
 						"note": "Low-level Corpus Survival that new players can rotate for a while; enemy drops feed Neural Sensors at an accessible level range.",
 						"source": "https://wiki.warframe.com/w/Neural_Sensors",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "jupiter"
 					},
 					{
 						"phase": "late",
@@ -3748,7 +3656,8 @@
 						"boostersApply": true,
 						"note": "Dark Sector +20% resource drop chance plus Steel Path enemy density against Infested hordes makes this the best endgame squad spot.",
 						"source": "https://wiki.warframe.com/w/Neural_Sensors",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "jupiter"
 					}
 				]
 			},
@@ -3756,11 +3665,7 @@
 				"id": "nanospores",
 				"name": "Nano Spores",
 				"image": "ComponentNanospores.png",
-				"regionIds": [
-					"saturn",
-					"neptune",
-					"eris"
-				],
+				"regionIds": ["saturn", "neptune", "eris"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3768,7 +3673,8 @@
 						"boostersApply": false,
 						"note": "Spore Culture containers scattered through the level are a guaranteed Nano Spore source and are easy to clear in the first few Defense waves.",
 						"source": "https://wiki.warframe.com/w/Nano_Spores",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "eris"
 					},
 					{
 						"phase": "late",
@@ -3776,7 +3682,8 @@
 						"boostersApply": true,
 						"note": "Steel Path Infested density with a Khora/Nekros loot squad on this Dark Sector node yields large Nano Spore hauls per rotation.",
 						"source": "https://wiki.warframe.com/w/Nano_Spores",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "saturn"
 					}
 				]
 			},
@@ -3784,14 +3691,7 @@
 				"id": "alloyplate",
 				"name": "Alloy Plate",
 				"image": "AlloyPlate.png",
-				"regionIds": [
-					"venus",
-					"phobos",
-					"ceres",
-					"jupiter",
-					"pluto",
-					"sedna"
-				],
+				"regionIds": ["venus", "phobos", "ceres", "jupiter", "pluto", "sedna"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3799,7 +3699,8 @@
 						"boostersApply": true,
 						"note": "Low-level Corpus Defense on Venus, one of Alloy Plate’s signature planets, gives steady drops from the very start of the star chart.",
 						"source": "https://wiki.warframe.com/w/Alloy_Plate",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "venus"
 					},
 					{
 						"phase": "late",
@@ -3815,13 +3716,7 @@
 				"id": "plastids",
 				"name": "Plastids",
 				"image": "ComponentPlastids.png",
-				"regionIds": [
-					"phobos",
-					"saturn",
-					"uranus",
-					"pluto",
-					"eris"
-				],
+				"regionIds": ["phobos", "saturn", "uranus", "pluto", "eris"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3829,7 +3724,8 @@
 						"boostersApply": true,
 						"note": "Accessible low-level Corpus Defense; Phobos is one of the few main planets with a decent Plastids drop chance early on.",
 						"source": "https://wiki.warframe.com/w/Plastids",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "phobos"
 					},
 					{
 						"phase": "late",
@@ -3837,7 +3733,8 @@
 						"boostersApply": true,
 						"note": "Plastids are notoriously low-yield, so a Dark Sector Steel Path Survival squad farm (with Nekros/Hydroid) is worth the endgame investment.",
 						"source": "https://wiki.warframe.com/w/Plastids",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "uranus"
 					}
 				]
 			},
@@ -3845,11 +3742,7 @@
 				"id": "polymerbundle",
 				"name": "Polymer Bundle",
 				"image": "PolymerBundle.png",
-				"regionIds": [
-					"venus",
-					"mercury",
-					"uranus"
-				],
+				"regionIds": ["venus", "mercury", "uranus"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3857,7 +3750,8 @@
 						"boostersApply": true,
 						"note": "Uranus is Polymer Bundle’s primary planet, so nearly every resource drop here is a bundle; Ophelia also nets Tellurium on the side.",
 						"source": "https://wiki.warframe.com/w/Polymer_Bundle",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "uranus"
 					},
 					{
 						"phase": "late",
@@ -3865,7 +3759,8 @@
 						"boostersApply": true,
 						"note": "Same Dark Sector Grineer Galleon chokepoints used for Plastids double as an efficient Steel Path Polymer Bundle squad farm.",
 						"source": "https://wiki.warframe.com/w/Polymer_Bundle",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "uranus"
 					}
 				]
 			},
@@ -3873,15 +3768,7 @@
 				"id": "oxium",
 				"name": "Oxium",
 				"image": "ComponentOxium.png",
-				"regionIds": [
-					"venus",
-					"mars",
-					"jupiter",
-					"europa",
-					"neptune",
-					"pluto",
-					"eris"
-				],
+				"regionIds": ["venus", "mars", "jupiter", "europa", "neptune", "pluto", "eris"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3889,7 +3776,8 @@
 						"boostersApply": true,
 						"note": "Reliable early Oxium Osprey spawns; the wiki cites roughly 80 Oxium over 10 waves on this low-level Corpus Defense.",
 						"source": "https://wiki.warframe.com/w/Oxium",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "jupiter"
 					},
 					{
 						"phase": "late",
@@ -3929,10 +3817,7 @@
 				"id": "gallium",
 				"name": "Gallium",
 				"image": "ComponentGallium.png",
-				"regionIds": [
-					"mars",
-					"uranus"
-				],
+				"regionIds": ["mars", "uranus"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3940,7 +3825,8 @@
 						"boostersApply": false,
 						"note": "Quick low-level Grineer Exterminate on one of Gallium’s two signature planets. Gallium comes from mission-completion rewards and resource caches rather than an enemy drop table, so boosters do not increase it.",
 						"source": "https://wiki.warframe.com/w/Gallium",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "mars"
 					},
 					{
 						"phase": "late",
@@ -3948,7 +3834,8 @@
 						"boostersApply": false,
 						"note": "Tyl Regor drops Gallium as an assassination reward on top of Uranus’ signature-resource bonus; Steel Path repeat runs scale well for squads. Gallium is reward/cache-based, not an enemy drop table, so boosters do not increase it.",
 						"source": "https://wiki.warframe.com/w/Gallium",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "uranus"
 					}
 				]
 			},
@@ -3956,10 +3843,7 @@
 				"id": "controlmodule",
 				"name": "Control Module",
 				"image": "ControlModule.png",
-				"regionIds": [
-					"europa",
-					"neptune"
-				],
+				"regionIds": ["europa", "neptune"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3983,13 +3867,7 @@
 				"id": "rubedo",
 				"name": "Rubedo",
 				"image": "ComponentRubedo.png",
-				"regionIds": [
-					"earth",
-					"phobos",
-					"europa",
-					"pluto",
-					"sedna"
-				],
+				"regionIds": ["earth", "phobos", "europa", "pluto", "sedna"],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3997,7 +3875,8 @@
 						"boostersApply": false,
 						"note": "The wiki cites roughly 250 Rubedo per 5 minutes here, among the best yields available to newer players on a signature Rubedo planet. Rubedo drops from containers and lockers rather than an enemy drop table, so boosters do not increase it.",
 						"source": "https://wiki.warframe.com/w/Rubedo",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "phobos"
 					},
 					{
 						"phase": "late",

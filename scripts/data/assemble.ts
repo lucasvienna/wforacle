@@ -1,8 +1,20 @@
 import type { Dataset, Resource } from '../../src/lib/model/types';
 import { buildRegions, buildNodes, buildFrames, type SolNodes, type RawWarframe } from './build';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
+import { PLANETS } from './curated';
+import { slugify } from './parse';
 
 export type RawResource = { name: string; imageName?: string };
+
+const MAIN_REGION_IDS = new Set(PLANETS.map((p) => slugify(p.name)));
+
+/** Parse the main-planet region id a recommendation's node is on, from its
+ * nodeLabel ("Uranus — Ophelia (Survival)" → "uranus"). Returns undefined for
+ * special regions (e.g. "Void — Hepit") which aren't main planets. */
+export function recRegionId(nodeLabel: string): string | undefined {
+	const planet = slugify(nodeLabel.split('—')[0]);
+	return MAIN_REGION_IDS.has(planet) ? planet : undefined;
+}
 
 export function buildResources(raw: RawResource[]): Resource[] {
 	// Prefer the first match for a given name and skip entries without an
@@ -22,7 +34,10 @@ export function buildResources(raw: RawResource[]): Resource[] {
 		name: r.name,
 		image: imgByName.get(r.name),
 		regionIds: regionsByResource.get(r.id) ?? [],
-		recommendations: RECOMMENDATIONS[r.id] ?? [],
+		recommendations: (RECOMMENDATIONS[r.id] ?? []).map((rec) => ({
+			...rec,
+			regionId: recRegionId(rec.nodeLabel),
+		})),
 	}));
 }
 

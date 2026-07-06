@@ -135,7 +135,8 @@ describe('RegionPanel', () => {
 					recommendations: [
 						{
 							phase: 'early',
-							nodeLabel: 'A',
+							nodeLabel: 'Venus — Tessera',
+							regionId: 'venus',
 							boostersApply: false,
 							note: '',
 							source: '',
@@ -143,7 +144,8 @@ describe('RegionPanel', () => {
 						},
 						{
 							phase: 'late',
-							nodeLabel: 'B',
+							nodeLabel: 'Uranus — Assur',
+							regionId: 'uranus',
 							boostersApply: true,
 							note: '',
 							source: '',
@@ -156,8 +158,12 @@ describe('RegionPanel', () => {
 		const tracker = createTracker([]);
 		render(RegionPanel, { dataset: ds, regionId: 'venus', tracker });
 		expect(screen.getByText('Alloy Plate')).toBeInTheDocument();
-		expect(screen.getByText('⚡ early')).toBeInTheDocument();
-		expect(screen.getByText('💀 late')).toBeInTheDocument();
+		// Early best IS here (venus) → badge shows; late best is elsewhere (uranus) → no badge.
+		expect(screen.getByText('⚡ early best')).toBeInTheDocument();
+		expect(screen.queryByText('💀 late best')).toBeNull();
+		// Both phases' best nodes are listed (the late one muted, pointing to Uranus).
+		expect(screen.getByText(/⚡ Early: Venus — Tessera/)).toBeInTheDocument();
+		expect(screen.getByText(/💀 Late: Uranus — Assur/)).toBeInTheDocument();
 		expect(screen.getByRole('link', { name: /farming/i })).toHaveAttribute(
 			'href',
 			'/guides/alloyplate',

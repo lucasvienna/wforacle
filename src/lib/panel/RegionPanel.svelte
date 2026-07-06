@@ -166,7 +166,8 @@
 				{#each resources as r (r.id)}
 					{@const early = bestPhaseRec(r, 'early')}
 					{@const late = bestPhaseRec(r, 'late')}
-					{@const note = early?.note || late?.note}
+					{@const earlyHere = !!early && early.regionId === regionId}
+					{@const lateHere = !!late && late.regionId === regionId}
 					<li
 						class="flex items-start gap-3 rounded-lg border border-slate-700 px-3 py-2"
 					>
@@ -179,23 +180,39 @@
 						<div class="min-w-0 flex-1">
 							<div class="flex flex-wrap items-center gap-2">
 								<span class="text-sm font-medium text-slate-200">{r.name}</span>
-								{#if early}
+								{#if earlyHere}
 									<span
 										class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-300"
 									>
-										⚡ early
+										⚡ early best
 									</span>
 								{/if}
-								{#if late}
+								{#if lateHere}
 									<span
 										class="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-300"
 									>
-										💀 late
+										💀 late best
 									</span>
 								{/if}
 							</div>
-							{#if note}
-								<p class="mt-0.5 text-xs text-slate-400">{note}</p>
+							<!-- Best farm per phase (highlighted when it's this planet, muted when elsewhere) -->
+							{#if early}
+								<p
+									class="mt-0.5 text-xs {earlyHere
+										? 'text-emerald-300'
+										: 'text-slate-500'}"
+								>
+									⚡ Early: {early.nodeLabel}
+								</p>
+							{/if}
+							{#if late}
+								<p
+									class="text-xs {lateHere
+										? 'text-amber-300'
+										: 'text-slate-500'}"
+								>
+									💀 Late: {late.nodeLabel}
+								</p>
 							{/if}
 						</div>
 						<a

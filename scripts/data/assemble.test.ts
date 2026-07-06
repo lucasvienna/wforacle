@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { assembleDataset, validateDataset, buildResources } from './assemble';
+import { assembleDataset, validateDataset, buildResources, recRegionId } from './assemble';
 import type { SolNodes } from './build';
 import type { RawWarframe } from './build';
 
@@ -72,5 +72,22 @@ describe('buildResources', () => {
 		expect(alloy?.image).toBe('AlloyPlate.png');
 		expect(alloy?.regionIds).toContain('venus');
 		expect(alloy?.recommendations.length).toBeGreaterThan(0);
+	});
+	it('tags each recommendation with the main-planet region parsed from its nodeLabel', () => {
+		const resources = buildResources(rawResources);
+		const alloy = resources.find((r) => r.id === 'alloyplate')!;
+		// Every rec gets a regionId (main planet) or undefined (special region) — never left unset.
+		for (const rec of alloy.recommendations)
+			expect(Object.prototype.hasOwnProperty.call(rec, 'regionId')).toBe(true);
+	});
+});
+
+describe('recRegionId', () => {
+	it('parses the main-planet region from a nodeLabel', () => {
+		expect(recRegionId('Uranus — Ophelia (Survival)')).toBe('uranus');
+		expect(recRegionId('Earth — Mantle (Capture, Grineer cave containers)')).toBe('earth');
+	});
+	it('returns undefined for a special-region node', () => {
+		expect(recRegionId('Void — Hepit')).toBeUndefined();
 	});
 });
