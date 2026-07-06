@@ -1,12 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { layoutRing } from './geometry';
+import { layoutRing, layoutAnomalies } from './geometry';
 import { seed } from '$lib/data/seed';
+import type { Region } from '$lib/model/types';
 
 describe('layoutRing', () => {
 	const placed = layoutRing(seed.regions, { cx: 100, cy: 100, rx: 80, ry: 40 });
 	it('places every region once', () => {
 		expect(placed).toHaveLength(seed.regions.length);
-		expect(new Set(placed.map((p) => p.region.id)).size).toBe(seed.regions.length);
+		expect(new Set(placed.map((p) => p.region.id)).size).toBe(
+			seed.regions.length,
+		);
 	});
 	it('keeps points within the ellipse bounds', () => {
 		for (const p of placed) {
@@ -47,7 +50,13 @@ describe('layoutRing', () => {
 		// with cx=100, cy=100, rx=80, ry=40, phase=0, n=7:
 		//   i=2 (correct, progressionOrder-sorted position): x≈82.198325, y≈138.997116, front≈0.987464
 		//   i=3 (wrong, if the sort were dropped and array order used): x≈27.922491, y≈117.355350, front≈0.716942
-		const noPhase = layoutRing(seed.regions, { cx: 100, cy: 100, rx: 80, ry: 40, phase: 0 });
+		const noPhase = layoutRing(seed.regions, {
+			cx: 100,
+			cy: 100,
+			rx: 80,
+			ry: 40,
+			phase: 0,
+		});
 		const mars = noPhase.find((p) => p.region.id === 'mars')!;
 
 		expect(mars.x).toBeCloseTo(82.198325, 5);
@@ -57,5 +66,76 @@ describe('layoutRing', () => {
 		expect(mars.x).not.toBeCloseTo(27.922491, 1);
 		expect(mars.y).not.toBeCloseTo(117.35535, 1);
 		expect(mars.front).not.toBeCloseTo(0.716942, 1);
+	});
+});
+
+describe('layoutAnomalies', () => {
+	const specialRegions: Region[] = [
+		{
+			id: 'deimos',
+			name: 'Deimos',
+			kind: 'special',
+			progressionOrder: 15,
+			factions: ['Infested'],
+			nodeIds: [],
+			spoilerGated: true,
+			resourceIds: [],
+			questId: 'heartofdeimos',
+		},
+		{
+			id: 'void',
+			name: 'Void',
+			kind: 'special',
+			progressionOrder: 16,
+			factions: ['Corrupted'],
+			nodeIds: [],
+			spoilerGated: true,
+			resourceIds: [],
+		},
+		{
+			id: 'lua',
+			name: 'Lua',
+			kind: 'special',
+			progressionOrder: 17,
+			factions: ['Sentient'],
+			nodeIds: [],
+			spoilerGated: true,
+			resourceIds: [],
+		},
+	];
+	const placed = layoutAnomalies(specialRegions, {
+		cx: 100,
+		cy: 100,
+		rx: 60,
+		ry: 40,
+	});
+
+	it('places every region once', () => {
+		expect(placed).toHaveLength(specialRegions.length);
+		expect(new Set(placed.map((p) => p.region.id)).size).toBe(
+			specialRegions.length,
+		);
+	});
+
+	it('keeps radii within the documented anomaly range', () => {
+		for (const p of placed) {
+			expect(p.r).toBeGreaterThanOrEqual(9);
+			expect(p.r).toBeLessThanOrEqual(16);
+		}
+	});
+
+	it('keeps points within the inner ellipse bounds', () => {
+		for (const p of placed) {
+			expect(p.x).toBeGreaterThanOrEqual(100 - 60 - p.r);
+			expect(p.x).toBeLessThanOrEqual(100 + 60 + p.r);
+			expect(p.y).toBeGreaterThanOrEqual(100 - 40 - p.r);
+			expect(p.y).toBeLessThanOrEqual(100 + 40 + p.r);
+		}
+	});
+
+	it('paints back-to-front (ascending front)', () => {
+		for (let i = 1; i < placed.length; i++) {
+			expect(placed[i].front).toBeGreaterThanOrEqual(placed[i - 1].front);
+		}
 	});
 });

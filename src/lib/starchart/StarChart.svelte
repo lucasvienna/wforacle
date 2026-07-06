@@ -1,17 +1,19 @@
 <script lang="ts">
 	import type { Region } from '$lib/model/types';
 	import { base } from '$app/paths';
-	import { layoutRing } from './geometry';
+	import { layoutRing, layoutAnomalies, type PlacedPlanet } from './geometry';
 
 	const planetSrc = (id: string) => `${base}/planets/${id}.webp`;
 
 	let {
 		regions,
+		specialRegions = [],
 		selectedId,
 		statusOf,
 		onselect,
 	}: {
 		regions: Region[];
+		specialRegions?: Region[];
 		selectedId: string;
 		statusOf: (id: string) => 'done' | 'part' | 'none';
 		onselect: (id: string) => void;
@@ -20,6 +22,9 @@
 	const VBW = 1120,
 		VBH = 480;
 	let placed = $derived(layoutRing(regions, { cx: VBW / 2 }));
+	let placedAnomalies = $derived(
+		layoutAnomalies(specialRegions, { cx: VBW / 2 }),
+	);
 </script>
 
 <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" class="block select-none">
@@ -55,7 +60,7 @@
 		font-size="34"
 		font-family="serif">&#10022;</text
 	>
-	{#each placed as p (p.region.id)}
+	{#snippet node(p: PlacedPlanet, anomaly: boolean)}
 		{@const status = statusOf(p.region.id)}
 		{@const sel = p.region.id === selectedId}
 		<g
@@ -73,6 +78,17 @@
 		>
 			<!-- transparent hit area so the whole planet region is clickable -->
 			<circle cx={p.x} cy={p.y} r={p.r + 9} fill="transparent" />
+			{#if anomaly}
+				<circle
+					cx={p.x}
+					cy={p.y}
+					r={p.r + 4}
+					fill="none"
+					stroke="#a78bfa"
+					stroke-width="1.25"
+					opacity="0.55"
+				/>
+			{/if}
 			{#if sel}
 				<circle
 					cx={p.x}
@@ -114,10 +130,21 @@
 				x={p.x}
 				y={p.y + p.r + 16}
 				text-anchor="middle"
-				font-size={p.front > 0.55 ? 15 : 12}
-				fill={sel ? '#37d2e6' : p.front > 0.5 ? '#cfe0f2' : '#8298b4'}
-				>{p.region.name.toUpperCase()}</text
+				font-size={anomaly ? 11 : p.front > 0.55 ? 15 : 12}
+				fill={sel
+					? '#37d2e6'
+					: anomaly
+						? '#b6a8f0'
+						: p.front > 0.5
+							? '#cfe0f2'
+							: '#8298b4'}>{p.region.name.toUpperCase()}</text
 			>
 		</g>
+	{/snippet}
+	{#each placed as p (p.region.id)}
+		{@render node(p, false)}
+	{/each}
+	{#each placedAnomalies as p (p.region.id)}
+		{@render node(p, true)}
 	{/each}
 </svg>
