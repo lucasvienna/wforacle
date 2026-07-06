@@ -56,6 +56,36 @@
 		"components": [{ "name": "Blueprint", "drops": [] }]
 	},
 	{
+		"name": "Equinox",
+		"uniqueName": "/Lotus/Powersuits/Equinox/Equinox",
+		"type": "Warframe",
+		"imageName": "equinox.png",
+		"components": [
+			{ "name": "Blueprint", "drops": [] },
+			{
+				"name": "Day Aspect",
+				"drops": [
+					{
+						"location": "Uranus/Titania (Assassination)",
+						"rarity": "Uncommon",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"name": "Night Aspect",
+				"drops": [
+					{
+						"location": "Uranus/Titania (Assassination)",
+						"rarity": "Uncommon",
+						"chance": 22.56
+					}
+				]
+			},
+			{ "name": "Forma", "drops": [] }
+		]
+	},
+	{
 		"name": "Nekros",
 		"uniqueName": "/Lotus/Powersuits/Nekros/Nekros",
 		"type": "Warframe",

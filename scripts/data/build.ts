@@ -123,15 +123,19 @@ export function buildFrames(
 		if (!node) continue;
 
 		const frameId = slugify(wf.name);
-		const parts: WarframePart[] = (['bp', 'neuroptics', 'chassis', 'systems'] as Slot[]).map(
-			(slot) => ({
-				id: partId(frameId, slot),
-				frameId,
-				slot,
-				dropSourceNodeId: slot === 'bp' ? undefined : node!.id,
-				chance: chanceBySlot.get(slot),
-			}),
-		);
+		const present = new Set<Slot>(['bp']);
+		for (const c of wf.components) {
+			const slot = SLOT_BY_COMPONENT[c.name];
+			if (slot) present.add(slot);
+		}
+		const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems', 'dayaspect', 'nightaspect'];
+		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => ({
+			id: partId(frameId, slot),
+			frameId,
+			slot,
+			dropSourceNodeId: slot === 'bp' ? undefined : node!.id,
+			chance: chanceBySlot.get(slot),
+		}));
 		frames.push({ id: frameId, name: wf.name, nodeId: node.id, image: wf.imageName, parts });
 
 		if (!bossByNode.has(node.id)) {

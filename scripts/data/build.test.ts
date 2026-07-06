@@ -153,3 +153,54 @@ describe('special regions (Deimos)', () => {
 		expect(nekros.nodeId).toBe('SolNodeMag');
 	});
 });
+
+describe('buildFrames (Equinox: dual-aspect parts derived from components)', () => {
+	const uranusNodes: SolNodes = {
+		SolNodeTitania: { value: 'Titania (Uranus)', enemy: 'Grineer', type: 'Assassination' },
+	};
+	const nodes = buildNodes(uranusNodes);
+	const equinoxWarframes: RawWarframe[] = [
+		{
+			name: 'Equinox',
+			uniqueName: '/Lotus/Powersuits/Equinox/Equinox',
+			type: 'Warframe',
+			components: [
+				{ name: 'Blueprint', drops: [] },
+				{
+					name: 'Day Aspect',
+					drops: [
+						{ location: 'Uranus/Titania (Assassination)', rarity: 'Uncommon', chance: 22.56 },
+					],
+				},
+				{
+					name: 'Night Aspect',
+					drops: [
+						{ location: 'Uranus/Titania (Assassination)', rarity: 'Uncommon', chance: 22.56 },
+					],
+				},
+			],
+		},
+	];
+
+	it('links Equinox to Titania with dayaspect/nightaspect parts (not chassis/neuroptics/systems)', () => {
+		const { frames } = buildFrames(equinoxWarframes, nodes);
+		const equinox = frames.find((f) => f.id === 'equinox')!;
+		expect(equinox).toBeDefined();
+		expect(equinox.nodeId).toBe('SolNodeTitania');
+		expect(equinox.parts.map((p) => p.slot)).toEqual(['bp', 'dayaspect', 'nightaspect']);
+		const bp = equinox.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.dropSourceNodeId).toBeUndefined();
+		const day = equinox.parts.find((p) => p.slot === 'dayaspect')!;
+		expect(day.dropSourceNodeId).toBe('SolNodeTitania');
+		expect(day.chance).toBe(22.56);
+		const night = equinox.parts.find((p) => p.slot === 'nightaspect')!;
+		expect(night.dropSourceNodeId).toBe('SolNodeTitania');
+	});
+
+	it('still yields exactly 4 standard parts for a regular frame (Rhino) in the same run', () => {
+		const rhinoNodes = buildNodes(solNodes);
+		const { frames } = buildFrames(warframes, rhinoNodes);
+		const rhino = frames.find((f) => f.id === 'rhino')!;
+		expect(rhino.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
+	});
+});
