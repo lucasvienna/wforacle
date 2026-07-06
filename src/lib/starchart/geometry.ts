@@ -65,8 +65,9 @@ export function layoutAnomalies(
 		}
 	}
 
-	// Group anchored regions by their anchor planet, then fan them out horizontally
-	// below the planet so multiple anomalies on the same planet don't overlap.
+	// Group anchored regions by their anchor planet, then stack them INWARD —
+	// toward the chart centre, on the inside of the ellipse — at increasing
+	// distances, so they never overlap the planet or each other's labels.
 	const groups = new Map<string, Region[]>();
 	for (const region of anchored) {
 		const anchorId = ANOMALY_ANCHORS[region.id];
@@ -77,13 +78,18 @@ export function layoutAnomalies(
 	const anchoredPlaced: PlacedPlanet[] = [];
 	for (const [anchorId, group] of groups) {
 		const a = planetById.get(anchorId)!;
-		const m = group.length;
+		// Unit vector from the planet toward the chart centre.
+		let ux = cx - a.x;
+		let uy = cy - a.y;
+		const len = Math.hypot(ux, uy) || 1;
+		ux /= len;
+		uy /= len;
 		group.forEach((region, j) => {
-			const dx = (j - (m - 1) / 2) * 30;
+			const dist = a.r + 24 + j * 34; // step further inward per stacked anomaly
 			anchoredPlaced.push({
 				region,
-				x: a.x + dx,
-				y: a.y + a.r + 26,
+				x: a.x + ux * dist,
+				y: a.y + uy * dist,
 				r: 12,
 				front: a.front,
 			});

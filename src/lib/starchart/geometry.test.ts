@@ -148,26 +148,37 @@ describe('layoutAnomalies', () => {
 		}
 	});
 
-	it('anchors Deimos and Kuva Fortress near Mars, fanned apart', () => {
+	// The chart centre these anomalies are placed relative to (matches the opts above).
+	const CX = 100;
+	const CY = 100;
+	// Positive when `p` sits on the inside of the ellipse relative to `planet`,
+	// i.e. offset from the planet toward the chart centre.
+	const towardCentre = (p: { x: number; y: number }, planet: { x: number; y: number }) =>
+		(p.x - planet.x) * (CX - planet.x) + (p.y - planet.y) * (CY - planet.y);
+	const dist = (p: { x: number; y: number }, q: { x: number; y: number }) =>
+		Math.hypot(p.x - q.x, p.y - q.y);
+
+	it('anchors Deimos and Kuva Fortress inside the ellipse near Mars, stacked apart', () => {
 		const mars = planets.find((p) => p.region.id === 'mars')!;
 		const deimosPlaced = placed.find((p) => p.region.id === 'deimos')!;
 		const kuvaPlaced = placed.find((p) => p.region.id === 'kuvafortress')!;
 
 		for (const p of [deimosPlaced, kuvaPlaced]) {
-			expect(p.x).toBeGreaterThanOrEqual(mars.x - 45);
-			expect(p.x).toBeLessThanOrEqual(mars.x + 45);
-			expect(p.y).toBeGreaterThan(mars.y);
+			// on the inside of the ellipse (offset toward the centre, not outward)
+			expect(towardCentre(p, mars)).toBeGreaterThan(0);
+			// still in Mars's neighbourhood, not flung across the chart
+			expect(dist(p, mars)).toBeLessThan(mars.r + 24 + 34 + 20);
 		}
-		expect(deimosPlaced.x).not.toBe(kuvaPlaced.x);
+		// stacked at different inward distances so they never overlap
+		expect(Math.abs(dist(deimosPlaced, mars) - dist(kuvaPlaced, mars))).toBeGreaterThan(20);
 	});
 
-	it('anchors Lua near Earth', () => {
+	it('anchors Lua inside the ellipse near Earth', () => {
 		const earth = planets.find((p) => p.region.id === 'earth')!;
 		const luaPlaced = placed.find((p) => p.region.id === 'lua')!;
 
-		expect(luaPlaced.x).toBeGreaterThanOrEqual(earth.x - 45);
-		expect(luaPlaced.x).toBeLessThanOrEqual(earth.x + 45);
-		expect(luaPlaced.y).toBeGreaterThan(earth.y);
+		expect(towardCentre(luaPlaced, earth)).toBeGreaterThan(0);
+		expect(dist(luaPlaced, earth)).toBeLessThan(earth.r + 24 + 20);
 	});
 
 	it('keeps unanchored special regions (Void, Zariman) on the inner arc', () => {
