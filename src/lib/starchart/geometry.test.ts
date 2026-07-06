@@ -158,7 +158,7 @@ describe('layoutAnomalies', () => {
 	const dist = (p: { x: number; y: number }, q: { x: number; y: number }) =>
 		Math.hypot(p.x - q.x, p.y - q.y);
 
-	it('anchors Deimos and Kuva Fortress inside the ellipse near Mars, stacked apart', () => {
+	it('fans Deimos (right) and Kuva Fortress (left) into a triangle inside the ellipse near Mars', () => {
 		const mars = planets.find((p) => p.region.id === 'mars')!;
 		const deimosPlaced = placed.find((p) => p.region.id === 'deimos')!;
 		const kuvaPlaced = placed.find((p) => p.region.id === 'kuvafortress')!;
@@ -167,10 +167,12 @@ describe('layoutAnomalies', () => {
 			// on the inside of the ellipse (offset toward the centre, not outward)
 			expect(towardCentre(p, mars)).toBeGreaterThan(0);
 			// still in Mars's neighbourhood, not flung across the chart
-			expect(dist(p, mars)).toBeLessThan(mars.r + 24 + 34 + 20);
+			expect(dist(p, mars)).toBeLessThan(mars.r + 22 + 42 + 20);
 		}
-		// stacked at different inward distances so they never overlap
-		expect(Math.abs(dist(deimosPlaced, mars) - dist(kuvaPlaced, mars))).toBeGreaterThan(20);
+		// Deimos sits to the right of Kuva Fortress (fanned to opposite sides),
+		// and the two are well separated so their labels never collide.
+		expect(deimosPlaced.x).toBeGreaterThan(kuvaPlaced.x);
+		expect(dist(deimosPlaced, kuvaPlaced)).toBeGreaterThan(60);
 	});
 
 	it('anchors Lua inside the ellipse near Earth', () => {

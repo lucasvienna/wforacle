@@ -33,11 +33,14 @@ export function layoutRing(
 }
 
 // Special regions positioned next to a thematically-related planet (moon/orbit).
-// Regions absent here fall back to the inner anomaly arc.
-const ANOMALY_ANCHORS: Record<string, string> = {
-	deimos: 'mars',
-	kuvafortress: 'mars',
-	lua: 'earth',
+// `lateral` fans multiple anomalies on the same planet sideways (perpendicular
+// to the planet→centre line, +1 ≈ screen-right, -1 ≈ screen-left) so they and
+// their labels don't collide — Deimos and Kuva Fortress form a triangle with
+// Mars. Regions absent here fall back to the inner anomaly arc.
+const ANOMALY_ANCHORS: Record<string, { planet: string; lateral: number }> = {
+	deimos: { planet: 'mars', lateral: 1 },
+	kuvafortress: { planet: 'mars', lateral: -1 },
+	lua: { planet: 'earth', lateral: 0 },
 };
 
 export function layoutAnomalies(
@@ -57,44 +60,41 @@ export function layoutAnomalies(
 	const anchored: Region[] = [];
 	const free: Region[] = [];
 	for (const region of regions) {
-		const anchorId = ANOMALY_ANCHORS[region.id];
-		if (anchorId && planetById.has(anchorId)) {
+		const cfg = ANOMALY_ANCHORS[region.id];
+		if (cfg && planetById.has(cfg.planet)) {
 			anchored.push(region);
 		} else {
 			free.push(region);
 		}
 	}
 
-	// Group anchored regions by their anchor planet, then stack them INWARD —
-	// toward the chart centre, on the inside of the ellipse — at increasing
-	// distances, so they never overlap the planet or each other's labels.
-	const groups = new Map<string, Region[]>();
-	for (const region of anchored) {
-		const anchorId = ANOMALY_ANCHORS[region.id];
-		const group = groups.get(anchorId) ?? [];
-		group.push(region);
-		groups.set(anchorId, group);
-	}
-	const anchoredPlaced: PlacedPlanet[] = [];
-	for (const [anchorId, group] of groups) {
-		const a = planetById.get(anchorId)!;
-		// Unit vector from the planet toward the chart centre.
+	// Place each anchored anomaly just inside the ellipse from its planet
+	// (offset toward the chart centre) and fanned sideways by its `lateral`
+	// weight, so multiple anomalies on one planet form a triangle with it
+	// instead of stacking on top of each other.
+	const INWARD = 22; // gap past the planet edge, toward centre
+	const SPREAD = 42; // sideways fan per unit of `lateral`
+	const anchoredPlaced: PlacedPlanet[] = anchored.map((region) => {
+		const cfg = ANOMALY_ANCHORS[region.id];
+		const a = planetById.get(cfg.planet)!;
+		// Unit vector from the planet toward the chart centre, and its perpendicular.
 		let ux = cx - a.x;
 		let uy = cy - a.y;
 		const len = Math.hypot(ux, uy) || 1;
 		ux /= len;
 		uy /= len;
-		group.forEach((region, j) => {
-			const dist = a.r + 24 + j * 34; // step further inward per stacked anomaly
-			anchoredPlaced.push({
-				region,
-				x: a.x + ux * dist,
-				y: a.y + uy * dist,
-				r: 12,
-				front: a.front,
-			});
-		});
-	}
+		const perpX = -uy;
+		const perpY = ux;
+		const inward = a.r + INWARD;
+		const lateral = cfg.lateral * SPREAD;
+		return {
+			region,
+			x: a.x + ux * inward + perpX * lateral,
+			y: a.y + uy * inward + perpY * lateral,
+			r: 12,
+			front: a.front,
+		};
+	});
 
 	// Remaining special regions keep the original inner-arc placement.
 	const ordered = [...free].sort((a, b) => a.progressionOrder - b.progressionOrder);
