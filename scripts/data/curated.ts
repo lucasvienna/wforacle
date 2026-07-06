@@ -1,4 +1,5 @@
 import { slugify } from './parse';
+import type { SolNodes } from './build';
 
 export const PLANETS: { name: string; order: number; faction: string; spoilerGated: boolean }[] = [
 	{ name: 'Earth', order: 1, faction: 'Grineer', spoilerGated: false },
@@ -52,4 +53,34 @@ export const BOSS_BY_NODE: Record<string, string> = {
 	[slugify('Tolstoj')]: 'Captain Vor',
 	// Deimos' assassination node (special region)
 	[slugify('Magnacidium')]: 'Lephantis',
+	// Eris key-crafted boss missions (see KEY_BOSS_SOLNODES below)
+	[slugify('Mutalist Alad V')]: 'Mutalist Alad V',
+	[slugify('Jordas Golem')]: 'Jordas Golem',
+};
+
+// Mesa's and Atlas's components drop at key-crafted boss Assassination
+// missions on Eris (Mutalist Alad V, Jordas Golem) rather than a star-chart
+// SolNode — so they're absent from the game's solNodes data entirely.
+// These pseudo-nodes let buildNodes/buildRegions place them on Eris like any
+// other Assassination node (see assemble.ts, which merges this into the real
+// solNodes before building).
+export const KEY_BOSS_SOLNODES: SolNodes = {
+	CuratedMutalistAladV: {
+		value: 'Mutalist Alad V (Eris)',
+		enemy: 'Infested',
+		type: 'Assassination',
+	},
+	CuratedJordasGolem: { value: 'Jordas Golem (Eris)', enemy: 'Infested', type: 'Assassination' },
+};
+
+// Raw WFCD drop-location strings (key = text before the first comma) for the
+// two key-boss missions above, mapped to the coordinates resolveDropLocation
+// (in build.ts) needs since these don't parse as the standard
+// "Planet/Node (Type)" format parseDropLocation expects.
+export const KEY_BOSS_DROP_LOCATIONS: Record<
+	string,
+	{ planet: string; node: string; type: string }
+> = {
+	'Mutalist Alad V Assassinate': { planet: 'Eris', node: 'Mutalist Alad V', type: 'Assassination' },
+	'Jordas Golem Assassinate': { planet: 'Eris', node: 'Jordas Golem', type: 'Assassination' },
 };

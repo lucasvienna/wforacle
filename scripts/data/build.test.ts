@@ -2,7 +2,15 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { buildRegions, buildNodes, buildFrames, type SolNodes, type RawWarframe } from './build';
+import {
+	buildRegions,
+	buildNodes,
+	buildFrames,
+	resolveDropLocation,
+	type SolNodes,
+	type RawWarframe,
+} from './build';
+import { KEY_BOSS_SOLNODES } from './curated';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -202,5 +210,114 @@ describe('buildFrames (Equinox: dual-aspect parts derived from components)', () 
 		const { frames } = buildFrames(warframes, rhinoNodes);
 		const rhino = frames.find((f) => f.id === 'rhino')!;
 		expect(rhino.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
+	});
+});
+
+describe('curated Eris key-boss nodes (Mesa, Atlas)', () => {
+	const keyBossNodes = buildNodes(KEY_BOSS_SOLNODES);
+
+	it('creates the two curated nodes on eris, marked Assassination', () => {
+		expect(keyBossNodes.map((n) => n.id).sort()).toEqual([
+			'CuratedJordasGolem',
+			'CuratedMutalistAladV',
+		]);
+		for (const n of keyBossNodes) {
+			expect(n.regionId).toBe('eris');
+			expect(n.isAssassination).toBe(true);
+		}
+	});
+
+	const mesa: RawWarframe = {
+		name: 'Mesa',
+		uniqueName: '/Lotus/Powersuits/Mesa/Mesa',
+		type: 'Warframe',
+		components: [
+			{ name: 'Blueprint', drops: [] },
+			{
+				name: 'Neuroptics',
+				drops: [
+					{ location: 'Mutalist Alad V Assassinate, Rotation C', rarity: 'Rare', chance: 38.72 },
+				],
+			},
+			{
+				name: 'Chassis',
+				drops: [
+					{ location: 'Mutalist Alad V Assassinate, Rotation C', rarity: 'Rare', chance: 38.72 },
+				],
+			},
+			{
+				name: 'Systems',
+				drops: [
+					{ location: 'Mutalist Alad V Assassinate, Rotation C', rarity: 'Rare', chance: 22.56 },
+				],
+			},
+		],
+	};
+	const atlas: RawWarframe = {
+		name: 'Atlas',
+		uniqueName: '/Lotus/Powersuits/Atlas/Atlas',
+		type: 'Warframe',
+		components: [
+			{ name: 'Blueprint', drops: [] },
+			{
+				name: 'Neuroptics',
+				drops: [
+					{ location: 'Jordas Golem Assassinate, Rotation C', rarity: 'Rare', chance: 38.72 },
+				],
+			},
+			{
+				name: 'Chassis',
+				drops: [
+					{ location: 'Jordas Golem Assassinate, Rotation C', rarity: 'Rare', chance: 38.72 },
+				],
+			},
+			{
+				name: 'Systems',
+				drops: [
+					{ location: 'Jordas Golem Assassinate, Rotation C', rarity: 'Rare', chance: 22.56 },
+				],
+			},
+		],
+	};
+
+	it('links Mesa to Mutalist Alad V and Atlas to Jordas Golem, each with 4 parts and a named boss', () => {
+		const { frames, bosses } = buildFrames([mesa, atlas], keyBossNodes);
+		const mesaFrame = frames.find((f) => f.id === 'mesa')!;
+		const atlasFrame = frames.find((f) => f.id === 'atlas')!;
+		expect(mesaFrame).toBeDefined();
+		expect(atlasFrame).toBeDefined();
+		expect(mesaFrame.nodeId).toBe('CuratedMutalistAladV');
+		expect(atlasFrame.nodeId).toBe('CuratedJordasGolem');
+		expect(mesaFrame.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
+		expect(atlasFrame.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
+		const mesaBoss = bosses.find((b) => b.nodeId === 'CuratedMutalistAladV')!;
+		const atlasBoss = bosses.find((b) => b.nodeId === 'CuratedJordasGolem')!;
+		expect(mesaBoss.name).toBe('Mutalist Alad V');
+		expect(atlasBoss.name).toBe('Jordas Golem');
+	});
+});
+
+describe('resolveDropLocation', () => {
+	it('resolves a curated raw WFCD assassination string with a rotation suffix', () => {
+		expect(resolveDropLocation('Mutalist Alad V Assassinate, Rotation C')).toEqual({
+			planet: 'Eris',
+			node: 'Mutalist Alad V',
+			type: 'Assassination',
+		});
+		expect(resolveDropLocation('Jordas Golem Assassinate, Rotation C')).toEqual({
+			planet: 'Eris',
+			node: 'Jordas Golem',
+			type: 'Assassination',
+		});
+	});
+	it('still parses a standard "Planet/Node (Type)" string', () => {
+		expect(resolveDropLocation('Venus/Fossa (Assassination)')).toEqual({
+			planet: 'Venus',
+			node: 'Fossa',
+			type: 'Assassination',
+		});
+	});
+	it('returns null for a bogus string', () => {
+		expect(resolveDropLocation('nonsense')).toBeNull();
 	});
 });

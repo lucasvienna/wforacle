@@ -1,7 +1,7 @@
 import type { Dataset, Resource } from '../../src/lib/model/types';
 import { buildRegions, buildNodes, buildFrames, type SolNodes, type RawWarframe } from './build';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
-import { PLANETS } from './curated';
+import { PLANETS, KEY_BOSS_SOLNODES } from './curated';
 import { QUESTS, SPECIAL_REGIONS } from './special';
 import { slugify } from './parse';
 
@@ -52,8 +52,14 @@ export function assembleDataset(
 	warframes: RawWarframe[],
 	rawResources: RawResource[],
 ): Dataset {
-	const regions = buildRegions(solNodes);
-	const nodes = buildNodes(solNodes);
+	// Merge in the curated Eris key-boss pseudo-nodes (Mutalist Alad V, Jordas
+	// Golem): they're key-crafted boss missions absent from the game's real
+	// solNodes data, so buildFrames has nothing to link Mesa/Atlas to without
+	// them. Merged here — not inside buildNodes/buildRegions — so those stay
+	// pure functions of their input for fixture-based unit tests.
+	const allSolNodes = { ...solNodes, ...KEY_BOSS_SOLNODES };
+	const regions = buildRegions(allSolNodes);
+	const nodes = buildNodes(allSolNodes);
 	const { frames, bosses } = buildFrames(warframes, nodes);
 	const bossByNode = new Map(bosses.map((b) => [b.nodeId, b]));
 	const frameByNode = new Map(frames.map((f) => [f.nodeId!, f]));

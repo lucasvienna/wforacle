@@ -7,7 +7,7 @@ import type {
 	WarframePart,
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
-import { PLANETS, BOSS_BY_NODE } from './curated';
+import { PLANETS, BOSS_BY_NODE, KEY_BOSS_DROP_LOCATIONS } from './curated';
 import { SPECIAL_REGIONS, SPECIAL_REGION_NAMES } from './special';
 import { PLANET_RESOURCES } from './farming';
 import { partId } from '../../src/lib/model/completion';
@@ -81,6 +81,16 @@ export type RawWarframe = {
 	components?: { name: string; drops?: { location: string; rarity?: string; chance?: number }[] }[];
 };
 
+/** Resolve a raw WFCD drop-location string to its planet/node/type. Falls back
+ * to the curated key-boss map for strings that don't fit the standard
+ * "Planet/Node (Type)" format (e.g. "Mutalist Alad V Assassinate, Rotation
+ * C" — a key-crafted boss mission on Eris, not a star-chart SolNode). */
+export function resolveDropLocation(
+	loc: string,
+): { planet: string; node: string; type: string } | null {
+	return parseDropLocation(loc) ?? KEY_BOSS_DROP_LOCATIONS[loc.split(',')[0].trim()] ?? null;
+}
+
 const SLOT_BY_COMPONENT: Record<string, Slot> = {
 	Blueprint: 'bp',
 	Neuroptics: 'neuroptics',
@@ -111,7 +121,7 @@ export function buildFrames(
 			const slot = SLOT_BY_COMPONENT[c.name];
 			if (!slot || slot === 'bp') continue;
 			for (const d of c.drops ?? []) {
-				const loc = parseDropLocation(d.location);
+				const loc = resolveDropLocation(d.location);
 				if (!loc || loc.type !== 'Assassination') continue;
 				const key = `${slugify(loc.planet)}:${slugify(loc.node)}`;
 				const n = nodeByKey.get(key);
