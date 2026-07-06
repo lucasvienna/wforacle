@@ -45,9 +45,7 @@ async function main() {
 	console.log(
 		`Regions: ${data.regions.length}, nodes: ${data.nodes.length}, node-linked frames: ${nodeFrames}`,
 	);
-	// Every one of the 14 main planets must be present as a region (a
-	// stronger, spec-anchored check than a bare length comparison — it also
-	// guarantees no unexpected/special region snuck in with the same count).
+	// Every main planet must be present as a region.
 	const regionNames = new Set(data.regions.map((r) => r.name));
 	const missingPlanets = PLANETS.filter((p) => !regionNames.has(p.name)).map((p) => p.name);
 	if (missingPlanets.length) {
@@ -56,15 +54,28 @@ async function main() {
 	}
 	// Node-linked-frame floor. Verified ceiling against the installed
 	// warframe-worldstate-data@3.16.2 + @wfcd/items@1.1274.72: of the real
-	// Assassination-type SolNodes on the 14 main planets, 13 have a Warframe
-	// blueprint drop, and Equinox is dropped by buildFrames because its
+	// Assassination-type SolNodes on the 14 main planets plus the special
+	// regions, 13 have a Warframe blueprint drop. Nekros now links at
+	// Deimos/Magnacidium; Equinox is still dropped by buildFrames because its
 	// components are named "Day Aspect" / "Night Aspect" rather than the
 	// standard Chassis/Neuroptics/Systems (build.ts, Task 6, out of scope
-	// here), leaving 12. (Deimos/Nekros, Phorid, and the Eris "Assassinate"-key
-	// bosses Jordas Golem / Mutalist Alad V are special/quest-locked regions
-	// deferred to a later plan.) See .superpowers/sdd/task-7-report.md.
-	if (nodeFrames < 12) {
-		console.error(`Sanity check failed (expected >=12 node-linked frames, got ${nodeFrames})`);
+	// here); Phorid, Jordas Golem, and Mutalist Alad V still have no linked
+	// frame. See .superpowers/sdd/task-7-report.md.
+	if (nodeFrames < 13) {
+		console.error(`Sanity check failed (expected >=13 node-linked frames, got ${nodeFrames})`);
+		process.exit(1);
+	}
+	// Special regions (Deimos, Void, Lua, Kuva Fortress, Zariman) must all be
+	// present alongside the 14 main planets.
+	const specialCount = data.regions.filter((r) => r.kind === 'special').length;
+	if (specialCount < 5) {
+		console.error(`Sanity check failed (expected >=5 special regions, got ${specialCount})`);
+		process.exit(1);
+	}
+	// Nekros (Deimos/Magnacidium) must be linked now that the special-region
+	// pipeline is in place.
+	if (!data.warframes.some((f) => f.id === 'nekros')) {
+		console.error('Sanity check failed: Nekros (Deimos/Magnacidium) not linked');
 		process.exit(1);
 	}
 	// Floor matching the curated RESOURCES list size (scripts/data/farming.ts,

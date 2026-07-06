@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1274.72+worldstate-data@3.16.2",
-	"generatedAt": "2026-07-06T05:28:27.842Z",
+	"generatedAt": "2026-07-06T06:06:01.417Z",
 	"data": {
 		"regions": [
 			{
@@ -8,7 +8,9 @@
 				"name": "Earth",
 				"kind": "planet",
 				"progressionOrder": 1,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode15",
@@ -33,14 +35,21 @@
 					"CrewBattleNode519",
 					"CrewBattleNode522"
 				],
-				"resourceIds": ["ferrite", "rubedo", "neurodes", "detoniteampule"]
+				"resourceIds": [
+					"ferrite",
+					"rubedo",
+					"neurodes",
+					"detoniteampule"
+				]
 			},
 			{
 				"id": "venus",
 				"name": "Venus",
 				"kind": "planet",
 				"progressionOrder": 2,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode2",
@@ -69,14 +78,22 @@
 					"CrewBattleNode515",
 					"SolarisUnitedHub1"
 				],
-				"resourceIds": ["alloyplate", "polymerbundle", "circuits", "fieldronsample", "oxium"]
+				"resourceIds": [
+					"alloyplate",
+					"polymerbundle",
+					"circuits",
+					"fieldronsample",
+					"oxium"
+				]
 			},
 			{
 				"id": "mercury",
 				"name": "Mercury",
 				"kind": "planet",
 				"progressionOrder": 3,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode12",
@@ -95,14 +112,21 @@
 					"SolNode227",
 					"MercuryHUB"
 				],
-				"resourceIds": ["ferrite", "polymerbundle", "morphics", "detoniteampule"]
+				"resourceIds": [
+					"ferrite",
+					"polymerbundle",
+					"morphics",
+					"detoniteampule"
+				]
 			},
 			{
 				"id": "mars",
 				"name": "Mars",
 				"kind": "planet",
 				"progressionOrder": 4,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode11",
@@ -128,14 +152,22 @@
 					"ClanNode8",
 					"ClanNode9"
 				],
-				"resourceIds": ["gallium", "morphics", "salvage", "fieldronsample", "oxium"]
+				"resourceIds": [
+					"gallium",
+					"morphics",
+					"salvage",
+					"fieldronsample",
+					"oxium"
+				]
 			},
 			{
 				"id": "phobos",
 				"name": "Phobos",
 				"kind": "planet",
 				"progressionOrder": 5,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SettlementNode1",
@@ -161,14 +193,21 @@
 					"ClanNode10",
 					"ClanNode11"
 				],
-				"resourceIds": ["rubedo", "morphics", "plastids", "alloyplate"]
+				"resourceIds": [
+					"rubedo",
+					"morphics",
+					"plastids",
+					"alloyplate"
+				]
 			},
 			{
 				"id": "ceres",
 				"name": "Ceres",
 				"kind": "planet",
 				"progressionOrder": 6,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode131",
@@ -194,14 +233,22 @@
 					"ClanNode22",
 					"ClanNode23"
 				],
-				"resourceIds": ["alloyplate", "circuits", "orokincell", "detoniteampule", "carbides"]
+				"resourceIds": [
+					"alloyplate",
+					"circuits",
+					"orokincell",
+					"detoniteampule",
+					"carbides"
+				]
 			},
 			{
 				"id": "jupiter",
 				"name": "Jupiter",
 				"kind": "planet",
 				"progressionOrder": 7,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode10",
@@ -225,14 +272,22 @@
 					"ClanNode4",
 					"ClanNode5"
 				],
-				"resourceIds": ["salvage", "hexenon", "neuralsensors", "alloyplate", "oxium"]
+				"resourceIds": [
+					"salvage",
+					"hexenon",
+					"neuralsensors",
+					"alloyplate",
+					"oxium"
+				]
 			},
 			{
 				"id": "europa",
 				"name": "Europa",
 				"kind": "planet",
 				"progressionOrder": 8,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode203",
@@ -271,7 +326,9 @@
 				"name": "Saturn",
 				"kind": "planet",
 				"progressionOrder": 9,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode7",
@@ -305,14 +362,21 @@
 					"CrewBattleNode534",
 					"CrewBattleNode535"
 				],
-				"resourceIds": ["nanospores", "plastids", "orokincell", "detoniteampule"]
+				"resourceIds": [
+					"nanospores",
+					"plastids",
+					"orokincell",
+					"detoniteampule"
+				]
 			},
 			{
 				"id": "uranus",
 				"name": "Uranus",
 				"kind": "planet",
 				"progressionOrder": 10,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode3",
@@ -342,14 +406,22 @@
 					"ClanNode17",
 					"SolNode723"
 				],
-				"resourceIds": ["gallium", "plastids", "polymerbundle", "detoniteampule", "tellurium"]
+				"resourceIds": [
+					"gallium",
+					"plastids",
+					"polymerbundle",
+					"detoniteampule",
+					"tellurium"
+				]
 			},
 			{
 				"id": "neptune",
 				"name": "Neptune",
 				"kind": "planet",
 				"progressionOrder": 11,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode1",
@@ -375,14 +447,22 @@
 					"CrewBattleNode524",
 					"CrewBattleNode525"
 				],
-				"resourceIds": ["nanospores", "ferrite", "controlmodule", "fieldronsample", "oxium"]
+				"resourceIds": [
+					"nanospores",
+					"ferrite",
+					"controlmodule",
+					"fieldronsample",
+					"oxium"
+				]
 			},
 			{
 				"id": "pluto",
 				"name": "Pluto",
 				"kind": "planet",
 				"progressionOrder": 12,
-				"factions": ["Corpus"],
+				"factions": [
+					"Corpus"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode4",
@@ -408,14 +488,23 @@
 					"CrewBattleNode531",
 					"CrewBattleNode536"
 				],
-				"resourceIds": ["rubedo", "morphics", "plastids", "alloyplate", "fieldronsample", "oxium"]
+				"resourceIds": [
+					"rubedo",
+					"morphics",
+					"plastids",
+					"alloyplate",
+					"fieldronsample",
+					"oxium"
+				]
 			},
 			{
 				"id": "eris",
 				"name": "Eris",
 				"kind": "planet",
 				"progressionOrder": 13,
-				"factions": ["Infested"],
+				"factions": [
+					"Infested"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode151",
@@ -448,14 +537,22 @@
 					"ClanNode18",
 					"ClanNode19"
 				],
-				"resourceIds": ["nanospores", "plastids", "neurodes", "mutagensample", "oxium"]
+				"resourceIds": [
+					"nanospores",
+					"plastids",
+					"neurodes",
+					"mutagensample",
+					"oxium"
+				]
 			},
 			{
 				"id": "sedna",
 				"name": "Sedna",
 				"kind": "planet",
 				"progressionOrder": 14,
-				"factions": ["Grineer"],
+				"factions": [
+					"Grineer"
+				],
 				"spoilerGated": false,
 				"nodeIds": [
 					"SolNode177",
@@ -487,7 +584,139 @@
 					"ClanNode14",
 					"ClanNode15"
 				],
-				"resourceIds": ["alloyplate", "rubedo", "salvage", "detoniteampule"]
+				"resourceIds": [
+					"alloyplate",
+					"rubedo",
+					"salvage",
+					"detoniteampule"
+				]
+			},
+			{
+				"id": "deimos",
+				"name": "Deimos",
+				"kind": "special",
+				"progressionOrder": 15,
+				"factions": [
+					"Infested"
+				],
+				"spoilerGated": true,
+				"nodeIds": [
+					"SolNode229",
+					"DeimosHub",
+					"SolNode706",
+					"SolNode707",
+					"SolNode708",
+					"SolNode709",
+					"SolNode710",
+					"SolNode711",
+					"SolNode712",
+					"SolNode713",
+					"SolNode714",
+					"SolNode715",
+					"SolNode716",
+					"SolNode717",
+					"SolNode718",
+					"SolNode719",
+					"SolNode720",
+					"SolNode721",
+					"SolNode251"
+				],
+				"resourceIds": [],
+				"questId": "heartofdeimos"
+			},
+			{
+				"id": "void",
+				"name": "Void",
+				"kind": "special",
+				"progressionOrder": 16,
+				"factions": [
+					"Orokin"
+				],
+				"spoilerGated": false,
+				"nodeIds": [
+					"SolNode400",
+					"SolNode401",
+					"SolNode402",
+					"SolNode403",
+					"SolNode404",
+					"SolNode405",
+					"SolNode406",
+					"SolNode407",
+					"SolNode408",
+					"SolNode409",
+					"SolNode410",
+					"SolNode411",
+					"SolNode412",
+					"SolNode413"
+				],
+				"resourceIds": []
+			},
+			{
+				"id": "lua",
+				"name": "Lua",
+				"kind": "special",
+				"progressionOrder": 17,
+				"factions": [
+					"Corpus"
+				],
+				"spoilerGated": true,
+				"nodeIds": [
+					"SolNode300",
+					"SolNode301",
+					"SolNode302",
+					"SolNode304",
+					"SolNode305",
+					"SolNode306",
+					"SolNode307",
+					"SolNode308",
+					"SolNode309",
+					"SolNode310"
+				],
+				"resourceIds": [],
+				"questId": "thesecondddream"
+			},
+			{
+				"id": "kuvafortress",
+				"name": "Kuva Fortress",
+				"kind": "special",
+				"progressionOrder": 18,
+				"factions": [
+					"Grineer"
+				],
+				"spoilerGated": true,
+				"nodeIds": [
+					"SolNode741",
+					"SolNode742",
+					"SolNode743",
+					"SolNode744",
+					"SolNode745",
+					"SolNode746",
+					"SolNode747",
+					"SolNode748"
+				],
+				"resourceIds": [],
+				"questId": "thewarwithin"
+			},
+			{
+				"id": "zariman",
+				"name": "Zariman",
+				"kind": "special",
+				"progressionOrder": 19,
+				"factions": [
+					"Corpus"
+				],
+				"spoilerGated": true,
+				"nodeIds": [
+					"SolNode230",
+					"SolNode231",
+					"SolNode232",
+					"SolNode233",
+					"SolNode234",
+					"SolNode235",
+					"ZarimanHub"
+				],
+				"resourceIds": [],
+				"questId": "angelsofthezariman"
 			}
 		],
 		"nodes": [
@@ -2318,11 +2547,187 @@
 				"isAssassination": false
 			},
 			{
+				"id": "SolNode229",
+				"regionId": "deimos",
+				"name": "Cambion Drift",
+				"missionType": "Free Roam",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode230",
+				"regionId": "zariman",
+				"name": "Everview Arc",
+				"missionType": "Void Flood",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode231",
+				"regionId": "zariman",
+				"name": "Halako Perimeter",
+				"missionType": "Extermination",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode232",
+				"regionId": "zariman",
+				"name": "Tuvul Commons",
+				"missionType": "Void Cascade",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode233",
+				"regionId": "zariman",
+				"name": "Oro Works",
+				"missionType": "Void Armageddon",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode234",
+				"regionId": "zariman",
+				"name": "Dormizone",
+				"missionType": "Relay",
+				"faction": "Tenno",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode235",
+				"regionId": "zariman",
+				"name": "The Greenway",
+				"missionType": "Mobile Defense",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
 				"id": "SolNode239",
 				"regionId": "venus",
 				"name": "Vesper Relay",
 				"missionType": "Relay",
 				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "ZarimanHub",
+				"regionId": "zariman",
+				"name": "Chrysalith",
+				"missionType": "Relay",
+				"faction": "Tenno",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode400",
+				"regionId": "void",
+				"name": "Teshub",
+				"missionType": "Extermination",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode401",
+				"regionId": "void",
+				"name": "Hepit",
+				"missionType": "Capture",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode402",
+				"regionId": "void",
+				"name": "Taranis",
+				"missionType": "Defense",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode403",
+				"regionId": "void",
+				"name": "Tiwaz",
+				"missionType": "Mobile Defense",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode404",
+				"regionId": "void",
+				"name": "Stribog",
+				"missionType": "Orokin Sabotage",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode405",
+				"regionId": "void",
+				"name": "Ani",
+				"missionType": "Survival",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode406",
+				"regionId": "void",
+				"name": "Ukko",
+				"missionType": "Capture",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode407",
+				"regionId": "void",
+				"name": "Oxomoco",
+				"missionType": "Extermination",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode408",
+				"regionId": "void",
+				"name": "Belenus",
+				"missionType": "Defense",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode409",
+				"regionId": "void",
+				"name": "Mot",
+				"missionType": "Survival",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode410",
+				"regionId": "void",
+				"name": "Aten",
+				"missionType": "Mobile Defense",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode411",
+				"regionId": "void",
+				"name": "Marduk",
+				"missionType": "Sabotage",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode412",
+				"regionId": "void",
+				"name": "Mithra",
+				"missionType": "Interception",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode413",
+				"regionId": "void",
+				"name": "SolNode413",
+				"missionType": "Ancient Retribution",
+				"faction": "Corrupted",
 				"isAssassination": false
 			},
 			{
@@ -2334,6 +2739,152 @@
 				"isAssassination": false
 			},
 			{
+				"id": "DeimosHub",
+				"regionId": "deimos",
+				"name": "Necralisk",
+				"missionType": "Relay",
+				"faction": "Tenno",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode706",
+				"regionId": "deimos",
+				"name": "Horend",
+				"missionType": "Capture",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode707",
+				"regionId": "deimos",
+				"name": "Hyf",
+				"missionType": "Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode708",
+				"regionId": "deimos",
+				"name": "Phlegyas",
+				"missionType": "Extermination",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode709",
+				"regionId": "deimos",
+				"name": "Dirus",
+				"missionType": "Mobile Defense",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode710",
+				"regionId": "deimos",
+				"name": "Formido",
+				"missionType": "Sabotage",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode711",
+				"regionId": "deimos",
+				"name": "Terrorem",
+				"missionType": "Survival",
+				"faction": "Infested",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode712",
+				"regionId": "deimos",
+				"name": "Magnacidium",
+				"missionType": "Assassination",
+				"faction": "Infested",
+				"isAssassination": true,
+				"bossId": "magnacidium",
+				"frameId": "nekros"
+			},
+			{
+				"id": "SolNode713",
+				"regionId": "deimos",
+				"name": "Exequias",
+				"missionType": "Assassination",
+				"faction": "Infested",
+				"isAssassination": true
+			},
+			{
+				"id": "SolNode714",
+				"regionId": "deimos",
+				"name": "Sanctum Anatomica",
+				"missionType": "Relay",
+				"faction": "Tenno",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode715",
+				"regionId": "deimos",
+				"name": "Effervo",
+				"missionType": "Assassination",
+				"faction": "The Murmur",
+				"isAssassination": true
+			},
+			{
+				"id": "SolNode716",
+				"regionId": "deimos",
+				"name": "Nex",
+				"missionType": "Extermination",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode717",
+				"regionId": "deimos",
+				"name": "Persto",
+				"missionType": "Survival",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode718",
+				"regionId": "deimos",
+				"name": "Cambire",
+				"missionType": "Alchemy",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode719",
+				"regionId": "deimos",
+				"name": "Munio",
+				"missionType": "Mirror Defense",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode720",
+				"regionId": "deimos",
+				"name": "Testudo",
+				"missionType": "Netracells",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode721",
+				"regionId": "deimos",
+				"name": "Armatus",
+				"missionType": "Disruption",
+				"faction": "The Murmur",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode251",
+				"regionId": "deimos",
+				"name": "Dark Refactory",
+				"missionType": "The Perita Rebellion",
+				"faction": "Anarch",
+				"isAssassination": false
+			},
+			{
 				"id": "SolNode740",
 				"regionId": "jupiter",
 				"name": "The Ropalolyst",
@@ -2342,6 +2893,70 @@
 				"isAssassination": true,
 				"bossId": "theropalolyst",
 				"frameId": "wisp"
+			},
+			{
+				"id": "SolNode741",
+				"regionId": "kuvafortress",
+				"name": "Koro",
+				"missionType": "Assault",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode742",
+				"regionId": "kuvafortress",
+				"name": "Nabuk",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode743",
+				"regionId": "kuvafortress",
+				"name": "Rotuma",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode744",
+				"regionId": "kuvafortress",
+				"name": "Taveuni",
+				"missionType": "Survival",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode745",
+				"regionId": "kuvafortress",
+				"name": "Tamu",
+				"missionType": "Disruption",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode746",
+				"regionId": "kuvafortress",
+				"name": "Dakata",
+				"missionType": "Extermination",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode747",
+				"regionId": "kuvafortress",
+				"name": "Pago",
+				"missionType": "Spy",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode748",
+				"regionId": "kuvafortress",
+				"name": "Garus",
+				"missionType": "Rescue",
+				"faction": "Grineer",
+				"isAssassination": false
 			},
 			{
 				"id": "SolNode902",
@@ -2397,6 +3012,86 @@
 				"name": "Salacia",
 				"missionType": "Mobile Defense (Archwing)",
 				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode300",
+				"regionId": "lua",
+				"name": "Plato",
+				"missionType": "Extermination",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode301",
+				"regionId": "lua",
+				"name": "Grimaldi",
+				"missionType": "Mobile Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode302",
+				"regionId": "lua",
+				"name": "Tycho",
+				"missionType": "Survival",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode304",
+				"regionId": "lua",
+				"name": "Copernicus",
+				"missionType": "Capture",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode305",
+				"regionId": "lua",
+				"name": "Stöfler",
+				"missionType": "Defense",
+				"faction": "Grineer",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode306",
+				"regionId": "lua",
+				"name": "Pavlov",
+				"missionType": "Spy",
+				"faction": "Crossfire",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode307",
+				"regionId": "lua",
+				"name": "Zeipel",
+				"missionType": "Rescue",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode308",
+				"regionId": "lua",
+				"name": "Apollo",
+				"missionType": "Disruption",
+				"faction": "Corpus",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode309",
+				"regionId": "lua",
+				"name": "Yuvarium",
+				"missionType": "Survival",
+				"faction": "Orokin",
+				"isAssassination": false
+			},
+			{
+				"id": "SolNode310",
+				"regionId": "lua",
+				"name": "Circulus",
+				"missionType": "Survival",
+				"faction": "Grineer",
 				"isAssassination": false
 			},
 			{
@@ -3144,6 +3839,12 @@
 				"faction": "Corpus"
 			},
 			{
+				"id": "magnacidium",
+				"name": "Lephantis",
+				"nodeId": "SolNode712",
+				"faction": "Infested"
+			},
+			{
 				"id": "naamah",
 				"name": "Raptors",
 				"nodeId": "SolNode210",
@@ -3386,6 +4087,40 @@
 				]
 			},
 			{
+				"id": "nekros",
+				"name": "Nekros",
+				"nodeId": "SolNode712",
+				"image": "Nekros.png",
+				"parts": [
+					{
+						"id": "nekros:bp",
+						"frameId": "nekros",
+						"slot": "bp"
+					},
+					{
+						"id": "nekros:neuroptics",
+						"frameId": "nekros",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode712",
+						"chance": 33.33
+					},
+					{
+						"id": "nekros:chassis",
+						"frameId": "nekros",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode712",
+						"chance": 33.33
+					},
+					{
+						"id": "nekros:systems",
+						"frameId": "nekros",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode712",
+						"chance": 33.33
+					}
+				]
+			},
+			{
 				"id": "nova",
 				"name": "Nova",
 				"nodeId": "SolNode210",
@@ -3595,7 +4330,11 @@
 				"id": "ferrite",
 				"name": "Ferrite",
 				"image": "ComponentFerrite.png",
-				"regionIds": ["mercury", "earth", "neptune"],
+				"regionIds": [
+					"mercury",
+					"earth",
+					"neptune"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3621,7 +4360,14 @@
 				"id": "alloyplate",
 				"name": "Alloy Plate",
 				"image": "AlloyPlate.png",
-				"regionIds": ["venus", "phobos", "ceres", "jupiter", "pluto", "sedna"],
+				"regionIds": [
+					"venus",
+					"phobos",
+					"ceres",
+					"jupiter",
+					"pluto",
+					"sedna"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3646,7 +4392,11 @@
 				"id": "nanospores",
 				"name": "Nano Spores",
 				"image": "ComponentNanospores.png",
-				"regionIds": ["saturn", "neptune", "eris"],
+				"regionIds": [
+					"saturn",
+					"neptune",
+					"eris"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3672,7 +4422,11 @@
 				"id": "salvage",
 				"name": "Salvage",
 				"image": "ComponentSalvage.png",
-				"regionIds": ["mars", "jupiter", "sedna"],
+				"regionIds": [
+					"mars",
+					"jupiter",
+					"sedna"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3698,7 +4452,10 @@
 				"id": "circuits",
 				"name": "Circuits",
 				"image": "ComponentCircuits.png",
-				"regionIds": ["venus", "ceres"],
+				"regionIds": [
+					"venus",
+					"ceres"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3724,7 +4481,11 @@
 				"id": "polymerbundle",
 				"name": "Polymer Bundle",
 				"image": "PolymerBundle.png",
-				"regionIds": ["mercury", "venus", "uranus"],
+				"regionIds": [
+					"mercury",
+					"venus",
+					"uranus"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3750,7 +4511,13 @@
 				"id": "plastids",
 				"name": "Plastids",
 				"image": "ComponentPlastids.png",
-				"regionIds": ["phobos", "saturn", "uranus", "pluto", "eris"],
+				"regionIds": [
+					"phobos",
+					"saturn",
+					"uranus",
+					"pluto",
+					"eris"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3776,7 +4543,13 @@
 				"id": "rubedo",
 				"name": "Rubedo",
 				"image": "ComponentRubedo.png",
-				"regionIds": ["earth", "phobos", "europa", "pluto", "sedna"],
+				"regionIds": [
+					"earth",
+					"phobos",
+					"europa",
+					"pluto",
+					"sedna"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3801,7 +4574,13 @@
 				"id": "morphics",
 				"name": "Morphics",
 				"image": "ComponentMorphic.png",
-				"regionIds": ["mercury", "mars", "phobos", "europa", "pluto"],
+				"regionIds": [
+					"mercury",
+					"mars",
+					"phobos",
+					"europa",
+					"pluto"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3827,7 +4606,10 @@
 				"id": "gallium",
 				"name": "Gallium",
 				"image": "ComponentGallium.png",
-				"regionIds": ["mars", "uranus"],
+				"regionIds": [
+					"mars",
+					"uranus"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3853,7 +4635,10 @@
 				"id": "neurodes",
 				"name": "Neurodes",
 				"image": "ComponentNeurode.png",
-				"regionIds": ["earth", "eris"],
+				"regionIds": [
+					"earth",
+					"eris"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3878,7 +4663,9 @@
 				"id": "neuralsensors",
 				"name": "Neural Sensors",
 				"image": "NeuralSensor.png",
-				"regionIds": ["jupiter"],
+				"regionIds": [
+					"jupiter"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3904,7 +4691,10 @@
 				"id": "controlmodule",
 				"name": "Control Module",
 				"image": "ControlModule.png",
-				"regionIds": ["europa", "neptune"],
+				"regionIds": [
+					"europa",
+					"neptune"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3928,7 +4718,10 @@
 				"id": "orokincell",
 				"name": "Orokin Cell",
 				"image": "ComponentCell.png",
-				"regionIds": ["ceres", "saturn"],
+				"regionIds": [
+					"ceres",
+					"saturn"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3954,7 +4747,15 @@
 				"id": "oxium",
 				"name": "Oxium",
 				"image": "ComponentOxium.png",
-				"regionIds": ["venus", "mars", "jupiter", "europa", "neptune", "pluto", "eris"],
+				"regionIds": [
+					"venus",
+					"mars",
+					"jupiter",
+					"europa",
+					"neptune",
+					"pluto",
+					"eris"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -3979,7 +4780,9 @@
 				"id": "tellurium",
 				"name": "Tellurium",
 				"image": "Tellurium.png",
-				"regionIds": ["uranus"],
+				"regionIds": [
+					"uranus"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -4005,7 +4808,9 @@
 				"id": "hexenon",
 				"name": "Hexenon",
 				"image": "ComponentConcentratedGas.png",
-				"regionIds": ["jupiter"],
+				"regionIds": [
+					"jupiter"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -4031,7 +4836,9 @@
 				"id": "mutagensample",
 				"name": "Mutagen Sample",
 				"image": "InfestedFragment.png",
-				"regionIds": ["eris"],
+				"regionIds": [
+					"eris"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -4057,7 +4864,14 @@
 				"id": "detoniteampule",
 				"name": "Detonite Ampule",
 				"image": "GrineerFragment.png",
-				"regionIds": ["mercury", "earth", "ceres", "saturn", "uranus", "sedna"],
+				"regionIds": [
+					"mercury",
+					"earth",
+					"ceres",
+					"saturn",
+					"uranus",
+					"sedna"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -4083,7 +4897,13 @@
 				"id": "fieldronsample",
 				"name": "Fieldron Sample",
 				"image": "CorpusFragment.png",
-				"regionIds": ["venus", "mars", "europa", "neptune", "pluto"],
+				"regionIds": [
+					"venus",
+					"mars",
+					"europa",
+					"neptune",
+					"pluto"
+				],
 				"recommendations": [
 					{
 						"phase": "early",
@@ -4109,14 +4929,18 @@
 				"id": "carbides",
 				"name": "Carbides",
 				"image": "RailjackComponentCarbides.png",
-				"regionIds": ["ceres"],
+				"regionIds": [
+					"ceres"
+				],
 				"recommendations": []
 			},
 			{
 				"id": "cubicdiodes",
 				"name": "Cubic Diodes",
 				"image": "RailjackComponentCubics.png",
-				"regionIds": ["europa"],
+				"regionIds": [
+					"europa"
+				],
 				"recommendations": []
 			},
 			{
@@ -4142,6 +4966,42 @@
 						"lastVerified": "2026-07-05"
 					}
 				]
+			}
+		],
+		"quests": [
+			{
+				"id": "heartofdeimos",
+				"name": "Heart of Deimos",
+				"revealsRegionIds": [
+					"deimos"
+				],
+				"revealsFrameIds": [
+					"nekros"
+				]
+			},
+			{
+				"id": "thesecondddream",
+				"name": "The Second Dream",
+				"revealsRegionIds": [
+					"lua"
+				],
+				"revealsFrameIds": []
+			},
+			{
+				"id": "thewarwithin",
+				"name": "The War Within",
+				"revealsRegionIds": [
+					"kuvafortress"
+				],
+				"revealsFrameIds": []
+			},
+			{
+				"id": "angelsofthezariman",
+				"name": "Angels of the Zariman",
+				"revealsRegionIds": [
+					"zariman"
+				],
+				"revealsFrameIds": []
 			}
 		]
 	}
