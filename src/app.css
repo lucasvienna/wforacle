@@ -1,6 +1,17 @@
 @import 'tailwindcss';
 
-/* Base theme. Tokenized so alternate (in-game) themes can drop in later. */
+/* Warframe theme: a single cohesive Orokin/void palette (gold + cyan accents
+   on a dark panel base) exposed as Tailwind utilities via @theme below. */
+@theme {
+	--color-wf-gold: #e6b854; /* Orokin gold accent (headings/brand) */
+	--color-wf-cyan: #37d2e6; /* void/interactive cyan (links, selection) */
+	--color-wf-panel: #0c1522; /* card surface */
+	--color-wf-edge: #1c3350; /* borders */
+	--color-wf-muted: #7f97b3; /* secondary/muted text */
+	--color-wf-done: #2ee6a0; /* tracker complete */
+	--color-wf-partial: #e6b854; /* tracker partial (reuse gold) */
+}
+
 @layer base {
 	:root {
 		--wf-bg: #080c12;
