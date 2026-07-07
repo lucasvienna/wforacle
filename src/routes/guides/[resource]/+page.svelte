@@ -24,7 +24,10 @@
 </script>
 
 <div class="mx-auto max-w-3xl p-6 text-slate-100">
-	<a href="{base}/" class="text-xs font-medium text-sky-400 hover:text-sky-300">
+	<a
+		href="{base}/"
+		class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
+	>
 		&lt; Back to Star Chart
 	</a>
 
@@ -39,7 +42,7 @@
 
 	<section class="mb-8 grid gap-4 sm:grid-cols-2">
 		{#each recommendations as rec (rec.phase + rec.nodeLabel)}
-			<div class="rounded-xl border border-slate-700 bg-slate-900/70 p-4">
+			<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
 				<span
 					class="rounded-full border px-2 py-0.5 text-[11px] font-medium {PHASE_TAG[
 						rec.phase
@@ -50,20 +53,20 @@
 				<h2 class="mt-2 text-base font-semibold text-slate-100">
 					{rec.nodeLabel}
 				</h2>
-				<p class="mt-1 text-sm text-slate-400">{rec.note}</p>
-				<p class="mt-2 text-xs text-slate-500">
+				<p class="mt-1 text-sm text-wf-muted">{rec.note}</p>
+				<p class="mt-2 text-xs text-wf-muted">
 					{rec.boostersApply
 						? 'Boosters help: this spot relies on enemy drop tables.'
 						: "Boosters don't apply: this spot is a container/deposit pickup, not an enemy drop."}
 				</p>
 				<div
-					class="mt-3 flex items-center justify-between text-xs text-slate-500"
+					class="mt-3 flex items-center justify-between text-xs text-wf-muted"
 				>
 					<a
 						href={rec.source}
 						target="_blank"
 						rel="noreferrer"
-						class="text-sky-400 hover:text-sky-300"
+						class="text-wf-cyan hover:text-wf-cyan/80"
 					>
 						Source ↗
 					</a>
@@ -101,6 +104,6 @@
 		color: #cbd5e1;
 	}
 	.guide-prose :global(a) {
-		color: #38bdf8;
+		color: #37d2e6;
 	}
 </style>

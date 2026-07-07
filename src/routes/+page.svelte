@@ -97,19 +97,19 @@
 
 <div class="mx-auto max-w-6xl p-6 text-slate-100">
 	<header class="mb-4 flex items-center gap-4">
-		<span class="text-lg font-bold"
-			>wf<span class="text-sky-400">oracle</span></span
+		<span class="text-lg font-bold text-wf-gold"
+			>wf<span class="text-wf-cyan">oracle</span></span
 		>
 		<button
 			type="button"
 			data-open-palette
 			onclick={() => (paletteOpen = true)}
-			class="rounded border border-slate-700 px-1.5 py-0.5 text-xs text-slate-400 hover:text-slate-200"
+			class="rounded border border-wf-edge px-1.5 py-0.5 text-xs text-wf-muted hover:text-wf-cyan"
 		>
 			Ctrl K
 		</button>
 		{#if tracker}
-			<span class="ml-auto text-sm text-slate-400">
+			<span class="ml-auto text-sm text-wf-muted">
 				Node Frames <b class="text-slate-100"
 					>{tracker.total.owned} / {tracker.total.total}</b
 				>
@@ -118,7 +118,7 @@
 	</header>
 
 	{#if data && tracker}
-		<div class="mb-4 overflow-hidden rounded-xl border border-slate-700">
+		<div class="mb-4 overflow-hidden rounded-xl border border-wf-edge">
 			<StarChart
 				regions={planetRegions}
 				{specialRegions}

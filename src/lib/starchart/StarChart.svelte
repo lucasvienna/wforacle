@@ -47,7 +47,7 @@
 		rx="500"
 		ry="150"
 		fill="none"
-		stroke="#1c3050"
+		stroke="#1c3350"
 		stroke-width="1.5"
 		opacity="0.7"
 	/>

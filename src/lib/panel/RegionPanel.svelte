@@ -55,8 +55,8 @@
 </script>
 
 <div class="grid gap-4 md:grid-cols-2">
-	<section class="rounded-xl border border-slate-700 bg-slate-900/70 p-5">
-		<h2 class="mb-4 text-lg font-semibold text-slate-100">{region?.name}</h2>
+	<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
+		<h2 class="mb-4 text-lg font-semibold text-wf-gold">{region?.name}</h2>
 		{#if entries.length > 0}
 			<div class="space-y-6">
 				{#each entries as { node, boss, frame } (node.id)}
@@ -67,7 +67,7 @@
 								<h3 class="text-base font-semibold text-slate-100">
 									{node.name}
 								</h3>
-								<p class="mt-0.5 text-xs text-slate-400">
+								<p class="mt-0.5 text-xs text-wf-muted">
 									Boss: <span class="text-slate-200">{boss.name}</span> — drops Warframe
 									components
 								</p>
@@ -75,18 +75,18 @@
 							<span
 								class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
 									node.faction
-								] ?? 'border-slate-600 text-slate-300'}"
+								] ?? 'border-wf-edge text-wf-muted'}"
 							>
 								{node.faction} · Assassination
 								{#if KEY_BOSSES.has(boss.name)}
-									<span data-key class="text-slate-400">· key</span>
+									<span data-key class="text-wf-muted">· key</span>
 								{/if}
 							</span>
 						</div>
 
 						<div class="mb-4 flex items-center gap-3">
 							<div
-								class="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-700 bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
+								class="flex h-11 w-11 items-center justify-center rounded-lg border border-wf-edge bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
 								aria-hidden="true"
 							>
 								{frame.name[0]}
@@ -97,12 +97,12 @@
 									<span
 										class="text-xs font-normal {count.owned === count.total
 											? 'text-emerald-400'
-											: 'text-slate-400'}"
+											: 'text-wf-muted'}"
 									>
 										· {count.owned}/{count.total} owned
 									</span>
 								</div>
-								<div class="text-xs text-slate-500">
+								<div class="text-xs text-wf-muted">
 									Blueprint from Market · components from {boss.name}
 								</div>
 							</div>
@@ -116,7 +116,7 @@
 									data-owned={owned}
 									role="button"
 									tabindex="0"
-									class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-slate-800 {owned
+									class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
 										? 'border-emerald-500/30 bg-emerald-500/10'
 										: ''}"
 									onclick={() => tracker.togglePart(part.id)}
@@ -130,7 +130,7 @@
 									<span
 										class="flex h-4 w-4 items-center justify-center rounded border text-[11px] {owned
 											? 'border-emerald-400 bg-emerald-400 text-slate-950'
-											: 'border-slate-500 text-transparent'}"
+											: 'border-wf-edge text-transparent'}"
 									>
 										✓
 									</span>
@@ -141,7 +141,7 @@
 									>
 										{SLOT_LABEL[part.slot]}
 									</span>
-									<span class="ml-auto text-xs text-slate-500"
+									<span class="ml-auto text-xs text-wf-muted"
 										>{sourceLabel(part.slot, boss.name)}</span
 									>
 								</div>
@@ -149,7 +149,7 @@
 						</div>
 
 						<button
-							class="mt-3 text-xs font-medium text-sky-400 hover:text-sky-300"
+							class="mt-3 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
 							onclick={() => tracker.toggleFrame(frame.id)}
 						>
 							✓ Toggle whole frame
@@ -158,17 +158,17 @@
 				{/each}
 			</div>
 		{:else}
-			<p class="text-sm text-slate-400">
+			<p class="text-sm text-wf-muted">
 				{region?.name}: no Assassination frame here yet.
 			</p>
 		{/if}
 	</section>
 
-	<section class="rounded-xl border border-slate-700 bg-slate-900/70 p-5">
-		<h2 class="text-lg font-semibold text-slate-100">
+	<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
+		<h2 class="text-lg font-semibold text-wf-gold">
 			Resources on {region?.name}
 		</h2>
-		<p class="mt-0.5 mb-4 text-xs text-slate-400">
+		<p class="mt-0.5 mb-4 text-xs text-wf-muted">
 			Informational · best farm spots badged by game phase
 		</p>
 		{#if resources.length > 0}
@@ -179,7 +179,7 @@
 					{@const earlyHere = !!early && early.regionId === regionId}
 					{@const lateHere = !!late && late.regionId === regionId}
 					<li
-						class="flex items-start gap-3 rounded-lg border border-slate-700 px-3 py-2"
+						class="flex items-start gap-3 rounded-lg border border-wf-edge px-3 py-2"
 					>
 						<img
 							src="{base}/resources/{r.id}.webp"
@@ -210,7 +210,7 @@
 								<p
 									class="mt-0.5 text-xs {earlyHere
 										? 'text-emerald-300'
-										: 'text-slate-500'}"
+										: 'text-wf-muted'}"
 								>
 									⚡ Early: {early.nodeLabel}
 								</p>
@@ -219,7 +219,7 @@
 								<p
 									class="text-xs {lateHere
 										? 'text-amber-300'
-										: 'text-slate-500'}"
+										: 'text-wf-muted'}"
 								>
 									💀 Late: {late.nodeLabel}
 								</p>
@@ -228,7 +228,7 @@
 						{#if r.recommendations.length > 0}
 							<a
 								href="{base}/guides/{r.id}"
-								class="mt-0.5 shrink-0 self-start text-xs font-medium text-sky-400 hover:text-sky-300"
+								class="mt-0.5 shrink-0 self-start text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
 							>
 								farming ▸
 							</a>
@@ -237,7 +237,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="text-sm text-slate-500">No notable resources.</p>
+			<p class="text-sm text-wf-muted">No notable resources.</p>
 		{/if}
 	</section>
 </div>

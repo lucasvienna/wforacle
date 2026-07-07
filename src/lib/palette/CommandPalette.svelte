@@ -62,7 +62,7 @@
 		role="presentation"
 	>
 		<div
-			class="w-full max-w-lg rounded-xl border border-slate-700 bg-slate-900/95 shadow-xl"
+			class="w-full max-w-lg rounded-xl border border-wf-edge bg-wf-panel/95 shadow-xl"
 			role="dialog"
 			aria-modal="true"
 			aria-label="Command palette"
@@ -74,7 +74,7 @@
 				{onkeydown}
 				type="text"
 				placeholder="Search planets, frames, resources…"
-				class="w-full border-b border-slate-700 bg-transparent px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
+				class="w-full border-b border-wf-edge bg-transparent px-4 py-3 text-sm text-slate-100 placeholder:text-wf-muted focus:outline-none"
 			/>
 			<div
 				class="max-h-80 overflow-y-auto p-2"
@@ -91,7 +91,7 @@
 							aria-selected={index === clampedHighlight}
 							class="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left {index ===
 							clampedHighlight
-								? 'bg-slate-800'
+								? 'bg-wf-cyan/10'
 								: ''}"
 							onclick={() => select(item)}
 							onmouseenter={() => (highlight = index)}
@@ -99,13 +99,12 @@
 							<span class="text-sm font-medium text-slate-100"
 								>{item.label}</span
 							>
-							<span class="shrink-0 text-xs text-slate-500"
-								>{item.sublabel}</span
+							<span class="shrink-0 text-xs text-wf-muted">{item.sublabel}</span
 							>
 						</button>
 					{/each}
 				{:else}
-					<p class="px-3 py-2 text-sm text-slate-500">No matches.</p>
+					<p class="px-3 py-2 text-sm text-wf-muted">No matches.</p>
 				{/if}
 			</div>
 		</div>
