@@ -67,4 +67,26 @@ describe('CommandPalette', () => {
 		expect(onselect).toHaveBeenCalledWith(items[1]);
 		expect(onclose).toHaveBeenCalledOnce();
 	});
+
+	it('resets the highlight to the top result when the query changes after arrowing', async () => {
+		const onselect = vi.fn();
+		const onclose = vi.fn();
+		render(CommandPalette, { items, open: true, onclose, onselect });
+		const input = screen.getByRole('textbox');
+
+		// Arrow down onto the 2nd unfiltered result (Rhino).
+		await fireEvent.keyDown(input, { key: 'ArrowDown' });
+
+		// Narrow the query to a set of items where the stale highlight index
+		// would land on a different item ("e" matches Venus, Ferrite, Rhino
+		// in that ranked order).
+		await fireEvent.input(input, { target: { value: 'e' } });
+
+		await fireEvent.keyDown(input, { key: 'Enter' });
+
+		// Should select the top-ranked match (Venus), not whatever now sits
+		// at the stale highlight index.
+		expect(onselect).toHaveBeenCalledWith(items[0]);
+		expect(onclose).toHaveBeenCalledOnce();
+	});
 });

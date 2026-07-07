@@ -17,6 +17,8 @@
 	let query = $state('');
 	let highlight = $state(0);
 	let inputEl: HTMLInputElement | undefined = $state();
+	let rowEls: (HTMLButtonElement | undefined)[] = $state([]);
+	let triggerEl: HTMLElement | null = null;
 
 	let results = $derived(filterPaletteItems(items, query));
 	let clampedHighlight = $derived(
@@ -25,24 +27,42 @@
 
 	$effect(() => {
 		if (open) {
+			triggerEl =
+				typeof document !== 'undefined'
+					? (document.activeElement as HTMLElement | null)
+					: null;
 			query = '';
 			highlight = 0;
 			tick().then(() => inputEl?.focus());
+		} else {
+			triggerEl?.focus?.();
 		}
 	});
+
+	function scrollHighlightIntoView() {
+		rowEls[clampedHighlight]?.scrollIntoView?.({ block: 'nearest' });
+	}
 
 	function select(item: PaletteItem) {
 		onselect(item);
 		onclose();
 	}
 
+	// Reset the highlight back to the top result whenever the query changes,
+	// so a stale highlight (e.g. from arrowing) can't linger after narrowing.
+	function oninput() {
+		highlight = 0;
+	}
+
 	function onkeydown(e: KeyboardEvent) {
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			highlight = Math.min(clampedHighlight + 1, results.length - 1);
+			scrollHighlightIntoView();
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
 			highlight = Math.max(clampedHighlight - 1, 0);
+			scrollHighlightIntoView();
 		} else if (e.key === 'Enter') {
 			e.preventDefault();
 			const item = results[clampedHighlight];
@@ -72,6 +92,7 @@
 				bind:this={inputEl}
 				bind:value={query}
 				{onkeydown}
+				{oninput}
 				type="text"
 				placeholder="Search planets, frames, resources…"
 				class="w-full border-b border-wf-edge bg-transparent px-4 py-3 text-sm text-slate-100 placeholder:text-wf-muted focus:outline-none"
@@ -84,6 +105,7 @@
 				{#if results.length > 0}
 					{#each results as item, index (item.type + ':' + item.id)}
 						<button
+							bind:this={rowEls[index]}
 							type="button"
 							data-palette-item
 							data-type={item.type}
