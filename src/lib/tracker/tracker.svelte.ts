@@ -56,6 +56,7 @@ export function createTracker(
 			return datasetCompletion(frames, owned);
 		},
 		snapshot: () => [...owned],
+		reset: () => owned.clear(),
 		load: (ids: string[]) => {
 			owned.clear();
 			for (const id of ids) owned.add(id);

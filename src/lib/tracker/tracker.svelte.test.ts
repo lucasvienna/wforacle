@@ -39,6 +39,25 @@ describe('tracker', () => {
 		expect(calls[calls.length - 1]).toContain('rhino:bp');
 		t.dispose();
 	});
+	it('reset clears owned parts', () => {
+		const t = createTracker(seed.warframes);
+		t.togglePart('rhino:bp');
+		expect(t.isOwned('rhino:bp')).toBe(true);
+		t.reset();
+		expect(t.isOwned('rhino:bp')).toBe(false);
+		expect(t.snapshot()).toEqual([]);
+	});
+	it('reset fires persist with an empty list', () => {
+		const calls: string[][] = [];
+		const t = createTracker(seed.warframes, (ids) => calls.push([...ids]));
+		flushSync();
+		t.togglePart('rhino:bp');
+		flushSync();
+		t.reset();
+		flushSync();
+		expect(calls[calls.length - 1]).toEqual([]);
+		t.dispose();
+	});
 	it('toggles a completed quest', () => {
 		const t = createTracker(seed.warframes);
 		expect(t.isQuestDone('heartofdeimos')).toBe(false);
