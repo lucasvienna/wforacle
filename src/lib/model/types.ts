@@ -6,6 +6,11 @@ export interface WarframePart {
 	slot: Slot;
 	dropSourceNodeId?: string;
 	chance?: number;
+	/** Open-world bounty stage the component drops at, e.g. "L20–40". Absent for
+	 * assassination parts and non-bounty sources (Exploiter Orb). */
+	bountyTier?: string;
+	/** Bounty rotation: "A" | "B" | "C" | "any" | joined like "A/B". Absent when N/A. */
+	rotation?: string;
 }
 
 export interface Warframe {
@@ -62,6 +67,14 @@ export interface Quest {
 	revealsFrameIds: string[];
 }
 
+export interface OpenWorldFarm {
+	frameId: string;
+	nodeId: string;
+	regionId: string;
+	componentSource: string;
+	bpSource: string;
+}
+
 export interface Region {
 	id: string;
 	name: string;
@@ -81,4 +94,5 @@ export interface Dataset {
 	warframes: Warframe[];
 	resources: Resource[];
 	quests: Quest[];
+	openWorldFarms: OpenWorldFarm[];
 }

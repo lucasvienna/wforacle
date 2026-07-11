@@ -74,6 +74,7 @@ const multiNodeRegion: Dataset = {
 	],
 	resources: [],
 	quests: [],
+	openWorldFarms: [],
 };
 
 // Equinox-shaped fixture: Uranus region with a Titania Assassination node
@@ -119,6 +120,7 @@ const equinoxRegion: Dataset = {
 	],
 	resources: [],
 	quests: [],
+	openWorldFarms: [],
 } as unknown as Dataset;
 
 // Mesa-shaped fixture: Eris region with a Mutalist Alad V Assassination node
@@ -171,6 +173,7 @@ const mesaKeyRegion: Dataset = {
 	],
 	resources: [],
 	quests: [],
+	openWorldFarms: [],
 } as unknown as Dataset;
 
 describe('RegionPanel', () => {
@@ -252,6 +255,8 @@ describe('RegionPanel', () => {
 					],
 				},
 			],
+			quests: [],
+			openWorldFarms: [],
 		} as unknown as Dataset;
 		const tracker = createTracker([]);
 		render(RegionPanel, { dataset: ds, regionId: 'venus', tracker });
