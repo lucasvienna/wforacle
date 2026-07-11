@@ -28,4 +28,15 @@
 		background: radial-gradient(1200px 700px at 60% -10%, var(--wf-bg-glow) 0%, var(--wf-bg) 60%);
 		color: var(--wf-text);
 	}
+
+	/* Interactive, non-link elements should read as clickable. Tailwind's reset
+	   leaves <button> at the default arrow cursor; links already show a pointer. */
+	button:not(:disabled),
+	[role='button']:not([aria-disabled='true']),
+	[role='option'],
+	summary,
+	label:has(> input[type='checkbox']),
+	label:has(> input[type='radio']) {
+		cursor: pointer;
+	}
 }
