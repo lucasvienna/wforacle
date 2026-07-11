@@ -106,15 +106,12 @@
 
 <svelte:window onkeydown={onWindowKey} />
 
-<div class="mx-auto max-w-6xl p-6 text-slate-100">
-	<header class="mb-4 flex items-center gap-4">
+<div class="mx-auto max-w-screen-2xl p-6 text-slate-100">
+	<header class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
 		<span class="text-lg font-bold text-wf-gold"
 			>wf<span class="text-wf-cyan">oracle</span></span
 		>
 		<div class="ml-auto flex items-center gap-2 sm:gap-3">
-			{#if ws}
-				<WorldStateTicker store={ws} />
-			{/if}
 			<button
 				type="button"
 				data-open-palette
@@ -169,6 +166,12 @@
 			{/if}
 		</div>
 	</header>
+
+	{#if ws}
+		<div class="mb-4 rounded-xl border border-wf-edge bg-wf-panel px-4 py-2">
+			<WorldStateTicker store={ws} />
+		</div>
+	{/if}
 
 	{#if data && tracker}
 		<div class="mb-4 overflow-hidden rounded-xl border border-wf-edge">
