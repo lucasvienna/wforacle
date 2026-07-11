@@ -16,8 +16,8 @@
 		"test:e2e": "playwright test",
 		"gen": "wrangler types",
 		"data:build": "tsx scripts/build-data.ts",
-		"lint": "oxlint",
-		"lint:fix": "oxlint --fix --fix-suggestions",
+		"lint": "wrangler types && svelte-kit sync && oxlint",
+		"lint:fix": "wrangler types && svelte-kit sync && oxlint --fix --fix-suggestions",
 		"format": "oxfmt . && prettier --write -l \"**/*.svelte\"",
 		"format:check": "oxfmt --check . && prettier --check \"**/*.svelte\""
 	},
