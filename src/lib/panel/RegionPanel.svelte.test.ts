@@ -4,6 +4,7 @@ import RegionPanel from './RegionPanel.svelte';
 import { seed } from '$lib/data/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
 import type { Dataset } from '$lib/model/types';
+import type { WorldState } from '$lib/worldstate/types';
 
 // Jupiter-shaped fixture: one region with TWO Assassination nodes, each
 // linking a different frame (mirrors the real Themisto→Valkyr and
@@ -313,7 +314,7 @@ describe('RegionPanel — open world', () => {
 		const tracker = createTracker(openWorld.warframes);
 		render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
 		const row = document.querySelector('[data-part="caliban:chassis"]') as HTMLElement;
-		await row.click();
+		row.click();
 		expect(tracker.isOwned('caliban:chassis')).toBe(true);
 	});
 
@@ -393,7 +394,7 @@ describe('RegionPanel', () => {
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
 		const row = screen.getByText('Chassis').closest('[data-part]') as HTMLElement;
 		expect(row.getAttribute('data-owned')).toBe('false');
-		await row.click();
+		row.click();
 		expect(tracker.isOwned('rhino:chassis')).toBe(true);
 	});
 	it('shows an empty state for a region with no assassination frame', () => {
@@ -505,5 +506,161 @@ describe('RegionPanel', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
 		expect(document.querySelector('[data-key]')).toBeNull();
+	});
+});
+
+const wsNow = Date.parse('2026-07-11T20:39:00.000Z');
+const worldState: WorldState = {
+	ok: true,
+	fetchedAt: 't',
+	cetus: { state: 'night', expiry: '2026-07-11T21:00:00.000Z' },
+	vallis: { state: 'cold', expiry: '2026-07-11T20:57:00.000Z' },
+	cambion: { state: 'fass', expiry: '2026-07-11T21:00:00.000Z' },
+	rotation: { letter: 'C', expiry: '2026-07-11T21:00:00.000Z' },
+};
+
+// Earth zone with Gara: Neuroptics is Rot C (up now), Systems is Rot A (not this
+// rotation); plus Hildryn-style always-available part with no rotation.
+const owAvail: Dataset = {
+	regions: [
+		{
+			id: 'earth',
+			name: 'Earth',
+			kind: 'planet',
+			progressionOrder: 1,
+			factions: ['Grineer'],
+			nodeIds: ['plains'],
+			spoilerGated: false,
+			resourceIds: [],
+		},
+	],
+	nodes: [
+		{
+			id: 'plains',
+			regionId: 'earth',
+			name: 'Plains of Eidolon',
+			missionType: 'Free Roam',
+			faction: 'Grineer',
+			isAssassination: false,
+		},
+	],
+	bosses: [],
+	warframes: [
+		{
+			id: 'gara',
+			name: 'Gara',
+			nodeId: 'plains',
+			parts: [
+				{ id: 'gara:bp', frameId: 'gara', slot: 'bp' },
+				{
+					id: 'gara:neuroptics',
+					frameId: 'gara',
+					slot: 'neuroptics',
+					dropSourceNodeId: 'plains',
+					chance: 47,
+					bountyTier: 'L20–40',
+					rotation: 'C',
+				},
+				{
+					id: 'gara:systems',
+					frameId: 'gara',
+					slot: 'systems',
+					dropSourceNodeId: 'plains',
+					chance: 45,
+					bountyTier: 'L10–30',
+					rotation: 'A',
+				},
+				{
+					id: 'gara:chassis',
+					frameId: 'gara',
+					slot: 'chassis',
+					dropSourceNodeId: 'plains',
+					chance: 39,
+				},
+			],
+		},
+	],
+	resources: [],
+	quests: [],
+	openWorldFarms: [
+		{
+			frameId: 'gara',
+			nodeId: 'plains',
+			regionId: 'earth',
+			componentSource: 'Cetus Bounty',
+			bpSource: "Complete Saya's Vigil",
+		},
+	],
+};
+
+describe('RegionPanel — world-state overlay', () => {
+	it('marks a part up now when its rotation matches the live letter', () => {
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState,
+			now: wsNow,
+		});
+		const row = document.querySelector('[data-part="gara:neuroptics"]') as HTMLElement;
+		expect(row.textContent).toMatch(/up now · resets 21m/);
+	});
+	it('marks a part not-this-rotation with the next-up countdown', () => {
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState,
+			now: wsNow,
+		});
+		const row = document.querySelector('[data-part="gara:systems"]') as HTMLElement;
+		expect(row.textContent).toMatch(/Rot A · up in/);
+	});
+	it('marks a rotation-less component as always available', () => {
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState,
+			now: wsNow,
+		});
+		const row = document.querySelector('[data-part="gara:chassis"]') as HTMLElement;
+		expect(row.textContent).toMatch(/always available/);
+	});
+	it('renders the zone cycle line for the region', () => {
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState,
+			now: wsNow,
+		});
+		expect(screen.getByText(/night · 21m/)).toBeInTheDocument();
+	});
+	it('renders no chips or cycle line when worldState is absent', () => {
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+		});
+		expect(document.querySelector('[data-part="gara:neuroptics"]')!.textContent).not.toMatch(
+			/up now/,
+		);
+		expect(screen.queryByText(/night ·/)).toBeNull();
+	});
+	it('hides the zone cycle line instead of showing NaN when the cycle expiry is missing', () => {
+		const badWorldState: WorldState = {
+			...worldState,
+			cetus: { state: 'day', expiry: '' },
+		};
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState: badWorldState,
+			now: wsNow,
+		});
+		expect(document.body.textContent).not.toMatch(/NaN/);
+		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
 	});
 });

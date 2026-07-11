@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
+import { tick } from 'svelte';
 import QuestsPanel from './QuestsPanel.svelte';
 import { createTracker } from '$lib/tracker/tracker.svelte';
 import type { Dataset } from '$lib/model/types';
@@ -63,7 +64,8 @@ describe('QuestsPanel', () => {
 		render(QuestsPanel, { dataset: ds, tracker });
 		const row = document.querySelector('[data-quest="heartofdeimos"]') as HTMLElement;
 		expect(row.getAttribute('data-done')).toBe('false');
-		await row.click();
+		row.click();
+		await tick();
 		const updated = document.querySelector('[data-quest="heartofdeimos"]') as HTMLElement;
 		expect(updated.getAttribute('data-done')).toBe('true');
 	});

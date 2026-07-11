@@ -17,7 +17,7 @@ describe('StarChart', () => {
 	it('fires onselect with the region id on click', async () => {
 		const onselect = vi.fn();
 		render(StarChart, { ...base, onselect });
-		await screen.getByText('MARS').click();
+		screen.getByText('MARS').click();
 		expect(onselect).toHaveBeenCalledWith('mars');
 	});
 
@@ -45,7 +45,7 @@ describe('StarChart', () => {
 	it('fires onselect with the special region id on click', async () => {
 		const onselect = vi.fn();
 		render(StarChart, { ...base, onselect, specialRegions: [deimos] });
-		await screen.getByText('DEIMOS').click();
+		screen.getByText('DEIMOS').click();
 		expect(onselect).toHaveBeenCalledWith('deimos');
 	});
 });

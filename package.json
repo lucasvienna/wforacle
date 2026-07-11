@@ -17,7 +17,8 @@
 		"gen": "wrangler types",
 		"data:build": "tsx scripts/build-data.ts",
 		"lint": "oxlint",
-		"lint:fix": "oxlint --fix --fix-suggestions",
+		"lint:check": "wrangler types && svelte-kit sync && oxlint",
+		"lint:fix": "wrangler types && svelte-kit sync && oxlint --fix --fix-suggestions",
 		"format": "oxfmt . && prettier --write -l \"**/*.svelte\"",
 		"format:check": "oxfmt --check . && prettier --check \"**/*.svelte\""
 	},
@@ -39,6 +40,7 @@
 		"mdsvex": "^0.12.7",
 		"oxfmt": "^0.58.0",
 		"oxlint": "^1.73.0",
+		"oxlint-tsgolint": "^0.24.0",
 		"playwright": "^1.60.0",
 		"prettier": "^3.9.5",
 		"prettier-plugin-svelte": "^4.1.1",

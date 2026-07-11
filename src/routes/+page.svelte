@@ -18,9 +18,15 @@
 	import { revealedRegions } from '$lib/model/reveal';
 	import CommandPalette from '$lib/palette/CommandPalette.svelte';
 	import { buildPaletteItems, type PaletteItem } from '$lib/palette/search';
+	import {
+		createWorldStateStore,
+		type WorldStateStore,
+	} from '$lib/worldstate/worldstate.svelte';
+	import WorldStateTicker from '$lib/worldstate/WorldStateTicker.svelte';
 
 	let data = $state<Dataset | null>(null);
 	let tracker = $state<Tracker | null>(null);
+	let ws = $state<WorldStateStore | null>(null);
 	let selectedId = $state('venus');
 	let paletteOpen = $state(false);
 	let settingsOpen = $state(false);
@@ -42,9 +48,13 @@
 		ready = true;
 		data = ds;
 		tracker = t;
+		ws = createWorldStateStore();
 	});
 
-	onDestroy(() => tracker?.dispose());
+	onDestroy(() => {
+		tracker?.dispose();
+		ws?.dispose();
+	});
 
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
 		if (!data || !tracker) return 'none';
@@ -96,8 +106,8 @@
 
 <svelte:window onkeydown={onWindowKey} />
 
-<div class="mx-auto max-w-6xl p-6 text-slate-100">
-	<header class="mb-4 flex items-center gap-4">
+<div class="mx-auto max-w-screen-2xl p-6 text-slate-100">
+	<header class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
 		<span class="text-lg font-bold text-wf-gold"
 			>wf<span class="text-wf-cyan">oracle</span></span
 		>
@@ -157,6 +167,12 @@
 		</div>
 	</header>
 
+	{#if ws}
+		<div class="mb-4 rounded-xl border border-wf-edge bg-wf-panel px-4 py-2">
+			<WorldStateTicker store={ws} />
+		</div>
+	{/if}
+
 	{#if data && tracker}
 		<div class="mb-4 overflow-hidden rounded-xl border border-wf-edge">
 			<StarChart
@@ -167,7 +183,13 @@
 				onselect={(id) => (selectedId = id)}
 			/>
 		</div>
-		<RegionPanel dataset={data} regionId={selectedId} {tracker} />
+		<RegionPanel
+			dataset={data}
+			regionId={selectedId}
+			{tracker}
+			worldState={ws?.state ?? null}
+			now={ws?.now ?? Date.now()}
+		/>
 	{:else}
 		<div class="flex h-96 items-center justify-center text-slate-500">
 			Loading Star Chart…

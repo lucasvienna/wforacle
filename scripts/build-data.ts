@@ -121,4 +121,4 @@ async function main() {
 	console.log(`Wrote ${OUT}`);
 }
 
-main();
+void main();

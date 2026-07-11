@@ -10,12 +10,26 @@
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
 	import { resourcesForRegion, bestPhaseRec } from '$lib/model/resources';
 	import { base } from '$app/paths';
+	import type { WorldState } from '$lib/worldstate/types';
+	import {
+		partAvailability,
+		nextActiveAt,
+		formatCountdown,
+	} from '$lib/worldstate/availability';
 
 	let {
 		dataset,
 		regionId,
 		tracker,
-	}: { dataset: Dataset; regionId: string; tracker: Tracker } = $props();
+		worldState = null,
+		now = Date.now(),
+	}: {
+		dataset: Dataset;
+		regionId: string;
+		tracker: Tracker;
+		worldState?: WorldState | null;
+		now?: number;
+	} = $props();
 
 	const SLOT_LABEL = {
 		bp: 'Blueprint',
@@ -104,6 +118,55 @@
 			.filter(Boolean)
 			.join(' · ');
 	}
+
+	const ZONE_CYCLE: Record<string, 'cetus' | 'vallis' | 'cambion'> = {
+		'Plains of Eidolon': 'cetus',
+		'Orb Vallis': 'vallis',
+		'Cambion Drift': 'cambion',
+	};
+	const CYCLE_GLYPH: Record<string, string> = {
+		day: '☀',
+		night: '🌙',
+		warm: '🔥',
+		cold: '❄',
+		fass: '🟠',
+		vome: '🔵',
+	};
+
+	function zoneCycleLine(nodeName: string): string | null {
+		if (!worldState) return null;
+		const key = ZONE_CYCLE[nodeName];
+		if (!key) return null;
+		const cyc = worldState[key];
+		if (!cyc.expiry) return null;
+		return `${CYCLE_GLYPH[cyc.state] ?? ''} ${cyc.state} · ${formatCountdown(new Date(cyc.expiry).getTime() - now)}`;
+	}
+
+	// Availability chip for an open-world component row. Null → render nothing
+	// (bp slot, unknown rotation, or no live data).
+	function owAvailabilityChip(
+		part: WarframePart,
+	): { cls: string; text: string } | null {
+		if (!worldState || part.slot === 'bp') return null;
+		const rot = worldState.rotation;
+		const a = partAvailability(part.rotation, rot.letter);
+		if (a === 'available') {
+			const resets = rot.expiry
+				? ` · resets ${formatCountdown(new Date(rot.expiry).getTime() - now)}`
+				: '';
+			return { cls: 'text-emerald-300', text: `● up now${resets}` };
+		}
+		if (a === 'always')
+			return { cls: 'text-emerald-300', text: '● always available' };
+		if (a === 'unavailable') {
+			const next = nextActiveAt(part.rotation, rot.letter, rot.expiry);
+			const when = next
+				? ` · up in ${formatCountdown(next.getTime() - now)}`
+				: '';
+			return { cls: 'text-wf-muted', text: `○ Rot ${part.rotation}${when}` };
+		}
+		return null;
+	}
 </script>
 
 <div class="grid items-start gap-4 md:grid-cols-2">
@@ -113,6 +176,7 @@
 			frame: Warframe,
 			subLine: string,
 			sourceText: (part: WarframePart) => string,
+			avail?: (part: WarframePart) => { cls: string; text: string } | null,
 		)}
 			{@const count = tracker.frameCount(frame.id)}
 			<div class="mb-4 flex items-center gap-3">
@@ -179,6 +243,14 @@
 						</span>
 						<span class="ml-auto text-xs text-wf-muted">{sourceText(part)}</span
 						>
+						{#if avail}
+							{@const chip = avail(part)}
+							{#if chip}
+								<span class="ml-2 shrink-0 text-[11px] {chip.cls}"
+									>{chip.text}</span
+								>
+							{/if}
+						{/if}
 					</div>
 				{/each}
 			</div>
@@ -225,11 +297,19 @@
 				{/each}
 
 				{#each openWorldZones as zone (zone.node.id)}
+					{@const line = zoneCycleLine(zone.node.name)}
 					<div>
 						<div class="mb-4 flex items-start justify-between gap-3">
-							<h3 class="text-base font-semibold text-slate-100">
-								{zone.node.name}
-							</h3>
+							<div>
+								<h3 class="text-base font-semibold text-slate-100">
+									{zone.node.name}
+								</h3>
+								{#if line}
+									<p class="mt-0.5 text-xs text-wf-muted" data-zone-cycle>
+										{line}
+									</p>
+								{/if}
+							</div>
 							<span
 								class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
 									zone.node.faction
@@ -244,6 +324,7 @@
 									frame,
 									`Blueprint: ${farm.bpSource}`,
 									(part) => owSourceText(part, farm),
+									owAvailabilityChip,
 								)}
 							{/each}
 						</div>
