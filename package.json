@@ -19,7 +19,7 @@
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix --fix-suggestions",
 		"format": "oxfmt . && prettier --write -l \"**/*.svelte\"",
-		"format:check": "oxfmt --check . && prettier --check -l \"**/*.svelte\""
+		"format:check": "oxfmt --check . && prettier --check \"**/*.svelte\""
 	},
 	"dependencies": {
 		"idb": "^8.0.3"
