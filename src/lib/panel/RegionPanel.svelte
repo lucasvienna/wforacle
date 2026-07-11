@@ -138,6 +138,7 @@
 		const key = ZONE_CYCLE[nodeName];
 		if (!key) return null;
 		const cyc = worldState[key];
+		if (!cyc.expiry) return null;
 		return `${CYCLE_GLYPH[cyc.state] ?? ''} ${cyc.state} · ${formatCountdown(new Date(cyc.expiry).getTime() - now)}`;
 	}
 
@@ -296,15 +297,16 @@
 				{/each}
 
 				{#each openWorldZones as zone (zone.node.id)}
+					{@const line = zoneCycleLine(zone.node.name)}
 					<div>
 						<div class="mb-4 flex items-start justify-between gap-3">
 							<div>
 								<h3 class="text-base font-semibold text-slate-100">
 									{zone.node.name}
 								</h3>
-								{#if zoneCycleLine(zone.node.name)}
+								{#if line}
 									<p class="mt-0.5 text-xs text-wf-muted" data-zone-cycle>
-										{zoneCycleLine(zone.node.name)}
+										{line}
 									</p>
 								{/if}
 							</div>

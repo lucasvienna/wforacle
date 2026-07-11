@@ -15,6 +15,7 @@
 	};
 
 	function left(expiry: string): string {
+		if (!expiry) return '—';
 		return formatCountdown(new Date(expiry).getTime() - store.now);
 	}
 </script>

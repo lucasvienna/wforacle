@@ -648,4 +648,19 @@ describe('RegionPanel — world-state overlay', () => {
 		);
 		expect(screen.queryByText(/night ·/)).toBeNull();
 	});
+	it('hides the zone cycle line instead of showing NaN when the cycle expiry is missing', () => {
+		const badWorldState: WorldState = {
+			...worldState,
+			cetus: { state: 'day', expiry: '' },
+		};
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState: badWorldState,
+			now: wsNow,
+		});
+		expect(document.body.textContent).not.toMatch(/NaN/);
+		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
+	});
 });
