@@ -146,7 +146,7 @@
 					class="relative rounded-lg border border-wf-edge bg-wf-panel px-2.5 py-1.5 text-wf-muted hover:text-wf-cyan"
 				>
 					<span aria-hidden="true">⚙</span>
-					{#if data.quests.some((q) => !tracker.isQuestDone(q.id))}
+					{#if data.quests.some((q) => !tracker?.isQuestDone(q.id))}
 						<span
 							aria-hidden="true"
 							class="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-wf-gold"
