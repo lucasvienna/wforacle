@@ -17,9 +17,9 @@
 		"gen": "wrangler types",
 		"data:build": "tsx scripts/build-data.ts",
 		"lint": "oxlint",
-		"lint:fix": "oxlint --fix",
-		"format": "oxfmt . && prettier --write \"**/*.svelte\"",
-		"format:check": "oxfmt --check . && prettier --check \"**/*.svelte\""
+		"lint:fix": "oxlint --fix --fix-suggestions",
+		"format": "oxfmt . && prettier --write -l \"**/*.svelte\"",
+		"format:check": "oxfmt --check . && prettier --check -l \"**/*.svelte\""
 	},
 	"dependencies": {
 		"idb": "^8.0.3"
