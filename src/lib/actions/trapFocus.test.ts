@@ -58,6 +58,26 @@ describe('trapFocus', () => {
 		expect(event.defaultPrevented).toBe(false);
 	});
 
+	it('excludes visibility:hidden elements from the tabbable set', () => {
+		// A `visibility: hidden` control occupies a layout box, so a naive
+		// offsetParent/getClientRects check would wrongly include it. Here #c is
+		// hidden, so the real last tabbable is #b — Tab from #b must wrap to #a.
+		document.body.innerHTML =
+			'<div id="d"><button id="a">a</button><button id="b">b</button>' +
+			'<button id="c" style="visibility: hidden">c</button></div>';
+		const d = document.getElementById('d')!;
+		const trap = trapFocus(d);
+
+		document.getElementById('b')!.focus();
+		const event = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+		d.dispatchEvent(event);
+
+		expect(document.activeElement?.id).toBe('a');
+		expect(event.defaultPrevented).toBe(true);
+
+		trap.destroy();
+	});
+
 	it('is a no-op with 0 tabbable elements', () => {
 		document.body.innerHTML = '<div id="d"><span>not focusable</span></div>';
 		const d = document.getElementById('d')!;

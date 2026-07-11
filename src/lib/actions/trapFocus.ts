@@ -8,13 +8,14 @@ const TABBABLE_SELECTOR = [
 ].join(', ');
 
 function isVisible(el: HTMLElement): boolean {
-	if (el.offsetParent !== null || el.getClientRects().length > 0) return true;
-	// jsdom doesn't implement layout, so offsetParent/getClientRects are always
-	// null/empty there regardless of actual visibility. Fall back to computed
-	// style, which also more correctly handles real-browser edge cases (e.g.
-	// position: fixed elements, which report offsetParent === null too).
-	const style = getComputedStyle(el);
-	return style.display !== 'none' && style.visibility !== 'hidden';
+	// Computed style is the reliable signal in both real browsers and jsdom (which
+	// has no layout, so offsetParent/getClientRects are always null/empty and can't
+	// be used). `visibility: hidden` occupies a layout box, so it must be checked
+	// unconditionally — a fast-path on offsetParent/getClientRects would let it slip
+	// through. The dialogs this traps render all their controls directly, so an
+	// element hidden only via an ancestor's `display: none` doesn't arise here.
+	const style = typeof getComputedStyle === 'function' ? getComputedStyle(el) : null;
+	return !style || (style.display !== 'none' && style.visibility !== 'hidden');
 }
 
 function getTabbable(node: HTMLElement): HTMLElement[] {
