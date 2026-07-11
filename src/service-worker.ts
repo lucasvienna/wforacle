@@ -59,6 +59,23 @@ sw.addEventListener('fetch', (e) => {
 		return;
 	}
 
+	// Live world state: network-first (never freeze it in the cache-first
+	// branch). Fall back to the last cached copy when offline.
+	if (url.pathname.endsWith('/api/worldstate')) {
+		e.respondWith(
+			caches.open(CACHE).then(async (cache) => {
+				try {
+					const res = await fetch(req);
+					if (res.ok) cache.put(req, res.clone());
+					return res;
+				} catch {
+					return (await cache.match(req)) ?? Response.error();
+				}
+			}),
+		);
+		return;
+	}
+
 	// Everything else: cache-first, falling back to network (offline shell).
 	// Successful network responses are cached at runtime too, so any route
 	// beyond the precached shell also becomes available offline after one visit.

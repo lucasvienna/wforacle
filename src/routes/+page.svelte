@@ -18,9 +18,15 @@
 	import { revealedRegions } from '$lib/model/reveal';
 	import CommandPalette from '$lib/palette/CommandPalette.svelte';
 	import { buildPaletteItems, type PaletteItem } from '$lib/palette/search';
+	import {
+		createWorldStateStore,
+		type WorldStateStore,
+	} from '$lib/worldstate/worldstate.svelte';
+	import WorldStateTicker from '$lib/worldstate/WorldStateTicker.svelte';
 
 	let data = $state<Dataset | null>(null);
 	let tracker = $state<Tracker | null>(null);
+	let ws = $state<WorldStateStore | null>(null);
 	let selectedId = $state('venus');
 	let paletteOpen = $state(false);
 	let settingsOpen = $state(false);
@@ -42,9 +48,13 @@
 		ready = true;
 		data = ds;
 		tracker = t;
+		ws = createWorldStateStore();
 	});
 
-	onDestroy(() => tracker?.dispose());
+	onDestroy(() => {
+		tracker?.dispose();
+		ws?.dispose();
+	});
 
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
 		if (!data || !tracker) return 'none';
@@ -102,6 +112,9 @@
 			>wf<span class="text-wf-cyan">oracle</span></span
 		>
 		<div class="ml-auto flex items-center gap-2 sm:gap-3">
+			{#if ws}
+				<WorldStateTicker store={ws} />
+			{/if}
 			<button
 				type="button"
 				data-open-palette
@@ -167,7 +180,13 @@
 				onselect={(id) => (selectedId = id)}
 			/>
 		</div>
-		<RegionPanel dataset={data} regionId={selectedId} {tracker} />
+		<RegionPanel
+			dataset={data}
+			regionId={selectedId}
+			{tracker}
+			worldState={ws?.state ?? null}
+			now={ws?.now ?? Date.now()}
+		/>
 	{:else}
 		<div class="flex h-96 items-center justify-center text-slate-500">
 			Loading Star Chart…
