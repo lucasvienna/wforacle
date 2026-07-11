@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { trapFocus } from '$lib/actions/trapFocus';
 	import { filterPaletteItems, type PaletteItem } from './search';
 
 	let {
@@ -87,6 +88,7 @@
 			aria-modal="true"
 			aria-label="Command palette"
 			tabindex="-1"
+			use:trapFocus
 		>
 			<input
 				bind:this={inputEl}
@@ -94,10 +96,17 @@
 				{onkeydown}
 				{oninput}
 				type="text"
+				role="combobox"
+				aria-expanded="true"
+				aria-controls="palette-listbox"
+				aria-activedescendant={results.length
+					? `palette-opt-${clampedHighlight}`
+					: undefined}
 				placeholder="Search planets, frames, resources…"
 				class="w-full border-b border-wf-edge bg-transparent px-4 py-3 text-sm text-slate-100 placeholder:text-wf-muted focus:outline-none"
 			/>
 			<div
+				id="palette-listbox"
 				class="max-h-80 overflow-y-auto p-2"
 				role="listbox"
 				aria-label="Results"
@@ -106,6 +115,7 @@
 					{#each results as item, index (item.type + ':' + item.id)}
 						<button
 							bind:this={rowEls[index]}
+							id={`palette-opt-${index}`}
 							type="button"
 							data-palette-item
 							data-type={item.type}

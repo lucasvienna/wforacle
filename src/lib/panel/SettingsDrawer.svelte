@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { trapFocus } from '$lib/actions/trapFocus';
 	import type { Dataset } from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
 	import QuestsPanel from './QuestsPanel.svelte';
@@ -60,6 +61,7 @@
 		class="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col gap-4 overflow-y-auto border-l border-wf-edge bg-wf-panel p-5"
 		onkeydown={onKey}
 		tabindex="-1"
+		use:trapFocus
 	>
 		<div class="flex items-center justify-between">
 			<h2 class="text-lg font-semibold text-wf-gold">Settings</h2>

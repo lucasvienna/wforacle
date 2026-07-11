@@ -31,7 +31,7 @@ describe('CommandPalette', () => {
 
 	it('filters results as the user types', async () => {
 		render(CommandPalette, { items, open: true, onclose: vi.fn(), onselect: vi.fn() });
-		const input = screen.getByRole('textbox');
+		const input = screen.getByRole('combobox');
 		await fireEvent.input(input, { target: { value: 'rhi' } });
 		expect(screen.getByText('Rhino')).toBeInTheDocument();
 		expect(screen.queryByText('Venus')).toBeNull();
@@ -42,7 +42,7 @@ describe('CommandPalette', () => {
 		const onselect = vi.fn();
 		const onclose = vi.fn();
 		render(CommandPalette, { items, open: true, onclose, onselect });
-		const input = screen.getByRole('textbox');
+		const input = screen.getByRole('combobox');
 		await fireEvent.input(input, { target: { value: 'rhi' } });
 		await fireEvent.keyDown(input, { key: 'Enter' });
 		expect(onselect).toHaveBeenCalledWith(items[1]);
@@ -52,7 +52,7 @@ describe('CommandPalette', () => {
 	it('closes on Escape', async () => {
 		const onclose = vi.fn();
 		render(CommandPalette, { items, open: true, onclose, onselect: vi.fn() });
-		const input = screen.getByRole('textbox');
+		const input = screen.getByRole('combobox');
 		await fireEvent.keyDown(input, { key: 'Escape' });
 		expect(onclose).toHaveBeenCalledOnce();
 	});
@@ -61,7 +61,7 @@ describe('CommandPalette', () => {
 		const onselect = vi.fn();
 		const onclose = vi.fn();
 		render(CommandPalette, { items, open: true, onclose, onselect });
-		const input = screen.getByRole('textbox');
+		const input = screen.getByRole('combobox');
 		await fireEvent.keyDown(input, { key: 'ArrowDown' });
 		await fireEvent.keyDown(input, { key: 'Enter' });
 		expect(onselect).toHaveBeenCalledWith(items[1]);
@@ -72,7 +72,7 @@ describe('CommandPalette', () => {
 		const onselect = vi.fn();
 		const onclose = vi.fn();
 		render(CommandPalette, { items, open: true, onclose, onselect });
-		const input = screen.getByRole('textbox');
+		const input = screen.getByRole('combobox');
 
 		// Arrow down onto the 2nd unfiltered result (Rhino).
 		await fireEvent.keyDown(input, { key: 'ArrowDown' });
@@ -88,5 +88,38 @@ describe('CommandPalette', () => {
 		// at the stale highlight index.
 		expect(onselect).toHaveBeenCalledWith(items[0]);
 		expect(onclose).toHaveBeenCalledOnce();
+	});
+
+	it('exposes combobox semantics on the input', () => {
+		render(CommandPalette, { items, open: true, onclose: vi.fn(), onselect: vi.fn() });
+		const input = screen.getByRole('combobox');
+		expect(input).toHaveAttribute('aria-controls', 'palette-listbox');
+		expect(input).toHaveAttribute('aria-expanded', 'true');
+	});
+
+	it('tracks the highlighted option via aria-activedescendant', async () => {
+		render(CommandPalette, { items, open: true, onclose: vi.fn(), onselect: vi.fn() });
+		const input = screen.getByRole('combobox');
+		const options = screen.getAllByRole('option');
+
+		expect(input).toHaveAttribute('aria-activedescendant', 'palette-opt-0');
+		expect(options[0]).toHaveAttribute('id', 'palette-opt-0');
+
+		await fireEvent.keyDown(input, { key: 'ArrowDown' });
+		expect(input).toHaveAttribute('aria-activedescendant', 'palette-opt-1');
+		expect(options[1]).toHaveAttribute('id', 'palette-opt-1');
+	});
+
+	it('traps focus, wrapping Tab from the last option back to the input', async () => {
+		render(CommandPalette, { items, open: true, onclose: vi.fn(), onselect: vi.fn() });
+		const input = screen.getByRole('combobox');
+		const options = screen.getAllByRole('option');
+		const lastOption = options[options.length - 1] as HTMLElement;
+
+		lastOption.focus();
+		expect(document.activeElement).toBe(lastOption);
+
+		await fireEvent.keyDown(lastOption, { key: 'Tab', bubbles: true });
+		expect(document.activeElement).toBe(input);
 	});
 });

@@ -96,4 +96,21 @@ describe('SettingsDrawer', () => {
 		const closeBtn = document.querySelector('[data-close-settings]');
 		await waitFor(() => expect(document.activeElement).toBe(closeBtn));
 	});
+
+	it('traps focus, wrapping Tab from the last tabbable control back to the close button', async () => {
+		render(SettingsDrawer, {
+			dataset: seed,
+			tracker: createTracker(seed.warframes),
+			open: true,
+			onclose: vi.fn(),
+		});
+		const closeBtn = document.querySelector('[data-close-settings]') as HTMLElement;
+		const resetBtn = document.querySelector('[data-reset-tracking]') as HTMLElement;
+
+		resetBtn.focus();
+		expect(document.activeElement).toBe(resetBtn);
+
+		await fireEvent.keyDown(resetBtn, { key: 'Tab', bubbles: true });
+		expect(document.activeElement).toBe(closeBtn);
+	});
 });
