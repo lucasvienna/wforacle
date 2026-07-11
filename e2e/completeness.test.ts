@@ -61,9 +61,19 @@ test('special-region resource cards show signature resources', async ({ page }) 
 	const venus = page.locator('svg').getByText('VENUS');
 	await expect(venus).toBeVisible();
 
+	// The quest toggles now live in the settings drawer (Plan 7), not on the
+	// page body, so it must be opened first.
+	await page.locator('[data-open-settings]').click();
+	await expect(page.locator('[data-quest="theseconddream"]')).toBeVisible();
+
 	await page.locator('[data-quest="theseconddream"]').click();
 	await page.locator('[data-quest="thewarwithin"]').click();
 	await page.locator('[data-quest="angelsofthezariman"]').click();
+
+	// The drawer's full-screen backdrop (z-40) would intercept clicks on the
+	// chart behind it, so close the drawer before interacting with the SVG.
+	await page.keyboard.press('Escape');
+	await expect(page.getByRole('dialog')).toBeHidden();
 
 	// Lua
 	await page.locator('svg [data-region="lua"]').click();
