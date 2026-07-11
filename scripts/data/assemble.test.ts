@@ -47,10 +47,28 @@ const solNodes: SolNodes = {
 		enemy: 'Crossfire',
 		type: 'Extermination',
 	},
+	SolNode228: { value: 'Plains of Eidolon (Earth)', enemy: 'Grineer', type: 'Free Roam' },
+	SolNode129: { value: 'Orb Vallis (Venus)', enemy: 'Corpus', type: 'Free Roam' },
+	SolNode229: { value: 'Cambion Drift (Deimos)', enemy: 'Infested', type: 'Free Roam' },
 };
 
 describe('assembleDataset', () => {
-	const ds = assembleDataset(solNodes, warframes, rawResources);
+	const ow = (name: string): RawWarframe => ({
+		name,
+		uniqueName: `/Lotus/Powersuits/${name}/${name}`,
+		type: 'Warframe',
+		components: [
+			{ name: 'Blueprint', drops: [] },
+			{
+				name: 'Chassis',
+				drops: [{ location: 'Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation A', chance: 30 }],
+			},
+		],
+	});
+	const owWarframes = ['Gara', 'Revenant', 'Garuda', 'Hildryn', 'Xaku', 'Qorvex', 'Caliban'].map(
+		ow,
+	);
+	const ds = assembleDataset(solNodes, [...warframes, ...owWarframes], rawResources);
 	it('back-fills bossId/frameId on the assassination node', () => {
 		const fossa = ds.nodes.find((n) => n.id === 'SolNode104')!;
 		expect(fossa.bossId).toBe('fossa');
@@ -85,6 +103,25 @@ describe('assembleDataset', () => {
 	it('detects a quest revealing a nonexistent frame', () => {
 		const broken = structuredClone(ds);
 		broken.quests[0].revealsFrameIds = ['ghostframe'];
+		expect(validateDataset(broken).join(' ')).toMatch(/ghostframe/);
+	});
+	it('attaches the 8 open-world farms and builds their frames', () => {
+		expect(ds.openWorldFarms).toHaveLength(8);
+		for (const id of ['gara', 'xaku', 'caliban', 'qorvex']) {
+			expect(ds.warframes.some((f) => f.id === id)).toBe(true);
+		}
+	});
+	it('injects Albrecht’s Laboratories as a Free Roam node on Deimos', () => {
+		const n = ds.nodes.find((x) => x.id === 'CuratedAlbrechtLabs')!;
+		expect(n).toMatchObject({
+			regionId: 'deimos',
+			missionType: 'Free Roam',
+			isAssassination: false,
+		});
+	});
+	it('detects a dangling open-world farm frame', () => {
+		const broken = structuredClone(ds);
+		broken.openWorldFarms[0].frameId = 'ghostframe';
 		expect(validateDataset(broken).join(' ')).toMatch(/ghostframe/);
 	});
 });
