@@ -19,6 +19,13 @@
 		nightaspect: 'Night Aspect',
 	} as const;
 
+	// Equinox's dayaspect/nightaspect slots get a sun/moon glyph prefix in
+	// the part-row label — purely decorative, additive to SLOT_LABEL text.
+	const SLOT_ICON: Partial<Record<string, string>> = {
+		dayaspect: '☀',
+		nightaspect: '☾',
+	};
+
 	// Faction accent for the assassination tag. Extend as new factions appear.
 	const FACTION_TAG: Record<string, string> = {
 		Corpus: 'border-sky-500/40 bg-sky-500/10 text-sky-300',
@@ -54,7 +61,7 @@
 	}
 </script>
 
-<div class="grid gap-4 md:grid-cols-2">
+<div class="grid items-start gap-4 md:grid-cols-2">
 	<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
 		<h2 class="mb-4 text-lg font-semibold text-wf-gold">{region?.name}</h2>
 		{#if entries.length > 0}
@@ -108,6 +115,12 @@
 							</div>
 						</div>
 
+						{#if frame.parts.some((p) => p.slot === 'dayaspect' || p.slot === 'nightaspect')}
+							<p class="mb-2 text-xs text-wf-muted">
+								Assembled from its Day and Night aspects.
+							</p>
+						{/if}
+
 						<div class="space-y-1">
 							{#each frame.parts as part (part.id)}
 								{@const owned = tracker.isOwned(part.id)}
@@ -139,7 +152,10 @@
 											? 'text-emerald-300'
 											: 'text-slate-200'}"
 									>
-										{SLOT_LABEL[part.slot]}
+										{#if SLOT_ICON[part.slot]}<span
+												aria-hidden="true"
+												class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
+											>{/if}{SLOT_LABEL[part.slot]}
 									</span>
 									<span class="ml-auto text-xs text-wf-muted"
 										>{sourceLabel(part.slot, boss.name)}</span

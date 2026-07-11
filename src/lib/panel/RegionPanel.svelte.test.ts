@@ -274,6 +274,20 @@ describe('RegionPanel', () => {
 		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
 		expect(document.querySelector('[data-part="equinox:dayaspect"]')).toBeInTheDocument();
 	});
+	it('prefixes Equinox aspect labels with sun/moon glyphs', () => {
+		const tracker = createTracker(equinoxRegion.warframes);
+		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
+		expect(screen.getByText('☀')).toBeInTheDocument();
+		expect(screen.getByText('☾')).toBeInTheDocument();
+		expect(document.querySelector('[data-part="equinox:dayaspect"]')).toBeInTheDocument();
+		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
+		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
+	});
+	it('lays out the frame/resources grid with items-start (no forced equal-height stretch)', () => {
+		const tracker = createTracker(seed.warframes);
+		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+		expect(document.querySelector('.grid.items-start')).toBeInTheDocument();
+	});
 	it('shows a "key" hint for bosses that require crafting a key (Mutalist Alad V)', () => {
 		const tracker = createTracker(mesaKeyRegion.warframes);
 		render(RegionPanel, { dataset: mesaKeyRegion, regionId: 'eris', tracker });
