@@ -314,7 +314,7 @@ describe('RegionPanel — open world', () => {
 		const tracker = createTracker(openWorld.warframes);
 		render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
 		const row = document.querySelector('[data-part="caliban:chassis"]') as HTMLElement;
-		await row.click();
+		row.click();
 		expect(tracker.isOwned('caliban:chassis')).toBe(true);
 	});
 
@@ -394,7 +394,7 @@ describe('RegionPanel', () => {
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
 		const row = screen.getByText('Chassis').closest('[data-part]') as HTMLElement;
 		expect(row.getAttribute('data-owned')).toBe('false');
-		await row.click();
+		row.click();
 		expect(tracker.isOwned('rhino:chassis')).toBe(true);
 	});
 	it('shows an empty state for a region with no assassination frame', () => {

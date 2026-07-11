@@ -25,7 +25,7 @@ export function createWorldStateStore() {
 	}
 
 	if (browser) {
-		refresh();
+		void refresh();
 		pollTimer = setInterval(refresh, 60_000);
 		tickTimer = setInterval(() => {
 			now = Date.now();

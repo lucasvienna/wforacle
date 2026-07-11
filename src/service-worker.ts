@@ -1,4 +1,7 @@
 /// <reference types="@sveltejs/kit" />
+/// <reference no-default-lib="true" />
+/// <reference lib="esnext" />
+/// <reference lib="webworker" />
 import { build, files, version } from '$service-worker';
 
 const CACHE = `wforacle-${version}`;
@@ -44,10 +47,12 @@ sw.addEventListener('fetch', (e) => {
 					.then((res) => {
 						// Only cache successful responses — a transient non-2xx must
 						// not overwrite a good cached dataset and get served forever.
-						if (res.ok) cache.put(req, res.clone());
+						if (res.ok) void cache.put(req, res.clone());
 						return res;
 					})
-					.catch(() => cached);
+					// Offline with no cached copy yet: surface a network error rather
+					// than `undefined` (which respondWith rejects).
+					.catch(() => cached ?? Response.error());
 				// Keep the worker alive until the background revalidation settles;
 				// once respondWith resolves from cache the browser is free to kill
 				// the SW, which would drop the cache write. The `.catch` prevents
@@ -66,7 +71,7 @@ sw.addEventListener('fetch', (e) => {
 			caches.open(CACHE).then(async (cache) => {
 				try {
 					const res = await fetch(req);
-					if (res.ok) cache.put(req, res.clone());
+					if (res.ok) void cache.put(req, res.clone());
 					return res;
 				} catch {
 					return (await cache.match(req)) ?? Response.error();
@@ -84,7 +89,7 @@ sw.addEventListener('fetch', (e) => {
 			const cached = await cache.match(req);
 			if (cached) return cached;
 			const res = await fetch(req);
-			if (res.ok) cache.put(req, res.clone());
+			if (res.ok) void cache.put(req, res.clone());
 			return res;
 		}),
 	);
