@@ -7,10 +7,12 @@ import {
 	buildRegions,
 	buildNodes,
 	buildFrames,
+	buildOpenWorldFrames,
 	resolveDropLocation,
 	type SolNodes,
 	type RawWarframe,
 } from './build';
+import type { OpenWorldFarm } from '../../src/lib/model/types';
 import { KEY_BOSS_SOLNODES } from './curated';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -408,5 +410,97 @@ describe('bestBountyStage', () => {
 		expect(
 			bestBountyStage([{ location: 'Earth/Cetus (Level 15 - 25 Plague Star)', chance: 5 }]),
 		).toBeNull();
+	});
+});
+
+describe('buildOpenWorldFrames', () => {
+	const gara: RawWarframe = {
+		name: 'Gara',
+		uniqueName: '/Lotus/Powersuits/Gara/Gara',
+		type: 'Warframe',
+		imageName: 'gara.png',
+		components: [
+			{ name: 'Blueprint', drops: [] },
+			{
+				name: 'Chassis',
+				drops: [{ location: 'Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation A', chance: 45.45 }],
+			},
+			{
+				name: 'Neuroptics',
+				drops: [{ location: 'Earth/Cetus (Level 20 - 40 Cetus Bounty), Rotation C', chance: 46.7 }],
+			},
+			{
+				name: 'Systems',
+				drops: [{ location: 'Earth/Cetus (Level 10 - 30 Cetus Bounty), Rotation A', chance: 44.8 }],
+			},
+		],
+	};
+	const caliban: RawWarframe = {
+		name: 'Caliban',
+		uniqueName: '/Lotus/Powersuits/Caliban/Caliban',
+		type: 'Warframe',
+		components: [
+			{ name: 'Blueprint', drops: [] },
+			{
+				name: 'Chassis',
+				drops: [
+					{ location: 'Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B', chance: 21.1 },
+					{
+						location: 'Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B',
+						chance: 21.1,
+					},
+				],
+			},
+		],
+	};
+	const farms: OpenWorldFarm[] = [
+		{
+			frameId: 'gara',
+			nodeId: 'SolNode228',
+			regionId: 'earth',
+			componentSource: 'Cetus Bounty',
+			bpSource: "Complete Saya's Vigil",
+		},
+		{
+			frameId: 'caliban',
+			nodeId: 'SolNode228',
+			regionId: 'earth',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
+		{
+			frameId: 'caliban',
+			nodeId: 'SolNode129',
+			regionId: 'venus',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
+	];
+
+	it('builds one frame per farmed id, linked to its primary (first) node', () => {
+		const frames = buildOpenWorldFrames([gara, caliban], farms);
+		expect(frames.map((f) => f.id).sort()).toEqual(['caliban', 'gara']);
+		expect(frames.find((f) => f.id === 'caliban')!.nodeId).toBe('SolNode228');
+		expect(frames.find((f) => f.id === 'gara')!.image).toBe('gara.png');
+	});
+
+	it('sets chance/tier/rotation on component parts and nothing on the bp part', () => {
+		const gaEntry = buildOpenWorldFrames([gara], farms).find((f) => f.id === 'gara')!;
+		const chassis = gaEntry.parts.find((p) => p.slot === 'chassis')!;
+		expect(chassis).toMatchObject({
+			dropSourceNodeId: 'SolNode228',
+			bountyTier: 'L5–15',
+			rotation: 'A',
+		});
+		expect(chassis.chance).toBeCloseTo(45.45, 1);
+		const bp = gaEntry.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.chance).toBeUndefined();
+		expect(bp.bountyTier).toBeUndefined();
+		expect(bp.dropSourceNodeId).toBeUndefined();
+	});
+
+	it('does not double-count a part that drops in two zones (Caliban)', () => {
+		const cal = buildOpenWorldFrames([caliban], farms).find((f) => f.id === 'caliban')!;
+		expect(cal.parts.find((p) => p.slot === 'chassis')!.chance).toBeCloseTo(21.1, 1);
 	});
 });

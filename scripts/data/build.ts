@@ -5,6 +5,7 @@ import type {
 	Boss,
 	Slot,
 	WarframePart,
+	OpenWorldFarm,
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
 import { PLANETS, BOSS_BY_NODE, KEY_BOSS_DROP_LOCATIONS } from './curated';
@@ -100,6 +101,8 @@ const SLOT_BY_COMPONENT: Record<string, Slot> = {
 	'Night Aspect': 'nightaspect',
 };
 
+const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems', 'dayaspect', 'nightaspect'];
+
 export interface BountyStage {
 	chance: number;
 	bountyTier?: string;
@@ -193,7 +196,6 @@ export function buildFrames(
 			const slot = SLOT_BY_COMPONENT[c.name];
 			if (slot) present.add(slot);
 		}
-		const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems', 'dayaspect', 'nightaspect'];
 		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => ({
 			id: partId(frameId, slot),
 			frameId,
@@ -213,4 +215,41 @@ export function buildFrames(
 		}
 	}
 	return { frames, bosses: [...bossByNode.values()] };
+}
+
+export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldFarm[]): Warframe[] {
+	const byId = new Map(warframes.map((w) => [slugify(w.name), w]));
+	// Primary node = the first farm listed for each frame (drives Warframe.nodeId
+	// and the command palette's region for the frame).
+	const primaryNode = new Map<string, string>();
+	for (const f of farms) if (!primaryNode.has(f.frameId)) primaryNode.set(f.frameId, f.nodeId);
+
+	const frames: Warframe[] = [];
+	for (const [frameId, nodeId] of primaryNode) {
+		const wf = byId.get(frameId);
+		if (!wf?.components) continue;
+		const present = new Set<Slot>(['bp']);
+		const stageBySlot = new Map<Slot, BountyStage | null>();
+		for (const c of wf.components) {
+			const slot = SLOT_BY_COMPONENT[c.name];
+			if (!slot) continue;
+			present.add(slot);
+			if (slot !== 'bp') stageBySlot.set(slot, bestBountyStage(c.drops ?? []));
+		}
+		const parts: WarframePart[] = ORDER.filter((s) => present.has(s)).map((slot) => {
+			if (slot === 'bp') return { id: partId(frameId, slot), frameId, slot };
+			const stage = stageBySlot.get(slot);
+			return {
+				id: partId(frameId, slot),
+				frameId,
+				slot,
+				dropSourceNodeId: nodeId,
+				chance: stage?.chance,
+				bountyTier: stage?.bountyTier,
+				rotation: stage?.rotation,
+			};
+		});
+		frames.push({ id: frameId, name: wf.name, nodeId, image: wf.imageName, parts });
+	}
+	return frames;
 }
