@@ -126,6 +126,10 @@ export function bestBountyStage(
 	//    records the rotations achieving that max.
 	type Group = { tier?: string; lo: number; chance: number; rots: string[] };
 	const groups = new Map<string, Group>();
+	// NB: rotation-collapse compares summed chances with strict equality. This
+	// holds because @wfcd/items lists identical per-item chances across a stage's
+	// A/B/C rotations; if upstream ever emitted last-digit-different sums, the
+	// "any" collapse would degrade to "A/B/C" rather than misbehave.
 	for (const [loc, chance] of byLoc) {
 		const zone = loc.split('(')[0].trim();
 		const lvl = loc.match(/Level\s*(\d+)\s*-\s*(\d+)/);

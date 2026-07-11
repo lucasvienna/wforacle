@@ -316,6 +316,67 @@ describe('RegionPanel — open world', () => {
 		await row.click();
 		expect(tracker.isOwned('caliban:chassis')).toBe(true);
 	});
+
+	it('renders "any rot" when a component drops on all rotations equally', () => {
+		const anyRot: Dataset = {
+			regions: [
+				{
+					id: 'earth',
+					name: 'Earth',
+					kind: 'planet',
+					progressionOrder: 1,
+					factions: ['Grineer'],
+					nodeIds: ['plains'],
+					spoilerGated: false,
+					resourceIds: [],
+				},
+			],
+			nodes: [
+				{
+					id: 'plains',
+					regionId: 'earth',
+					name: 'Plains of Eidolon',
+					missionType: 'Free Roam',
+					faction: 'Grineer',
+					isAssassination: false,
+				},
+			],
+			bosses: [],
+			warframes: [
+				{
+					id: 'gara',
+					name: 'Gara',
+					nodeId: 'plains',
+					parts: [
+						{ id: 'gara:bp', frameId: 'gara', slot: 'bp' },
+						{
+							id: 'gara:chassis',
+							frameId: 'gara',
+							slot: 'chassis',
+							dropSourceNodeId: 'plains',
+							chance: 45,
+							bountyTier: 'L5–15',
+							rotation: 'any',
+						},
+					],
+				},
+			],
+			resources: [],
+			quests: [],
+			openWorldFarms: [
+				{
+					frameId: 'gara',
+					nodeId: 'plains',
+					regionId: 'earth',
+					componentSource: 'Cetus Bounty',
+					bpSource: "Complete Saya's Vigil",
+				},
+			],
+		};
+		const tracker = createTracker(anyRot.warframes);
+		render(RegionPanel, { dataset: anyRot, regionId: 'earth', tracker });
+		expect(screen.getByText(/Cetus Bounty · L5–15 · any rot · ~45%/)).toBeInTheDocument();
+	});
 });
 
 describe('RegionPanel', () => {
