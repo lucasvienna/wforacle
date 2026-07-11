@@ -94,6 +94,21 @@ async function main() {
 		console.error(`Sanity check failed (expected >=27 resources, got ${data.resources.length})`);
 		process.exit(1);
 	}
+	// Open-world frames floor: the 7 curated bounty frames must be built and all
+	// 8 farms attached (Gara/Revenant/Caliban on Plains, Garuda/Hildryn/Caliban
+	// on Orb Vallis, Xaku on Cambion Drift, Qorvex on Albrecht's Laboratories).
+	if (data.openWorldFarms.length < 8) {
+		console.error(
+			`Sanity check failed (expected >=8 open-world farms, got ${data.openWorldFarms.length})`,
+		);
+		process.exit(1);
+	}
+	for (const id of ['gara', 'xaku', 'caliban', 'qorvex']) {
+		if (!data.warframes.some((f) => f.id === id)) {
+			console.error(`Sanity check failed: open-world frame ${id} not built`);
+			process.exit(1);
+		}
+	}
 	mkdirSync('static/data', { recursive: true });
 	writeFileSync(
 		OUT,
