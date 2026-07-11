@@ -98,6 +98,7 @@
 				type="text"
 				role="combobox"
 				aria-expanded="true"
+				aria-autocomplete="list"
 				aria-controls="palette-listbox"
 				aria-activedescendant={results.length
 					? `palette-opt-${clampedHighlight}`

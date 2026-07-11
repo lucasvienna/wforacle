@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
+import { tick } from 'svelte';
 import CommandPalette from './CommandPalette.svelte';
 import type { PaletteItem } from './search';
 
@@ -112,6 +113,7 @@ describe('CommandPalette', () => {
 
 	it('traps focus, wrapping Tab from the last option back to the input', async () => {
 		render(CommandPalette, { items, open: true, onclose: vi.fn(), onselect: vi.fn() });
+		await tick(); // let the open-effect's deferred autofocus settle first
 		const input = screen.getByRole('combobox');
 		const options = screen.getAllByRole('option');
 		const lastOption = options[options.length - 1] as HTMLElement;
@@ -121,5 +123,24 @@ describe('CommandPalette', () => {
 
 		await fireEvent.keyDown(lastOption, { key: 'Tab', bubbles: true });
 		expect(document.activeElement).toBe(input);
+	});
+
+	it('traps focus, wrapping Shift+Tab from the input back to the last option', async () => {
+		render(CommandPalette, { items, open: true, onclose: vi.fn(), onselect: vi.fn() });
+		await tick(); // let the open-effect's deferred autofocus settle first
+		const input = screen.getByRole('combobox');
+		const options = screen.getAllByRole('option');
+		const lastOption = options[options.length - 1] as HTMLElement;
+
+		input.focus();
+		expect(document.activeElement).toBe(input);
+
+		await fireEvent.keyDown(input, { key: 'Tab', shiftKey: true, bubbles: true });
+		expect(document.activeElement).toBe(lastOption);
+	});
+
+	it('exposes combobox autocomplete semantics on the input', () => {
+		render(CommandPalette, { items, open: true, onclose: vi.fn(), onselect: vi.fn() });
+		expect(screen.getByRole('combobox')).toHaveAttribute('aria-autocomplete', 'list');
 	});
 });
