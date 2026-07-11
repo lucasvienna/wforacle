@@ -88,13 +88,20 @@ describe('home page', () => {
 
 		// Deimos is spoiler-gated behind the Heart of Deimos quest — hidden by default.
 		expect(screen.queryByText('DEIMOS')).toBeNull();
-		// The Quests panel renders the quest for the player to toggle.
-		expect(screen.getByText('Heart of Deimos')).toBeInTheDocument();
+		// The Quests panel now lives inside the Settings drawer, which is closed
+		// by default — so the quest row isn't in the document yet.
+		expect(screen.queryByText('Heart of Deimos')).toBeNull();
+
+		// Opening the settings drawer reveals the Quests panel.
+		const settingsBtn = document.querySelector('[data-open-settings]') as HTMLElement;
+		expect(settingsBtn).not.toBeNull();
+		await fireEvent.click(settingsBtn);
+		expect(screen.getAllByRole('dialog').length).toBeGreaterThan(0);
+		const questRow = document.querySelector('[data-quest="heartofdeimos"]');
+		expect(questRow).not.toBeNull();
 
 		// Toggling the quest reveals Deimos on the chart via the reactive
 		// revealedRegions() derivation.
-		const questRow = document.querySelector('[data-quest="heartofdeimos"]');
-		expect(questRow).not.toBeNull();
 		(questRow as HTMLElement).click();
 		await waitFor(() => expect(screen.getByText('DEIMOS')).toBeInTheDocument());
 	});

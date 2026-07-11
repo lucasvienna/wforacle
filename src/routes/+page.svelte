@@ -7,7 +7,7 @@
 	import type { Dataset } from '$lib/model/types';
 	import StarChart from '$lib/starchart/StarChart.svelte';
 	import RegionPanel from '$lib/panel/RegionPanel.svelte';
-	import QuestsPanel from '$lib/panel/QuestsPanel.svelte';
+	import SettingsDrawer from '$lib/panel/SettingsDrawer.svelte';
 	import { createTracker, type Tracker } from '$lib/tracker/tracker.svelte';
 	import {
 		loadOwned,
@@ -23,6 +23,7 @@
 	let tracker = $state<Tracker | null>(null);
 	let selectedId = $state('venus');
 	let paletteOpen = $state(false);
+	let settingsOpen = $state(false);
 	let ready = false;
 
 	onMount(async () => {
@@ -100,21 +101,60 @@
 		<span class="text-lg font-bold text-wf-gold"
 			>wf<span class="text-wf-cyan">oracle</span></span
 		>
-		<button
-			type="button"
-			data-open-palette
-			onclick={() => (paletteOpen = true)}
-			class="rounded border border-wf-edge px-1.5 py-0.5 text-xs text-wf-muted hover:text-wf-cyan"
-		>
-			Ctrl K
-		</button>
-		{#if tracker}
-			<span class="ml-auto text-sm text-wf-muted">
-				Node Frames <b class="text-slate-100"
-					>{tracker.total.owned} / {tracker.total.total}</b
+		<div class="ml-auto flex items-center gap-2 sm:gap-3">
+			<button
+				type="button"
+				data-open-palette
+				onclick={() => (paletteOpen = true)}
+				class="flex items-center gap-2 rounded-lg border border-wf-edge bg-wf-panel px-3 py-1.5 text-sm text-wf-muted hover:text-wf-cyan"
+			>
+				<span aria-hidden="true">🔍</span>
+				Search
+				<kbd
+					class="rounded border border-wf-edge px-1 text-[10px] text-wf-muted"
+					>Ctrl K</kbd
 				>
-			</span>
-		{/if}
+			</button>
+			{#if tracker}
+				<div
+					class="flex items-center gap-2 rounded-lg border border-wf-edge bg-wf-panel px-3 py-1.5 text-xs text-wf-muted"
+					title="Node frames owned"
+				>
+					<span
+						>Frames <b class="text-wf-gold"
+							>{tracker.total.owned}/{tracker.total.total}</b
+						></span
+					>
+					<span
+						class="relative h-1.5 w-16 overflow-hidden rounded-full bg-wf-edge"
+					>
+						<span
+							class="absolute inset-y-0 left-0 rounded-full bg-wf-cyan"
+							style="width: {tracker.total.total
+								? (tracker.total.owned / tracker.total.total) * 100
+								: 0}%"
+						></span>
+					</span>
+				</div>
+			{/if}
+			{#if data && tracker}
+				<button
+					type="button"
+					data-open-settings
+					aria-label="Settings"
+					onclick={() => (settingsOpen = true)}
+					class="relative rounded-lg border border-wf-edge bg-wf-panel px-2.5 py-1.5 text-wf-muted hover:text-wf-cyan"
+				>
+					<span aria-hidden="true">⚙</span>
+					{#if data.quests.some((q) => !tracker.isQuestDone(q.id))}
+						<span
+							aria-hidden="true"
+							class="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-wf-gold"
+						></span>
+					{/if}
+				</button>
+			{/if}
+		</div>
 	</header>
 
 	{#if data && tracker}
@@ -128,9 +168,6 @@
 			/>
 		</div>
 		<RegionPanel dataset={data} regionId={selectedId} {tracker} />
-		{#if data.quests.length}
-			<div class="mt-4"><QuestsPanel dataset={data} {tracker} /></div>
-		{/if}
 	{:else}
 		<div class="flex h-96 items-center justify-center text-slate-500">
 			Loading Star Chart…
@@ -148,4 +185,12 @@
 		onclose={() => (paletteOpen = false)}
 		onselect={handlePick}
 	/>
+	{#if data && tracker}
+		<SettingsDrawer
+			dataset={data}
+			{tracker}
+			open={settingsOpen}
+			onclose={() => (settingsOpen = false)}
+		/>
+	{/if}
 </div>
