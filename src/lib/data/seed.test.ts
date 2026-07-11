@@ -21,4 +21,8 @@ describe('seed dataset', () => {
 			expect(new Set(w.parts.map((p) => p.id)).size).toBe(4);
 		}
 	});
+	it('carries an openWorldFarms array (empty in the seed)', () => {
+		expect(Array.isArray(seed.openWorldFarms)).toBe(true);
+		expect(seed.openWorldFarms).toHaveLength(0);
+	});
 });

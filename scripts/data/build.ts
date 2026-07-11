@@ -5,6 +5,7 @@ import type {
 	Boss,
 	Slot,
 	WarframePart,
+	OpenWorldFarm,
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
 import { PLANETS, BOSS_BY_NODE, KEY_BOSS_DROP_LOCATIONS } from './curated';
@@ -100,6 +101,67 @@ const SLOT_BY_COMPONENT: Record<string, Slot> = {
 	'Night Aspect': 'nightaspect',
 };
 
+const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems', 'dayaspect', 'nightaspect'];
+
+export interface BountyStage {
+	chance: number;
+	bountyTier?: string;
+	rotation?: string;
+}
+
+/** Pick the single best bounty stage (tier + rotation) a component drops at.
+ * See the plan's Task 2 for the full selection rule. */
+export function bestBountyStage(
+	drops: { location: string; chance?: number }[],
+): BountyStage | null {
+	const eligible = drops.filter((d) => d.location && !/Plague Star/i.test(d.location));
+	if (!eligible.length) return null;
+
+	// 1. Sum chances per exact location string (collapses a stage's sub-rewards;
+	//    keeps different zones/tiers/rotations separate).
+	const byLoc = new Map<string, number>();
+	for (const d of eligible) byLoc.set(d.location, (byLoc.get(d.location) ?? 0) + (d.chance ?? 0));
+
+	// 2. Group by (zone, tier); a group's chance is its best rotation, and it
+	//    records the rotations achieving that max.
+	type Group = { tier?: string; lo: number; chance: number; rots: string[] };
+	const groups = new Map<string, Group>();
+	// NB: rotation-collapse compares summed chances with strict equality. This
+	// holds because @wfcd/items lists identical per-item chances across a stage's
+	// A/B/C rotations; if upstream ever emitted last-digit-different sums, the
+	// "any" collapse would degrade to "A/B/C" rather than misbehave.
+	for (const [loc, chance] of byLoc) {
+		const zone = loc.split('(')[0].trim();
+		const lvl = loc.match(/Level\s*(\d+)\s*-\s*(\d+)/);
+		const tier = lvl ? `L${lvl[1]}–${lvl[2]}` : undefined;
+		const lo = lvl ? Number(lvl[1]) : 0;
+		const rotM = loc.match(/Rotation ([A-C])/);
+		const rot = rotM ? rotM[1] : undefined;
+		const key = `${zone}|${tier ?? ''}`;
+		const g = groups.get(key);
+		if (!g) {
+			groups.set(key, { tier, lo, chance, rots: rot ? [rot] : [] });
+		} else if (chance > g.chance) {
+			g.chance = chance;
+			g.rots = rot ? [rot] : [];
+		} else if (chance === g.chance && rot) {
+			g.rots.push(rot);
+		}
+	}
+
+	// 3. Winner: highest chance, tie → lowest tier level.
+	let best: Group | null = null;
+	for (const g of groups.values()) {
+		if (!best || g.chance > best.chance || (g.chance === best.chance && g.lo < best.lo)) best = g;
+	}
+	if (!best) return null;
+
+	// 4. Rotation label: all three → "any"; none → undefined; else sorted join.
+	const rots = [...new Set(best.rots)].sort();
+	const rotation = rots.length === 0 ? undefined : rots.length === 3 ? 'any' : rots.join('/');
+	return { chance: best.chance, bountyTier: best.tier, rotation };
+}
+
 export function buildFrames(
 	warframes: RawWarframe[],
 	nodes: StarNode[],
@@ -138,7 +200,6 @@ export function buildFrames(
 			const slot = SLOT_BY_COMPONENT[c.name];
 			if (slot) present.add(slot);
 		}
-		const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems', 'dayaspect', 'nightaspect'];
 		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => ({
 			id: partId(frameId, slot),
 			frameId,
@@ -158,4 +219,41 @@ export function buildFrames(
 		}
 	}
 	return { frames, bosses: [...bossByNode.values()] };
+}
+
+export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldFarm[]): Warframe[] {
+	const byId = new Map(warframes.map((w) => [slugify(w.name), w]));
+	// Primary node = the first farm listed for each frame (drives Warframe.nodeId
+	// and the command palette's region for the frame).
+	const primaryNode = new Map<string, string>();
+	for (const f of farms) if (!primaryNode.has(f.frameId)) primaryNode.set(f.frameId, f.nodeId);
+
+	const frames: Warframe[] = [];
+	for (const [frameId, nodeId] of primaryNode) {
+		const wf = byId.get(frameId);
+		if (!wf?.components) continue;
+		const present = new Set<Slot>(['bp']);
+		const stageBySlot = new Map<Slot, BountyStage | null>();
+		for (const c of wf.components) {
+			const slot = SLOT_BY_COMPONENT[c.name];
+			if (!slot) continue;
+			present.add(slot);
+			if (slot !== 'bp') stageBySlot.set(slot, bestBountyStage(c.drops ?? []));
+		}
+		const parts: WarframePart[] = ORDER.filter((s) => present.has(s)).map((slot) => {
+			if (slot === 'bp') return { id: partId(frameId, slot), frameId, slot };
+			const stage = stageBySlot.get(slot);
+			return {
+				id: partId(frameId, slot),
+				frameId,
+				slot,
+				dropSourceNodeId: nodeId,
+				chance: stage?.chance,
+				bountyTier: stage?.bountyTier,
+				rotation: stage?.rotation,
+			};
+		});
+		frames.push({ id: frameId, name: wf.name, nodeId, image: wf.imageName, parts });
+	}
+	return frames;
 }

@@ -3,13 +3,16 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import {
+	bestBountyStage,
 	buildRegions,
 	buildNodes,
 	buildFrames,
+	buildOpenWorldFrames,
 	resolveDropLocation,
 	type SolNodes,
 	type RawWarframe,
 } from './build';
+import type { OpenWorldFarm } from '../../src/lib/model/types';
 import { KEY_BOSS_SOLNODES } from './curated';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -319,5 +322,185 @@ describe('resolveDropLocation', () => {
 	});
 	it('returns null for a bogus string', () => {
 		expect(resolveDropLocation('nonsense')).toBeNull();
+	});
+});
+
+describe('bestBountyStage', () => {
+	// Gara Chassis shape: L5–15, three sub-rewards per rotation, A/B/C equal.
+	const garaChassis = ['A', 'B', 'C'].flatMap((rot) =>
+		[30.56, 7.37, 7.52].map((chance) => ({
+			location: `Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation ${rot}`,
+			chance,
+		})),
+	);
+	it('sums sub-rewards per stage and collapses equal A/B/C to "any"', () => {
+		const s = bestBountyStage(garaChassis)!;
+		expect(s.bountyTier).toBe('L5–15');
+		expect(s.rotation).toBe('any');
+		expect(s.chance).toBeCloseTo(45.45, 1);
+	});
+
+	it('picks the single best rotation when rotations differ', () => {
+		const drops = [
+			{ location: 'Earth/Cetus (Level 20 - 40 Cetus Bounty), Rotation A', chance: 42.5 },
+			{ location: 'Earth/Cetus (Level 20 - 40 Cetus Bounty), Rotation B', chance: 41.9 },
+			{ location: 'Earth/Cetus (Level 20 - 40 Cetus Bounty), Rotation C', chance: 46.7 },
+		];
+		const s = bestBountyStage(drops)!;
+		expect(s.rotation).toBe('C');
+		expect(s.bountyTier).toBe('L20–40');
+		expect(s.chance).toBeCloseTo(46.7, 1);
+	});
+
+	it('breaks a tie toward the lower tier', () => {
+		const drops = [
+			{
+				location: 'Deimos/Cambion Drift (Level 100 - 100 Cambion Drift Bounty), Rotation A',
+				chance: 28.3,
+			},
+			{
+				location: 'Deimos/Cambion Drift (Level 40 - 60 Cambion Drift Bounty), Rotation A',
+				chance: 28.3,
+			},
+		];
+		const s = bestBountyStage(drops)!;
+		expect(s.bountyTier).toBe('L40–60');
+		expect(s.rotation).toBe('A');
+	});
+
+	it('joins partial tied rotations (A/B, no C)', () => {
+		const drops = [
+			{
+				location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation A',
+				chance: 26,
+			},
+			{
+				location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation B',
+				chance: 26,
+			},
+		];
+		expect(bestBountyStage(drops)!.rotation).toBe('A/B');
+	});
+
+	it('does not merge identical tiers across different zones (Caliban)', () => {
+		const drops = [
+			{ location: 'Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B', chance: 21.1 },
+			{ location: 'Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B', chance: 21.1 },
+		];
+		expect(bestBountyStage(drops)!.chance).toBeCloseTo(21.1, 1);
+	});
+
+	it('returns chance only (no tier/rotation) for a non-bounty source', () => {
+		const s = bestBountyStage([{ location: 'Exploiter Orb', chance: 38.72 }])!;
+		expect(s.chance).toBeCloseTo(38.72, 2);
+		expect(s.bountyTier).toBeUndefined();
+		expect(s.rotation).toBeUndefined();
+	});
+
+	it('ignores Plague Star event drops in favour of the recurring bounty', () => {
+		const drops = [
+			{ location: 'Earth/Cetus (Level 15 - 25 Plague Star), Rotation A', chance: 40.3 },
+			{ location: 'Earth/Cetus (Level 30 - 50 Cetus Bounty), Rotation A', chance: 39.4 },
+		];
+		expect(bestBountyStage(drops)!.bountyTier).toBe('L30–50');
+	});
+
+	it('returns null when there are no eligible drops', () => {
+		expect(bestBountyStage([])).toBeNull();
+		expect(
+			bestBountyStage([{ location: 'Earth/Cetus (Level 15 - 25 Plague Star)', chance: 5 }]),
+		).toBeNull();
+	});
+});
+
+describe('buildOpenWorldFrames', () => {
+	const gara: RawWarframe = {
+		name: 'Gara',
+		uniqueName: '/Lotus/Powersuits/Gara/Gara',
+		type: 'Warframe',
+		imageName: 'gara.png',
+		components: [
+			{ name: 'Blueprint', drops: [] },
+			{
+				name: 'Chassis',
+				drops: [{ location: 'Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation A', chance: 45.45 }],
+			},
+			{
+				name: 'Neuroptics',
+				drops: [{ location: 'Earth/Cetus (Level 20 - 40 Cetus Bounty), Rotation C', chance: 46.7 }],
+			},
+			{
+				name: 'Systems',
+				drops: [{ location: 'Earth/Cetus (Level 10 - 30 Cetus Bounty), Rotation A', chance: 44.8 }],
+			},
+		],
+	};
+	const caliban: RawWarframe = {
+		name: 'Caliban',
+		uniqueName: '/Lotus/Powersuits/Caliban/Caliban',
+		type: 'Warframe',
+		components: [
+			{ name: 'Blueprint', drops: [] },
+			{
+				name: 'Chassis',
+				drops: [
+					{ location: 'Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B', chance: 21.1 },
+					{
+						location: 'Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B',
+						chance: 21.1,
+					},
+				],
+			},
+		],
+	};
+	const farms: OpenWorldFarm[] = [
+		{
+			frameId: 'gara',
+			nodeId: 'SolNode228',
+			regionId: 'earth',
+			componentSource: 'Cetus Bounty',
+			bpSource: "Complete Saya's Vigil",
+		},
+		{
+			frameId: 'caliban',
+			nodeId: 'SolNode228',
+			regionId: 'earth',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
+		{
+			frameId: 'caliban',
+			nodeId: 'SolNode129',
+			regionId: 'venus',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
+	];
+
+	it('builds one frame per farmed id, linked to its primary (first) node', () => {
+		const frames = buildOpenWorldFrames([gara, caliban], farms);
+		expect(frames.map((f) => f.id).sort()).toEqual(['caliban', 'gara']);
+		expect(frames.find((f) => f.id === 'caliban')!.nodeId).toBe('SolNode228');
+		expect(frames.find((f) => f.id === 'gara')!.image).toBe('gara.png');
+	});
+
+	it('sets chance/tier/rotation on component parts and nothing on the bp part', () => {
+		const gaEntry = buildOpenWorldFrames([gara], farms).find((f) => f.id === 'gara')!;
+		const chassis = gaEntry.parts.find((p) => p.slot === 'chassis')!;
+		expect(chassis).toMatchObject({
+			dropSourceNodeId: 'SolNode228',
+			bountyTier: 'L5–15',
+			rotation: 'A',
+		});
+		expect(chassis.chance).toBeCloseTo(45.45, 1);
+		const bp = gaEntry.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.chance).toBeUndefined();
+		expect(bp.bountyTier).toBeUndefined();
+		expect(bp.dropSourceNodeId).toBeUndefined();
+	});
+
+	it('does not double-count a part that drops in two zones (Caliban)', () => {
+		const cal = buildOpenWorldFrames([caliban], farms).find((f) => f.id === 'caliban')!;
+		expect(cal.parts.find((p) => p.slot === 'chassis')!.chance).toBeCloseTo(21.1, 1);
 	});
 });

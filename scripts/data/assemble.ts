@@ -1,8 +1,16 @@
 import type { Dataset, Resource } from '../../src/lib/model/types';
-import { buildRegions, buildNodes, buildFrames, type SolNodes, type RawWarframe } from './build';
+import {
+	buildRegions,
+	buildNodes,
+	buildFrames,
+	buildOpenWorldFrames,
+	type SolNodes,
+	type RawWarframe,
+} from './build';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
 import { PLANETS, KEY_BOSS_SOLNODES } from './curated';
 import { QUESTS, SPECIAL_REGIONS } from './special';
+import { OPEN_WORLD_SOLNODES, OPEN_WORLD_FARMS } from './openworld';
 import { slugify } from './parse';
 
 export type RawResource = { name: string; imageName?: string };
@@ -57,7 +65,7 @@ export function assembleDataset(
 	// solNodes data, so buildFrames has nothing to link Mesa/Atlas to without
 	// them. Merged here — not inside buildNodes/buildRegions — so those stay
 	// pure functions of their input for fixture-based unit tests.
-	const allSolNodes = { ...solNodes, ...KEY_BOSS_SOLNODES };
+	const allSolNodes = { ...solNodes, ...KEY_BOSS_SOLNODES, ...OPEN_WORLD_SOLNODES };
 	const regions = buildRegions(allSolNodes);
 	const nodes = buildNodes(allSolNodes);
 	const { frames, bosses } = buildFrames(warframes, nodes);
@@ -69,7 +77,16 @@ export function assembleDataset(
 		n.frameId = frameByNode.get(n.id)?.id;
 	}
 	const resources = buildResources(rawResources);
-	return { regions, nodes, bosses, warframes: frames, resources, quests: QUESTS };
+	const openWorldFrames = buildOpenWorldFrames(warframes, OPEN_WORLD_FARMS);
+	return {
+		regions,
+		nodes,
+		bosses,
+		warframes: [...frames, ...openWorldFrames],
+		resources,
+		quests: QUESTS,
+		openWorldFarms: OPEN_WORLD_FARMS,
+	};
 }
 
 export function validateDataset(ds: Dataset): string[] {
@@ -114,6 +131,12 @@ export function validateDataset(ds: Dataset): string[] {
 	for (const r of ds.regions) {
 		if (r.spoilerGated && (!r.questId || !questIds.has(r.questId)))
 			problems.push(`region ${r.id} → missing gating quest`);
+	}
+
+	for (const f of ds.openWorldFarms) {
+		if (!frameIds.has(f.frameId)) problems.push(`open-world farm → missing frame ${f.frameId}`);
+		if (!nodeIds.has(f.nodeId)) problems.push(`open-world farm → missing node ${f.nodeId}`);
+		if (!regionIds.has(f.regionId)) problems.push(`open-world farm → missing region ${f.regionId}`);
 	}
 
 	return problems;

@@ -129,4 +129,5 @@ export const seed: Dataset = {
 	],
 	resources: [],
 	quests: [],
+	openWorldFarms: [],
 };

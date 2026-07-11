@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1275.4+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-11T10:32:54.854Z",
+	"generatedAt": "2026-07-11T19:09:14.833Z",
 	"data": {
 		"regions": [
 			{
@@ -621,7 +621,8 @@
 					"SolNode719",
 					"SolNode720",
 					"SolNode721",
-					"SolNode251"
+					"SolNode251",
+					"CuratedAlbrechtLabs"
 				],
 				"resourceIds": [
 					"mutagensample",
@@ -3846,6 +3847,14 @@
 				"isAssassination": true,
 				"bossId": "jordasgolem",
 				"frameId": "atlas"
+			},
+			{
+				"id": "CuratedAlbrechtLabs",
+				"regionId": "deimos",
+				"name": "Albrecht's Laboratories",
+				"missionType": "Free Roam",
+				"faction": "Infested",
+				"isAssassination": false
 			}
 		],
 		"bosses": [
@@ -4481,6 +4490,280 @@
 						"slot": "systems",
 						"dropSourceNodeId": "SolNode740",
 						"chance": 25.81
+					}
+				]
+			},
+			{
+				"id": "gara",
+				"name": "Gara",
+				"nodeId": "SolNode228",
+				"image": "Gara.png",
+				"parts": [
+					{
+						"id": "gara:bp",
+						"frameId": "gara",
+						"slot": "bp"
+					},
+					{
+						"id": "gara:neuroptics",
+						"frameId": "gara",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 46.66,
+						"bountyTier": "L20–40",
+						"rotation": "C"
+					},
+					{
+						"id": "gara:chassis",
+						"frameId": "gara",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 45.45,
+						"bountyTier": "L5–15",
+						"rotation": "any"
+					},
+					{
+						"id": "gara:systems",
+						"frameId": "gara",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 44.76,
+						"bountyTier": "L10–30",
+						"rotation": "any"
+					}
+				]
+			},
+			{
+				"id": "revenant",
+				"name": "Revenant",
+				"nodeId": "SolNode228",
+				"image": "Revenant.png",
+				"parts": [
+					{
+						"id": "revenant:bp",
+						"frameId": "revenant",
+						"slot": "bp"
+					},
+					{
+						"id": "revenant:neuroptics",
+						"frameId": "revenant",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 16.96,
+						"bountyTier": "L40–60",
+						"rotation": "any"
+					},
+					{
+						"id": "revenant:chassis",
+						"frameId": "revenant",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 39.42999999999999,
+						"bountyTier": "L30–50",
+						"rotation": "C"
+					},
+					{
+						"id": "revenant:systems",
+						"frameId": "revenant",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 47.17,
+						"bountyTier": "L20–40",
+						"rotation": "B"
+					}
+				]
+			},
+			{
+				"id": "caliban",
+				"name": "Caliban",
+				"nodeId": "SolNode228",
+				"image": "Caliban.png",
+				"parts": [
+					{
+						"id": "caliban:bp",
+						"frameId": "caliban",
+						"slot": "bp"
+					},
+					{
+						"id": "caliban:neuroptics",
+						"frameId": "caliban",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 21.06,
+						"bountyTier": "L50–70",
+						"rotation": "C"
+					},
+					{
+						"id": "caliban:chassis",
+						"frameId": "caliban",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 21.06,
+						"bountyTier": "L50–70",
+						"rotation": "B"
+					},
+					{
+						"id": "caliban:systems",
+						"frameId": "caliban",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode228",
+						"chance": 21.06,
+						"bountyTier": "L50–70",
+						"rotation": "A"
+					}
+				]
+			},
+			{
+				"id": "garuda",
+				"name": "Garuda",
+				"nodeId": "SolNode129",
+				"image": "Garuda.png",
+				"parts": [
+					{
+						"id": "garuda:bp",
+						"frameId": "garuda",
+						"slot": "bp"
+					},
+					{
+						"id": "garuda:neuroptics",
+						"frameId": "garuda",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode129",
+						"chance": 45.09,
+						"bountyTier": "L20–40",
+						"rotation": "any"
+					},
+					{
+						"id": "garuda:chassis",
+						"frameId": "garuda",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode129",
+						"chance": 51.2,
+						"bountyTier": "L5–15",
+						"rotation": "any"
+					},
+					{
+						"id": "garuda:systems",
+						"frameId": "garuda",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode129",
+						"chance": 45.09,
+						"bountyTier": "L10–30",
+						"rotation": "any"
+					}
+				]
+			},
+			{
+				"id": "hildryn",
+				"name": "Hildryn",
+				"nodeId": "SolNode129",
+				"image": "IronFrame.png",
+				"parts": [
+					{
+						"id": "hildryn:bp",
+						"frameId": "hildryn",
+						"slot": "bp"
+					},
+					{
+						"id": "hildryn:neuroptics",
+						"frameId": "hildryn",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode129",
+						"chance": 38.72
+					},
+					{
+						"id": "hildryn:chassis",
+						"frameId": "hildryn",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode129",
+						"chance": 38.72
+					},
+					{
+						"id": "hildryn:systems",
+						"frameId": "hildryn",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode129",
+						"chance": 22.56
+					}
+				]
+			},
+			{
+				"id": "xaku",
+				"name": "Xaku",
+				"nodeId": "SolNode229",
+				"image": "BrokenFrame.png",
+				"parts": [
+					{
+						"id": "xaku:bp",
+						"frameId": "xaku",
+						"slot": "bp"
+					},
+					{
+						"id": "xaku:neuroptics",
+						"frameId": "xaku",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode229",
+						"chance": 27.64,
+						"bountyTier": "L15–25",
+						"rotation": "any"
+					},
+					{
+						"id": "xaku:chassis",
+						"frameId": "xaku",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode229",
+						"chance": 28.28,
+						"bountyTier": "L40–60",
+						"rotation": "A"
+					},
+					{
+						"id": "xaku:systems",
+						"frameId": "xaku",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode229",
+						"chance": 25.990000000000002,
+						"bountyTier": "L30–40",
+						"rotation": "A/B"
+					}
+				]
+			},
+			{
+				"id": "qorvex",
+				"name": "Qorvex",
+				"nodeId": "CuratedAlbrechtLabs",
+				"image": "Qorvex.png",
+				"parts": [
+					{
+						"id": "qorvex:bp",
+						"frameId": "qorvex",
+						"slot": "bp"
+					},
+					{
+						"id": "qorvex:neuroptics",
+						"frameId": "qorvex",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "CuratedAlbrechtLabs",
+						"chance": 13.04,
+						"bountyTier": "L55–60",
+						"rotation": "C"
+					},
+					{
+						"id": "qorvex:chassis",
+						"frameId": "qorvex",
+						"slot": "chassis",
+						"dropSourceNodeId": "CuratedAlbrechtLabs",
+						"chance": 13.56,
+						"bountyTier": "L65–70",
+						"rotation": "C"
+					},
+					{
+						"id": "qorvex:systems",
+						"frameId": "qorvex",
+						"slot": "systems",
+						"dropSourceNodeId": "CuratedAlbrechtLabs",
+						"chance": 12.4,
+						"bountyTier": "L75–80",
+						"rotation": "C"
 					}
 				]
 			}
@@ -5296,6 +5579,64 @@
 					"zariman"
 				],
 				"revealsFrameIds": []
+			}
+		],
+		"openWorldFarms": [
+			{
+				"frameId": "gara",
+				"nodeId": "SolNode228",
+				"regionId": "earth",
+				"componentSource": "Cetus Bounty",
+				"bpSource": "Complete Saya's Vigil"
+			},
+			{
+				"frameId": "revenant",
+				"nodeId": "SolNode228",
+				"regionId": "earth",
+				"componentSource": "Cetus Bounty",
+				"bpSource": "Complete Mask of the Revenant"
+			},
+			{
+				"frameId": "caliban",
+				"nodeId": "SolNode228",
+				"regionId": "earth",
+				"componentSource": "Narmer Bounty",
+				"bpSource": "Market (50,000cr)"
+			},
+			{
+				"frameId": "garuda",
+				"nodeId": "SolNode129",
+				"regionId": "venus",
+				"componentSource": "Orb Vallis Bounty",
+				"bpSource": "Complete Vox Solaris"
+			},
+			{
+				"frameId": "hildryn",
+				"nodeId": "SolNode129",
+				"regionId": "venus",
+				"componentSource": "Exploiter Orb",
+				"bpSource": "Little Duck (Vox Solaris standing)"
+			},
+			{
+				"frameId": "caliban",
+				"nodeId": "SolNode129",
+				"regionId": "venus",
+				"componentSource": "Narmer Bounty",
+				"bpSource": "Market (50,000cr)"
+			},
+			{
+				"frameId": "xaku",
+				"nodeId": "SolNode229",
+				"regionId": "deimos",
+				"componentSource": "Cambion Drift Bounty",
+				"bpSource": "Complete Heart of Deimos"
+			},
+			{
+				"frameId": "qorvex",
+				"nodeId": "CuratedAlbrechtLabs",
+				"regionId": "deimos",
+				"componentSource": "Albrecht's Laboratories Bounty",
+				"bpSource": "Complete Whispers in the Walls"
 			}
 		]
 	}

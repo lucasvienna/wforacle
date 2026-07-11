@@ -1,5 +1,12 @@
 <script lang="ts">
-	import type { Boss, Dataset, StarNode, Warframe } from '$lib/model/types';
+	import type {
+		Boss,
+		Dataset,
+		OpenWorldFarm,
+		StarNode,
+		Warframe,
+		WarframePart,
+	} from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
 	import { resourcesForRegion, bestPhaseRec } from '$lib/model/resources';
 	import { base } from '$app/paths';
@@ -59,15 +66,133 @@
 	function sourceLabel(slot: string, bossName: string): string {
 		return slot === 'bp' ? 'Market' : bossName;
 	}
+
+	// Open-world zones for this region: group the region's farms by zone node,
+	// joined to the node + frame. Guarded for hand-built fixtures without farms.
+	type OWEntry = { frame: Warframe; farm: OpenWorldFarm };
+	type OWZone = { node: StarNode; entries: OWEntry[] };
+	let openWorldZones = $derived.by<OWZone[]>(() => {
+		const farms = (dataset.openWorldFarms ?? []).filter(
+			(f) => f.regionId === regionId,
+		);
+		const byNode = new Map<string, OWZone>();
+		for (const farm of farms) {
+			const node = dataset.nodes.find((n) => n.id === farm.nodeId);
+			const frame = dataset.warframes.find((w) => w.id === farm.frameId);
+			if (!node || !frame) continue;
+			const zone = byNode.get(node.id) ?? { node, entries: [] };
+			zone.entries.push({ frame, farm });
+			byNode.set(node.id, zone);
+		}
+		return [...byNode.values()];
+	});
+
+	// Source label for an open-world part row: bp shows its bpSource; components
+	// show "{source} · {tier} · Rot {rotation} · ~{chance}%", omitting the tier /
+	// rotation for non-bounty sources (Exploiter Orb) that carry neither.
+	function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
+		if (part.slot === 'bp') return farm.bpSource;
+		const rot =
+			part.rotation === 'any'
+				? 'any rot'
+				: part.rotation
+					? `Rot ${part.rotation}`
+					: undefined;
+		const chance =
+			part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
+		return [farm.componentSource, part.bountyTier, rot, chance]
+			.filter(Boolean)
+			.join(' · ');
+	}
 </script>
 
 <div class="grid items-start gap-4 md:grid-cols-2">
 	<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
 		<h2 class="mb-4 text-lg font-semibold text-wf-gold">{region?.name}</h2>
-		{#if entries.length > 0}
+		{#snippet frameCard(
+			frame: Warframe,
+			subLine: string,
+			sourceText: (part: WarframePart) => string,
+		)}
+			{@const count = tracker.frameCount(frame.id)}
+			<div class="mb-4 flex items-center gap-3">
+				<div
+					class="flex h-11 w-11 items-center justify-center rounded-lg border border-wf-edge bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
+					aria-hidden="true"
+				>
+					{frame.name[0]}
+				</div>
+				<div>
+					<div class="font-semibold text-slate-100">
+						{frame.name}
+						<span
+							class="text-xs font-normal {count.owned === count.total
+								? 'text-emerald-400'
+								: 'text-wf-muted'}"
+						>
+							· {count.owned}/{count.total} owned
+						</span>
+					</div>
+					<div class="text-xs text-wf-muted">{subLine}</div>
+				</div>
+			</div>
+
+			{#if frame.parts.some((p) => p.slot === 'dayaspect' || p.slot === 'nightaspect')}
+				<p class="mb-2 text-xs text-wf-muted">
+					Assembled from its Day and Night aspects.
+				</p>
+			{/if}
+
+			<div class="space-y-1">
+				{#each frame.parts as part (part.id)}
+					{@const owned = tracker.isOwned(part.id)}
+					<div
+						data-part={part.id}
+						data-owned={owned}
+						role="button"
+						tabindex="0"
+						class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
+							? 'border-emerald-500/30 bg-emerald-500/10'
+							: ''}"
+						onclick={() => tracker.togglePart(part.id)}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								if (e.key === ' ') e.preventDefault();
+								tracker.togglePart(part.id);
+							}
+						}}
+					>
+						<span
+							class="flex h-4 w-4 items-center justify-center rounded border text-[11px] {owned
+								? 'border-emerald-400 bg-emerald-400 text-slate-950'
+								: 'border-wf-edge text-transparent'}"
+						>
+							✓
+						</span>
+						<span
+							class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}"
+						>
+							{#if SLOT_ICON[part.slot]}<span
+									aria-hidden="true"
+									class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
+								>{/if}{SLOT_LABEL[part.slot]}
+						</span>
+						<span class="ml-auto text-xs text-wf-muted">{sourceText(part)}</span
+						>
+					</div>
+				{/each}
+			</div>
+
+			<button
+				class="mt-3 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
+				onclick={() => tracker.toggleFrame(frame.id)}
+			>
+				✓ Toggle whole frame
+			</button>
+		{/snippet}
+		{#if entries.length > 0 || openWorldZones.length > 0}
 			<div class="space-y-6">
 				{#each entries as { node, boss, frame } (node.id)}
-					{@const count = tracker.frameCount(frame.id)}
 					<div>
 						<div class="mb-4 flex items-start justify-between gap-3">
 							<div>
@@ -91,85 +216,37 @@
 							</span>
 						</div>
 
-						<div class="mb-4 flex items-center gap-3">
-							<div
-								class="flex h-11 w-11 items-center justify-center rounded-lg border border-wf-edge bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
-								aria-hidden="true"
+						{@render frameCard(
+							frame,
+							`Blueprint from Market · components from ${boss.name}`,
+							(part) => sourceLabel(part.slot, boss.name),
+						)}
+					</div>
+				{/each}
+
+				{#each openWorldZones as zone (zone.node.id)}
+					<div>
+						<div class="mb-4 flex items-start justify-between gap-3">
+							<h3 class="text-base font-semibold text-slate-100">
+								{zone.node.name}
+							</h3>
+							<span
+								class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
+									zone.node.faction
+								] ?? 'border-wf-edge text-wf-muted'}"
 							>
-								{frame.name[0]}
-							</div>
-							<div>
-								<div class="font-semibold text-slate-100">
-									{frame.name}
-									<span
-										class="text-xs font-normal {count.owned === count.total
-											? 'text-emerald-400'
-											: 'text-wf-muted'}"
-									>
-										· {count.owned}/{count.total} owned
-									</span>
-								</div>
-								<div class="text-xs text-wf-muted">
-									Blueprint from Market · components from {boss.name}
-								</div>
-							</div>
+								{zone.node.faction} · Free Roam
+							</span>
 						</div>
-
-						{#if frame.parts.some((p) => p.slot === 'dayaspect' || p.slot === 'nightaspect')}
-							<p class="mb-2 text-xs text-wf-muted">
-								Assembled from its Day and Night aspects.
-							</p>
-						{/if}
-
-						<div class="space-y-1">
-							{#each frame.parts as part (part.id)}
-								{@const owned = tracker.isOwned(part.id)}
-								<div
-									data-part={part.id}
-									data-owned={owned}
-									role="button"
-									tabindex="0"
-									class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
-										? 'border-emerald-500/30 bg-emerald-500/10'
-										: ''}"
-									onclick={() => tracker.togglePart(part.id)}
-									onkeydown={(e) => {
-										if (e.key === 'Enter' || e.key === ' ') {
-											if (e.key === ' ') e.preventDefault();
-											tracker.togglePart(part.id);
-										}
-									}}
-								>
-									<span
-										class="flex h-4 w-4 items-center justify-center rounded border text-[11px] {owned
-											? 'border-emerald-400 bg-emerald-400 text-slate-950'
-											: 'border-wf-edge text-transparent'}"
-									>
-										✓
-									</span>
-									<span
-										class="text-sm {owned
-											? 'text-emerald-300'
-											: 'text-slate-200'}"
-									>
-										{#if SLOT_ICON[part.slot]}<span
-												aria-hidden="true"
-												class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
-											>{/if}{SLOT_LABEL[part.slot]}
-									</span>
-									<span class="ml-auto text-xs text-wf-muted"
-										>{sourceLabel(part.slot, boss.name)}</span
-									>
-								</div>
+						<div class="space-y-6">
+							{#each zone.entries as { frame, farm } (frame.id)}
+								{@render frameCard(
+									frame,
+									`Blueprint: ${farm.bpSource}`,
+									(part) => owSourceText(part, farm),
+								)}
 							{/each}
 						</div>
-
-						<button
-							class="mt-3 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
-							onclick={() => tracker.toggleFrame(frame.id)}
-						>
-							✓ Toggle whole frame
-						</button>
 					</div>
 				{/each}
 			</div>
