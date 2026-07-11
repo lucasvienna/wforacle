@@ -100,6 +100,59 @@ const SLOT_BY_COMPONENT: Record<string, Slot> = {
 	'Night Aspect': 'nightaspect',
 };
 
+export interface BountyStage {
+	chance: number;
+	bountyTier?: string;
+	rotation?: string;
+}
+
+/** Pick the single best bounty stage (tier + rotation) a component drops at.
+ * See the plan's Task 2 for the full selection rule. */
+export function bestBountyStage(drops: { location: string; chance?: number }[]): BountyStage | null {
+	const eligible = drops.filter((d) => d.location && !/Plague Star/i.test(d.location));
+	if (!eligible.length) return null;
+
+	// 1. Sum chances per exact location string (collapses a stage's sub-rewards;
+	//    keeps different zones/tiers/rotations separate).
+	const byLoc = new Map<string, number>();
+	for (const d of eligible) byLoc.set(d.location, (byLoc.get(d.location) ?? 0) + (d.chance ?? 0));
+
+	// 2. Group by (zone, tier); a group's chance is its best rotation, and it
+	//    records the rotations achieving that max.
+	type Group = { tier?: string; lo: number; chance: number; rots: string[] };
+	const groups = new Map<string, Group>();
+	for (const [loc, chance] of byLoc) {
+		const zone = loc.split('(')[0].trim();
+		const lvl = loc.match(/Level\s*(\d+)\s*-\s*(\d+)/);
+		const tier = lvl ? `L${lvl[1]}–${lvl[2]}` : undefined;
+		const lo = lvl ? Number(lvl[1]) : 0;
+		const rotM = loc.match(/Rotation ([A-C])/);
+		const rot = rotM ? rotM[1] : undefined;
+		const key = `${zone}|${tier ?? ''}`;
+		const g = groups.get(key);
+		if (!g) {
+			groups.set(key, { tier, lo, chance, rots: rot ? [rot] : [] });
+		} else if (chance > g.chance) {
+			g.chance = chance;
+			g.rots = rot ? [rot] : [];
+		} else if (chance === g.chance && rot) {
+			g.rots.push(rot);
+		}
+	}
+
+	// 3. Winner: highest chance, tie → lowest tier level.
+	let best: Group | null = null;
+	for (const g of groups.values()) {
+		if (!best || g.chance > best.chance || (g.chance === best.chance && g.lo < best.lo)) best = g;
+	}
+	if (!best) return null;
+
+	// 4. Rotation label: all three → "any"; none → undefined; else sorted join.
+	const rots = [...new Set(best.rots)].sort();
+	const rotation = rots.length === 0 ? undefined : rots.length === 3 ? 'any' : rots.join('/');
+	return { chance: best.chance, bountyTier: best.tier, rotation };
+}
+
 export function buildFrames(
 	warframes: RawWarframe[],
 	nodes: StarNode[],
