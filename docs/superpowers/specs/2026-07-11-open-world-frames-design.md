@@ -12,26 +12,46 @@ bounty/drop source and best drop chance shown.
 
 Frames covered:
 
-| Frame | Zone | Region | Component source | Best chance | Blueprint source |
-|---|---|---|---|---|---|
-| Gara | Plains of Eidolon | earth | Cetus Bounty | ~31% | Complete Saya's Vigil |
-| Revenant | Plains of Eidolon | earth | Cetus Bounty | ~26% | Complete Mask of the Revenant |
-| Garuda | Orb Vallis | venus | Orb Vallis Bounty | ~28% | Complete Vox Solaris |
-| Hildryn | Orb Vallis (Exploiter Orb) | venus | Exploiter Orb | ~39% | Little Duck (Vox Solaris standing) |
-| Xaku | Cambion Drift | deimos | Cambion Drift Bounty | ~13% | Complete Heart of Deimos |
-| Qorvex | Albrecht's Laboratories | deimos | Albrecht's Laboratories Bounty | ~14% | Complete Whispers in the Walls |
-| Caliban | Plains of Eidolon **and** Orb Vallis | earth + venus | Narmer Bounty | ~8% | Market (50,000cr) |
+| Frame | Zone | Region | Component source | Blueprint source |
+|---|---|---|---|---|
+| Gara | Plains of Eidolon | earth | Cetus Bounty | Complete Saya's Vigil |
+| Revenant | Plains of Eidolon | earth | Cetus Bounty | Complete Mask of the Revenant |
+| Garuda | Orb Vallis | venus | Orb Vallis Bounty | Complete Vox Solaris |
+| Hildryn | Orb Vallis (Exploiter Orb) | venus | Exploiter Orb | Little Duck (Vox Solaris standing) |
+| Xaku | Cambion Drift | deimos | Cambion Drift Bounty | Complete Heart of Deimos |
+| Qorvex | Albrecht's Laboratories | deimos | Albrecht's Laboratories Bounty | Complete Whispers in the Walls |
+| Caliban | Plains of Eidolon **and** Orb Vallis | earth + venus | Narmer Bounty | Market (50,000cr) |
 
-(Chances above are indicative — computed at build time as the max drop chance
-per component; exact values come from `@wfcd/items`.)
+### Per-part bounty stage (best drop)
+
+Each component drops at a specific bounty **tier** (level range) and **rotation**.
+These are derived at build time from `@wfcd/items` (summing sub-reward entries
+per stage → true per-run odds); the table below is the expected output for the
+current data pin (values re-derive on `pnpm data:build`, so they are not
+hand-maintained).
+
+| Frame | Chassis | Neuroptics | Systems |
+|---|---|---|---|
+| Gara | L5–15 · any rot · ~46% | L20–40 · **Rot C** · ~47% | L10–30 · any rot · ~45% |
+| Revenant | L30–50 · any rot · ~39% | L40–60 · any rot · ~17% | L20–40 · **Rot B** · ~47% |
+| Garuda | L5–15 · any rot · ~51% | L20–40 · any rot · ~45% | L10–30 · any rot · ~45% |
+| Hildryn | Exploiter Orb · ~39% | Exploiter Orb · ~39% | Exploiter Orb · ~23% |
+| Xaku | L40–60 · **Rot A** · ~28% | L15–25 · any rot · ~28% | L30–40 · **Rot A/B** · ~26% |
+| Qorvex | L65–70 · **Rot C** · ~14% | L55–60 · **Rot C** · ~13% | L75–80 · **Rot C** · ~12% |
+| Caliban | L50–70 · **Rot B** · ~21% | L50–70 · **Rot C** · ~21% | L50–70 · **Rot A** · ~21% |
+
+Notes: **Hildryn** parts come from the Exploiter Orb fight — no bounty tier/rotation.
+**Revenant** Chassis also drops from the Plague Star event (~40%); the recurring
+Cetus Bounty stage is shown as the reliable source. The **best-stage selection
+rule** (build time): pick the (tier, rotation) with the highest summed chance;
+on a tie prefer the **lowest** level range (easiest farm); collapse to "any rot"
+when A/B/C are equal within the chosen tier.
 
 ## Non-goals
 
 - No quest gating of frames. Frames are always visible under their zone; the
   unlock quest is shown as a `bpSource` note only. Deimos stays region-gated as
   today (`kind: 'special'`, `questId: heartofdeimos`).
-- No per-rotation / per-tier chance breakdown — one representative chance per
-  component.
 - No new image assets — RegionPanel renders frames with a letter avatar, not an
   image (the existing behaviour).
 
@@ -55,10 +75,16 @@ per component; exact values come from `@wfcd/items`.)
 
 ## Data model (`src/lib/model/types.ts`)
 
-Add one interface and one `Dataset` field. `Warframe` and `WarframePart` are
-reused unchanged.
+Add one interface, two optional `WarframePart` fields, and one `Dataset` field.
 
 ```ts
+export interface WarframePart {
+	// …existing fields (id, frameId, slot, dropSourceNodeId, chance)…
+	bountyTier?: string; // open-world bounty stage, e.g. "L20–40"; absent for
+	//                      assassination parts and non-bounty sources (Exploiter Orb)
+	rotation?: string; // "A" | "B" | "C" | "any" | "A/B"; absent when N/A
+}
+
 export interface OpenWorldFarm {
 	frameId: string; // → dataset.warframes
 	nodeId: string; // the Free Roam / curated zone node
@@ -71,13 +97,14 @@ export interface OpenWorldFarm {
 //   openWorldFarms: OpenWorldFarm[];
 ```
 
-The unit is the **farm** (frame × zone), not a field on `Warframe`, because
-Caliban has two farms (Plains + Vallis). A frame appears in a region's panel iff
-it has a farm whose `regionId` matches.
+The farm (frame × zone) is the unit for placement — Caliban has two farms
+(Plains + Vallis). The **bounty stage lives on the part** (`chance` + `bountyTier`
++ `rotation`), not on the farm, because a part's stage is identical across the
+zones it drops in (Caliban's Chassis is Rot B in both Cetus and Orb Vallis). A
+frame appears in a region's panel iff it has a farm whose `regionId` matches.
 
-`WarframePart.chance` (already present) holds the representative best chance per
-component; `Warframe.nodeId` is set to the frame's **primary** zone node so the
-command palette (`buildPaletteItems`, which requires `frame.nodeId`) includes it.
+`Warframe.nodeId` is set to the frame's **primary** zone node so the command
+palette (`buildPaletteItems`, which requires `frame.nodeId`) includes it.
 
 ## Pipeline
 
@@ -97,9 +124,14 @@ command palette (`buildPaletteItems`, which requires `frame.nodeId`) includes it
 - For each unique `frameId` referenced by the farms, find the WFCD warframe by
   name and build a `Warframe` with `image` + parts (bp + the component slots
   present) pulled **from WFCD** — no hand-authored parts.
-- Each component part's `chance` = max drop chance across that component's
-  open-world drops (`resolveDropLocation`/raw drop entries). BP part has no
-  chance.
+- For each component part, group its drops by (bounty tier, rotation), **sum**
+  the chances within each stage, then select the best stage via the rule above
+  (highest summed chance → lowest tier → collapse equal rotations to "any").
+  Set `chance`, `bountyTier`, `rotation` from the winner. Non-bounty sources
+  (Exploiter Orb) set `chance` only, leaving tier/rotation undefined. BP part has
+  no chance.
+- A small pure helper (`bestBountyStage(drops)`) does the grouping/selection so
+  it is unit-testable on fixtures.
 - `Warframe.nodeId` = primary zone node id (first farm for that frame).
 - Reuses the existing `partId` / slot-ordering helpers.
 
@@ -128,8 +160,10 @@ assassination blocks (approved).
 - Per zone: header `{zoneName}` with a tag `{faction} · Free Roam`.
 - Per frame in the zone: the same frame-card layout (letter avatar,
   `owned/total`, part rows, "toggle whole frame"), with:
-  - part row source column: `{componentSource} · ~{chance}%` for component slots;
-    `bpSource` for the blueprint slot (no chance).
+  - part row source column: for a component slot, `{componentSource}` plus, when
+    present, the stage `{bountyTier} · Rot {rotation}` and `~{chance}%`
+    (e.g. `Cetus Bounty · L20–40 · Rot C · ~47%`); Exploiter Orb parts show
+    source + `~{chance}%` only (no tier/rotation). Blueprint slot shows `bpSource`.
   - a note line: `Blueprint: {bpSource}`.
 - Extract the shared **part-row list** into a Svelte `{#snippet}` so the
   assassination and open-world blocks reuse it (removes ~40 lines of
@@ -145,14 +179,18 @@ No StarChart or navigation changes — the three planets are already reachable
 
 - `scripts/data/openworld.test.ts` (new): curated table integrity (every farm
   references a declared zone; primary node exists; no duplicate frame×zone).
-- `scripts/data/build.test.ts`: `buildOpenWorldFrames` builds parts + best
-  chance from a fixture; Caliban yields a frame usable by two farms.
+- `scripts/data/build.test.ts`: `bestBountyStage` picks the highest-summed stage,
+  tie-breaks to the lowest tier, and collapses equal A/B/C rotations to "any";
+  `buildOpenWorldFrames` sets `chance`/`bountyTier`/`rotation` per part (and
+  leaves tier/rotation undefined for Exploiter Orb); Caliban yields a frame
+  usable by two farms.
 - `scripts/data/assemble.test.ts`: Albrecht's Lab node lands on Deimos;
   `openWorldFarms` populated; `validateDataset` passes and catches a dangling
   farm.
 - `src/lib/panel/RegionPanel.svelte.test.ts`: open-world frames render under
-  earth/venus/deimos; Caliban appears under **both** earth and venus; a part row
-  shows source + `~%`; toggling a part updates the tracker.
+  earth/venus/deimos; Caliban appears under **both** earth and venus; a bounty
+  part row shows source + tier + rotation + `~%`, an Exploiter Orb row shows
+  source + `~%` only; toggling a part updates the tracker.
 - `src/lib/data/seed.ts` (+ `seed.test.ts`): add the required
   `openWorldFarms: []` field (and any fixture rows the seed tests need).
 - Regenerate `static/data/dataset.json` via `pnpm data:build`.
@@ -172,11 +210,14 @@ No StarChart or navigation changes — the three planets are already reachable
 
 ## Assumptions / risks
 
-- **Single representative chance per component** loses per-rotation detail. Accepted
-  per non-goals; the "best odds" figure is the useful one.
-- **Caliban's chances are identical across its two zones**, so a shared
-  `Warframe.chance` per part is safe. If a future frame diverged per zone, chance
-  would need to move onto `OpenWorldFarm`. Documented, not built.
+- **One best stage per component** collapses multi-tier/rotation drops to a
+  single farm target. Alternate stages (e.g. Revenant's L100 tier, Plague Star)
+  are dropped from display — acceptable; the shown stage is the reliable, lowest-
+  effort one.
+- **Part stage is identical across a frame's zones**, so storing it on the part
+  is safe (Caliban's Chassis is Rot B in both Cetus and Orb Vallis). If a future
+  frame diverged per zone, the stage fields would move onto `OpenWorldFarm`.
+  Documented, not built.
 - **Curated `bpSource`/`componentSource` strings** are verified against the
   Warframe wiki (Caliban → Market + Narmer; Qorvex → Whispers in the Walls +
   Sanctum Anatomica). These are curation, not derived, so they can drift from the
