@@ -32,7 +32,9 @@ export const GET: RequestHandler = async () => {
 				'cache-control': 'public, s-maxage=60, stale-while-revalidate=120',
 			},
 		});
-		if (edge) await edge.put(CACHE_KEY, res.clone());
+		// Best-effort cache write: a put failure must not fall through to the
+		// catch and discard an otherwise-good payload.
+		if (edge) await edge.put(CACHE_KEY, res.clone()).catch(() => {});
 		return res;
 	} catch {
 		return new Response(JSON.stringify({ ok: false }), {

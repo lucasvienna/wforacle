@@ -17,7 +17,9 @@ export function deriveRotation(syndicates: RawSyndicate[]): RotationState {
 	let letter: Letter | null = null;
 	for (const reward of pool) {
 		const name = reward.split(' ')[0];
-		if (name in WEAPON_TO_LETTER) {
+		// Object.hasOwn (not `in`) so a reward whose first token is an inherited
+		// key like "constructor"/"toString" can't match a prototype member.
+		if (Object.hasOwn(WEAPON_TO_LETTER, name)) {
 			letter = WEAPON_TO_LETTER[name];
 			break;
 		}
