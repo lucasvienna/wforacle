@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
 
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
 
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
 
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:unit --run
 
@@ -60,14 +60,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cloudflare-build
-          path: .svelte-kit/cloudflare
+          name: svelte-kit-build
+          # wrangler dev re-bundles _worker.js, which imports build intermediates
+          # (output/, cloudflare-tmp/) that live alongside cloudflare/, so ship
+          # the whole .svelte-kit directory rather than just the worker output.
+          path: .svelte-kit
           retention-days: 1
           include-hidden-files: true
 
@@ -78,13 +81,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: cloudflare-build
-          path: .svelte-kit/cloudflare
+          name: svelte-kit-build
+          path: .svelte-kit
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@v4
