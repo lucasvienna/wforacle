@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/svelte';
+import { render, screen, fireEvent, waitFor } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
 import SettingsDrawer from './SettingsDrawer.svelte';
 import { seed } from '$lib/data/seed';
@@ -70,5 +70,30 @@ describe('SettingsDrawer', () => {
 
 		await fireEvent.click(confirmBtn as HTMLElement);
 		expect(tracker.isOwned('rhino:bp')).toBe(false);
+	});
+
+	it('calls onclose when the backdrop is clicked', async () => {
+		const onclose = vi.fn();
+		render(SettingsDrawer, {
+			dataset: seed,
+			tracker: createTracker(seed.warframes),
+			open: true,
+			onclose,
+		});
+		// The backdrop is the role="presentation" element; a click on it (target
+		// === currentTarget) dismisses the drawer, but clicks inside the panel do not.
+		await fireEvent.click(screen.getByRole('presentation'));
+		expect(onclose).toHaveBeenCalledOnce();
+	});
+
+	it('moves focus to the close button on open', async () => {
+		render(SettingsDrawer, {
+			dataset: seed,
+			tracker: createTracker(seed.warframes),
+			open: true,
+			onclose: vi.fn(),
+		});
+		const closeBtn = document.querySelector('[data-close-settings]');
+		await waitFor(() => expect(document.activeElement).toBe(closeBtn));
 	});
 });
