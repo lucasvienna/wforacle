@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import {
+	bestBountyStage,
 	buildRegions,
 	buildNodes,
 	buildFrames,
@@ -322,8 +323,6 @@ describe('resolveDropLocation', () => {
 	});
 });
 
-import { bestBountyStage } from './build';
-
 describe('bestBountyStage', () => {
 	// Gara Chassis shape: L5–15, three sub-rewards per rotation, A/B/C equal.
 	const garaChassis = ['A', 'B', 'C'].flatMap((rot) =>
@@ -353,8 +352,14 @@ describe('bestBountyStage', () => {
 
 	it('breaks a tie toward the lower tier', () => {
 		const drops = [
-			{ location: 'Deimos/Cambion Drift (Level 100 - 100 Cambion Drift Bounty), Rotation A', chance: 28.3 },
-			{ location: 'Deimos/Cambion Drift (Level 40 - 60 Cambion Drift Bounty), Rotation A', chance: 28.3 },
+			{
+				location: 'Deimos/Cambion Drift (Level 100 - 100 Cambion Drift Bounty), Rotation A',
+				chance: 28.3,
+			},
+			{
+				location: 'Deimos/Cambion Drift (Level 40 - 60 Cambion Drift Bounty), Rotation A',
+				chance: 28.3,
+			},
 		];
 		const s = bestBountyStage(drops)!;
 		expect(s.bountyTier).toBe('L40–60');
@@ -363,8 +368,14 @@ describe('bestBountyStage', () => {
 
 	it('joins partial tied rotations (A/B, no C)', () => {
 		const drops = [
-			{ location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation A', chance: 26 },
-			{ location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation B', chance: 26 },
+			{
+				location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation A',
+				chance: 26,
+			},
+			{
+				location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation B',
+				chance: 26,
+			},
 		];
 		expect(bestBountyStage(drops)!.rotation).toBe('A/B');
 	});
@@ -394,6 +405,8 @@ describe('bestBountyStage', () => {
 
 	it('returns null when there are no eligible drops', () => {
 		expect(bestBountyStage([])).toBeNull();
-		expect(bestBountyStage([{ location: 'Earth/Cetus (Level 15 - 25 Plague Star)', chance: 5 }])).toBeNull();
+		expect(
+			bestBountyStage([{ location: 'Earth/Cetus (Level 15 - 25 Plague Star)', chance: 5 }]),
+		).toBeNull();
 	});
 });

@@ -108,7 +108,9 @@ export interface BountyStage {
 
 /** Pick the single best bounty stage (tier + rotation) a component drops at.
  * See the plan's Task 2 for the full selection rule. */
-export function bestBountyStage(drops: { location: string; chance?: number }[]): BountyStage | null {
+export function bestBountyStage(
+	drops: { location: string; chance?: number }[],
+): BountyStage | null {
 	const eligible = drops.filter((d) => d.location && !/Plague Star/i.test(d.location));
 	if (!eligible.length) return null;
 
