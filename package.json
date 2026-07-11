@@ -34,7 +34,7 @@
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/svelte": "^5.4.2",
 		"@types/node": "^26.1.1",
-		"@wfcd/items": "^1.1275.4",
+		"@wfcd/items": "^1.1275.5",
 		"fake-indexeddb": "^6.2.5",
 		"jsdom": "^29.1.1",
 		"mdsvex": "^0.12.7",
