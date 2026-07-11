@@ -13,7 +13,7 @@ test('Ctrl-K palette jumps to a region', async ({ page }) => {
 
 	// Mars isn't the default selection (Venus is), so picking it proves the
 	// palette actually drives the RegionPanel rather than a no-op.
-	await page.getByRole('textbox').fill('Mars');
+	await page.getByRole('combobox').fill('Mars');
 	const regionResult = page.locator('[data-palette-item][data-type="region"]').first();
 	await expect(regionResult).toBeVisible();
 
@@ -33,7 +33,7 @@ test('Ctrl-K palette navigates to a resource guide', async ({ page }) => {
 	const dialog = page.getByRole('dialog');
 	await expect(dialog).toBeVisible();
 
-	await page.getByRole('textbox').fill('Ferrite');
+	await page.getByRole('combobox').fill('Ferrite');
 	const resourceResult = page.locator('[data-palette-item][data-type="resource"]').first();
 	await expect(resourceResult).toBeVisible();
 

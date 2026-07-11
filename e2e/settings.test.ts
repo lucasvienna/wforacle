@@ -50,5 +50,5 @@ test('search button opens the command palette', async ({ page }) => {
 
 	const dialog = page.getByRole('dialog');
 	await expect(dialog).toBeVisible();
-	await expect(page.getByRole('textbox')).toBeVisible();
+	await expect(page.getByRole('combobox')).toBeVisible();
 });
