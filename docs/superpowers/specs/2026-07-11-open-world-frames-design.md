@@ -12,15 +12,15 @@ bounty/drop source and best drop chance shown.
 
 Frames covered:
 
-| Frame | Zone | Region | Component source | Blueprint source |
-|---|---|---|---|---|
-| Gara | Plains of Eidolon | earth | Cetus Bounty | Complete Saya's Vigil |
-| Revenant | Plains of Eidolon | earth | Cetus Bounty | Complete Mask of the Revenant |
-| Garuda | Orb Vallis | venus | Orb Vallis Bounty | Complete Vox Solaris |
-| Hildryn | Orb Vallis (Exploiter Orb) | venus | Exploiter Orb | Little Duck (Vox Solaris standing) |
-| Xaku | Cambion Drift | deimos | Cambion Drift Bounty | Complete Heart of Deimos |
-| Qorvex | Albrecht's Laboratories | deimos | Albrecht's Laboratories Bounty | Complete Whispers in the Walls |
-| Caliban | Plains of Eidolon **and** Orb Vallis | earth + venus | Narmer Bounty | Market (50,000cr) |
+| Frame    | Zone                                 | Region        | Component source               | Blueprint source                   |
+| -------- | ------------------------------------ | ------------- | ------------------------------ | ---------------------------------- |
+| Gara     | Plains of Eidolon                    | earth         | Cetus Bounty                   | Complete Saya's Vigil              |
+| Revenant | Plains of Eidolon                    | earth         | Cetus Bounty                   | Complete Mask of the Revenant      |
+| Garuda   | Orb Vallis                           | venus         | Orb Vallis Bounty              | Complete Vox Solaris               |
+| Hildryn  | Orb Vallis (Exploiter Orb)           | venus         | Exploiter Orb                  | Little Duck (Vox Solaris standing) |
+| Xaku     | Cambion Drift                        | deimos        | Cambion Drift Bounty           | Complete Heart of Deimos           |
+| Qorvex   | Albrecht's Laboratories              | deimos        | Albrecht's Laboratories Bounty | Complete Whispers in the Walls     |
+| Caliban  | Plains of Eidolon **and** Orb Vallis | earth + venus | Narmer Bounty                  | Market (50,000cr)                  |
 
 ### Per-part bounty stage (best drop)
 
@@ -30,15 +30,15 @@ per stage → true per-run odds); the table below is the expected output for the
 current data pin (values re-derive on `pnpm data:build`, so they are not
 hand-maintained).
 
-| Frame | Chassis | Neuroptics | Systems |
-|---|---|---|---|
-| Gara | L5–15 · any rot · ~46% | L20–40 · **Rot C** · ~47% | L10–30 · any rot · ~45% |
-| Revenant | L30–50 · any rot · ~39% | L40–60 · any rot · ~17% | L20–40 · **Rot B** · ~47% |
-| Garuda | L5–15 · any rot · ~51% | L20–40 · any rot · ~45% | L10–30 · any rot · ~45% |
-| Hildryn | Exploiter Orb · ~39% | Exploiter Orb · ~39% | Exploiter Orb · ~23% |
-| Xaku | L40–60 · **Rot A** · ~28% | L15–25 · any rot · ~28% | L30–40 · **Rot A/B** · ~26% |
-| Qorvex | L65–70 · **Rot C** · ~14% | L55–60 · **Rot C** · ~13% | L75–80 · **Rot C** · ~12% |
-| Caliban | L50–70 · **Rot B** · ~21% | L50–70 · **Rot C** · ~21% | L50–70 · **Rot A** · ~21% |
+| Frame    | Chassis                   | Neuroptics                | Systems                     |
+| -------- | ------------------------- | ------------------------- | --------------------------- |
+| Gara     | L5–15 · any rot · ~46%    | L20–40 · **Rot C** · ~47% | L10–30 · any rot · ~45%     |
+| Revenant | L30–50 · any rot · ~39%   | L40–60 · any rot · ~17%   | L20–40 · **Rot B** · ~47%   |
+| Garuda   | L5–15 · any rot · ~51%    | L20–40 · any rot · ~45%   | L10–30 · any rot · ~45%     |
+| Hildryn  | Exploiter Orb · ~39%      | Exploiter Orb · ~39%      | Exploiter Orb · ~23%        |
+| Xaku     | L40–60 · **Rot A** · ~28% | L15–25 · any rot · ~28%   | L30–40 · **Rot A/B** · ~26% |
+| Qorvex   | L65–70 · **Rot C** · ~14% | L55–60 · **Rot C** · ~13% | L75–80 · **Rot C** · ~12%   |
+| Caliban  | L50–70 · **Rot B** · ~21% | L50–70 · **Rot C** · ~21% | L50–70 · **Rot A** · ~21%   |
 
 Notes: **Hildryn** parts come from the Exploiter Orb fight — no bounty tier/rotation.
 **Revenant** Chassis also drops from the Plague Star event (~40%); the recurring
@@ -69,7 +69,7 @@ when A/B/C are equal within the chosen tier.
   not a solNode at all). This is why we curate the zone→frame mapping rather
   than auto-parse.
 - Caliban drops in **both** Plains and Orb Vallis (Narmer Bounties, post
-  *The New War*); chances are identical in both zones.
+  _The New War_); chances are identical in both zones.
 - Qorvex's components come from **Sanctum Anatomica / Albrecht's Laboratories**
   (Cavia) bounties — a Deimos sub-zone with no star-chart solNode.
 
@@ -99,9 +99,10 @@ export interface OpenWorldFarm {
 
 The farm (frame × zone) is the unit for placement — Caliban has two farms
 (Plains + Vallis). The **bounty stage lives on the part** (`chance` + `bountyTier`
-+ `rotation`), not on the farm, because a part's stage is identical across the
-zones it drops in (Caliban's Chassis is Rot B in both Cetus and Orb Vallis). A
-frame appears in a region's panel iff it has a farm whose `regionId` matches.
+
+- `rotation`), not on the farm, because a part's stage is identical across the
+  zones it drops in (Caliban's Chassis is Rot B in both Cetus and Orb Vallis). A
+  frame appears in a region's panel iff it has a farm whose `regionId` matches.
 
 `Warframe.nodeId` is set to the frame's **primary** zone node so the command
 palette (`buildPaletteItems`, which requires `frame.nodeId`) includes it.

@@ -24,11 +24,13 @@
 ### Task 1: Data model — `OpenWorldFarm`, part stage fields, seed field
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts`
 - Modify: `src/lib/data/seed.ts`
 - Test: `src/lib/data/seed.test.ts` (add one assertion)
 
 **Interfaces:**
+
 - Produces: `OpenWorldFarm { frameId: string; nodeId: string; regionId: string; componentSource: string; bpSource: string }`; `WarframePart` gains optional `bountyTier?: string` and `rotation?: string`; `Dataset` gains `openWorldFarms: OpenWorldFarm[]`.
 
 - [ ] **Step 1: Write the failing test**
@@ -36,10 +38,10 @@
 Add to `src/lib/data/seed.test.ts` inside the existing `describe('seed dataset', ...)`:
 
 ```ts
-	it('carries an openWorldFarms array (empty in the seed)', () => {
-		expect(Array.isArray(seed.openWorldFarms)).toBe(true);
-		expect(seed.openWorldFarms).toHaveLength(0);
-	});
+it('carries an openWorldFarms array (empty in the seed)', () => {
+	expect(Array.isArray(seed.openWorldFarms)).toBe(true);
+	expect(seed.openWorldFarms).toHaveLength(0);
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -128,10 +130,12 @@ git commit -m "feat(model): add OpenWorldFarm + part bounty-stage fields"
 ### Task 2: `bestBountyStage` pure helper
 
 **Files:**
+
 - Modify: `scripts/data/build.ts` (add exported helper + `BountyStage` type)
 - Test: `scripts/data/build.test.ts` (new `describe` block)
 
 **Interfaces:**
+
 - Produces: `interface BountyStage { chance: number; bountyTier?: string; rotation?: string }` and `bestBountyStage(drops: { location: string; chance?: number }[]): BountyStage | null`.
 - Selection rule: sum chances per exact location string; group those by (zone, tier); a group's chance is its best rotation and it records the rotations achieving that max; the winning group is the highest chance, ties broken by **lowest** tier level; rotation label is `"any"` when all of A/B/C tie, `undefined` when there is no rotation, else the tied rotations sorted and joined with `/`. Drops whose location contains "Plague Star" are excluded (time-limited event).
 
@@ -171,8 +175,14 @@ describe('bestBountyStage', () => {
 
 	it('breaks a tie toward the lower tier', () => {
 		const drops = [
-			{ location: 'Deimos/Cambion Drift (Level 100 - 100 Cambion Drift Bounty), Rotation A', chance: 28.3 },
-			{ location: 'Deimos/Cambion Drift (Level 40 - 60 Cambion Drift Bounty), Rotation A', chance: 28.3 },
+			{
+				location: 'Deimos/Cambion Drift (Level 100 - 100 Cambion Drift Bounty), Rotation A',
+				chance: 28.3,
+			},
+			{
+				location: 'Deimos/Cambion Drift (Level 40 - 60 Cambion Drift Bounty), Rotation A',
+				chance: 28.3,
+			},
 		];
 		const s = bestBountyStage(drops)!;
 		expect(s.bountyTier).toBe('L40–60');
@@ -181,8 +191,14 @@ describe('bestBountyStage', () => {
 
 	it('joins partial tied rotations (A/B, no C)', () => {
 		const drops = [
-			{ location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation A', chance: 26 },
-			{ location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation B', chance: 26 },
+			{
+				location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation A',
+				chance: 26,
+			},
+			{
+				location: 'Deimos/Cambion Drift (Level 30 - 40 Cambion Drift Bounty), Rotation B',
+				chance: 26,
+			},
 		];
 		expect(bestBountyStage(drops)!.rotation).toBe('A/B');
 	});
@@ -212,7 +228,9 @@ describe('bestBountyStage', () => {
 
 	it('returns null when there are no eligible drops', () => {
 		expect(bestBountyStage([])).toBeNull();
-		expect(bestBountyStage([{ location: 'Earth/Cetus (Level 15 - 25 Plague Star)', chance: 5 }])).toBeNull();
+		expect(
+			bestBountyStage([{ location: 'Earth/Cetus (Level 15 - 25 Plague Star)', chance: 5 }]),
+		).toBeNull();
 	});
 });
 ```
@@ -235,7 +253,9 @@ export interface BountyStage {
 
 /** Pick the single best bounty stage (tier + rotation) a component drops at.
  * See the plan's Task 2 for the full selection rule. */
-export function bestBountyStage(drops: { location: string; chance?: number }[]): BountyStage | null {
+export function bestBountyStage(
+	drops: { location: string; chance?: number }[],
+): BountyStage | null {
 	const eligible = drops.filter((d) => d.location && !/Plague Star/i.test(d.location));
 	if (!eligible.length) return null;
 
@@ -298,10 +318,12 @@ git commit -m "feat(data): bestBountyStage helper for open-world drop stages"
 ### Task 3: `buildOpenWorldFrames`
 
 **Files:**
+
 - Modify: `scripts/data/build.ts` (extract `ORDER` to module scope; add `buildOpenWorldFrames`)
 - Test: `scripts/data/build.test.ts` (new `describe` block)
 
 **Interfaces:**
+
 - Consumes: `bestBountyStage` (Task 2); existing `SLOT_BY_COMPONENT`, `slugify`, `partId`, `RawWarframe`, `Slot`, `WarframePart`, `Warframe`; `OpenWorldFarm` (Task 1).
 - Produces: `buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldFarm[]): Warframe[]` — one `Warframe` per unique `farms[].frameId` found (by `slugify(name)`), `nodeId` = that frame's first-listed farm node, component parts carry `dropSourceNodeId` (= primary node), `chance`, `bountyTier`, `rotation`; bp part carries none.
 
@@ -321,15 +343,18 @@ describe('buildOpenWorldFrames', () => {
 		imageName: 'gara.png',
 		components: [
 			{ name: 'Blueprint', drops: [] },
-			{ name: 'Chassis', drops: [
-				{ location: 'Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation A', chance: 45.45 },
-			] },
-			{ name: 'Neuroptics', drops: [
-				{ location: 'Earth/Cetus (Level 20 - 40 Cetus Bounty), Rotation C', chance: 46.7 },
-			] },
-			{ name: 'Systems', drops: [
-				{ location: 'Earth/Cetus (Level 10 - 30 Cetus Bounty), Rotation A', chance: 44.8 },
-			] },
+			{
+				name: 'Chassis',
+				drops: [{ location: 'Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation A', chance: 45.45 }],
+			},
+			{
+				name: 'Neuroptics',
+				drops: [{ location: 'Earth/Cetus (Level 20 - 40 Cetus Bounty), Rotation C', chance: 46.7 }],
+			},
+			{
+				name: 'Systems',
+				drops: [{ location: 'Earth/Cetus (Level 10 - 30 Cetus Bounty), Rotation A', chance: 44.8 }],
+			},
 		],
 	};
 	const caliban: RawWarframe = {
@@ -338,16 +363,40 @@ describe('buildOpenWorldFrames', () => {
 		type: 'Warframe',
 		components: [
 			{ name: 'Blueprint', drops: [] },
-			{ name: 'Chassis', drops: [
-				{ location: 'Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B', chance: 21.1 },
-				{ location: 'Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B', chance: 21.1 },
-			] },
+			{
+				name: 'Chassis',
+				drops: [
+					{ location: 'Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B', chance: 21.1 },
+					{
+						location: 'Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B',
+						chance: 21.1,
+					},
+				],
+			},
 		],
 	};
 	const farms: OpenWorldFarm[] = [
-		{ frameId: 'gara', nodeId: 'SolNode228', regionId: 'earth', componentSource: 'Cetus Bounty', bpSource: "Complete Saya's Vigil" },
-		{ frameId: 'caliban', nodeId: 'SolNode228', regionId: 'earth', componentSource: 'Narmer Bounty', bpSource: 'Market (50,000cr)' },
-		{ frameId: 'caliban', nodeId: 'SolNode129', regionId: 'venus', componentSource: 'Narmer Bounty', bpSource: 'Market (50,000cr)' },
+		{
+			frameId: 'gara',
+			nodeId: 'SolNode228',
+			regionId: 'earth',
+			componentSource: 'Cetus Bounty',
+			bpSource: "Complete Saya's Vigil",
+		},
+		{
+			frameId: 'caliban',
+			nodeId: 'SolNode228',
+			regionId: 'earth',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
+		{
+			frameId: 'caliban',
+			nodeId: 'SolNode129',
+			regionId: 'venus',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
 	];
 
 	it('builds one frame per farmed id, linked to its primary (first) node', () => {
@@ -360,7 +409,11 @@ describe('buildOpenWorldFrames', () => {
 	it('sets chance/tier/rotation on component parts and nothing on the bp part', () => {
 		const gaEntry = buildOpenWorldFrames([gara], farms).find((f) => f.id === 'gara')!;
 		const chassis = gaEntry.parts.find((p) => p.slot === 'chassis')!;
-		expect(chassis).toMatchObject({ dropSourceNodeId: 'SolNode228', bountyTier: 'L5–15', rotation: 'A' });
+		expect(chassis).toMatchObject({
+			dropSourceNodeId: 'SolNode228',
+			bountyTier: 'L5–15',
+			rotation: 'A',
+		});
 		expect(chassis.chance).toBeCloseTo(45.45, 1);
 		const bp = gaEntry.parts.find((p) => p.slot === 'bp')!;
 		expect(bp.chance).toBeUndefined();
@@ -462,10 +515,12 @@ git commit -m "feat(data): buildOpenWorldFrames builds frames from bounty drops"
 ### Task 4: Curated open-world data (`openworld.ts`)
 
 **Files:**
+
 - Create: `scripts/data/openworld.ts`
 - Test: `scripts/data/openworld.test.ts`
 
 **Interfaces:**
+
 - Produces: `OPEN_WORLD_SOLNODES: SolNodes` (the curated Albrecht's Laboratories pseudo-node) and `OPEN_WORLD_FARMS: OpenWorldFarm[]` (8 entries — Caliban twice).
 
 - [ ] **Step 1: Write the failing tests**
@@ -545,14 +600,62 @@ export const OPEN_WORLD_SOLNODES: SolNodes = {
 // zone placement and the source/blueprint labels are curated here. bpSource
 // values verified against the Warframe wiki (see the design spec).
 export const OPEN_WORLD_FARMS: OpenWorldFarm[] = [
-	{ frameId: 'gara', nodeId: 'SolNode228', regionId: 'earth', componentSource: 'Cetus Bounty', bpSource: "Complete Saya's Vigil" },
-	{ frameId: 'revenant', nodeId: 'SolNode228', regionId: 'earth', componentSource: 'Cetus Bounty', bpSource: 'Complete Mask of the Revenant' },
-	{ frameId: 'caliban', nodeId: 'SolNode228', regionId: 'earth', componentSource: 'Narmer Bounty', bpSource: 'Market (50,000cr)' },
-	{ frameId: 'garuda', nodeId: 'SolNode129', regionId: 'venus', componentSource: 'Orb Vallis Bounty', bpSource: 'Complete Vox Solaris' },
-	{ frameId: 'hildryn', nodeId: 'SolNode129', regionId: 'venus', componentSource: 'Exploiter Orb', bpSource: 'Little Duck (Vox Solaris standing)' },
-	{ frameId: 'caliban', nodeId: 'SolNode129', regionId: 'venus', componentSource: 'Narmer Bounty', bpSource: 'Market (50,000cr)' },
-	{ frameId: 'xaku', nodeId: 'SolNode229', regionId: 'deimos', componentSource: 'Cambion Drift Bounty', bpSource: 'Complete Heart of Deimos' },
-	{ frameId: 'qorvex', nodeId: 'CuratedAlbrechtLabs', regionId: 'deimos', componentSource: "Albrecht's Laboratories Bounty", bpSource: 'Complete Whispers in the Walls' },
+	{
+		frameId: 'gara',
+		nodeId: 'SolNode228',
+		regionId: 'earth',
+		componentSource: 'Cetus Bounty',
+		bpSource: "Complete Saya's Vigil",
+	},
+	{
+		frameId: 'revenant',
+		nodeId: 'SolNode228',
+		regionId: 'earth',
+		componentSource: 'Cetus Bounty',
+		bpSource: 'Complete Mask of the Revenant',
+	},
+	{
+		frameId: 'caliban',
+		nodeId: 'SolNode228',
+		regionId: 'earth',
+		componentSource: 'Narmer Bounty',
+		bpSource: 'Market (50,000cr)',
+	},
+	{
+		frameId: 'garuda',
+		nodeId: 'SolNode129',
+		regionId: 'venus',
+		componentSource: 'Orb Vallis Bounty',
+		bpSource: 'Complete Vox Solaris',
+	},
+	{
+		frameId: 'hildryn',
+		nodeId: 'SolNode129',
+		regionId: 'venus',
+		componentSource: 'Exploiter Orb',
+		bpSource: 'Little Duck (Vox Solaris standing)',
+	},
+	{
+		frameId: 'caliban',
+		nodeId: 'SolNode129',
+		regionId: 'venus',
+		componentSource: 'Narmer Bounty',
+		bpSource: 'Market (50,000cr)',
+	},
+	{
+		frameId: 'xaku',
+		nodeId: 'SolNode229',
+		regionId: 'deimos',
+		componentSource: 'Cambion Drift Bounty',
+		bpSource: 'Complete Heart of Deimos',
+	},
+	{
+		frameId: 'qorvex',
+		nodeId: 'CuratedAlbrechtLabs',
+		regionId: 'deimos',
+		componentSource: "Albrecht's Laboratories Bounty",
+		bpSource: 'Complete Whispers in the Walls',
+	},
 ];
 ```
 
@@ -573,10 +676,12 @@ git commit -m "feat(data): curated open-world zone/frame table"
 ### Task 5: Assemble integration + validation
 
 **Files:**
+
 - Modify: `scripts/data/assemble.ts`
 - Test: `scripts/data/assemble.test.ts`
 
 **Interfaces:**
+
 - Consumes: `buildOpenWorldFrames` (Task 3), `OPEN_WORLD_SOLNODES`/`OPEN_WORLD_FARMS` (Task 4).
 - Produces: `assembleDataset(...)` result now includes open-world frames in `warframes`, the Albrecht's Laboratories node on Deimos, and a populated `openWorldFarms`; `validateDataset` reports dangling `openWorldFarms` refs.
 
@@ -595,39 +700,40 @@ In `scripts/data/assemble.test.ts`:
 2. Add a helper + open-world warframes and fold them into the shared `ds`. Replace the line `const ds = assembleDataset(solNodes, warframes, rawResources);` inside `describe('assembleDataset', ...)` with:
 
 ```ts
-	const ow = (name: string): RawWarframe => ({
-		name,
-		uniqueName: `/Lotus/Powersuits/${name}/${name}`,
-		type: 'Warframe',
-		components: [
-			{ name: 'Blueprint', drops: [] },
-			{ name: 'Chassis', drops: [
-				{ location: 'Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation A', chance: 30 },
-			] },
-		],
-	});
-	const owWarframes = ['Gara', 'Revenant', 'Garuda', 'Hildryn', 'Xaku', 'Qorvex', 'Caliban'].map(ow);
-	const ds = assembleDataset(solNodes, [...warframes, ...owWarframes], rawResources);
+const ow = (name: string): RawWarframe => ({
+	name,
+	uniqueName: `/Lotus/Powersuits/${name}/${name}`,
+	type: 'Warframe',
+	components: [
+		{ name: 'Blueprint', drops: [] },
+		{
+			name: 'Chassis',
+			drops: [{ location: 'Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation A', chance: 30 }],
+		},
+	],
+});
+const owWarframes = ['Gara', 'Revenant', 'Garuda', 'Hildryn', 'Xaku', 'Qorvex', 'Caliban'].map(ow);
+const ds = assembleDataset(solNodes, [...warframes, ...owWarframes], rawResources);
 ```
 
 3. Add assertions inside the same `describe`:
 
 ```ts
-	it('attaches the 8 open-world farms and builds their frames', () => {
-		expect(ds.openWorldFarms).toHaveLength(8);
-		for (const id of ['gara', 'xaku', 'caliban', 'qorvex']) {
-			expect(ds.warframes.some((f) => f.id === id)).toBe(true);
-		}
-	});
-	it('injects Albrecht’s Laboratories as a Free Roam node on Deimos', () => {
-		const n = ds.nodes.find((x) => x.id === 'CuratedAlbrechtLabs')!;
-		expect(n).toMatchObject({ regionId: 'deimos', missionType: 'Free Roam', isAssassination: false });
-	});
-	it('detects a dangling open-world farm frame', () => {
-		const broken = structuredClone(ds);
-		broken.openWorldFarms[0].frameId = 'ghostframe';
-		expect(validateDataset(broken).join(' ')).toMatch(/ghostframe/);
-	});
+it('attaches the 8 open-world farms and builds their frames', () => {
+	expect(ds.openWorldFarms).toHaveLength(8);
+	for (const id of ['gara', 'xaku', 'caliban', 'qorvex']) {
+		expect(ds.warframes.some((f) => f.id === id)).toBe(true);
+	}
+});
+it('injects Albrecht’s Laboratories as a Free Roam node on Deimos', () => {
+	const n = ds.nodes.find((x) => x.id === 'CuratedAlbrechtLabs')!;
+	expect(n).toMatchObject({ regionId: 'deimos', missionType: 'Free Roam', isAssassination: false });
+});
+it('detects a dangling open-world farm frame', () => {
+	const broken = structuredClone(ds);
+	broken.openWorldFarms[0].frameId = 'ghostframe';
+	expect(validateDataset(broken).join(' ')).toMatch(/ghostframe/);
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -642,7 +748,14 @@ In `scripts/data/assemble.ts`:
 Add imports:
 
 ```ts
-import { buildRegions, buildNodes, buildFrames, buildOpenWorldFrames, type SolNodes, type RawWarframe } from './build';
+import {
+	buildRegions,
+	buildNodes,
+	buildFrames,
+	buildOpenWorldFrames,
+	type SolNodes,
+	type RawWarframe,
+} from './build';
 import { OPEN_WORLD_SOLNODES, OPEN_WORLD_FARMS } from './openworld';
 ```
 
@@ -651,43 +764,43 @@ import { OPEN_WORLD_SOLNODES, OPEN_WORLD_FARMS } from './openworld';
 In `assembleDataset`, change the solNodes merge and the return. Replace:
 
 ```ts
-	const allSolNodes = { ...solNodes, ...KEY_BOSS_SOLNODES };
+const allSolNodes = { ...solNodes, ...KEY_BOSS_SOLNODES };
 ```
 
 with:
 
 ```ts
-	const allSolNodes = { ...solNodes, ...KEY_BOSS_SOLNODES, ...OPEN_WORLD_SOLNODES };
+const allSolNodes = { ...solNodes, ...KEY_BOSS_SOLNODES, ...OPEN_WORLD_SOLNODES };
 ```
 
 Before the `return`, build the open-world frames:
 
 ```ts
-	const openWorldFrames = buildOpenWorldFrames(warframes, OPEN_WORLD_FARMS);
+const openWorldFrames = buildOpenWorldFrames(warframes, OPEN_WORLD_FARMS);
 ```
 
 Replace the return with:
 
 ```ts
-	return {
-		regions,
-		nodes,
-		bosses,
-		warframes: [...frames, ...openWorldFrames],
-		resources,
-		quests: QUESTS,
-		openWorldFarms: OPEN_WORLD_FARMS,
-	};
+return {
+	regions,
+	nodes,
+	bosses,
+	warframes: [...frames, ...openWorldFrames],
+	resources,
+	quests: QUESTS,
+	openWorldFarms: OPEN_WORLD_FARMS,
+};
 ```
 
 In `validateDataset`, after the quest checks (before `return problems;`), add:
 
 ```ts
-	for (const f of ds.openWorldFarms) {
-		if (!frameIds.has(f.frameId)) problems.push(`open-world farm → missing frame ${f.frameId}`);
-		if (!nodeIds.has(f.nodeId)) problems.push(`open-world farm → missing node ${f.nodeId}`);
-		if (!regionIds.has(f.regionId)) problems.push(`open-world farm → missing region ${f.regionId}`);
-	}
+for (const f of ds.openWorldFarms) {
+	if (!frameIds.has(f.frameId)) problems.push(`open-world farm → missing frame ${f.frameId}`);
+	if (!nodeIds.has(f.nodeId)) problems.push(`open-world farm → missing node ${f.nodeId}`);
+	if (!regionIds.has(f.regionId)) problems.push(`open-world farm → missing region ${f.regionId}`);
+}
 ```
 
 (`frameIds`, `nodeIds`, `regionIds` are already declared at the top of `validateDataset`.)
@@ -709,10 +822,12 @@ git commit -m "feat(data): assemble open-world frames + farms, validate refs"
 ### Task 6: Pipeline sanity checks + regenerate dataset
 
 **Files:**
+
 - Modify: `scripts/build-data.ts`
 - Regenerate: `static/data/dataset.json`
 
 **Interfaces:**
+
 - Consumes: the full pipeline (Tasks 1–5). No new exported symbols.
 
 - [ ] **Step 1: Add sanity floors**
@@ -720,19 +835,21 @@ git commit -m "feat(data): assemble open-world frames + farms, validate refs"
 In `scripts/build-data.ts`, after the resources floor block (`if (data.resources.length < 27) { … }`) and before `mkdirSync(...)`, add:
 
 ```ts
-	// Open-world frames floor: the 7 curated bounty frames must be built and all
-	// 8 farms attached (Gara/Revenant/Caliban on Plains, Garuda/Hildryn/Caliban
-	// on Orb Vallis, Xaku on Cambion Drift, Qorvex on Albrecht's Laboratories).
-	if (data.openWorldFarms.length < 8) {
-		console.error(`Sanity check failed (expected >=8 open-world farms, got ${data.openWorldFarms.length})`);
+// Open-world frames floor: the 7 curated bounty frames must be built and all
+// 8 farms attached (Gara/Revenant/Caliban on Plains, Garuda/Hildryn/Caliban
+// on Orb Vallis, Xaku on Cambion Drift, Qorvex on Albrecht's Laboratories).
+if (data.openWorldFarms.length < 8) {
+	console.error(
+		`Sanity check failed (expected >=8 open-world farms, got ${data.openWorldFarms.length})`,
+	);
+	process.exit(1);
+}
+for (const id of ['gara', 'xaku', 'caliban', 'qorvex']) {
+	if (!data.warframes.some((f) => f.id === id)) {
+		console.error(`Sanity check failed: open-world frame ${id} not built`);
 		process.exit(1);
 	}
-	for (const id of ['gara', 'xaku', 'caliban', 'qorvex']) {
-		if (!data.warframes.some((f) => f.id === id)) {
-			console.error(`Sanity check failed: open-world frame ${id} not built`);
-			process.exit(1);
-		}
-	}
+}
 ```
 
 - [ ] **Step 2: Regenerate the dataset**
@@ -767,10 +884,12 @@ git commit -m "chore(data): rebuild dataset with open-world frames"
 ### Task 7: RegionPanel renders open-world zones
 
 **Files:**
+
 - Modify: `src/lib/panel/RegionPanel.svelte`
 - Test: `src/lib/panel/RegionPanel.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `dataset.openWorldFarms` (may be `undefined` in hand-built fixtures — guard with `?? []`), `WarframePart.bountyTier`/`rotation`/`chance`, existing `tracker` API (`frameCount`, `isOwned`, `togglePart`, `toggleFrame`).
 - Produces: open-world zones grouped by node and rendered below assassination blocks; each component part row shows `{componentSource} · {tier} · Rot {rotation} · ~{chance}%` (Exploiter Orb rows omit tier/rotation); bp row shows `{bpSource}`.
 
@@ -783,30 +902,104 @@ Add to `src/lib/panel/RegionPanel.svelte.test.ts` (after the existing fixtures, 
 // Vallis), plus Hildryn on venus via Exploiter Orb (no bounty tier/rotation).
 const openWorld: Dataset = {
 	regions: [
-		{ id: 'earth', name: 'Earth', kind: 'planet', progressionOrder: 1, factions: ['Grineer'], nodeIds: ['plains'], spoilerGated: false, resourceIds: [] },
-		{ id: 'venus', name: 'Venus', kind: 'planet', progressionOrder: 2, factions: ['Corpus'], nodeIds: ['vallis'], spoilerGated: false, resourceIds: [] },
+		{
+			id: 'earth',
+			name: 'Earth',
+			kind: 'planet',
+			progressionOrder: 1,
+			factions: ['Grineer'],
+			nodeIds: ['plains'],
+			spoilerGated: false,
+			resourceIds: [],
+		},
+		{
+			id: 'venus',
+			name: 'Venus',
+			kind: 'planet',
+			progressionOrder: 2,
+			factions: ['Corpus'],
+			nodeIds: ['vallis'],
+			spoilerGated: false,
+			resourceIds: [],
+		},
 	],
 	nodes: [
-		{ id: 'plains', regionId: 'earth', name: 'Plains of Eidolon', missionType: 'Free Roam', faction: 'Grineer', isAssassination: false },
-		{ id: 'vallis', regionId: 'venus', name: 'Orb Vallis', missionType: 'Free Roam', faction: 'Corpus', isAssassination: false },
+		{
+			id: 'plains',
+			regionId: 'earth',
+			name: 'Plains of Eidolon',
+			missionType: 'Free Roam',
+			faction: 'Grineer',
+			isAssassination: false,
+		},
+		{
+			id: 'vallis',
+			regionId: 'venus',
+			name: 'Orb Vallis',
+			missionType: 'Free Roam',
+			faction: 'Corpus',
+			isAssassination: false,
+		},
 	],
 	bosses: [],
 	warframes: [
-		{ id: 'caliban', name: 'Caliban', nodeId: 'plains', parts: [
-			{ id: 'caliban:bp', frameId: 'caliban', slot: 'bp' },
-			{ id: 'caliban:chassis', frameId: 'caliban', slot: 'chassis', dropSourceNodeId: 'plains', chance: 21.1, bountyTier: 'L50–70', rotation: 'B' },
-		] },
-		{ id: 'hildryn', name: 'Hildryn', nodeId: 'vallis', parts: [
-			{ id: 'hildryn:bp', frameId: 'hildryn', slot: 'bp' },
-			{ id: 'hildryn:chassis', frameId: 'hildryn', slot: 'chassis', dropSourceNodeId: 'vallis', chance: 38.72 },
-		] },
+		{
+			id: 'caliban',
+			name: 'Caliban',
+			nodeId: 'plains',
+			parts: [
+				{ id: 'caliban:bp', frameId: 'caliban', slot: 'bp' },
+				{
+					id: 'caliban:chassis',
+					frameId: 'caliban',
+					slot: 'chassis',
+					dropSourceNodeId: 'plains',
+					chance: 21.1,
+					bountyTier: 'L50–70',
+					rotation: 'B',
+				},
+			],
+		},
+		{
+			id: 'hildryn',
+			name: 'Hildryn',
+			nodeId: 'vallis',
+			parts: [
+				{ id: 'hildryn:bp', frameId: 'hildryn', slot: 'bp' },
+				{
+					id: 'hildryn:chassis',
+					frameId: 'hildryn',
+					slot: 'chassis',
+					dropSourceNodeId: 'vallis',
+					chance: 38.72,
+				},
+			],
+		},
 	],
 	resources: [],
 	quests: [],
 	openWorldFarms: [
-		{ frameId: 'caliban', nodeId: 'plains', regionId: 'earth', componentSource: 'Narmer Bounty', bpSource: 'Market (50,000cr)' },
-		{ frameId: 'caliban', nodeId: 'vallis', regionId: 'venus', componentSource: 'Narmer Bounty', bpSource: 'Market (50,000cr)' },
-		{ frameId: 'hildryn', nodeId: 'vallis', regionId: 'venus', componentSource: 'Exploiter Orb', bpSource: 'Little Duck (Vox Solaris standing)' },
+		{
+			frameId: 'caliban',
+			nodeId: 'plains',
+			regionId: 'earth',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
+		{
+			frameId: 'caliban',
+			nodeId: 'vallis',
+			regionId: 'venus',
+			componentSource: 'Narmer Bounty',
+			bpSource: 'Market (50,000cr)',
+		},
+		{
+			frameId: 'hildryn',
+			nodeId: 'vallis',
+			regionId: 'venus',
+			componentSource: 'Exploiter Orb',
+			bpSource: 'Little Duck (Vox Solaris standing)',
+		},
 	],
 };
 
@@ -860,39 +1053,47 @@ Edit `src/lib/panel/RegionPanel.svelte`. (Use the `svelte:svelte-file-editor` ag
 3a. Extend the `<script>` imports and derivations. Add `OpenWorldFarm` and `WarframePart` to the type import:
 
 ```ts
-	import type { Boss, Dataset, OpenWorldFarm, StarNode, Warframe, WarframePart } from '$lib/model/types';
+import type {
+	Boss,
+	Dataset,
+	OpenWorldFarm,
+	StarNode,
+	Warframe,
+	WarframePart,
+} from '$lib/model/types';
 ```
 
 Add, after the existing `entries` derivation:
 
 ```ts
-	// Open-world zones for this region: group the region's farms by zone node,
-	// joined to the node + frame. Guarded for hand-built fixtures without farms.
-	type OWEntry = { frame: Warframe; farm: OpenWorldFarm };
-	type OWZone = { node: StarNode; entries: OWEntry[] };
-	let openWorldZones = $derived.by<OWZone[]>(() => {
-		const farms = (dataset.openWorldFarms ?? []).filter((f) => f.regionId === regionId);
-		const byNode = new Map<string, OWZone>();
-		for (const farm of farms) {
-			const node = dataset.nodes.find((n) => n.id === farm.nodeId);
-			const frame = dataset.warframes.find((w) => w.id === farm.frameId);
-			if (!node || !frame) continue;
-			const zone = byNode.get(node.id) ?? { node, entries: [] };
-			zone.entries.push({ frame, farm });
-			byNode.set(node.id, zone);
-		}
-		return [...byNode.values()];
-	});
-
-	// Source label for an open-world part row: bp shows its bpSource; components
-	// show "{source} · {tier} · Rot {rotation} · ~{chance}%", omitting the tier /
-	// rotation for non-bounty sources (Exploiter Orb) that carry neither.
-	function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
-		if (part.slot === 'bp') return farm.bpSource;
-		const rot = part.rotation === 'any' ? 'any rot' : part.rotation ? `Rot ${part.rotation}` : undefined;
-		const chance = part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
-		return [farm.componentSource, part.bountyTier, rot, chance].filter(Boolean).join(' · ');
+// Open-world zones for this region: group the region's farms by zone node,
+// joined to the node + frame. Guarded for hand-built fixtures without farms.
+type OWEntry = { frame: Warframe; farm: OpenWorldFarm };
+type OWZone = { node: StarNode; entries: OWEntry[] };
+let openWorldZones = $derived.by<OWZone[]>(() => {
+	const farms = (dataset.openWorldFarms ?? []).filter((f) => f.regionId === regionId);
+	const byNode = new Map<string, OWZone>();
+	for (const farm of farms) {
+		const node = dataset.nodes.find((n) => n.id === farm.nodeId);
+		const frame = dataset.warframes.find((w) => w.id === farm.frameId);
+		if (!node || !frame) continue;
+		const zone = byNode.get(node.id) ?? { node, entries: [] };
+		zone.entries.push({ frame, farm });
+		byNode.set(node.id, zone);
 	}
+	return [...byNode.values()];
+});
+
+// Source label for an open-world part row: bp shows its bpSource; components
+// show "{source} · {tier} · Rot {rotation} · ~{chance}%", omitting the tier /
+// rotation for non-bounty sources (Exploiter Orb) that carry neither.
+function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
+	if (part.slot === 'bp') return farm.bpSource;
+	const rot =
+		part.rotation === 'any' ? 'any rot' : part.rotation ? `Rot ${part.rotation}` : undefined;
+	const chance = part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
+	return [farm.componentSource, part.bountyTier, rot, chance].filter(Boolean).join(' · ');
+}
 ```
 
 3b. Extract a shared `frameCard` snippet. Inside the assassination `{#each entries …}` block, the existing markup renders: the frame avatar + name + owned count, the "Blueprint from Market · components from {boss}" sub-line, the dual-aspect note, the part-rows list, and the "Toggle whole frame" button. Wrap that reusable part in a snippet defined in the template (Svelte 5 `{#snippet}`), parameterised by the sub-line text and a per-part source function:
@@ -1041,6 +1242,7 @@ git add -A && git commit -m "chore: open-world frames verification fixups" || ec
 ## Self-Review
 
 **Spec coverage:**
+
 - Frames covered (7, Caliban twice) → Tasks 4 (farms), 3 (build), 6 (regenerate). ✓
 - `OpenWorldFarm` + part `bountyTier`/`rotation` + `Dataset.openWorldFarms` → Task 1. ✓
 - Curated zones incl. Albrecht's Laboratories pseudo-node → Task 4; injected on Deimos → Task 5. ✓
