@@ -1,0 +1,177 @@
+<script lang="ts">
+	import type { Warframe, WarframePart } from '$lib/model/types';
+	import type { Tracker } from '$lib/tracker/tracker.svelte';
+
+	let {
+		frame,
+		tracker,
+		subLine,
+		faction,
+		kindLabel,
+		isKey = false,
+		defaultExpanded = true,
+		sourceText,
+		avail,
+		summary = null,
+	}: {
+		frame: Warframe;
+		tracker: Tracker;
+		subLine: string;
+		faction: string;
+		kindLabel: string;
+		isKey?: boolean;
+		defaultExpanded?: boolean;
+		sourceText: (part: WarframePart) => string;
+		avail?: (part: WarframePart) => { cls: string; text: string } | null;
+		summary?: { cls: string; text: string } | null;
+	} = $props();
+
+	const SLOT_LABEL = {
+		bp: 'Blueprint',
+		neuroptics: 'Neuroptics',
+		chassis: 'Chassis',
+		systems: 'Systems',
+		dayaspect: 'Day Aspect',
+		nightaspect: 'Night Aspect',
+	} as const;
+
+	// Equinox's day/night aspect slots get a decorative sun/moon glyph prefix.
+	const SLOT_ICON: Partial<Record<string, string>> = {
+		dayaspect: '☀',
+		nightaspect: '☾',
+	};
+
+	// Faction accent for the acquisition tag. Extend as new factions appear.
+	const FACTION_TAG: Record<string, string> = {
+		Corpus: 'border-sky-500/40 bg-sky-500/10 text-sky-300',
+		Grineer: 'border-orange-500/40 bg-orange-500/10 text-orange-300',
+		Infested: 'border-lime-500/40 bg-lime-500/10 text-lime-300',
+	};
+
+	// Captured ONCE at construction (smart-auto default). Seeding $state from the
+	// prop — rather than a $derived of tracker.frameCount — is deliberate: checking
+	// the last part must not snap an open card shut mid-interaction. A fresh initial
+	// state per visit comes from region-prefixed {#each} keys in RegionPanel.
+	let expanded = $state(defaultExpanded);
+	let count = $derived(tracker.frameCount(frame.id));
+	let done = $derived(count.total > 0 && count.owned === count.total);
+	let pct = $derived(
+		count.total ? Math.round((count.owned / count.total) * 100) : 0,
+	);
+</script>
+
+<div
+	data-frame={frame.id}
+	data-expanded={expanded}
+	class="rounded-xl border border-wf-edge bg-wf-panel p-4 {done
+		? 'opacity-60'
+		: ''}"
+>
+	<button
+		type="button"
+		class="flex w-full items-center gap-3 text-left"
+		aria-expanded={expanded}
+		onclick={() => (expanded = !expanded)}
+	>
+		<div
+			class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-wf-edge bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
+			aria-hidden="true"
+		>
+			{frame.name[0]}
+		</div>
+		<div class="min-w-0 flex-1">
+			<div class="flex items-center gap-2">
+				<span class="truncate font-semibold text-slate-100">{frame.name}</span>
+				<span
+					class="ml-auto shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
+						faction
+					] ?? 'border-wf-edge text-wf-muted'}"
+				>
+					{faction} · {kindLabel}{#if isKey}<span
+							data-key
+							class="text-wf-muted"
+						>
+							· key</span
+						>{/if}
+				</span>
+			</div>
+			<div class="mt-1 flex items-center gap-2">
+				<div class="h-1.5 flex-1 overflow-hidden rounded-full bg-wf-edge">
+					<div
+						class="h-full rounded-full {done ? 'bg-emerald-400' : 'bg-wf-cyan'}"
+						style="width: {pct}%"
+					></div>
+				</div>
+				<span
+					class="shrink-0 text-xs {done ? 'text-emerald-400' : 'text-wf-muted'}"
+				>
+					{#if done}✓ done{:else}{count.owned}/{count.total}{/if}
+				</span>
+				<span class="shrink-0 text-wf-muted" aria-hidden="true"
+					>{expanded ? '▾' : '▸'}</span
+				>
+			</div>
+			<div class="mt-0.5 text-xs text-wf-muted">{subLine}</div>
+		</div>
+	</button>
+
+	{#if expanded}
+		{#if frame.parts.some((p) => p.slot === 'dayaspect' || p.slot === 'nightaspect')}
+			<p class="mt-3 mb-2 text-xs text-wf-muted">
+				Assembled from its Day and Night aspects.
+			</p>
+		{/if}
+		<div class="mt-3 space-y-1">
+			{#each frame.parts as part (part.id)}
+				{@const owned = tracker.isOwned(part.id)}
+				<div
+					data-part={part.id}
+					data-owned={owned}
+					role="button"
+					tabindex="0"
+					class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
+						? 'border-emerald-500/30 bg-emerald-500/10'
+						: ''}"
+					onclick={() => tracker.togglePart(part.id)}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							if (e.key === ' ') e.preventDefault();
+							tracker.togglePart(part.id);
+						}
+					}}
+				>
+					<span
+						class="flex h-4 w-4 items-center justify-center rounded border text-[11px] {owned
+							? 'border-emerald-400 bg-emerald-400 text-slate-950'
+							: 'border-wf-edge text-transparent'}"
+					>
+						✓
+					</span>
+					<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
+						{#if SLOT_ICON[part.slot]}<span
+								aria-hidden="true"
+								class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
+							>{/if}{SLOT_LABEL[part.slot]}
+					</span>
+					<span class="ml-auto text-xs text-wf-muted">{sourceText(part)}</span>
+					{#if avail}
+						{@const chip = avail(part)}
+						{#if chip}
+							<span class="ml-2 shrink-0 text-[11px] {chip.cls}"
+								>{chip.text}</span
+							>
+						{/if}
+					{/if}
+				</div>
+			{/each}
+		</div>
+		<button
+			class="mt-3 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
+			onclick={() => tracker.toggleFrame(frame.id)}
+		>
+			✓ Toggle whole frame
+		</button>
+	{:else if summary}
+		<div class="mt-2 text-[11px] {summary.cls}">{summary.text}</div>
+	{/if}
+</div>
