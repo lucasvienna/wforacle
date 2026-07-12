@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
+import { tick } from 'svelte';
 import RegionPanel from './RegionPanel.svelte';
 import { seed } from '$lib/data/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
@@ -400,7 +401,7 @@ describe('RegionPanel', () => {
 	it('shows an empty state for a region with no assassination frame', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'mercury', tracker });
-		expect(screen.getByText(/no assassination frame/i)).toBeInTheDocument();
+		expect(screen.getByText(/no farmable frames/i)).toBeInTheDocument();
 	});
 	it('renders a frame block per assassination node in a region with multiple (Jupiter-shaped)', () => {
 		const tracker = createTracker(multiNodeRegion.warframes);
@@ -492,10 +493,11 @@ describe('RegionPanel', () => {
 		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
 		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
 	});
-	it('lays out the frame/resources grid with items-start (no forced equal-height stretch)', () => {
+	it('lays out a frames band alongside the resource rail', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
-		expect(document.querySelector('.grid.items-start')).toBeInTheDocument();
+		expect(document.querySelector('[data-region-band]')).toBeInTheDocument();
+		expect(document.querySelector('[data-resource-rail]')).toBeInTheDocument();
 	});
 	it('shows a "key" hint for bosses that require crafting a key (Mutalist Alad V)', () => {
 		const tracker = createTracker(mesaKeyRegion.warframes);
@@ -506,6 +508,37 @@ describe('RegionPanel', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
 		expect(document.querySelector('[data-key]')).toBeNull();
+	});
+	it('shows only the Assassination group header for an assassination-only region', () => {
+		const tracker = createTracker(seed.warframes);
+		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+		expect(screen.getByRole('heading', { name: 'Assassination' })).toBeInTheDocument();
+		expect(screen.queryByRole('heading', { name: 'Free Roam' })).toBeNull();
+	});
+
+	it('shows only the Free Roam group header for an open-world-only region', () => {
+		const tracker = createTracker(openWorld.warframes);
+		render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
+		expect(screen.getByRole('heading', { name: 'Free Roam' })).toBeInTheDocument();
+		expect(screen.queryByRole('heading', { name: 'Assassination' })).toBeNull();
+	});
+
+	it('re-derives expand state when the region changes (region-prefixed keys)', async () => {
+		const tracker = createTracker(openWorld.warframes);
+		const { rerender } = render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
+		// Caliban exists on both earth and venus; collapse it on earth...
+		(document.querySelector('[data-frame="caliban"] button') as HTMLElement).click();
+		await tick();
+		expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute(
+			'data-expanded',
+			'false',
+		);
+		// ...switching regions must mount a FRESH card (incomplete → expanded again).
+		await rerender({ dataset: openWorld, regionId: 'venus', tracker });
+		expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute(
+			'data-expanded',
+			'true',
+		);
 	});
 });
 

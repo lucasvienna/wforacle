@@ -1,20 +1,12 @@
 <script lang="ts">
-	import type {
-		Dataset,
-		OpenWorldFarm,
-		Warframe,
-		WarframePart,
-	} from '$lib/model/types';
-	import { regionFrames } from './regionFrames';
+	import type { Dataset, OpenWorldFarm, Warframe, WarframePart } from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
 	import { resourcesForRegion } from '$lib/model/resources';
+	import { regionFrames } from './regionFrames';
+	import FrameCard from './FrameCard.svelte';
 	import ResourceRail from './ResourceRail.svelte';
 	import type { WorldState } from '$lib/worldstate/types';
-	import {
-		partAvailability,
-		nextActiveAt,
-		formatCountdown,
-	} from '$lib/worldstate/availability';
+	import { partAvailability, nextActiveAt, formatCountdown } from '$lib/worldstate/availability';
 
 	let {
 		dataset,
@@ -30,32 +22,8 @@
 		now?: number;
 	} = $props();
 
-	const SLOT_LABEL = {
-		bp: 'Blueprint',
-		neuroptics: 'Neuroptics',
-		chassis: 'Chassis',
-		systems: 'Systems',
-		dayaspect: 'Day Aspect',
-		nightaspect: 'Night Aspect',
-	} as const;
-
-	// Equinox's dayaspect/nightaspect slots get a sun/moon glyph prefix in
-	// the part-row label — purely decorative, additive to SLOT_LABEL text.
-	const SLOT_ICON: Partial<Record<string, string>> = {
-		dayaspect: '☀',
-		nightaspect: '☾',
-	};
-
-	// Faction accent for the assassination tag. Extend as new factions appear.
-	const FACTION_TAG: Record<string, string> = {
-		Corpus: 'border-sky-500/40 bg-sky-500/10 text-sky-300',
-		Grineer: 'border-orange-500/40 bg-orange-500/10 text-orange-300',
-		Infested: 'border-lime-500/40 bg-lime-500/10 text-lime-300',
-	};
-
 	// Bosses that require crafting a key item before the node can be played
-	// (e.g. Mutalist Alad V Assassinate key, Jordas Golem key). Presentational
-	// hint only — not a spoiler gate.
+	// (Mutalist Alad V, Jordas Golem). Presentational hint only — not a spoiler gate.
 	const KEY_BOSSES = new Set(['Mutalist Alad V', 'Jordas Golem']);
 
 	let region = $derived(dataset.regions.find((r) => r.id === regionId));
@@ -68,8 +36,8 @@
 	}
 
 	// Source label for an open-world part row: bp shows its bpSource; components
-	// show "{source} · {tier} · Rot {rotation} · ~{chance}%", omitting the tier /
-	// rotation for non-bounty sources (Exploiter Orb) that carry neither.
+	// show "{source} · {tier} · Rot {rotation} · ~{chance}%", omitting tier/rotation
+	// for non-bounty sources (Exploiter Orb) that carry neither.
 	function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
 		if (part.slot === 'bp') return farm.bpSource;
 		const rot =
@@ -78,11 +46,8 @@
 				: part.rotation
 					? `Rot ${part.rotation}`
 					: undefined;
-		const chance =
-			part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
-		return [farm.componentSource, part.bountyTier, rot, chance]
-			.filter(Boolean)
-			.join(' · ');
+		const chance = part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
+		return [farm.componentSource, part.bountyTier, rot, chance].filter(Boolean).join(' · ');
 	}
 
 	const ZONE_CYCLE: Record<string, 'cetus' | 'vallis' | 'cambion'> = {
@@ -108,11 +73,9 @@
 		return `${CYCLE_GLYPH[cyc.state] ?? ''} ${cyc.state} · ${formatCountdown(new Date(cyc.expiry).getTime() - now)}`;
 	}
 
-	// Availability chip for an open-world component row. Null → render nothing
-	// (bp slot, unknown rotation, or no live data).
-	function owAvailabilityChip(
-		part: WarframePart,
-	): { cls: string; text: string } | null {
+	// Per-part availability chip for an open-world component row. Null → render
+	// nothing (bp slot, unknown rotation, or no live data).
+	function owAvailabilityChip(part: WarframePart): { cls: string; text: string } | null {
 		if (!worldState || part.slot === 'bp') return null;
 		const rot = worldState.rotation;
 		const a = partAvailability(part.rotation, rot.letter);
@@ -122,187 +85,109 @@
 				: '';
 			return { cls: 'text-emerald-300', text: `● up now${resets}` };
 		}
-		if (a === 'always')
-			return { cls: 'text-emerald-300', text: '● always available' };
+		if (a === 'always') return { cls: 'text-emerald-300', text: '● always available' };
 		if (a === 'unavailable') {
 			const next = nextActiveAt(part.rotation, rot.letter, rot.expiry);
-			const when = next
-				? ` · up in ${formatCountdown(next.getTime() - now)}`
-				: '';
+			const when = next ? ` · up in ${formatCountdown(next.getTime() - now)}` : '';
 			return { cls: 'text-wf-muted', text: `○ Rot ${part.rotation}${when}` };
 		}
 		return null;
 	}
+
+	// Collapsed-state farm cue for a free-roam frame: is any still-needed component
+	// available on the current rotation? Null when there's no live data or nothing
+	// left to farm (a completed frame shows its ✓ instead).
+	function owSummary(frame: Warframe): { cls: string; text: string } | null {
+		if (!worldState) return null;
+		const letter = worldState.rotation.letter;
+		const needed = frame.parts.filter((p) => p.slot !== 'bp' && !tracker.isOwned(p.id));
+		if (needed.length === 0) return null;
+		const upNow = needed.some((p) => {
+			const a = partAvailability(p.rotation, letter);
+			return a === 'available' || a === 'always';
+		});
+		return upNow
+			? { cls: 'text-emerald-300', text: '● up now' }
+			: { cls: 'text-wf-muted', text: '○ not this rotation' };
+	}
+
+	// Smart-auto: expand a frame unless it's already fully owned. Read at card
+	// construction only (FrameCard seeds $state from it).
+	function defaultExpanded(frameId: string): boolean {
+		const c = tracker.frameCount(frameId);
+		return c.owned < c.total;
+	}
 </script>
 
-<div class="grid items-start gap-4 md:grid-cols-2">
-	<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
+<div class="grid items-start gap-4 lg:grid-cols-[1fr_20rem]">
+	<div data-region-band>
 		<h2 class="mb-4 text-lg font-semibold text-wf-gold">{region?.name}</h2>
-		{#snippet frameCard(
-			frame: Warframe,
-			subLine: string,
-			sourceText: (part: WarframePart) => string,
-			avail?: (part: WarframePart) => { cls: string; text: string } | null,
-		)}
-			{@const count = tracker.frameCount(frame.id)}
-			<div class="mb-4 flex items-center gap-3">
-				<div
-					class="flex h-11 w-11 items-center justify-center rounded-lg border border-wf-edge bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
-					aria-hidden="true"
-				>
-					{frame.name[0]}
-				</div>
-				<div>
-					<div class="font-semibold text-slate-100">
-						{frame.name}
-						<span
-							class="text-xs font-normal {count.owned === count.total
-								? 'text-emerald-400'
-								: 'text-wf-muted'}"
-						>
-							· {count.owned}/{count.total} owned
-						</span>
-					</div>
-					<div class="text-xs text-wf-muted">{subLine}</div>
-				</div>
-			</div>
-
-			{#if frame.parts.some((p) => p.slot === 'dayaspect' || p.slot === 'nightaspect')}
-				<p class="mb-2 text-xs text-wf-muted">
-					Assembled from its Day and Night aspects.
-				</p>
-			{/if}
-
-			<div class="space-y-1">
-				{#each frame.parts as part (part.id)}
-					{@const owned = tracker.isOwned(part.id)}
-					<div
-						data-part={part.id}
-						data-owned={owned}
-						role="button"
-						tabindex="0"
-						class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
-							? 'border-emerald-500/30 bg-emerald-500/10'
-							: ''}"
-						onclick={() => tracker.togglePart(part.id)}
-						onkeydown={(e) => {
-							if (e.key === 'Enter' || e.key === ' ') {
-								if (e.key === ' ') e.preventDefault();
-								tracker.togglePart(part.id);
-							}
-						}}
-					>
-						<span
-							class="flex h-4 w-4 items-center justify-center rounded border text-[11px] {owned
-								? 'border-emerald-400 bg-emerald-400 text-slate-950'
-								: 'border-wf-edge text-transparent'}"
-						>
-							✓
-						</span>
-						<span
-							class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}"
-						>
-							{#if SLOT_ICON[part.slot]}<span
-									aria-hidden="true"
-									class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
-								>{/if}{SLOT_LABEL[part.slot]}
-						</span>
-						<span class="ml-auto text-xs text-wf-muted">{sourceText(part)}</span
-						>
-						{#if avail}
-							{@const chip = avail(part)}
-							{#if chip}
-								<span class="ml-2 shrink-0 text-[11px] {chip.cls}"
-									>{chip.text}</span
-								>
-							{/if}
-						{/if}
-					</div>
-				{/each}
-			</div>
-
-			<button
-				class="mt-3 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
-				onclick={() => tracker.toggleFrame(frame.id)}
-			>
-				✓ Toggle whole frame
-			</button>
-		{/snippet}
 		{#if frames.assassination.length > 0 || frames.zones.length > 0}
 			<div class="space-y-6">
-				{#each frames.assassination as { node, boss, frame } (node.id)}
-					<div>
-						<div class="mb-4 flex items-start justify-between gap-3">
-							<div>
-								<h3 class="text-base font-semibold text-slate-100">
-									{node.name}
-								</h3>
-								<p class="mt-0.5 text-xs text-wf-muted">
-									Boss: <span class="text-slate-200">{boss.name}</span> — drops Warframe
-									components
-								</p>
-							</div>
-							<span
-								class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
-									node.faction
-								] ?? 'border-wf-edge text-wf-muted'}"
-							>
-								{node.faction} · Assassination
-								{#if KEY_BOSSES.has(boss.name)}
-									<span data-key class="text-wf-muted">· key</span>
-								{/if}
-							</span>
-						</div>
-
-						{@render frameCard(
-							frame,
-							`Blueprint from Market · components from ${boss.name}`,
-							(part) => sourceLabel(part.slot, boss.name),
-						)}
-					</div>
-				{/each}
-
-				{#each frames.zones as zone (zone.node.id)}
-					{@const line = zoneCycleLine(zone.node.name)}
-					<div>
-						<div class="mb-4 flex items-start justify-between gap-3">
-							<div>
-								<h3 class="text-base font-semibold text-slate-100">
-									{zone.node.name}
-								</h3>
-								{#if line}
-									<p class="mt-0.5 text-xs text-wf-muted" data-zone-cycle>
-										{line}
-									</p>
-								{/if}
-							</div>
-							<span
-								class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
-									zone.node.faction
-								] ?? 'border-wf-edge text-wf-muted'}"
-							>
-								{zone.node.faction} · Free Roam
-							</span>
-						</div>
-						<div class="space-y-6">
-							{#each zone.entries as { frame, farm } (frame.id)}
-								{@render frameCard(
-									frame,
-									`Blueprint: ${farm.bpSource}`,
-									(part) => owSourceText(part, farm),
-									owAvailabilityChip,
-								)}
+				{#if frames.assassination.length > 0}
+					<section>
+						<h3 class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase">
+							Assassination
+						</h3>
+						<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+							{#each frames.assassination as { node, boss, frame } (regionId + ':' + frame.id)}
+								<div class="sm:col-span-2">
+									<FrameCard
+										{frame}
+										{tracker}
+										subLine={`${node.name} · Boss: ${boss.name}`}
+										faction={node.faction}
+										kindLabel="Assassination"
+										isKey={KEY_BOSSES.has(boss.name)}
+										defaultExpanded={defaultExpanded(frame.id)}
+										sourceText={(part) => sourceLabel(part.slot, boss.name)}
+									/>
+								</div>
 							{/each}
 						</div>
-					</div>
-				{/each}
+					</section>
+				{/if}
+
+				{#if frames.zones.length > 0}
+					<section>
+						<h3 class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase">
+							Free Roam
+						</h3>
+						<div class="space-y-5">
+							{#each frames.zones as zone (zone.node.id)}
+								{@const line = zoneCycleLine(zone.node.name)}
+								<div>
+									<div class="mb-2 flex items-baseline justify-between gap-3">
+										<h4 class="text-sm font-medium text-slate-200">{zone.node.name}</h4>
+										{#if line}
+											<span class="text-xs text-wf-muted" data-zone-cycle>{line}</span>
+										{/if}
+									</div>
+									<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+										{#each zone.entries as { frame, farm } (regionId + ':' + frame.id)}
+											<FrameCard
+												{frame}
+												{tracker}
+												subLine={`Blueprint: ${farm.bpSource}`}
+												faction={zone.node.faction}
+												kindLabel="Free Roam"
+												defaultExpanded={defaultExpanded(frame.id)}
+												sourceText={(part) => owSourceText(part, farm)}
+												avail={owAvailabilityChip}
+												summary={owSummary(frame)}
+											/>
+										{/each}
+									</div>
+								</div>
+							{/each}
+						</div>
+					</section>
+				{/if}
 			</div>
 		{:else}
-			<p class="text-sm text-wf-muted">
-				{region?.name}: no Assassination frame here yet.
-			</p>
+			<p class="text-sm text-wf-muted">No farmable frames here yet.</p>
 		{/if}
-	</section>
+	</div>
 
 	<ResourceRail {resources} {regionId} />
 </div>
