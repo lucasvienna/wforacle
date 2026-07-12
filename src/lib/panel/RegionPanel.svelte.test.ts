@@ -696,6 +696,21 @@ describe('RegionPanel — world-state overlay', () => {
 		expect(document.body.textContent).not.toMatch(/NaN/);
 		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
 	});
+	it('hides the zone cycle line when the cycle expiry is a malformed date', () => {
+		const badWorldState: WorldState = {
+			...worldState,
+			cetus: { state: 'day', expiry: 'not-a-date' },
+		};
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState: badWorldState,
+			now: wsNow,
+		});
+		expect(document.body.textContent).not.toMatch(/NaN/);
+		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
+	});
 	it('shows no collapsed summary when the rotation letter is underivable', async () => {
 		// letter null → we can't claim "not this rotation". Own the always-available
 		// chassis so the remaining needed parts are all rotation-specific (unknown),

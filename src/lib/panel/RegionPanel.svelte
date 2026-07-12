@@ -81,8 +81,11 @@
 		const key = ZONE_CYCLE[nodeName];
 		if (!key) return null;
 		const cyc = worldState[key];
-		if (!cyc.expiry) return null;
-		return `${CYCLE_GLYPH[cyc.state] ?? ''} ${cyc.state} · ${formatCountdown(new Date(cyc.expiry).getTime() - now)}`;
+		// Guard against a missing ("") or malformed expiry so a bad API value
+		// never renders as a "NaN" countdown.
+		const expiryMs = cyc.expiry ? new Date(cyc.expiry).getTime() : NaN;
+		if (!Number.isFinite(expiryMs)) return null;
+		return `${CYCLE_GLYPH[cyc.state] ?? ''} ${cyc.state} · ${formatCountdown(expiryMs - now)}`;
 	}
 
 	// Per-part availability chip for an open-world component row. Null → render
@@ -152,20 +155,20 @@
 						>
 							Assassination
 						</h3>
-						<div class="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-3">
+						<!-- Assassination cards are the region's primary frames: each
+						     reads full-width, stacked, rather than sharing a row. -->
+						<div class="space-y-3">
 							{#each frames.assassination as { node, boss, frame } (regionId + ':' + frame.id)}
-								<div class="sm:col-span-2">
-									<FrameCard
-										{frame}
-										{tracker}
-										subLine={`${node.name} · Boss: ${boss.name}`}
-										faction={node.faction}
-										kindLabel="Assassination"
-										isKey={KEY_BOSSES.has(boss.name)}
-										defaultExpanded={defaultExpanded(frame.id)}
-										sourceText={(part) => sourceLabel(part.slot, boss.name)}
-									/>
-								</div>
+								<FrameCard
+									{frame}
+									{tracker}
+									subLine={`${node.name} · Boss: ${boss.name}`}
+									faction={node.faction}
+									kindLabel="Assassination"
+									isKey={KEY_BOSSES.has(boss.name)}
+									defaultExpanded={defaultExpanded(frame.id)}
+									sourceText={(part) => sourceLabel(part.slot, boss.name)}
+								/>
 							{/each}
 						</div>
 					</section>
