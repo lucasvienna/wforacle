@@ -1,9 +1,14 @@
 <script lang="ts">
-	import type { Dataset, OpenWorldFarm, Warframe, WarframePart } from '$lib/model/types';
+	import type {
+		Dataset,
+		OpenWorldFarm,
+		Warframe,
+		WarframePart,
+	} from '$lib/model/types';
 	import { regionFrames } from './regionFrames';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
-	import { resourcesForRegion, bestPhaseRec } from '$lib/model/resources';
-	import { base } from '$app/paths';
+	import { resourcesForRegion } from '$lib/model/resources';
+	import ResourceRail from './ResourceRail.svelte';
 	import type { WorldState } from '$lib/worldstate/types';
 	import {
 		partAvailability,
@@ -299,80 +304,5 @@
 		{/if}
 	</section>
 
-	<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
-		<h2 class="text-lg font-semibold text-wf-gold">
-			Resources on {region?.name}
-		</h2>
-		<p class="mt-0.5 mb-4 text-xs text-wf-muted">
-			Informational · best farm spots badged by game phase
-		</p>
-		{#if resources.length > 0}
-			<ul class="space-y-2">
-				{#each resources as r (r.id)}
-					{@const early = bestPhaseRec(r, 'early')}
-					{@const late = bestPhaseRec(r, 'late')}
-					{@const earlyHere = !!early && early.regionId === regionId}
-					{@const lateHere = !!late && late.regionId === regionId}
-					<li
-						class="flex items-start gap-3 rounded-lg border border-wf-edge px-3 py-2"
-					>
-						<img
-							src="{base}/resources/{r.id}.webp"
-							alt=""
-							class="mt-0.5 h-8 w-8 shrink-0 rounded"
-							loading="lazy"
-						/>
-						<div class="min-w-0 flex-1">
-							<div class="flex flex-wrap items-center gap-2">
-								<span class="text-sm font-medium text-slate-200">{r.name}</span>
-								{#if earlyHere}
-									<span
-										class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-300"
-									>
-										⚡ early best
-									</span>
-								{/if}
-								{#if lateHere}
-									<span
-										class="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-300"
-									>
-										💀 late best
-									</span>
-								{/if}
-							</div>
-							<!-- Best farm per phase (highlighted when it's this planet, muted when elsewhere) -->
-							{#if early}
-								<p
-									class="mt-0.5 text-xs {earlyHere
-										? 'text-emerald-300'
-										: 'text-wf-muted'}"
-								>
-									⚡ Early: {early.nodeLabel}
-								</p>
-							{/if}
-							{#if late}
-								<p
-									class="text-xs {lateHere
-										? 'text-amber-300'
-										: 'text-wf-muted'}"
-								>
-									💀 Late: {late.nodeLabel}
-								</p>
-							{/if}
-						</div>
-						{#if r.recommendations.length > 0}
-							<a
-								href="{base}/guides/{r.id}"
-								class="mt-0.5 shrink-0 self-start text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
-							>
-								farming ▸
-							</a>
-						{/if}
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<p class="text-sm text-wf-muted">No notable resources.</p>
-		{/if}
-	</section>
+	<ResourceRail {resources} {regionId} />
 </div>
