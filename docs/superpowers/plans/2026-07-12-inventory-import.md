@@ -38,21 +38,23 @@
 ## Task 1: Retain `uniqueName` in the dataset
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts:16-22`
 - Modify: `scripts/data/build.ts:210` and `scripts/data/build.ts:256`
 - Test: `scripts/data/build.test.ts`
 - Regenerate: `static/data/dataset.json`
 
 **Interfaces:**
+
 - Produces: `Warframe.uniqueName?: string` — the raw `@wfcd/items` Powersuit path, e.g. `/Lotus/Powersuits/Rhino/Rhino`. Consumed by Task 3's `frameFolder`.
 
 - [ ] **Step 1: Write the failing test** — add to `scripts/data/build.test.ts` inside the existing `describe('buildFrames', …)` block:
 
 ```ts
-	it('carries the raw uniqueName through onto each frame', () => {
-		const rhino = frames.find((f) => f.id === 'rhino')!;
-		expect(rhino.uniqueName).toBe('/Lotus/Powersuits/Rhino/Rhino');
-	});
+it('carries the raw uniqueName through onto each frame', () => {
+	const rhino = frames.find((f) => f.id === 'rhino')!;
+	expect(rhino.uniqueName).toBe('/Lotus/Powersuits/Rhino/Rhino');
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -79,13 +81,27 @@ export interface Warframe {
 - [ ] **Step 4: Retain it in both frame builders** — in `scripts/data/build.ts`, change the `frames.push(...)` on line 210 (in `buildFrames`) to include `uniqueName`:
 
 ```ts
-		frames.push({ id: frameId, name: wf.name, uniqueName: wf.uniqueName, nodeId: node.id, image: wf.imageName, parts });
+frames.push({
+	id: frameId,
+	name: wf.name,
+	uniqueName: wf.uniqueName,
+	nodeId: node.id,
+	image: wf.imageName,
+	parts,
+});
 ```
 
 and the `frames.push(...)` on line 256 (in `buildOpenWorldFrames`):
 
 ```ts
-		frames.push({ id: frameId, name: wf.name, uniqueName: wf.uniqueName, nodeId, image: wf.imageName, parts });
+frames.push({
+	id: frameId,
+	name: wf.name,
+	uniqueName: wf.uniqueName,
+	nodeId,
+	image: wf.imageName,
+	parts,
+});
 ```
 
 - [ ] **Step 5: Run tests to verify they pass**
@@ -114,10 +130,12 @@ git commit -m "feat(data): retain warframe uniqueName for profile matching"
 ## Task 2: `normalizeAccountId`
 
 **Files:**
+
 - Create: `src/lib/import/accountId.ts`
 - Test: `src/lib/import/accountId.test.ts`
 
 **Interfaces:**
+
 - Produces: `normalizeAccountId(raw: string): string | null` — lowercased 24-hex id, or null. Consumed by Tasks 6.
 
 - [ ] **Step 1: Write the failing test** — create `src/lib/import/accountId.test.ts`:
@@ -194,11 +212,13 @@ git commit -m "feat(import): normalize pasted account id"
 ## Task 3: Profile parsing (`questMarkers.ts` + `parseProfile.ts`)
 
 **Files:**
+
 - Create: `src/lib/import/questMarkers.ts`
 - Create: `src/lib/import/parseProfile.ts`
 - Test: `src/lib/import/parseProfile.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Warframe` (with `uniqueName?`), `Dataset` from `$lib/model/types`.
 - Produces:
   - `interface ProfileXpEntry { uniqueName: string; xp?: number }`
@@ -426,10 +446,12 @@ git commit -m "feat(import): parse owned frames and completed quests from a prof
 ## Task 4: Profile client (`fetchProfile` + `ProfileError`)
 
 **Files:**
+
 - Create: `src/lib/import/profileClient.ts`
 - Test: `src/lib/import/profileClient.test.ts`
 
 **Interfaces:**
+
 - Consumes: `RawProfile` from `./parseProfile`.
 - Produces:
   - `class ProfileError extends Error { kind: 'notFound' | 'network' | 'rateLimited' | 'empty' }`
@@ -442,7 +464,10 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { fetchProfile, ProfileError } from './profileClient';
 
 function mockFetch(res: Partial<Response> & { json?: () => Promise<unknown> }) {
-	vi.stubGlobal('fetch', vi.fn(async () => res as Response));
+	vi.stubGlobal(
+		'fetch',
+		vi.fn(async () => res as Response),
+	);
 }
 
 afterEach(() => vi.unstubAllGlobals());
@@ -467,7 +492,12 @@ describe('fetchProfile', () => {
 	});
 
 	it('throws a network ProfileError when fetch rejects', async () => {
-		vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('offline'); }));
+		vi.stubGlobal(
+			'fetch',
+			vi.fn(async () => {
+				throw new Error('offline');
+			}),
+		);
 		await expect(fetchProfile(ID)).rejects.toMatchObject({ kind: 'network' });
 	});
 
@@ -525,8 +555,7 @@ export async function fetchProfile(accountId: string): Promise<RawProfile> {
 			'The profile service is rate-limiting requests right now. Please try again in a moment.',
 			'rateLimited',
 		);
-	if (!res.ok)
-		throw new ProfileError("Couldn't load that profile. Please try again.", 'network');
+	if (!res.ok) throw new ProfileError("Couldn't load that profile. Please try again.", 'network');
 
 	const data = (await res.json()) as RawProfile;
 	if (!data || (!data.loadout?.xpInfo && !data.challengeProgress))
@@ -553,10 +582,12 @@ git commit -m "feat(import): fetch player profile with typed errors"
 ## Task 5: Account-ID persistence
 
 **Files:**
+
 - Modify: `src/lib/tracker/persistence.ts`
 - Test: `src/lib/tracker/persistence.test.ts`
 
 **Interfaces:**
+
 - Produces (added to `persistence.ts`):
   - `loadAccountId(): Promise<string | null>`
   - `saveAccountId(id: string): Promise<void>`
@@ -624,10 +655,12 @@ git commit -m "feat(tracker): persist remembered account id"
 ## Task 6: Import orchestration store
 
 **Files:**
+
 - Create: `src/lib/import/importState.svelte.ts`
 - Test: `src/lib/import/importState.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Dataset`, `Tracker`, `fetchProfile`/`ProfileError`, `parseProfile`/`ImportResult`, `normalizeAccountId`, persistence account-id fns.
 - Produces:
   - `createImportStore(dataset: Dataset, deps?: { fetchProfile?: typeof fetchProfile }): ImportStore`
@@ -648,7 +681,11 @@ function frame(id: string, uniqueName: string): Warframe {
 		id,
 		name: id,
 		uniqueName,
-		parts: ['bp', 'chassis'].map((slot) => ({ id: `${id}:${slot}`, frameId: id, slot: slot as never })),
+		parts: ['bp', 'chassis'].map((slot) => ({
+			id: `${id}:${slot}`,
+			frameId: id,
+			slot: slot as never,
+		})),
 	};
 }
 const frames = [frame('rhino', '/Lotus/Powersuits/Rhino/Rhino')];
@@ -679,7 +716,9 @@ describe('createImportStore', () => {
 	it('surfaces a ProfileError message', async () => {
 		const { ProfileError } = await import('./profileClient');
 		const store = createImportStore(dataset, {
-			fetchProfile: async () => { throw new ProfileError('nope', 'notFound'); },
+			fetchProfile: async () => {
+				throw new ProfileError('nope', 'notFound');
+			},
 		});
 		await store.run('517d823a1a4d804218000052');
 		expect(store.phase).toBe('error');
@@ -821,10 +860,12 @@ git commit -m "feat(import): orchestration store for fetch, preview, merge"
 ## Task 7: `ImportDialog.svelte`
 
 **Files:**
+
 - Create: `src/lib/import/ImportDialog.svelte`
 - Test: `src/lib/import/ImportDialog.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `ImportStore` (Task 6), `Tracker`.
 - Props: `{ store: ImportStore; tracker: Tracker; open: boolean; onclose: () => void }`.
 - DOM hooks for tests/e2e: `[data-import-dialog]`, `[data-account-input]`, `[data-import-run]`, `[data-import-apply]`, `[data-import-remember]`, `[data-import-forget]`, `[data-import-error]`, `[data-import-preview]`.
@@ -845,12 +886,18 @@ function frame(id: string, uniqueName: string): Warframe {
 		id,
 		name: id,
 		uniqueName,
-		parts: ['bp', 'chassis'].map((slot) => ({ id: `${id}:${slot}`, frameId: id, slot: slot as never })),
+		parts: ['bp', 'chassis'].map((slot) => ({
+			id: `${id}:${slot}`,
+			frameId: id,
+			slot: slot as never,
+		})),
 	};
 }
 const frames = [frame('rhino', '/Lotus/Powersuits/Rhino/Rhino')];
 const dataset = { warframes: frames, quests: [] } as unknown as Dataset;
-const PROFILE: RawProfile = { loadout: { xpInfo: [{ uniqueName: '/Lotus/Powersuits/Rhino/Rhino' }] } };
+const PROFILE: RawProfile = {
+	loadout: { xpInfo: [{ uniqueName: '/Lotus/Powersuits/Rhino/Rhino' }] },
+};
 
 function setup() {
 	const tracker = createTracker(frames);
@@ -1081,12 +1128,14 @@ git commit -m "feat(import): import dialog with account-id help and preview"
 ## Task 8: Wire into the app (palette action, drawer section, page)
 
 **Files:**
+
 - Modify: `src/lib/palette/search.ts:3-9` (extend `PaletteItem` type)
 - Modify: `src/lib/panel/SettingsDrawer.svelte` (add `onimport` prop + button)
 - Modify: `src/routes/+page.svelte`
 - Test: `e2e/import.test.ts`
 
 **Interfaces:**
+
 - Consumes: `createImportStore`/`ImportStore`, `ImportDialog`, everything above.
 - Produces: a runnable end-to-end import flow.
 
@@ -1154,19 +1203,19 @@ export type PaletteItem = {
 - [ ] **Step 4: Add an import section to the settings drawer** — in `src/lib/panel/SettingsDrawer.svelte`, add `onimport` to the props type and destructuring:
 
 ```ts
-	let {
-		dataset,
-		tracker,
-		open,
-		onclose,
-		onimport,
-	}: {
-		dataset: Dataset;
-		tracker: Tracker;
-		open: boolean;
-		onclose: () => void;
-		onimport: () => void;
-	} = $props();
+let {
+	dataset,
+	tracker,
+	open,
+	onclose,
+	onimport,
+}: {
+	dataset: Dataset;
+	tracker: Tracker;
+	open: boolean;
+	onclose: () => void;
+	onimport: () => void;
+} = $props();
 ```
 
 and add this section directly above the existing `Tracking` section (before the `<section …>Reset tracked parts…</section>`):
@@ -1193,53 +1242,53 @@ and add this section directly above the existing `Tracking` section (before the 
 Add imports (after the existing palette import):
 
 ```ts
-	import ImportDialog from '$lib/import/ImportDialog.svelte';
-	import { createImportStore, type ImportStore } from '$lib/import/importState.svelte';
+import ImportDialog from '$lib/import/ImportDialog.svelte';
+import { createImportStore, type ImportStore } from '$lib/import/importState.svelte';
 ```
 
 Add state (near the other `$state` declarations):
 
 ```ts
-	let importStore = $state<ImportStore | null>(null);
-	let importOpen = $state(false);
+let importStore = $state<ImportStore | null>(null);
+let importOpen = $state(false);
 ```
 
 In `onMount`, after `tracker = t;` (tracker is ready), create and init the store:
 
 ```ts
-		importStore = createImportStore(ds);
-		importStore.init();
+importStore = createImportStore(ds);
+importStore.init();
 ```
 
 Define the import action item and append it to the palette items. Add this constant in the `<script>`:
 
 ```ts
-	const IMPORT_ACTION: PaletteItem = {
-		type: 'action',
-		id: 'import',
-		label: 'Import from account',
-		sublabel: 'Sync owned frames & quests',
-	};
+const IMPORT_ACTION: PaletteItem = {
+	type: 'action',
+	id: 'import',
+	label: 'Import from account',
+	sublabel: 'Sync owned frames & quests',
+};
 ```
 
 Change the `paletteItems` derived to append it:
 
 ```ts
-	let paletteItems = $derived(
-		data
-			? [...buildPaletteItems(data, new Set(visible.map((r) => r.id))), IMPORT_ACTION]
-			: ([] as PaletteItem[]),
-	);
+let paletteItems = $derived(
+	data
+		? [...buildPaletteItems(data, new Set(visible.map((r) => r.id))), IMPORT_ACTION]
+		: ([] as PaletteItem[]),
+);
 ```
 
 Handle the action in `handlePick`:
 
 ```ts
-	function handlePick(item: PaletteItem) {
-		if (item.type === 'action' && item.id === 'import') importOpen = true;
-		else if (item.targetRegionId) selectedId = item.targetRegionId;
-		else if (item.type === 'resource') goto(`${base}/guides/${item.id}`);
-	}
+function handlePick(item: PaletteItem) {
+	if (item.type === 'action' && item.id === 'import') importOpen = true;
+	else if (item.targetRegionId) selectedId = item.targetRegionId;
+	else if (item.type === 'resource') goto(`${base}/guides/${item.id}`);
+}
 ```
 
 Pass `onimport` to the settings drawer (update its usage):
