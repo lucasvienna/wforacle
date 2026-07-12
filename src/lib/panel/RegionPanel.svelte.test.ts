@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
+import { tick } from 'svelte';
 import RegionPanel from './RegionPanel.svelte';
 import { seed } from '$lib/data/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
@@ -400,7 +401,7 @@ describe('RegionPanel', () => {
 	it('shows an empty state for a region with no assassination frame', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'mercury', tracker });
-		expect(screen.getByText(/no assassination frame/i)).toBeInTheDocument();
+		expect(screen.getByText(/no farmable frames/i)).toBeInTheDocument();
 	});
 	it('renders a frame block per assassination node in a region with multiple (Jupiter-shaped)', () => {
 		const tracker = createTracker(multiNodeRegion.warframes);
@@ -413,6 +414,21 @@ describe('RegionPanel', () => {
 		// Both frames' part rows are present.
 		expect(document.querySelector('[data-part="valkyr:chassis"]')).toBeInTheDocument();
 		expect(document.querySelector('[data-part="wisp:chassis"]')).toBeInTheDocument();
+	});
+	it('keys assassination cards by node, so one frame on two nodes renders twice without a key collision', () => {
+		// Same frame on two assassination nodes → keying by frame.id alone would
+		// be a duplicate key (Svelte errors / reuses state). Key by node.id.
+		const dupFrame: Dataset = {
+			...multiNodeRegion,
+			nodes: [
+				multiNodeRegion.nodes[0], // themisto → valkyr
+				{ ...multiNodeRegion.nodes[1], frameId: 'valkyr' }, // ropalolyst → valkyr too
+			],
+			warframes: [multiNodeRegion.warframes[0]], // just valkyr
+		};
+		const tracker = createTracker(dupFrame.warframes);
+		render(RegionPanel, { dataset: dupFrame, regionId: 'jupiter', tracker });
+		expect(document.querySelectorAll('[data-frame="valkyr"]')).toHaveLength(2);
 	});
 	it('renders the region resources with phase badges and a guide link', () => {
 		const ds = {
@@ -492,10 +508,11 @@ describe('RegionPanel', () => {
 		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
 		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
 	});
-	it('lays out the frame/resources grid with items-start (no forced equal-height stretch)', () => {
+	it('lays out a frames band alongside the resource rail', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
-		expect(document.querySelector('.grid.items-start')).toBeInTheDocument();
+		expect(document.querySelector('[data-region-band]')).toBeInTheDocument();
+		expect(document.querySelector('[data-resource-rail]')).toBeInTheDocument();
 	});
 	it('shows a "key" hint for bosses that require crafting a key (Mutalist Alad V)', () => {
 		const tracker = createTracker(mesaKeyRegion.warframes);
@@ -506,6 +523,37 @@ describe('RegionPanel', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
 		expect(document.querySelector('[data-key]')).toBeNull();
+	});
+	it('shows only the Assassination group header for an assassination-only region', () => {
+		const tracker = createTracker(seed.warframes);
+		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+		expect(screen.getByRole('heading', { name: 'Assassination' })).toBeInTheDocument();
+		expect(screen.queryByRole('heading', { name: 'Free Roam' })).toBeNull();
+	});
+
+	it('shows only the Free Roam group header for an open-world-only region', () => {
+		const tracker = createTracker(openWorld.warframes);
+		render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
+		expect(screen.getByRole('heading', { name: 'Free Roam' })).toBeInTheDocument();
+		expect(screen.queryByRole('heading', { name: 'Assassination' })).toBeNull();
+	});
+
+	it('re-derives expand state when the region changes (region-prefixed keys)', async () => {
+		const tracker = createTracker(openWorld.warframes);
+		const { rerender } = render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
+		// Caliban exists on both earth and venus; collapse it on earth...
+		(document.querySelector('[data-frame="caliban"] button') as HTMLElement).click();
+		await tick();
+		expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute(
+			'data-expanded',
+			'false',
+		);
+		// ...switching regions must mount a FRESH card (incomplete → expanded again).
+		await rerender({ dataset: openWorld, regionId: 'venus', tracker });
+		expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute(
+			'data-expanded',
+			'true',
+		);
 	});
 });
 
@@ -662,5 +710,39 @@ describe('RegionPanel — world-state overlay', () => {
 		});
 		expect(document.body.textContent).not.toMatch(/NaN/);
 		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
+	});
+	it('hides the zone cycle line when the cycle expiry is a malformed date', () => {
+		const badWorldState: WorldState = {
+			...worldState,
+			cetus: { state: 'day', expiry: 'not-a-date' },
+		};
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker: createTracker(owAvail.warframes),
+			worldState: badWorldState,
+			now: wsNow,
+		});
+		expect(document.body.textContent).not.toMatch(/NaN/);
+		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
+	});
+	it('shows no collapsed summary when the rotation letter is underivable', async () => {
+		// letter null → we can't claim "not this rotation". Own the always-available
+		// chassis so the remaining needed parts are all rotation-specific (unknown),
+		// then collapse the card to surface owSummary.
+		const tracker = createTracker(owAvail.warframes);
+		tracker.togglePart('gara:chassis');
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker,
+			worldState: { ...worldState, rotation: { letter: null, expiry: null } },
+			now: wsNow,
+		});
+		(document.querySelector('[data-frame="gara"] button') as HTMLElement).click();
+		await tick();
+		const card = document.querySelector('[data-frame="gara"]') as HTMLElement;
+		expect(card).toHaveAttribute('data-expanded', 'false');
+		expect(card.textContent).not.toMatch(/not this rotation/);
 	});
 });

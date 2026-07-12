@@ -69,4 +69,12 @@ describe('QuestsPanel', () => {
 		const updated = document.querySelector('[data-quest="heartofdeimos"]') as HTMLElement;
 		expect(updated.getAttribute('data-done')).toBe('true');
 	});
+
+	it('exposes quest rows as checkboxes whose name carries the revealed regions', () => {
+		const tracker = createTracker([]);
+		render(QuestsPanel, { dataset: ds, tracker });
+		const row = screen.getByRole('checkbox', { name: /Heart of Deimos/ });
+		expect(row).toHaveAccessibleName(/Heart of Deimos.*Reveals: Deimos/);
+		expect(row).toHaveAttribute('aria-checked', 'false');
+	});
 });
