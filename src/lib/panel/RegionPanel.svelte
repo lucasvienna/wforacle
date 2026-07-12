@@ -1,12 +1,21 @@
 <script lang="ts">
-	import type { Dataset, OpenWorldFarm, Warframe, WarframePart } from '$lib/model/types';
+	import type {
+		Dataset,
+		OpenWorldFarm,
+		Warframe,
+		WarframePart,
+	} from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
 	import { resourcesForRegion } from '$lib/model/resources';
 	import { regionFrames } from './regionFrames';
 	import FrameCard from './FrameCard.svelte';
 	import ResourceRail from './ResourceRail.svelte';
 	import type { WorldState } from '$lib/worldstate/types';
-	import { partAvailability, nextActiveAt, formatCountdown } from '$lib/worldstate/availability';
+	import {
+		partAvailability,
+		nextActiveAt,
+		formatCountdown,
+	} from '$lib/worldstate/availability';
 
 	let {
 		dataset,
@@ -46,8 +55,11 @@
 				: part.rotation
 					? `Rot ${part.rotation}`
 					: undefined;
-		const chance = part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
-		return [farm.componentSource, part.bountyTier, rot, chance].filter(Boolean).join(' · ');
+		const chance =
+			part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
+		return [farm.componentSource, part.bountyTier, rot, chance]
+			.filter(Boolean)
+			.join(' · ');
 	}
 
 	const ZONE_CYCLE: Record<string, 'cetus' | 'vallis' | 'cambion'> = {
@@ -75,7 +87,9 @@
 
 	// Per-part availability chip for an open-world component row. Null → render
 	// nothing (bp slot, unknown rotation, or no live data).
-	function owAvailabilityChip(part: WarframePart): { cls: string; text: string } | null {
+	function owAvailabilityChip(
+		part: WarframePart,
+	): { cls: string; text: string } | null {
 		if (!worldState || part.slot === 'bp') return null;
 		const rot = worldState.rotation;
 		const a = partAvailability(part.rotation, rot.letter);
@@ -85,10 +99,13 @@
 				: '';
 			return { cls: 'text-emerald-300', text: `● up now${resets}` };
 		}
-		if (a === 'always') return { cls: 'text-emerald-300', text: '● always available' };
+		if (a === 'always')
+			return { cls: 'text-emerald-300', text: '● always available' };
 		if (a === 'unavailable') {
 			const next = nextActiveAt(part.rotation, rot.letter, rot.expiry);
-			const when = next ? ` · up in ${formatCountdown(next.getTime() - now)}` : '';
+			const when = next
+				? ` · up in ${formatCountdown(next.getTime() - now)}`
+				: '';
 			return { cls: 'text-wf-muted', text: `○ Rot ${part.rotation}${when}` };
 		}
 		return null;
@@ -100,7 +117,9 @@
 	function owSummary(frame: Warframe): { cls: string; text: string } | null {
 		if (!worldState) return null;
 		const letter = worldState.rotation.letter;
-		const needed = frame.parts.filter((p) => p.slot !== 'bp' && !tracker.isOwned(p.id));
+		const needed = frame.parts.filter(
+			(p) => p.slot !== 'bp' && !tracker.isOwned(p.id),
+		);
 		if (needed.length === 0) return null;
 		const upNow = needed.some((p) => {
 			const a = partAvailability(p.rotation, letter);
@@ -119,14 +138,16 @@
 	}
 </script>
 
-<div class="grid items-start gap-4 lg:grid-cols-[1fr_20rem]">
+<div class="grid items-start gap-4 lg:grid-cols-[1fr_24rem]">
 	<div data-region-band>
 		<h2 class="mb-4 text-lg font-semibold text-wf-gold">{region?.name}</h2>
 		{#if frames.assassination.length > 0 || frames.zones.length > 0}
 			<div class="space-y-6">
 				{#if frames.assassination.length > 0}
 					<section>
-						<h3 class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase">
+						<h3
+							class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase"
+						>
 							Assassination
 						</h3>
 						<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -150,7 +171,9 @@
 
 				{#if frames.zones.length > 0}
 					<section>
-						<h3 class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase">
+						<h3
+							class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase"
+						>
 							Free Roam
 						</h3>
 						<div class="space-y-5">
@@ -158,9 +181,13 @@
 								{@const line = zoneCycleLine(zone.node.name)}
 								<div>
 									<div class="mb-2 flex items-baseline justify-between gap-3">
-										<h4 class="text-sm font-medium text-slate-200">{zone.node.name}</h4>
+										<h4 class="text-sm font-medium text-slate-200">
+											{zone.node.name}
+										</h4>
 										{#if line}
-											<span class="text-xs text-wf-muted" data-zone-cycle>{line}</span>
+											<span class="text-xs text-wf-muted" data-zone-cycle
+												>{line}</span
+											>
 										{/if}
 									</div>
 									<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">

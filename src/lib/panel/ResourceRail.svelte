@@ -22,57 +22,55 @@
 				{@const late = bestPhaseRec(r, 'late')}
 				{@const earlyHere = !!early && early.regionId === regionId}
 				{@const lateHere = !!late && late.regionId === regionId}
-				<li
-					class="flex items-start gap-3 rounded-lg border border-wf-edge px-3 py-2"
-				>
-					<img
-						src="{base}/resources/{r.id}.webp"
-						alt=""
-						class="mt-0.5 h-8 w-8 shrink-0 rounded"
-						loading="lazy"
-					/>
-					<div class="min-w-0 flex-1">
-						<div class="flex flex-wrap items-center gap-2">
-							<span class="text-sm font-medium text-slate-200">{r.name}</span>
-							{#if earlyHere}
-								<span
-									class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-300"
-								>
-									⚡ early best
-								</span>
-							{/if}
-							{#if lateHere}
-								<span
-									class="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-300"
-								>
-									💀 late best
-								</span>
-							{/if}
-						</div>
-						{#if early}
-							<p
-								class="mt-0.5 text-xs {earlyHere
-									? 'text-emerald-300'
-									: 'text-wf-muted'}"
+				<li class="rounded-lg border border-wf-edge px-3 py-2">
+					<div class="flex flex-wrap items-center gap-2">
+						<img
+							src="{base}/resources/{r.id}.webp"
+							alt=""
+							class="h-8 w-8 shrink-0 rounded"
+							loading="lazy"
+						/>
+						<span class="text-sm font-medium text-slate-200">{r.name}</span>
+						{#if earlyHere}
+							<span
+								class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-300"
 							>
-								⚡ Early: {early.nodeLabel}
-							</p>
+								⚡ early best
+							</span>
 						{/if}
-						{#if late}
-							<p
-								class="text-xs {lateHere ? 'text-amber-300' : 'text-wf-muted'}"
+						{#if lateHere}
+							<span
+								class="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-300"
 							>
-								💀 Late: {late.nodeLabel}
-							</p>
+								💀 late best
+							</span>
+						{/if}
+						{#if r.recommendations.length > 0}
+							<a
+								href="{base}/guides/{r.id}"
+								class="ml-auto shrink-0 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
+							>
+								farming ▸
+							</a>
 						{/if}
 					</div>
-					{#if r.recommendations.length > 0}
-						<a
-							href="{base}/guides/{r.id}"
-							class="mt-0.5 shrink-0 self-start text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
+					{#if early}
+						<p
+							class="mt-1.5 text-xs {earlyHere
+								? 'text-emerald-300'
+								: 'text-wf-muted'}"
 						>
-							farming ▸
-						</a>
+							⚡ Early: {early.nodeLabel}
+						</p>
+					{/if}
+					{#if late}
+						<p
+							class="mt-0.5 text-xs {lateHere
+								? 'text-amber-300'
+								: 'text-wf-muted'}"
+						>
+							💀 Late: {late.nodeLabel}
+						</p>
 					{/if}
 				</li>
 			{/each}
