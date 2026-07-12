@@ -24,10 +24,10 @@ every decision below.
 
 1. **Username lookup is dead.** As of game update 38.0.8, DE removed the
    ability to resolve a display name to an account. `GET
-   api.warframestat.us/profile/{displayName}` returns `404` for every name.
+api.warframestat.us/profile/{displayName}` returns `404` for every name.
    The player **must** provide their numeric **account ID** (24 hex chars).
 2. **Account ID works, and CORS is open.** `GET
-   api.warframestat.us/profile/{accountId}` returns `200` with the full public
+api.warframestat.us/profile/{accountId}` returns `200` with the full public
    profile and sends `access-control-allow-origin: *`. The browser can call it
    **directly** — no Worker proxy required. (A proxy stays a possible future
    optimization for caching / third-party-dependency insulation, but is out of
@@ -58,15 +58,15 @@ every decision below.
 
 ## Decisions
 
-| Decision | Choice |
-| --- | --- |
-| What to import | Owned frames (→ all their parts) **and** completed quests |
-| Apply behavior | Preview, then **merge (add-only)** — never un-checks existing state |
-| Entry points | Command-palette action **and** a settings-drawer section |
-| Account ID persistence | Remembered locally (opt-in), with a "Forget" control |
-| Fetch | Direct browser fetch to `api.warframestat.us` (no proxy) |
-| Frame granularity | All-or-nothing per frame (data limitation) |
-| ID field | Accept the 24-hex ID; normalize common paste mistakes (quotes, whitespace, `user_id:` prefix) |
+| Decision               | Choice                                                                                        |
+| ---------------------- | --------------------------------------------------------------------------------------------- |
+| What to import         | Owned frames (→ all their parts) **and** completed quests                                     |
+| Apply behavior         | Preview, then **merge (add-only)** — never un-checks existing state                           |
+| Entry points           | Command-palette action **and** a settings-drawer section                                      |
+| Account ID persistence | Remembered locally (opt-in), with a "Forget" control                                          |
+| Fetch                  | Direct browser fetch to `api.warframestat.us` (no proxy)                                      |
+| Frame granularity      | All-or-nothing per frame (data limitation)                                                    |
+| ID field               | Accept the 24-hex ID; normalize common paste mistakes (quotes, whitespace, `user_id:` prefix) |
 
 ## Data flow
 
@@ -124,9 +124,17 @@ New files under `src/lib/import/`:
 2. Copy the value after `"user_id":` — a 24-character code.
 3. Paste it above (a valid-format check shows inline).
 
-Reassurance copy: *"This is not your display name. Your account ID is a public
-identifier and safe to share — we only send it to the profile API, and store it
-(if you allow) only in your own browser."*
+Reassurance copy: _"Your account ID is a public in-game identifier — it's how
+profile viewing works in Warframe — and it is **not** a password or login
+credential. We only send it to the profile API, and store it (if you allow) in
+your own browser. Never share your actual Warframe password with anyone."_
+
+> Wording note: avoid claiming DE endorses sharing the account ID. There is no
+> official Digital Extremes statement to that effect — the common "safe to
+> share / harmless" framing comes from community tools (e.g. the FrameHub gist),
+> not DE. Also avoid the term "User ID": in DE's Terms of Use "User ID" means
+> the login name, which players must keep confidential — a different thing from
+> the 24-hex account ID this feature uses.
 
 ## Touch points on existing code (small, contained)
 
