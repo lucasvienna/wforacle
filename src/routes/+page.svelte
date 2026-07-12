@@ -23,14 +23,28 @@
 		type WorldStateStore,
 	} from '$lib/worldstate/worldstate.svelte';
 	import WorldStateTicker from '$lib/worldstate/WorldStateTicker.svelte';
+	import ImportDialog from '$lib/import/ImportDialog.svelte';
+	import {
+		createImportStore,
+		type ImportStore,
+	} from '$lib/import/importState.svelte';
 
 	let data = $state<Dataset | null>(null);
 	let tracker = $state<Tracker | null>(null);
 	let ws = $state<WorldStateStore | null>(null);
+	let importStore = $state<ImportStore | null>(null);
 	let selectedId = $state('venus');
 	let paletteOpen = $state(false);
 	let settingsOpen = $state(false);
+	let importOpen = $state(false);
 	let ready = false;
+
+	const IMPORT_ACTION: PaletteItem = {
+		type: 'action',
+		id: 'import',
+		label: 'Import from account',
+		sublabel: 'Sync owned frames & quests',
+	};
 
 	onMount(async () => {
 		const ds = await loadDataset();
@@ -49,6 +63,8 @@
 		data = ds;
 		tracker = t;
 		ws = createWorldStateStore();
+		importStore = createImportStore(ds);
+		importStore.init();
 	});
 
 	onDestroy(() => {
@@ -81,7 +97,10 @@
 	let specialRegions = $derived(visible.filter((r) => r.kind === 'special'));
 	let paletteItems = $derived(
 		data
-			? buildPaletteItems(data, new Set(visible.map((r) => r.id)))
+			? [
+					...buildPaletteItems(data, new Set(visible.map((r) => r.id))),
+					IMPORT_ACTION,
+				]
 			: ([] as PaletteItem[]),
 	);
 
@@ -99,7 +118,8 @@
 	}
 
 	function handlePick(item: PaletteItem) {
-		if (item.targetRegionId) selectedId = item.targetRegionId;
+		if (item.type === 'action' && item.id === 'import') importOpen = true;
+		else if (item.targetRegionId) selectedId = item.targetRegionId;
 		else if (item.type === 'resource') goto(`${base}/guides/${item.id}`);
 	}
 </script>
@@ -213,6 +233,18 @@
 			{tracker}
 			open={settingsOpen}
 			onclose={() => (settingsOpen = false)}
+			onimport={() => {
+				settingsOpen = false;
+				importOpen = true;
+			}}
 		/>
+		{#if importStore}
+			<ImportDialog
+				store={importStore}
+				{tracker}
+				open={importOpen}
+				onclose={() => (importOpen = false)}
+			/>
+		{/if}
 	{/if}
 </div>

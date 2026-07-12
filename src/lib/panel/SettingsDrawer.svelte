@@ -10,11 +10,13 @@
 		tracker,
 		open,
 		onclose,
+		onimport,
 	}: {
 		dataset: Dataset;
 		tracker: Tracker;
 		open: boolean;
 		onclose: () => void;
+		onimport: () => void;
 	} = $props();
 
 	let confirming = $state(false);
@@ -80,6 +82,23 @@
 		{#if dataset.quests.length}
 			<QuestsPanel {dataset} {tracker} />
 		{/if}
+
+		<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
+			<h2 class="mb-1 text-lg font-semibold text-wf-gold">
+				Import from account
+			</h2>
+			<p class="mb-3 text-xs text-wf-muted">
+				Seed your tracked frames and quests from your Warframe account.
+			</p>
+			<button
+				data-open-import
+				type="button"
+				onclick={onimport}
+				class="rounded border border-wf-edge px-3 py-1.5 text-sm text-wf-muted hover:text-wf-cyan"
+			>
+				Import from account…
+			</button>
+		</section>
 
 		<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
 			<h2 class="mb-1 text-lg font-semibold text-wf-gold">Tracking</h2>
