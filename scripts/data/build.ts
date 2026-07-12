@@ -207,7 +207,14 @@ export function buildFrames(
 			dropSourceNodeId: slot === 'bp' ? undefined : node!.id,
 			chance: chanceBySlot.get(slot),
 		}));
-		frames.push({ id: frameId, name: wf.name, nodeId: node.id, image: wf.imageName, parts });
+		frames.push({
+			id: frameId,
+			name: wf.name,
+			uniqueName: wf.uniqueName,
+			nodeId: node.id,
+			image: wf.imageName,
+			parts,
+		});
 
 		if (!bossByNode.has(node.id)) {
 			bossByNode.set(node.id, {
@@ -253,7 +260,14 @@ export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldF
 				rotation: stage?.rotation,
 			};
 		});
-		frames.push({ id: frameId, name: wf.name, nodeId, image: wf.imageName, parts });
+		frames.push({
+			id: frameId,
+			name: wf.name,
+			uniqueName: wf.uniqueName,
+			nodeId,
+			image: wf.imageName,
+			parts,
+		});
 	}
 	return frames;
 }

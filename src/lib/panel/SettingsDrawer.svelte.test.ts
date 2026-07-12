@@ -11,6 +11,7 @@ describe('SettingsDrawer', () => {
 			tracker: createTracker(seed.warframes),
 			open: false,
 			onclose: vi.fn(),
+			onimport: vi.fn(),
 		});
 		expect(screen.queryByRole('dialog')).toBeNull();
 	});
@@ -21,6 +22,7 @@ describe('SettingsDrawer', () => {
 			tracker: createTracker(seed.warframes),
 			open: true,
 			onclose: vi.fn(),
+			onimport: vi.fn(),
 		});
 		expect(screen.getByRole('dialog')).toBeInTheDocument();
 		expect(screen.getByText('Settings')).toBeInTheDocument();
@@ -33,6 +35,7 @@ describe('SettingsDrawer', () => {
 			tracker: createTracker(seed.warframes),
 			open: true,
 			onclose,
+			onimport: vi.fn(),
 		});
 		const closeBtn = document.querySelector('[data-close-settings]') as HTMLElement;
 		await fireEvent.click(closeBtn);
@@ -46,6 +49,7 @@ describe('SettingsDrawer', () => {
 			tracker: createTracker(seed.warframes),
 			open: true,
 			onclose,
+			onimport: vi.fn(),
 		});
 		await fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
 		expect(onclose).toHaveBeenCalledOnce();
@@ -61,6 +65,7 @@ describe('SettingsDrawer', () => {
 			tracker,
 			open: true,
 			onclose: vi.fn(),
+			onimport: vi.fn(),
 		});
 
 		const resetBtn = document.querySelector('[data-reset-tracking]') as HTMLElement;
@@ -79,6 +84,7 @@ describe('SettingsDrawer', () => {
 			tracker: createTracker(seed.warframes),
 			open: true,
 			onclose,
+			onimport: vi.fn(),
 		});
 		// The backdrop is the role="presentation" element; a click on it (target
 		// === currentTarget) dismisses the drawer, but clicks inside the panel do not.
@@ -92,6 +98,7 @@ describe('SettingsDrawer', () => {
 			tracker: createTracker(seed.warframes),
 			open: true,
 			onclose: vi.fn(),
+			onimport: vi.fn(),
 		});
 		const closeBtn = document.querySelector('[data-close-settings]');
 		await waitFor(() => expect(document.activeElement).toBe(closeBtn));
@@ -103,6 +110,7 @@ describe('SettingsDrawer', () => {
 			tracker: createTracker(seed.warframes),
 			open: true,
 			onclose: vi.fn(),
+			onimport: vi.fn(),
 		});
 		const closeBtn = document.querySelector('[data-close-settings]') as HTMLElement;
 		const resetBtn = document.querySelector('[data-reset-tracking]') as HTMLElement;

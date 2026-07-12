@@ -104,6 +104,10 @@ describe('buildFrames', () => {
 		expect(chassis.dropSourceNodeId).toBe('SolNode104');
 		expect(chassis.chance).toBe(25);
 	});
+	it('carries the raw uniqueName through onto each frame', () => {
+		const rhino = frames.find((f) => f.id === 'rhino')!;
+		expect(rhino.uniqueName).toBe('/Lotus/Powersuits/Rhino/Rhino');
+	});
 	it('does not create a frame when only the Blueprint has an Assassination drop (no component drop to link a node)', () => {
 		const wf: RawWarframe[] = [
 			{

@@ -16,6 +16,10 @@ export interface WarframePart {
 export interface Warframe {
 	id: string;
 	name: string;
+	/** Raw @wfcd/items Powersuit path, e.g. "/Lotus/Powersuits/Cowgirl/Cowgirl".
+	 * Used to match a player's mastered frames from their profile. Always set by
+	 * the build; optional so seed/test fixtures need not provide it. */
+	uniqueName?: string;
 	image?: string;
 	nodeId?: string;
 	parts: WarframePart[];

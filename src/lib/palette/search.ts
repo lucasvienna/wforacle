@@ -1,7 +1,7 @@
 import type { Dataset } from '$lib/model/types';
 
 export type PaletteItem = {
-	type: 'region' | 'frame' | 'resource';
+	type: 'region' | 'frame' | 'resource' | 'action';
 	id: string;
 	label: string;
 	sublabel: string;

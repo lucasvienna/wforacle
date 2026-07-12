@@ -5,6 +5,7 @@ const DB = 'wforacle';
 const STORE = 'tracking';
 const KEY = 'ownedParts';
 const KEY_QUESTS = 'completedQuests';
+const KEY_ACCOUNT = 'accountId';
 
 let dbp: Promise<IDBPDatabase> | null = null;
 function db() {
@@ -31,4 +32,16 @@ export async function loadQuests(): Promise<string[]> {
 export async function saveQuests(ids: string[]): Promise<void> {
 	if (!browser && typeof indexedDB === 'undefined') return;
 	await (await db()).put(STORE, ids, KEY_QUESTS);
+}
+export async function loadAccountId(): Promise<string | null> {
+	if (!browser && typeof indexedDB === 'undefined') return null;
+	return (await (await db()).get(STORE, KEY_ACCOUNT)) ?? null;
+}
+export async function saveAccountId(id: string): Promise<void> {
+	if (!browser && typeof indexedDB === 'undefined') return;
+	await (await db()).put(STORE, id, KEY_ACCOUNT);
+}
+export async function clearAccountId(): Promise<void> {
+	if (!browser && typeof indexedDB === 'undefined') return;
+	await (await db()).delete(STORE, KEY_ACCOUNT);
 }
