@@ -13,19 +13,23 @@ export function toCycle(raw: RawCycle): CycleState {
  * the reward pools (one of Verdilac/Nepheri/Korumm is always live post–New War).
  * Null when none is found (API change / pre-New-War snapshot). */
 export function deriveRotation(syndicates: RawSyndicate[]): RotationState {
-	const pool = syndicates.flatMap((m) => (m.jobs ?? []).flatMap((j) => j.rewardPool ?? []));
-	let letter: Letter | null = null;
-	for (const reward of pool) {
-		const name = reward.split(' ')[0];
-		// Object.hasOwn (not `in`) so a reward whose first token is an inherited
-		// key like "constructor"/"toString" can't match a prototype member.
-		if (Object.hasOwn(WEAPON_TO_LETTER, name)) {
-			letter = WEAPON_TO_LETTER[name];
-			break;
+	// Bind the expiry to the SAME mission whose reward pool yields the letter.
+	// Unrelated syndicates (Arbiters, Suda, …) list first with a near-hourly
+	// reset, so `syndicates.find(has-expiry)` would pin the "flips" countdown to
+	// the wrong cadence and stick at 0s; the bounty-bearing missions carry the
+	// true ~2.5h rotation expiry.
+	for (const mission of syndicates) {
+		const pool = (mission.jobs ?? []).flatMap((j) => j.rewardPool ?? []);
+		for (const reward of pool) {
+			const name = reward.split(' ')[0];
+			// Object.hasOwn (not `in`) so a reward whose first token is an inherited
+			// key like "constructor"/"toString" can't match a prototype member.
+			if (Object.hasOwn(WEAPON_TO_LETTER, name)) {
+				return { letter: WEAPON_TO_LETTER[name], expiry: mission.expiry ?? null };
+			}
 		}
 	}
-	const expiry = syndicates.find((m) => m.expiry)?.expiry ?? null;
-	return { letter, expiry: letter ? expiry : null };
+	return { letter: null, expiry: null };
 }
 
 export function buildWorldState(

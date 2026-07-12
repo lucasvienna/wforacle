@@ -24,12 +24,16 @@ describe('deriveRotation', () => {
 			expiry: null,
 		});
 	});
-	it('takes expiry from the first syndicate that has one', () => {
+	it('takes expiry from the syndicate whose reward pool set the letter, not the first syndicate with any expiry', () => {
+		// Mirrors production: unrelated syndicates (Arbiters, Suda, …) list first
+		// with a near-hourly reset (15:59), while the bounty-bearing syndicates
+		// (Ostrons/Solaris/Entrati) carry the Narmer weapon and the true ~2.5h
+		// rotation expiry (17:00). The countdown must track the latter.
 		const r = deriveRotation([
-			{ syndicate: 'Cavia', jobs: [] },
-			syndicate('2026-07-11T21:00:00.000Z', 'Korumm Blueprint'),
+			{ syndicate: 'Arbiters of Hexis', expiry: '2026-07-12T15:59:00.000Z', jobs: [] },
+			syndicate('2026-07-12T17:00:49.648Z', 'Korumm Blueprint'),
 		]);
-		expect(r.expiry).toBe('2026-07-11T21:00:00.000Z');
+		expect(r).toEqual({ letter: 'C', expiry: '2026-07-12T17:00:49.648Z' });
 	});
 });
 
