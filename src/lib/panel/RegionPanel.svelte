@@ -158,7 +158,7 @@
 						<!-- Assassination cards are the region's primary frames: each
 						     reads full-width, stacked, rather than sharing a row. -->
 						<div class="space-y-3">
-							{#each frames.assassination as { node, boss, frame } (regionId + ':' + frame.id)}
+							{#each frames.assassination as { node, boss, frame } (regionId + ':' + node.id)}
 								<FrameCard
 									{frame}
 									{tracker}
@@ -198,7 +198,7 @@
 									<div
 										class="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-3"
 									>
-										{#each zone.entries as { frame, farm } (regionId + ':' + frame.id)}
+										{#each zone.entries as { frame, farm } (regionId + ':' + zone.node.id + ':' + frame.id)}
 											<FrameCard
 												{frame}
 												{tracker}

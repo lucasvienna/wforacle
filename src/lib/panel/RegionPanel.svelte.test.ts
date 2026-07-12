@@ -415,6 +415,21 @@ describe('RegionPanel', () => {
 		expect(document.querySelector('[data-part="valkyr:chassis"]')).toBeInTheDocument();
 		expect(document.querySelector('[data-part="wisp:chassis"]')).toBeInTheDocument();
 	});
+	it('keys assassination cards by node, so one frame on two nodes renders twice without a key collision', () => {
+		// Same frame on two assassination nodes → keying by frame.id alone would
+		// be a duplicate key (Svelte errors / reuses state). Key by node.id.
+		const dupFrame: Dataset = {
+			...multiNodeRegion,
+			nodes: [
+				multiNodeRegion.nodes[0], // themisto → valkyr
+				{ ...multiNodeRegion.nodes[1], frameId: 'valkyr' }, // ropalolyst → valkyr too
+			],
+			warframes: [multiNodeRegion.warframes[0]], // just valkyr
+		};
+		const tracker = createTracker(dupFrame.warframes);
+		render(RegionPanel, { dataset: dupFrame, regionId: 'jupiter', tracker });
+		expect(document.querySelectorAll('[data-frame="valkyr"]')).toHaveLength(2);
+	});
 	it('renders the region resources with phase badges and a guide link', () => {
 		const ds = {
 			regions: [
