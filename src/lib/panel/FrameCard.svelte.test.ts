@@ -100,4 +100,11 @@ describe('FrameCard', () => {
 		render(FrameCard, props(undefined, { defaultExpanded: true, isKey: true }));
 		expect(document.querySelector('[data-key]')).toBeInTheDocument();
 	});
+
+	it('exposes part rows as checkboxes whose name carries the slot and source', () => {
+		render(FrameCard, props(undefined, { defaultExpanded: true }));
+		const row = screen.getByRole('checkbox', { name: /Chassis/ });
+		expect(row).toHaveAccessibleName(/Chassis.*Jackal/);
+		expect(row).toHaveAttribute('aria-checked', 'false');
+	});
 });

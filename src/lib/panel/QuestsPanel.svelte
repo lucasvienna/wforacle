@@ -22,7 +22,6 @@
 					data-done={done}
 					role="checkbox"
 					aria-checked={done}
-					aria-label={q.name}
 					tabindex="0"
 					class="flex cursor-pointer items-start gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {done
 						? 'border-emerald-500/30 bg-emerald-500/10'
@@ -36,6 +35,7 @@
 					}}
 				>
 					<span
+						aria-hidden="true"
 						class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[11px] {done
 							? 'border-emerald-400 bg-emerald-400 text-slate-950'
 							: 'border-wf-edge text-transparent'}"
