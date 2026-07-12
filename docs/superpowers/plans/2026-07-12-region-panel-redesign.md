@@ -25,11 +25,13 @@
 Lift the assassination-entry and open-world-zone derivations out of `RegionPanel` into a pure, unit-testable module. No UI or behavior change.
 
 **Files:**
+
 - Create: `src/lib/panel/regionFrames.ts`
 - Create: `src/lib/panel/regionFrames.test.ts`
 - Modify: `src/lib/panel/RegionPanel.svelte` (replace inline derivations with a call)
 
 **Interfaces:**
+
 - Produces:
   - `interface AssassinationEntry { node: StarNode; boss: Boss; frame: Warframe }`
   - `interface OpenWorldEntry { frame: Warframe; farm: OpenWorldFarm }`
@@ -54,10 +56,35 @@ const ds: Dataset = {
 	regions: [],
 	nodes: [
 		// jupiter: TWO assassination nodes → two frames
-		{ id: 'themisto', regionId: 'jupiter', name: 'Themisto', missionType: 'Assassination', faction: 'Corpus', isAssassination: true, bossId: 'aladv', frameId: 'valkyr' },
-		{ id: 'ropalolyst', regionId: 'jupiter', name: 'The Ropalolyst', missionType: 'Assassination', faction: 'Corpus', isAssassination: true, bossId: 'ropa', frameId: 'wisp' },
+		{
+			id: 'themisto',
+			regionId: 'jupiter',
+			name: 'Themisto',
+			missionType: 'Assassination',
+			faction: 'Corpus',
+			isAssassination: true,
+			bossId: 'aladv',
+			frameId: 'valkyr',
+		},
+		{
+			id: 'ropalolyst',
+			regionId: 'jupiter',
+			name: 'The Ropalolyst',
+			missionType: 'Assassination',
+			faction: 'Corpus',
+			isAssassination: true,
+			bossId: 'ropa',
+			frameId: 'wisp',
+		},
 		// earth: one free-roam zone (Plains) with two frames
-		{ id: 'plains', regionId: 'earth', name: 'Plains of Eidolon', missionType: 'Free Roam', faction: 'Grineer', isAssassination: false },
+		{
+			id: 'plains',
+			regionId: 'earth',
+			name: 'Plains of Eidolon',
+			missionType: 'Free Roam',
+			faction: 'Grineer',
+			isAssassination: false,
+		},
 	],
 	bosses: [
 		{ id: 'aladv', name: 'Alad V', nodeId: 'themisto', faction: 'Corpus' },
@@ -67,8 +94,20 @@ const ds: Dataset = {
 	resources: [],
 	quests: [],
 	openWorldFarms: [
-		{ frameId: 'gara', nodeId: 'plains', regionId: 'earth', componentSource: 'Cetus Bounty', bpSource: 'X' },
-		{ frameId: 'revenant', nodeId: 'plains', regionId: 'earth', componentSource: 'Cetus Bounty', bpSource: 'Y' },
+		{
+			frameId: 'gara',
+			nodeId: 'plains',
+			regionId: 'earth',
+			componentSource: 'Cetus Bounty',
+			bpSource: 'X',
+		},
+		{
+			frameId: 'revenant',
+			nodeId: 'plains',
+			regionId: 'earth',
+			componentSource: 'Cetus Bounty',
+			bpSource: 'Y',
+		},
 	],
 } as unknown as Dataset;
 
@@ -173,48 +212,61 @@ In `src/lib/panel/RegionPanel.svelte`:
 Replace the import block's model-types line and add the helper import. Change:
 
 ```ts
-	import type {
-		Boss,
-		Dataset,
-		OpenWorldFarm,
-		StarNode,
-		Warframe,
-		WarframePart,
-	} from '$lib/model/types';
+import type {
+	Boss,
+	Dataset,
+	OpenWorldFarm,
+	StarNode,
+	Warframe,
+	WarframePart,
+} from '$lib/model/types';
 ```
+
 to:
+
 ```ts
-	import type { Dataset, OpenWorldFarm, Warframe, WarframePart } from '$lib/model/types';
-	import { regionFrames } from './regionFrames';
+import type { Dataset, OpenWorldFarm, Warframe, WarframePart } from '$lib/model/types';
+import { regionFrames } from './regionFrames';
 ```
 
 Delete the local `FrameEntry` type + `entries` derivation (currently lines ~67–77) and the `OWEntry`/`OWZone` types + `openWorldZones` derivation (currently lines ~86–102). Replace both with a single derivation next to the existing `resources` derivation:
 
 ```ts
-	let frames = $derived(regionFrames(dataset, regionId));
+let frames = $derived(regionFrames(dataset, regionId));
 ```
 
 In the template, change the assassination loop header from:
+
 ```svelte
 			{#if entries.length > 0 || openWorldZones.length > 0}
 ```
+
 to:
+
 ```svelte
 			{#if frames.assassination.length > 0 || frames.zones.length > 0}
 ```
+
 and:
+
 ```svelte
 				{#each entries as { node, boss, frame } (node.id)}
 ```
+
 to:
+
 ```svelte
 				{#each frames.assassination as { node, boss, frame } (node.id)}
 ```
+
 and:
+
 ```svelte
 				{#each openWorldZones as zone (zone.node.id)}
 ```
+
 to:
+
 ```svelte
 				{#each frames.zones as zone (zone.node.id)}
 ```
@@ -238,11 +290,13 @@ git commit -m "refactor(panel): extract pure regionFrames grouping helper"
 Move the resource `<section>` verbatim into its own component so it can become the side rail later and be tested in isolation.
 
 **Files:**
+
 - Create: `src/lib/panel/ResourceRail.svelte`
 - Create: `src/lib/panel/ResourceRail.svelte.test.ts`
 - Modify: `src/lib/panel/RegionPanel.svelte` (replace the right `<section>` with `<ResourceRail>`)
 
 **Interfaces:**
+
 - Consumes: `resourcesForRegion` (from Task-independent existing helper), `bestPhaseRec`.
 - Produces: `ResourceRail` component with props `{ resources: Resource[]; regionId: string }`.
 
@@ -263,8 +317,24 @@ const resources: Resource[] = [
 		image: 'AlloyPlate.png',
 		regionIds: ['venus'],
 		recommendations: [
-			{ phase: 'early', nodeLabel: 'Venus — Tessera', regionId: 'venus', boostersApply: false, note: '', source: '', lastVerified: '2026-07-05' },
-			{ phase: 'late', nodeLabel: 'Uranus — Assur', regionId: 'uranus', boostersApply: true, note: '', source: '', lastVerified: '2026-07-05' },
+			{
+				phase: 'early',
+				nodeLabel: 'Venus — Tessera',
+				regionId: 'venus',
+				boostersApply: false,
+				note: '',
+				source: '',
+				lastVerified: '2026-07-05',
+			},
+			{
+				phase: 'late',
+				nodeLabel: 'Uranus — Assur',
+				regionId: 'uranus',
+				boostersApply: true,
+				note: '',
+				source: '',
+				lastVerified: '2026-07-05',
+			},
 		],
 	},
 ];
@@ -277,7 +347,10 @@ describe('ResourceRail', () => {
 		expect(screen.queryByText('💀 late best')).toBeNull();
 		expect(screen.getByText(/⚡ Early: Venus — Tessera/)).toBeInTheDocument();
 		expect(screen.getByText(/💀 Late: Uranus — Assur/)).toBeInTheDocument();
-		expect(screen.getByRole('link', { name: /farming/i })).toHaveAttribute('href', '/guides/alloyplate');
+		expect(screen.getByRole('link', { name: /farming/i })).toHaveAttribute(
+			'href',
+			'/guides/alloyplate',
+		);
 	});
 
 	it('renders an empty state when there are no resources', () => {
@@ -383,20 +456,26 @@ Expected: PASS (2 tests).
 In `src/lib/panel/RegionPanel.svelte`:
 
 Add to the script imports:
+
 ```ts
-	import ResourceRail from './ResourceRail.svelte';
+import ResourceRail from './ResourceRail.svelte';
 ```
+
 Remove the now-unused `bestPhaseRec` and `base` imports (they moved into `ResourceRail`) — change:
+
 ```ts
-	import { resourcesForRegion, bestPhaseRec } from '$lib/model/resources';
-	import { base } from '$app/paths';
+import { resourcesForRegion, bestPhaseRec } from '$lib/model/resources';
+import { base } from '$app/paths';
 ```
+
 to:
+
 ```ts
-	import { resourcesForRegion } from '$lib/model/resources';
+import { resourcesForRegion } from '$lib/model/resources';
 ```
 
 Replace the entire right resource `<section>` (currently the block starting `<section ...>` with `<h2 ...>Resources on {region?.name}</h2>` through its closing `</section>`) with:
+
 ```svelte
 	<ResourceRail {resources} {regionId} />
 ```
@@ -420,12 +499,15 @@ git commit -m "refactor(panel): extract ResourceRail component"
 A self-contained frame card: header (avatar · name · tag · progress bar · N/M · chevron) + subline, with an expandable part checklist. Smart-auto expand comes from a `defaultExpanded` prop captured once at construction. Tested in isolation; not yet wired into `RegionPanel`.
 
 **Files:**
+
 - Create: `src/lib/panel/FrameCard.svelte`
 - Create: `src/lib/panel/FrameCard.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Tracker` (`frameCount`, `isOwned`, `togglePart`, `toggleFrame`).
 - Produces: `FrameCard` component with props:
+
   ```ts
   {
     frame: Warframe;
@@ -466,7 +548,15 @@ const frame: Warframe = {
 const sourceText = (p: WarframePart) => (p.slot === 'bp' ? 'Market' : 'Jackal');
 
 function props(tracker = createTracker([frame]), overrides = {}) {
-	return { frame, tracker, subLine: 'Fossa · Boss: Jackal', faction: 'Corpus', kindLabel: 'Assassination', sourceText, ...overrides };
+	return {
+		frame,
+		tracker,
+		subLine: 'Fossa · Boss: Jackal',
+		faction: 'Corpus',
+		kindLabel: 'Assassination',
+		sourceText,
+		...overrides,
+	};
 }
 
 describe('FrameCard', () => {
@@ -482,7 +572,10 @@ describe('FrameCard', () => {
 		const tracker = createTracker([frame]);
 		tracker.toggleFrame('rhino'); // own everything
 		render(FrameCard, props(tracker, { defaultExpanded: false }));
-		expect(document.querySelector('[data-frame="rhino"]')).toHaveAttribute('data-expanded', 'false');
+		expect(document.querySelector('[data-frame="rhino"]')).toHaveAttribute(
+			'data-expanded',
+			'false',
+		);
 		expect(screen.getByText('✓ done')).toBeInTheDocument();
 		expect(document.querySelector('[data-part="rhino:chassis"]')).toBeNull();
 	});
@@ -514,11 +607,20 @@ describe('FrameCard', () => {
 		render(FrameCard, props(undefined, { defaultExpanded: true }));
 		const header = document.querySelector('[data-frame="rhino"] button') as HTMLElement;
 		header.click();
-		expect(document.querySelector('[data-frame="rhino"]')).toHaveAttribute('data-expanded', 'false');
+		expect(document.querySelector('[data-frame="rhino"]')).toHaveAttribute(
+			'data-expanded',
+			'false',
+		);
 	});
 
 	it('shows the collapsed farm-cue summary only when collapsed', () => {
-		render(FrameCard, props(undefined, { defaultExpanded: false, summary: { cls: 'text-emerald-300', text: '● up now' } }));
+		render(
+			FrameCard,
+			props(undefined, {
+				defaultExpanded: false,
+				summary: { cls: 'text-emerald-300', text: '● up now' },
+			}),
+		);
 		expect(screen.getByText('● up now')).toBeInTheDocument();
 	});
 
@@ -723,10 +825,12 @@ git commit -m "feat(panel): collapsible progress-aware FrameCard component"
 Replace the old 2-column `md:grid-cols-2` layout and the internal `frameCard` snippet with the frames band (grouped `Assassination` / `Free Roam` sections of `FrameCard`s) plus the `ResourceRail`. Move the zone cycle line to a per-zone subheader, add region-prefixed keys, broaden the empty-state copy, and compute the collapsed farm-cue summary.
 
 **Files:**
+
 - Modify: `src/lib/panel/RegionPanel.svelte` (full template rewrite; script trims the snippet + adds `defaultExpanded`/`owSummary` helpers)
 - Modify: `src/lib/panel/RegionPanel.svelte.test.ts` (update empty-copy assertion; add group-header + re-key tests)
 
 **Interfaces:**
+
 - Consumes: `regionFrames` (Task 1), `FrameCard` (Task 3), `ResourceRail` (Task 2), existing `partAvailability` / `nextActiveAt` / `formatCountdown`.
 - Produces: unchanged public props `{ dataset, regionId, tracker, worldState?, now? }`.
 
@@ -735,62 +839,72 @@ Replace the old 2-column `md:grid-cols-2` layout and the internal `frameCard` sn
 In `src/lib/panel/RegionPanel.svelte.test.ts`:
 
 (a) Change the empty-state assertion. Find:
+
 ```ts
-	it('shows an empty state for a region with no assassination frame', () => {
-		const tracker = createTracker(seed.warframes);
-		render(RegionPanel, { dataset: seed, regionId: 'mercury', tracker });
-		expect(screen.getByText(/no assassination frame/i)).toBeInTheDocument();
-	});
+it('shows an empty state for a region with no assassination frame', () => {
+	const tracker = createTracker(seed.warframes);
+	render(RegionPanel, { dataset: seed, regionId: 'mercury', tracker });
+	expect(screen.getByText(/no assassination frame/i)).toBeInTheDocument();
+});
 ```
+
 Replace the assertion line with:
+
 ```ts
-		expect(screen.getByText(/no farmable frames/i)).toBeInTheDocument();
+expect(screen.getByText(/no farmable frames/i)).toBeInTheDocument();
 ```
 
 (b) Append these new cases inside the main `describe('RegionPanel', ...)` block:
+
 ```ts
-	it('shows only the Assassination group header for an assassination-only region', () => {
-		const tracker = createTracker(seed.warframes);
-		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
-		expect(screen.getByRole('heading', { name: 'Assassination' })).toBeInTheDocument();
-		expect(screen.queryByRole('heading', { name: 'Free Roam' })).toBeNull();
-	});
+it('shows only the Assassination group header for an assassination-only region', () => {
+	const tracker = createTracker(seed.warframes);
+	render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+	expect(screen.getByRole('heading', { name: 'Assassination' })).toBeInTheDocument();
+	expect(screen.queryByRole('heading', { name: 'Free Roam' })).toBeNull();
+});
 
-	it('shows only the Free Roam group header for an open-world-only region', () => {
-		const tracker = createTracker(openWorld.warframes);
-		render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
-		expect(screen.getByRole('heading', { name: 'Free Roam' })).toBeInTheDocument();
-		expect(screen.queryByRole('heading', { name: 'Assassination' })).toBeNull();
-	});
+it('shows only the Free Roam group header for an open-world-only region', () => {
+	const tracker = createTracker(openWorld.warframes);
+	render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
+	expect(screen.getByRole('heading', { name: 'Free Roam' })).toBeInTheDocument();
+	expect(screen.queryByRole('heading', { name: 'Assassination' })).toBeNull();
+});
 
-	it('re-derives expand state when the region changes (region-prefixed keys)', async () => {
-		const tracker = createTracker(openWorld.warframes);
-		const { rerender } = render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
-		// Caliban exists on both earth and venus; collapse it on earth...
-		(document.querySelector('[data-frame="caliban"] button') as HTMLElement).click();
-		expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute('data-expanded', 'false');
-		// ...switching regions must mount a FRESH card (incomplete → expanded again).
-		await rerender({ dataset: openWorld, regionId: 'venus', tracker });
-		expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute('data-expanded', 'true');
-	});
+it('re-derives expand state when the region changes (region-prefixed keys)', async () => {
+	const tracker = createTracker(openWorld.warframes);
+	const { rerender } = render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
+	// Caliban exists on both earth and venus; collapse it on earth...
+	(document.querySelector('[data-frame="caliban"] button') as HTMLElement).click();
+	expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute(
+		'data-expanded',
+		'false',
+	);
+	// ...switching regions must mount a FRESH card (incomplete → expanded again).
+	await rerender({ dataset: openWorld, regionId: 'venus', tracker });
+	expect(document.querySelector('[data-frame="caliban"]')).toHaveAttribute('data-expanded', 'true');
+});
 ```
 
 Also delete the now-obsolete layout test (the band/rail root keeps `grid items-start`, but assert the new hooks instead). Find and replace:
+
 ```ts
-	it('lays out the frame/resources grid with items-start (no forced equal-height stretch)', () => {
-		const tracker = createTracker(seed.warframes);
-		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
-		expect(document.querySelector('.grid.items-start')).toBeInTheDocument();
-	});
+it('lays out the frame/resources grid with items-start (no forced equal-height stretch)', () => {
+	const tracker = createTracker(seed.warframes);
+	render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+	expect(document.querySelector('.grid.items-start')).toBeInTheDocument();
+});
 ```
+
 with:
+
 ```ts
-	it('lays out a frames band alongside the resource rail', () => {
-		const tracker = createTracker(seed.warframes);
-		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
-		expect(document.querySelector('[data-region-band]')).toBeInTheDocument();
-		expect(document.querySelector('[data-resource-rail]')).toBeInTheDocument();
-	});
+it('lays out a frames band alongside the resource rail', () => {
+	const tracker = createTracker(seed.warframes);
+	render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
+	expect(document.querySelector('[data-region-band]')).toBeInTheDocument();
+	expect(document.querySelector('[data-resource-rail]')).toBeInTheDocument();
+});
 ```
 
 - [ ] **Step 2: Run the updated tests to verify they fail**
@@ -1026,6 +1140,7 @@ git commit -m "feat(panel): frames band + resource rail layout for RegionPanel"
 Confirm the whole thing type-checks, lints, renders correctly in a real browser, and passes e2e. Apply visual polish within the existing token palette if the live view reveals rough edges.
 
 **Files:**
+
 - Modify (only if a gate fails): the file the failure points to.
 
 - [ ] **Step 1: Typecheck**
@@ -1046,13 +1161,14 @@ Expected: PASS (all files, including `regionFrames`, `FrameCard`, `ResourceRail`
 - [ ] **Step 4: Drive the real app (use the `verify` skill)**
 
 Start the dev server (`pnpm dev`) and open the app. On a 4-frame planet (**Earth** or **Venus**), confirm:
+
 - frames render as a wrapped grid (not one tall column), grouped under **Assassination** / **Free Roam**;
 - fully-owned frames start collapsed + dimmed with `✓ done`; incomplete frames start expanded;
 - each card shows an `N/M` count + progress bar without expanding;
 - clicking a header toggles the checklist; toggling parts updates the bar;
 - the resource rail sits alongside on wide screens and drops below on narrow;
 - switching planets re-derives expand state from ownership.
-Take a screenshot of Earth for the record.
+  Take a screenshot of Earth for the record.
 
 - [ ] **Step 5: e2e sanity**
 
@@ -1077,6 +1193,7 @@ Confirm `git status` is clean and the branch `feat/region-panel-redesign` holds 
 ## Self-Review
 
 **Spec coverage:**
+
 - Band + rail layout → Task 4 (`lg:grid-cols-[1fr_20rem]`, `data-region-band` / `data-resource-rail`). ✓
 - `RegionPanel` / `FrameCard` / `ResourceRail` / `regionFrames.ts` split → Tasks 1–4. ✓
 - Grouping headers (Assassination / Free Roam), per-zone cycle subheader → Task 4. ✓
@@ -1090,7 +1207,7 @@ Confirm `git status` is clean and the branch `feat/region-panel-redesign` holds 
 - Public props unchanged / no `+page.svelte` edit → Global Constraints. ✓
 - Test plan (`regionFrames`, `FrameCard`, `ResourceRail`, reworked `RegionPanel`) → Tasks 1–4. ✓
 
-**Deliberate deviation from spec:** the collapsed availability summary is rendered **only** for a manually-collapsed *incomplete* free-roam frame — smart-auto collapses only *completed* frames, which have nothing left to farm, so their cue is `null`. The zone cycle subheader carries the "good time to farm?" signal at the group level. This keeps the summary from being dead UI without dropping the spec's intent.
+**Deliberate deviation from spec:** the collapsed availability summary is rendered **only** for a manually-collapsed _incomplete_ free-roam frame — smart-auto collapses only _completed_ frames, which have nothing left to farm, so their cue is `null`. The zone cycle subheader carries the "good time to farm?" signal at the group level. This keeps the summary from being dead UI without dropping the spec's intent.
 
 **Placeholder scan:** No TBD/TODO/"handle edge cases"/"similar to Task N". Every code step shows full code; every run step shows an exact command + expected result.
 

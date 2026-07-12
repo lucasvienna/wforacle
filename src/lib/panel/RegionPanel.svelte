@@ -150,7 +150,7 @@
 						>
 							Assassination
 						</h3>
-						<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+						<div class="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-3">
 							{#each frames.assassination as { node, boss, frame } (regionId + ':' + frame.id)}
 								<div class="sm:col-span-2">
 									<FrameCard
@@ -190,7 +190,9 @@
 											>
 										{/if}
 									</div>
-									<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+									<div
+										class="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-3"
+									>
 										{#each zone.entries as { frame, farm } (regionId + ':' + frame.id)}
 											<FrameCard
 												{frame}
