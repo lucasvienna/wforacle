@@ -33,12 +33,25 @@ describe('createWorldStateStore', () => {
 		expect(store.error).toBe(false);
 		store.dispose();
 	});
+	it('bypasses the browser HTTP cache so a long-open tab never polls stale data', async () => {
+		const fetchMock = vi.fn(async () => ({ json: async () => OK }) as Response);
+		vi.stubGlobal('fetch', fetchMock);
+		const store = createWorldStateStore();
+		await vi.advanceTimersByTimeAsync(0);
+		expect(fetchMock).toHaveBeenCalledWith(
+			expect.any(String),
+			expect.objectContaining({ cache: 'no-store' }),
+		);
+		store.dispose();
+	});
 	it('sets error and keeps last state when the payload is { ok: false }', async () => {
 		const fetchMock = vi.fn(async () => ({ json: async () => OK }) as Response);
 		vi.stubGlobal('fetch', fetchMock);
 		const store = createWorldStateStore();
 		await vi.advanceTimersByTimeAsync(0);
-		fetchMock.mockResolvedValueOnce({ json: async () => ({ ok: false }) } as Response);
+		fetchMock.mockResolvedValueOnce({
+			json: async () => ({ ok: false }),
+		} as Response);
 		await store.refresh();
 		expect(store.error).toBe(true);
 		expect(store.state).toEqual(OK); // last good kept
