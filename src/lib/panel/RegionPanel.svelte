@@ -1,12 +1,6 @@
 <script lang="ts">
-	import type {
-		Boss,
-		Dataset,
-		OpenWorldFarm,
-		StarNode,
-		Warframe,
-		WarframePart,
-	} from '$lib/model/types';
+	import type { Dataset, OpenWorldFarm, Warframe, WarframePart } from '$lib/model/types';
+	import { regionFrames } from './regionFrames';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
 	import { resourcesForRegion, bestPhaseRec } from '$lib/model/resources';
 	import { base } from '$app/paths';
@@ -61,45 +55,12 @@
 
 	let region = $derived(dataset.regions.find((r) => r.id === regionId));
 	let resources = $derived(resourcesForRegion(dataset, regionId));
-	// A region can have MULTIPLE Assassination nodes, each linking its own
-	// frame (e.g. Jupiter: Themisto→Valkyr and The Ropalolyst→Wisp) — render
-	// one frame block per node instead of only the first match.
-	type FrameEntry = { node: StarNode; boss: Boss; frame: Warframe };
-	let entries = $derived(
-		dataset.nodes
-			.filter((n) => n.regionId === regionId && n.isAssassination && n.frameId)
-			.map((node) => ({
-				node,
-				boss: dataset.bosses.find((b) => b.id === node.bossId),
-				frame: dataset.warframes.find((w) => w.id === node.frameId),
-			}))
-			.filter((e): e is FrameEntry => !!e.boss && !!e.frame),
-	);
+	let frames = $derived(regionFrames(dataset, regionId));
 
 	// The main blueprint is bought from the Market; components drop from the boss.
 	function sourceLabel(slot: string, bossName: string): string {
 		return slot === 'bp' ? 'Market' : bossName;
 	}
-
-	// Open-world zones for this region: group the region's farms by zone node,
-	// joined to the node + frame. Guarded for hand-built fixtures without farms.
-	type OWEntry = { frame: Warframe; farm: OpenWorldFarm };
-	type OWZone = { node: StarNode; entries: OWEntry[] };
-	let openWorldZones = $derived.by<OWZone[]>(() => {
-		const farms = (dataset.openWorldFarms ?? []).filter(
-			(f) => f.regionId === regionId,
-		);
-		const byNode = new Map<string, OWZone>();
-		for (const farm of farms) {
-			const node = dataset.nodes.find((n) => n.id === farm.nodeId);
-			const frame = dataset.warframes.find((w) => w.id === farm.frameId);
-			if (!node || !frame) continue;
-			const zone = byNode.get(node.id) ?? { node, entries: [] };
-			zone.entries.push({ frame, farm });
-			byNode.set(node.id, zone);
-		}
-		return [...byNode.values()];
-	});
 
 	// Source label for an open-world part row: bp shows its bpSource; components
 	// show "{source} · {tier} · Rot {rotation} · ~{chance}%", omitting the tier /
@@ -262,9 +223,9 @@
 				✓ Toggle whole frame
 			</button>
 		{/snippet}
-		{#if entries.length > 0 || openWorldZones.length > 0}
+		{#if frames.assassination.length > 0 || frames.zones.length > 0}
 			<div class="space-y-6">
-				{#each entries as { node, boss, frame } (node.id)}
+				{#each frames.assassination as { node, boss, frame } (node.id)}
 					<div>
 						<div class="mb-4 flex items-start justify-between gap-3">
 							<div>
@@ -296,7 +257,7 @@
 					</div>
 				{/each}
 
-				{#each openWorldZones as zone (zone.node.id)}
+				{#each frames.zones as zone (zone.node.id)}
 					{@const line = zoneCycleLine(zone.node.name)}
 					<div>
 						<div class="mb-4 flex items-start justify-between gap-3">
