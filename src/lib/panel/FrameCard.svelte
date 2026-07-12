@@ -125,12 +125,13 @@
 		<div class="mt-3 space-y-1">
 			{#each frame.parts as part (part.id)}
 				{@const owned = tracker.isOwned(part.id)}
+				{@const chip = avail?.(part) ?? null}
 				<div
 					data-part={part.id}
 					data-owned={owned}
 					role="button"
 					tabindex="0"
-					class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
+					class="flex cursor-pointer items-start gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
 						? 'border-emerald-500/30 bg-emerald-500/10'
 						: ''}"
 					onclick={() => tracker.togglePart(part.id)}
@@ -142,27 +143,30 @@
 					}}
 				>
 					<span
-						class="flex h-4 w-4 items-center justify-center rounded border text-[11px] {owned
+						class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[11px] {owned
 							? 'border-emerald-400 bg-emerald-400 text-slate-950'
 							: 'border-wf-edge text-transparent'}"
 					>
 						✓
 					</span>
-					<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
-						{#if SLOT_ICON[part.slot]}<span
-								aria-hidden="true"
-								class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
-							>{/if}{SLOT_LABEL[part.slot]}
-					</span>
-					<span class="ml-auto text-xs text-wf-muted">{sourceText(part)}</span>
-					{#if avail}
-						{@const chip = avail(part)}
-						{#if chip}
-							<span class="ml-2 shrink-0 text-[11px] {chip.cls}"
-								>{chip.text}</span
+					<div class="min-w-0 flex-1">
+						<div class="flex items-center gap-2">
+							<span
+								class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}"
 							>
-						{/if}
-					{/if}
+								{#if SLOT_ICON[part.slot]}<span
+										aria-hidden="true"
+										class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
+									>{/if}{SLOT_LABEL[part.slot]}
+							</span>
+							{#if chip}
+								<span class="ml-auto shrink-0 text-[11px] {chip.cls}"
+									>{chip.text}</span
+								>
+							{/if}
+						</div>
+						<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>
+					</div>
 				</div>
 			{/each}
 		</div>
