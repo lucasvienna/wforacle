@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1275.5+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-12T07:09:28.843Z",
+	"generatedAt": "2026-07-12T19:47:37.747Z",
 	"data": {
 		"regions": [
 			{
@@ -3959,6 +3959,7 @@
 			{
 				"id": "atlas",
 				"name": "Atlas",
+				"uniqueName": "/Lotus/Powersuits/Brawler/Brawler",
 				"nodeId": "CuratedJordasGolem",
 				"image": "Atlas.png",
 				"parts": [
@@ -3993,6 +3994,7 @@
 			{
 				"id": "ember",
 				"name": "Ember",
+				"uniqueName": "/Lotus/Powersuits/Ember/Ember",
 				"nodeId": "SolNode32",
 				"image": "Ember.png",
 				"parts": [
@@ -4027,6 +4029,7 @@
 			{
 				"id": "equinox",
 				"name": "Equinox",
+				"uniqueName": "/Lotus/Powersuits/YinYang/YinYang",
 				"nodeId": "SolNode105",
 				"image": "Equinox.png",
 				"parts": [
@@ -4054,6 +4057,7 @@
 			{
 				"id": "excalibur",
 				"name": "Excalibur",
+				"uniqueName": "/Lotus/Powersuits/Excalibur/Excalibur",
 				"nodeId": "SolNode99",
 				"image": "Excalibur.png",
 				"parts": [
@@ -4088,6 +4092,7 @@
 			{
 				"id": "frost",
 				"name": "Frost",
+				"uniqueName": "/Lotus/Powersuits/Frost/Frost",
 				"nodeId": "SolNode144",
 				"image": "Frost.png",
 				"parts": [
@@ -4122,6 +4127,7 @@
 			{
 				"id": "hydroid",
 				"name": "Hydroid",
+				"uniqueName": "/Lotus/Powersuits/Pirate/Pirate",
 				"nodeId": "SolNode24",
 				"image": "Hydroid.png",
 				"parts": [
@@ -4156,6 +4162,7 @@
 			{
 				"id": "loki",
 				"name": "Loki",
+				"uniqueName": "/Lotus/Powersuits/Loki/Loki",
 				"nodeId": "SolNode127",
 				"image": "Loki.png",
 				"parts": [
@@ -4190,6 +4197,7 @@
 			{
 				"id": "mag",
 				"name": "Mag",
+				"uniqueName": "/Lotus/Powersuits/Mag/Mag",
 				"nodeId": "SettlementNode20",
 				"image": "Mag.png",
 				"parts": [
@@ -4224,6 +4232,7 @@
 			{
 				"id": "mesa",
 				"name": "Mesa",
+				"uniqueName": "/Lotus/Powersuits/Cowgirl/Cowgirl",
 				"nodeId": "CuratedMutalistAladV",
 				"image": "Mesa.png",
 				"parts": [
@@ -4258,6 +4267,7 @@
 			{
 				"id": "nekros",
 				"name": "Nekros",
+				"uniqueName": "/Lotus/Powersuits/Necro/Necro",
 				"nodeId": "SolNode712",
 				"image": "Nekros.png",
 				"parts": [
@@ -4292,6 +4302,7 @@
 			{
 				"id": "nova",
 				"name": "Nova",
+				"uniqueName": "/Lotus/Powersuits/AntiMatter/Anti",
 				"nodeId": "SolNode210",
 				"image": "Nova.png",
 				"parts": [
@@ -4326,6 +4337,7 @@
 			{
 				"id": "rhino",
 				"name": "Rhino",
+				"uniqueName": "/Lotus/Powersuits/Rhino/Rhino",
 				"nodeId": "SolNode104",
 				"image": "Rhino.png",
 				"parts": [
@@ -4360,6 +4372,7 @@
 			{
 				"id": "saryn",
 				"name": "Saryn",
+				"uniqueName": "/Lotus/Powersuits/Saryn/Saryn",
 				"nodeId": "SolNode193",
 				"image": "Saryn.png",
 				"parts": [
@@ -4394,6 +4407,7 @@
 			{
 				"id": "trinity",
 				"name": "Trinity",
+				"uniqueName": "/Lotus/Powersuits/Trinity/Trinity",
 				"nodeId": "SolNode51",
 				"image": "Trinity.png",
 				"parts": [
@@ -4428,6 +4442,7 @@
 			{
 				"id": "valkyr",
 				"name": "Valkyr",
+				"uniqueName": "/Lotus/Powersuits/Berserker/Berserker",
 				"nodeId": "SolNode53",
 				"image": "Valkyr.png",
 				"parts": [
@@ -4462,6 +4477,7 @@
 			{
 				"id": "wisp",
 				"name": "Wisp",
+				"uniqueName": "/Lotus/Powersuits/Wisp/Wisp",
 				"nodeId": "SolNode740",
 				"image": "Wisp.png",
 				"parts": [
@@ -4496,6 +4512,7 @@
 			{
 				"id": "gara",
 				"name": "Gara",
+				"uniqueName": "/Lotus/Powersuits/Glass/Glass",
 				"nodeId": "SolNode228",
 				"image": "Gara.png",
 				"parts": [
@@ -4536,6 +4553,7 @@
 			{
 				"id": "revenant",
 				"name": "Revenant",
+				"uniqueName": "/Lotus/Powersuits/Revenant/Revenant",
 				"nodeId": "SolNode228",
 				"image": "Revenant.png",
 				"parts": [
@@ -4576,6 +4594,7 @@
 			{
 				"id": "caliban",
 				"name": "Caliban",
+				"uniqueName": "/Lotus/Powersuits/Sentient/Sentient",
 				"nodeId": "SolNode228",
 				"image": "Caliban.png",
 				"parts": [
@@ -4616,6 +4635,7 @@
 			{
 				"id": "garuda",
 				"name": "Garuda",
+				"uniqueName": "/Lotus/Powersuits/Garuda/Garuda",
 				"nodeId": "SolNode129",
 				"image": "Garuda.png",
 				"parts": [
@@ -4656,6 +4676,7 @@
 			{
 				"id": "hildryn",
 				"name": "Hildryn",
+				"uniqueName": "/Lotus/Powersuits/IronFrame/IronFrame",
 				"nodeId": "SolNode129",
 				"image": "IronFrame.png",
 				"parts": [
@@ -4690,6 +4711,7 @@
 			{
 				"id": "xaku",
 				"name": "Xaku",
+				"uniqueName": "/Lotus/Powersuits/BrokenFrame/BrokenFrame",
 				"nodeId": "SolNode229",
 				"image": "BrokenFrame.png",
 				"parts": [
@@ -4730,6 +4752,7 @@
 			{
 				"id": "qorvex",
 				"name": "Qorvex",
+				"uniqueName": "/Lotus/Powersuits/ConcreteFrame/ConcreteFrame",
 				"nodeId": "CuratedAlbrechtLabs",
 				"image": "Qorvex.png",
 				"parts": [
