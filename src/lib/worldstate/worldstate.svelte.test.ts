@@ -38,9 +38,10 @@ describe('createWorldStateStore', () => {
 		vi.stubGlobal('fetch', fetchMock);
 		const store = createWorldStateStore();
 		await vi.advanceTimersByTimeAsync(0);
-		expect(fetchMock).toHaveBeenCalledWith(expect.any(String), {
-			cache: 'no-store',
-		});
+		expect(fetchMock).toHaveBeenCalledWith(
+			expect.any(String),
+			expect.objectContaining({ cache: 'no-store' }),
+		);
 		store.dispose();
 	});
 	it('sets error and keeps last state when the payload is { ok: false }', async () => {
