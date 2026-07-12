@@ -52,6 +52,7 @@
 	// prop — rather than a $derived of tracker.frameCount — is deliberate: checking
 	// the last part must not snap an open card shut mid-interaction. A fresh initial
 	// state per visit comes from region-prefixed {#each} keys in RegionPanel.
+	// svelte-ignore state_referenced_locally
 	let expanded = $state(defaultExpanded);
 	let count = $derived(tracker.frameCount(frame.id));
 	let done = $derived(count.total > 0 && count.owned === count.total);
