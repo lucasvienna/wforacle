@@ -43,4 +43,19 @@ describe('fetchProfile', () => {
 		mockFetch({ ok: true, status: 200, json: async () => ({}) });
 		await expect(fetchProfile(ID)).rejects.toBeInstanceOf(ProfileError);
 	});
+
+	it('requests the correctly encoded profile URL', async () => {
+		const body = { loadout: { xpInfo: [{ uniqueName: '/Lotus/Powersuits/Rhino/Rhino' }] } };
+		const fetchMock = vi.fn(
+			async () => ({ ok: true, status: 200, json: async () => body }) as Response,
+		);
+		vi.stubGlobal('fetch', fetchMock);
+
+		await fetchProfile(ID);
+
+		expect(fetchMock).toHaveBeenCalledWith(
+			'https://api.warframestat.us/profile/517d823a1a4d804218000052',
+			expect.objectContaining({ headers: { accept: 'application/json' } }),
+		);
+	});
 });

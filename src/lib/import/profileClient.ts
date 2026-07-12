@@ -20,7 +20,10 @@ const BASE = 'https://api.warframestat.us/profile';
 export async function fetchProfile(accountId: string): Promise<RawProfile> {
 	let res: Response;
 	try {
-		res = await fetch(`${BASE}/${accountId}`, { headers: { accept: 'application/json' } });
+		res = await fetch(`${BASE}/${encodeURIComponent(accountId)}`, {
+			headers: { accept: 'application/json' },
+			signal: AbortSignal.timeout(15000),
+		});
 	} catch {
 		throw new ProfileError(
 			"Couldn't reach the profile service. Check your connection and try again.",
