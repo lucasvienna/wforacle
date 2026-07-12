@@ -11,7 +11,13 @@ export function createWorldStateStore() {
 
 	async function refresh() {
 		try {
-			const res = await fetch(`${base}/api/worldstate`);
+			// `cache: 'no-store'` so the 60s poll always reaches the network (and the
+			// edge cache) instead of the browser's private HTTP cache. The API sets
+			// only `s-maxage`, which shared caches honour but private caches ignore —
+			// leaving the response heuristically cacheable in the browser. Without this,
+			// a long-open tab keeps re-reading a stale body after a cycle flips, so its
+			// countdowns decay to 0s and never recover.
+			const res = await fetch(`${base}/api/worldstate`, { cache: 'no-store' });
 			const data = (await res.json()) as WorldState | { ok: false };
 			if (data && (data as WorldState).ok) {
 				state = data as WorldState;
