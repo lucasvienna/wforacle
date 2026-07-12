@@ -135,7 +135,7 @@
 				</p>
 				{#if store.result.ownedUntrackedCount > 0}
 					<p class="mt-1 text-xs text-wf-muted">
-						{store.result.ownedUntrackedCount} owned frames aren't tracked farms (skipped).
+						{store.result.ownedUntrackedCount} owned frames aren't tracked here (skipped).
 					</p>
 				{/if}
 				<p class="mt-2 text-xs text-wf-muted">
