@@ -122,7 +122,10 @@
 				Assembled from its Day and Night aspects.
 			</p>
 		{/if}
-		<div class="mt-3 space-y-1">
+		<!-- Group the part checkboxes under the frame name so a screen reader
+		     navigating control-to-control keeps the frame context — each row's
+		     own name still carries its slot + source. -->
+		<div class="mt-3 space-y-1" role="group" aria-label={frame.name}>
 			{#each frame.parts as part (part.id)}
 				{@const owned = tracker.isOwned(part.id)}
 				{@const chip = avail?.(part) ?? null}

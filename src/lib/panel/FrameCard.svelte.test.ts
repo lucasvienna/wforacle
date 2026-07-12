@@ -107,4 +107,10 @@ describe('FrameCard', () => {
 		expect(row).toHaveAccessibleName(/Chassis.*Jackal/);
 		expect(row).toHaveAttribute('aria-checked', 'false');
 	});
+
+	it('groups the part checkboxes under the frame name for screen-reader context', () => {
+		render(FrameCard, props(undefined, { defaultExpanded: true }));
+		const group = screen.getByRole('group', { name: 'Rhino' });
+		expect(group).toContainElement(screen.getByRole('checkbox', { name: /Chassis/ }));
+	});
 });
