@@ -696,4 +696,23 @@ describe('RegionPanel — world-state overlay', () => {
 		expect(document.body.textContent).not.toMatch(/NaN/);
 		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
 	});
+	it('shows no collapsed summary when the rotation letter is underivable', async () => {
+		// letter null → we can't claim "not this rotation". Own the always-available
+		// chassis so the remaining needed parts are all rotation-specific (unknown),
+		// then collapse the card to surface owSummary.
+		const tracker = createTracker(owAvail.warframes);
+		tracker.togglePart('gara:chassis');
+		render(RegionPanel, {
+			dataset: owAvail,
+			regionId: 'earth',
+			tracker,
+			worldState: { ...worldState, rotation: { letter: null, expiry: null } },
+			now: wsNow,
+		});
+		(document.querySelector('[data-frame="gara"] button') as HTMLElement).click();
+		await tick();
+		const card = document.querySelector('[data-frame="gara"]') as HTMLElement;
+		expect(card).toHaveAttribute('data-expanded', 'false');
+		expect(card.textContent).not.toMatch(/not this rotation/);
+	});
 });

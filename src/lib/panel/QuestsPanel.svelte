@@ -20,7 +20,9 @@
 				<div
 					data-quest={q.id}
 					data-done={done}
-					role="button"
+					role="checkbox"
+					aria-checked={done}
+					aria-label={q.name}
 					tabindex="0"
 					class="flex cursor-pointer items-start gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {done
 						? 'border-emerald-500/30 bg-emerald-500/10'

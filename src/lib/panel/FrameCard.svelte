@@ -129,7 +129,9 @@
 				<div
 					data-part={part.id}
 					data-owned={owned}
-					role="button"
+					role="checkbox"
+					aria-checked={owned}
+					aria-label={SLOT_LABEL[part.slot]}
 					tabindex="0"
 					class="flex cursor-pointer items-start gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {owned
 						? 'border-emerald-500/30 bg-emerald-500/10'
@@ -171,6 +173,7 @@
 			{/each}
 		</div>
 		<button
+			type="button"
 			class="mt-3 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
 			onclick={() => tracker.toggleFrame(frame.id)}
 		>

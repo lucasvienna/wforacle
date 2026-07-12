@@ -125,9 +125,11 @@
 			const a = partAvailability(p.rotation, letter);
 			return a === 'available' || a === 'always';
 		});
-		return upNow
-			? { cls: 'text-emerald-300', text: '● up now' }
-			: { cls: 'text-wf-muted', text: '○ not this rotation' };
+		if (upNow) return { cls: 'text-emerald-300', text: '● up now' };
+		// Letter underivable → we can't claim "not this rotation" (matches the
+		// per-part chip, which renders nothing for the `unknown` case).
+		if (letter === null) return null;
+		return { cls: 'text-wf-muted', text: '○ not this rotation' };
 	}
 
 	// Smart-auto: expand a frame unless it's already fully owned. Read at card
