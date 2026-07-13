@@ -1,10 +1,14 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { server } from '../../mocks/server';
 import ImportDialog from './ImportDialog.svelte';
 import { createImportStore } from './importState.svelte';
 import { createTracker } from '$lib/tracker/tracker.svelte';
 import type { RawProfile } from './parseProfile';
 import type { Dataset, Warframe } from '$lib/model/types';
+
+const PROFILE_URL = 'https://api.warframestat.us/profile/:id';
 
 function frame(id: string, uniqueName: string): Warframe {
 	return {
@@ -24,21 +28,26 @@ const PROFILE: RawProfile = {
 	loadout: { xpInfo: [{ uniqueName: '/Lotus/Powersuits/Rhino/Rhino' }] },
 };
 
+function useProfile(profile: unknown) {
+	server.use(http.get(PROFILE_URL, () => HttpResponse.json(profile)));
+}
+
 function setup() {
 	const tracker = createTracker(frames);
-	const store = createImportStore(dataset, { fetchProfile: async () => PROFILE });
+	const store = createImportStore(dataset);
 	render(ImportDialog, { store, tracker, open: true, onclose: vi.fn() });
 	return { tracker };
 }
 
 describe('ImportDialog', () => {
 	it('renders nothing when closed', () => {
-		const store = createImportStore(dataset, { fetchProfile: async () => PROFILE });
+		const store = createImportStore(dataset);
 		render(ImportDialog, { store, tracker: createTracker(frames), open: false, onclose: vi.fn() });
 		expect(screen.queryByRole('dialog')).toBeNull();
 	});
 
 	it('fetches, previews, and applies to the tracker', async () => {
+		useProfile(PROFILE);
 		const { tracker } = setup();
 		await fireEvent.input(document.querySelector('[data-account-input]') as HTMLElement, {
 			target: { value: '517d823a1a4d804218000052' },
