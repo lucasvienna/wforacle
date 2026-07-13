@@ -29,7 +29,7 @@ const PROFILE: RawProfile = {
 	challengeProgress: [{ name: 'TheWarWithin' }],
 };
 
-function useProfile(profile: unknown) {
+function useProfile(profile: RawProfile) {
 	server.use(http.get(PROFILE_URL, () => HttpResponse.json(profile)));
 }
 

@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, type JsonBodyType } from 'msw';
 import { server } from '../../../mocks/server';
 import { GET } from './+server';
 
-const fixtures: Record<string, unknown> = {
+const fixtures: Record<string, JsonBodyType> = {
 	cetusCycle: { state: 'day', expiry: 'c' },
 	vallisCycle: { state: 'cold', expiry: 'v' },
 	cambionCycle: { state: 'fass', expiry: 'm' },

@@ -35,15 +35,17 @@ describe('fetchProfile', () => {
 	});
 
 	it('requests the correctly encoded profile URL', async () => {
-		let seen: Request | undefined;
+		let seenUrl: string | undefined;
+		let seenAccept: string | null | undefined;
 		server.use(
 			http.get(PROFILE_URL, ({ request }) => {
-				seen = request;
+				seenUrl = request.url;
+				seenAccept = request.headers.get('accept');
 				return HttpResponse.json({ loadout: { xpInfo: [{ uniqueName: '/x' }] } });
 			}),
 		);
 		await fetchProfile(ID);
-		expect(seen?.url).toBe('https://api.warframestat.us/profile/517d823a1a4d804218000052');
-		expect(seen?.headers.get('accept')).toBe('application/json');
+		expect(seenUrl).toBe('https://api.warframestat.us/profile/517d823a1a4d804218000052');
+		expect(seenAccept).toBe('application/json');
 	});
 });

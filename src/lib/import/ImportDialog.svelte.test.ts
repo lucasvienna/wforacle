@@ -28,7 +28,7 @@ const PROFILE: RawProfile = {
 	loadout: { xpInfo: [{ uniqueName: '/Lotus/Powersuits/Rhino/Rhino' }] },
 };
 
-function useProfile(profile: unknown) {
+function useProfile(profile: RawProfile) {
 	server.use(http.get(PROFILE_URL, () => HttpResponse.json(profile)));
 }
 
