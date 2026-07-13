@@ -33,7 +33,7 @@ export function breadcrumbLd(items: { name: string; url: string }[]): object {
 	};
 }
 
-function latestLastVerified(resource: Resource): string {
+export function latestLastVerified(resource: Resource): string {
 	return resource.recommendations.reduce(
 		(latest, rec) => (rec.lastVerified > latest ? rec.lastVerified : latest),
 		resource.recommendations[0]?.lastVerified ?? '',
