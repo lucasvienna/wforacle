@@ -33,7 +33,7 @@
 
 	{#if jsonLd}
 		{@html '<script type="application/ld+json">' +
-			JSON.stringify(jsonLd) +
+			JSON.stringify(jsonLd).replace(/</g, '\\u003c') +
 			'<\/script>'}
 	{/if}
 </svelte:head>
