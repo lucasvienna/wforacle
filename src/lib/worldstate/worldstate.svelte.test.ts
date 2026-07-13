@@ -1,7 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { server } from '../../mocks/server';
 
 vi.mock('$app/environment', () => ({ browser: true }));
-vi.mock('$app/paths', () => ({ resolve: (path: string) => path }));
+// resolve('/api/worldstate') must yield an absolute URL for undici; production
+// resolve prefixes base ('') and resolves against the page origin, but node
+// fetch has no origin, so the mock prefixes a concrete one.
+vi.mock('$app/paths', () => ({
+	resolve: (path: string) => `http://localhost:3000${path}`,
+}));
 
 import { createWorldStateStore } from './worldstate.svelte';
 import type { WorldState } from './types';
@@ -15,68 +22,66 @@ const OK: WorldState = {
 	rotation: { letter: 'C', expiry: 'e' },
 };
 
+const okHandler = () => http.get('*/api/worldstate', () => HttpResponse.json(OK));
+
 beforeEach(() => vi.useFakeTimers());
-afterEach(() => {
-	vi.useRealTimers();
-	vi.unstubAllGlobals();
-});
+afterEach(() => vi.useRealTimers());
 
 describe('createWorldStateStore', () => {
 	it('populates state from the first fetch', async () => {
-		vi.stubGlobal(
-			'fetch',
-			vi.fn(async () => ({ json: async () => OK }) as Response),
-		);
+		server.use(okHandler());
 		const store = createWorldStateStore();
 		await vi.advanceTimersByTimeAsync(0);
 		expect(store.state).toEqual(OK);
 		expect(store.error).toBe(false);
 		store.dispose();
 	});
+
 	it('bypasses the browser HTTP cache so a long-open tab never polls stale data', async () => {
-		const fetchMock = vi.fn(async () => ({ json: async () => OK }) as Response);
-		vi.stubGlobal('fetch', fetchMock);
+		let seenCache: string | undefined;
+		server.use(
+			http.get('*/api/worldstate', ({ request }) => {
+				seenCache = request.cache;
+				return HttpResponse.json(OK);
+			}),
+		);
 		const store = createWorldStateStore();
 		await vi.advanceTimersByTimeAsync(0);
-		expect(fetchMock).toHaveBeenCalledWith(
-			expect.any(String),
-			expect.objectContaining({ cache: 'no-store' }),
-		);
+		expect(seenCache).toBe('no-store');
 		store.dispose();
 	});
+
 	it('sets error and keeps last state when the payload is { ok: false }', async () => {
-		const fetchMock = vi.fn(async () => ({ json: async () => OK }) as Response);
-		vi.stubGlobal('fetch', fetchMock);
+		server.use(okHandler());
 		const store = createWorldStateStore();
 		await vi.advanceTimersByTimeAsync(0);
-		fetchMock.mockResolvedValueOnce({
-			json: async () => ({ ok: false }),
-		} as Response);
+		// A later matching handler takes precedence in MSW.
+		server.use(http.get('*/api/worldstate', () => HttpResponse.json({ ok: false })));
 		await store.refresh();
 		expect(store.error).toBe(true);
 		expect(store.state).toEqual(OK); // last good kept
 		store.dispose();
 	});
+
 	it('sets error on network rejection', async () => {
-		vi.stubGlobal(
-			'fetch',
-			vi.fn(async () => {
-				throw new Error('down');
-			}),
-		);
+		server.use(http.get('*/api/worldstate', () => HttpResponse.error()));
 		const store = createWorldStateStore();
 		await vi.advanceTimersByTimeAsync(0);
 		expect(store.error).toBe(true);
 		store.dispose();
 	});
+
 	it('dispose stops the poll timer (no further fetches)', async () => {
-		const fetchMock = vi.fn(async () => ({ json: async () => OK }) as Response);
-		vi.stubGlobal('fetch', fetchMock);
+		server.use(okHandler());
+		let requests = 0;
+		server.events.on('request:start', () => {
+			requests += 1;
+		});
 		const store = createWorldStateStore();
 		await vi.advanceTimersByTimeAsync(0);
 		store.dispose();
-		fetchMock.mockClear();
+		const afterDispose = requests;
 		await vi.advanceTimersByTimeAsync(120_000);
-		expect(fetchMock).not.toHaveBeenCalled();
+		expect(requests).toBe(afterDispose);
 	});
 });
