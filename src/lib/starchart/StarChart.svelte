@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Region } from '$lib/model/types';
-	import { base } from '$app/paths';
+	import { asset } from '$app/paths';
 	import { layoutRing, layoutAnomalies, type PlacedPlanet } from './geometry';
 
-	const planetSrc = (id: string) => `${base}/planets/${id}.webp`;
+	const planetSrc = (id: string) => asset(`/planets/${id}.webp`);
 
 	let {
 		regions,

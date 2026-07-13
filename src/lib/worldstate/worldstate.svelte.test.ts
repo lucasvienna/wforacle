@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 vi.mock('$app/environment', () => ({ browser: true }));
-vi.mock('$app/paths', () => ({ base: '' }));
+vi.mock('$app/paths', () => ({ resolve: (path: string) => path }));
 
 import { createWorldStateStore } from './worldstate.svelte';
 import type { WorldState } from './types';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Resource } from '$lib/model/types';
 	import { bestPhaseRec } from '$lib/model/resources';
-	import { base } from '$app/paths';
+	import { asset, resolve } from '$app/paths';
 
 	let { resources, regionId }: { resources: Resource[]; regionId: string } =
 		$props();
@@ -25,7 +25,7 @@
 				<li class="rounded-lg border border-wf-edge px-3 py-2">
 					<div class="flex flex-wrap items-center gap-2">
 						<img
-							src="{base}/resources/{r.id}.webp"
+							src={asset(`/resources/${r.id}.webp`)}
 							alt=""
 							class="h-8 w-8 shrink-0 rounded"
 							loading="lazy"
@@ -47,7 +47,7 @@
 						{/if}
 						{#if r.recommendations.length > 0}
 							<a
-								href="{base}/guides/{r.id}"
+								href={resolve('/guides/[resource]', { resource: r.id })}
 								class="ml-auto shrink-0 text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
 							>
 								farming ▸
