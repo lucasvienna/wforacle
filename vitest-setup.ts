@@ -1,6 +1,15 @@
 import '@testing-library/jest-dom/vitest';
 import '@testing-library/svelte/vitest';
 import 'fake-indexeddb/auto';
+import { beforeAll, afterEach, afterAll } from 'vitest';
+import { server } from './src/mocks/server';
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => {
+	server.resetHandlers();
+	server.events.removeAllListeners();
+});
+afterAll(() => server.close());
 
 // jsdom implements `.click()` on HTMLElement but not SVGElement; polyfill it so
 // tests can call `.click()` on SVG nodes (e.g. our Star Chart planet labels).
