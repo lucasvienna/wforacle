@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { loadDataset } from '$lib/data/dataset';
 	import type { Dataset } from '$lib/model/types';
 	import StarChart from '$lib/starchart/StarChart.svelte';
@@ -120,7 +120,7 @@
 	function handlePick(item: PaletteItem) {
 		if (item.type === 'action' && item.id === 'import') importOpen = true;
 		else if (item.targetRegionId) selectedId = item.targetRegionId;
-		else if (item.type === 'resource') goto(`${base}/guides/${item.id}`);
+		else if (item.type === 'resource') goto(resolve('/guides/[resource]', { resource: item.id }));
 	}
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { asset, resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -25,7 +25,7 @@
 
 <div class="mx-auto max-w-3xl p-6 text-slate-100">
 	<a
-		href="{base}/"
+		href={resolve('/')}
 		class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
 	>
 		&lt; Back to Star Chart
@@ -33,7 +33,7 @@
 
 	<header class="mt-4 mb-6 flex items-center gap-3">
 		<img
-			src="{base}/resources/{data.resource.id}.webp"
+			src={asset(`/resources/${data.resource.id}.webp`)}
 			alt=""
 			class="h-12 w-12 rounded"
 		/>
