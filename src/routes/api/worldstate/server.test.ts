@@ -1,17 +1,9 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
+import { http, HttpResponse, type JsonBodyType } from 'msw';
+import { server } from '../../../mocks/server';
 import { GET } from './+server';
 
-function mockFetch(byEndpoint: Record<string, unknown>, fail = false) {
-	return vi.fn(async (url: string) => {
-		if (fail) throw new Error('network down');
-		const key = Object.keys(byEndpoint).find((k) => url.includes(k))!;
-		return { ok: true, json: async () => byEndpoint[key] } as Response;
-	});
-}
-
-afterEach(() => vi.unstubAllGlobals());
-
-const fixtures = {
+const fixtures: Record<string, JsonBodyType> = {
 	cetusCycle: { state: 'day', expiry: 'c' },
 	vallisCycle: { state: 'cold', expiry: 'v' },
 	cambionCycle: { state: 'fass', expiry: 'm' },
@@ -24,9 +16,13 @@ const fixtures = {
 	],
 };
 
+const PC_URL = 'https://api.warframestat.us/pc/:endpoint';
+
 describe('GET /api/worldstate', () => {
 	it('returns the composed world state on success', async () => {
-		vi.stubGlobal('fetch', mockFetch(fixtures));
+		server.use(
+			http.get(PC_URL, ({ params }) => HttpResponse.json(fixtures[params.endpoint as string])),
+		);
 		const res = await GET({} as never);
 		const body = (await res.json()) as Record<string, unknown>;
 		expect(body.ok).toBe(true);
@@ -34,8 +30,9 @@ describe('GET /api/worldstate', () => {
 		expect(body.rotation).toEqual({ letter: 'C', expiry: '2026-07-11T21:00:00.000Z' });
 		expect(res.headers.get('cache-control')).toMatch(/s-maxage=60/);
 	});
+
 	it('returns { ok: false } and no-store on upstream failure', async () => {
-		vi.stubGlobal('fetch', mockFetch(fixtures, true));
+		server.use(http.get(PC_URL, () => HttpResponse.error()));
 		const res = await GET({} as never);
 		expect(await res.json()).toEqual({ ok: false });
 		expect(res.headers.get('cache-control')).toBe('no-store');
