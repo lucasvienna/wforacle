@@ -12,7 +12,7 @@
 	path="/guides"
 />
 
-<div class="mx-auto max-w-5xl p-6 text-slate-100">
+<div class="mx-auto max-w-screen-2xl p-6 text-slate-100">
 	<a
 		href={resolve('/')}
 		class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
@@ -28,7 +28,7 @@
 		</p>
 	</header>
 
-	<section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+	<section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 		{#each data.guides as g (g.id)}
 			<a
 				href={resolve('/guides/[resource]', { resource: g.id })}
