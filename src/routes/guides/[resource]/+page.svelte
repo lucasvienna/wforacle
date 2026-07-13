@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { asset, resolve } from '$app/paths';
+	import SeoHead from '$lib/seo/SeoHead.svelte';
+	import { breadcrumbLd, guideLd } from '$lib/seo/jsonld';
+	import { guideDescription } from '$lib/seo/meta';
+	import { SITE_URL } from '$lib/seo/config';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -21,7 +25,24 @@
 			a.phase === b.phase ? 0 : a.phase === 'early' ? -1 : 1,
 		),
 	);
+
+	let canonical = $derived(`${SITE_URL}/guides/${data.resource.id}`);
 </script>
+
+<SeoHead
+	title={`${data.resource.name} Farming Guide — Best Locations | wforacle`}
+	description={guideDescription(data.resource)}
+	path={`/guides/${data.resource.id}`}
+	type="article"
+	jsonLd={[
+		breadcrumbLd([
+			{ name: 'Home', url: `${SITE_URL}/` },
+			{ name: 'Guides', url: `${SITE_URL}/guides` },
+			{ name: `${data.resource.name} Farming Guide`, url: canonical },
+		]),
+		guideLd(data.resource, canonical),
+	]}
+/>
 
 <div class="mx-auto max-w-3xl p-6 text-slate-100">
 	<a
@@ -34,7 +55,7 @@
 	<header class="mt-4 mb-6 flex items-center gap-3">
 		<img
 			src={asset(`/resources/${data.resource.id}.webp`)}
-			alt=""
+			alt={data.resource.name}
 			class="h-12 w-12 rounded"
 		/>
 		<h1 class="text-2xl font-bold">{data.resource.name} farming guide</h1>

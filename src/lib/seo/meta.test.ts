@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { buildMeta } from './meta';
+import { buildMeta, guideDescription } from './meta';
 import { SITE_URL, DEFAULT_OG_IMAGE } from './config';
+import type { Resource } from '$lib/model/types';
 
 describe('buildMeta', () => {
 	it('builds an absolute canonical for the root path', () => {
@@ -71,5 +72,84 @@ describe('buildMeta', () => {
 		const meta = buildMeta({ title: 'My Title', description: 'My Description', path: '/' });
 		expect(meta.title).toBe('My Title');
 		expect(meta.description).toBe('My Description');
+	});
+});
+
+describe('guideDescription', () => {
+	const resource: Resource = {
+		id: 'neurodes',
+		name: 'Neurodes',
+		regionIds: ['earth'],
+		recommendations: [
+			{
+				phase: 'early',
+				nodeLabel: 'Earth — Eris',
+				boostersApply: true,
+				note: 'Farm Eris on Earth for a steady Neurodes drop.',
+				source: 'https://wiki.warframe.com/neurodes',
+				lastVerified: '2026-07-01',
+			},
+			{
+				phase: 'late',
+				nodeLabel: 'Void — Aphrodite',
+				boostersApply: false,
+				note: '',
+				source: 'https://wiki.warframe.com/neurodes-late',
+				lastVerified: '2026-07-01',
+			},
+		],
+	};
+
+	it('uses the top early recommendation as the "top pick"', () => {
+		expect(guideDescription(resource)).toBe(
+			'Where to farm Neurodes in Warframe — best early and late-game locations. Top pick: Earth — Eris.',
+		);
+	});
+
+	it('falls back to the first recommendation when there is no early rec', () => {
+		const lateOnly: Resource = {
+			...resource,
+			recommendations: [resource.recommendations[1]],
+		};
+		expect(guideDescription(lateOnly)).toBe(
+			'Where to farm Neurodes in Warframe — best early and late-game locations. Top pick: Void — Aphrodite.',
+		);
+	});
+
+	it('omits the "top pick" clause when there are no recommendations at all', () => {
+		const none: Resource = { ...resource, recommendations: [] };
+		expect(guideDescription(none)).toBe(
+			'Where to farm Neurodes in Warframe — best early and late-game locations.',
+		);
+	});
+
+	it('collapses internal whitespace/newlines from the node label', () => {
+		const messy: Resource = {
+			...resource,
+			recommendations: [
+				{
+					...resource.recommendations[0],
+					nodeLabel: '  Earth —\n  Eris',
+				},
+			],
+		};
+		expect(guideDescription(messy)).toBe(
+			'Where to farm Neurodes in Warframe — best early and late-game locations. Top pick: Earth — Eris.',
+		);
+	});
+
+	it('truncates to at most 160 characters', () => {
+		const longName: Resource = {
+			...resource,
+			name: 'A'.repeat(50),
+			recommendations: [
+				{
+					...resource.recommendations[0],
+					nodeLabel: 'B'.repeat(150),
+				},
+			],
+		};
+		const description = guideDescription(longName);
+		expect(description.length).toBeLessThanOrEqual(160);
 	});
 });
