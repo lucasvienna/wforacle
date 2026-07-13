@@ -120,7 +120,8 @@
 	function handlePick(item: PaletteItem) {
 		if (item.type === 'action' && item.id === 'import') importOpen = true;
 		else if (item.targetRegionId) selectedId = item.targetRegionId;
-		else if (item.type === 'resource') goto(resolve('/guides/[resource]', { resource: item.id }));
+		else if (item.type === 'resource')
+			goto(resolve('/guides/[resource]', { resource: item.id }));
 	}
 </script>
 
