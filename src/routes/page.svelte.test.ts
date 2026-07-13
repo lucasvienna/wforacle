@@ -66,9 +66,43 @@ vi.mock('$app/navigation', () => ({
 import { goto } from '$app/navigation';
 import Page from './+page.svelte';
 
+const directoryFixture = {
+	directory: [
+		{
+			id: 'venus',
+			name: 'Venus',
+			frames: ['Rhino'],
+			resources: [
+				{ id: 'ferrite', name: 'Ferrite', hasGuide: true },
+				{ id: 'salvage', name: 'Salvage', hasGuide: false },
+			],
+		},
+	],
+};
+
 describe('home page', () => {
+	it('renders the h1, intro, directory, and guides link immediately (before dataset onMount resolves)', () => {
+		render(Page, { data: directoryFixture, params: {} });
+
+		const h1 = screen.getByRole('heading', { level: 1 });
+		expect(h1.textContent?.trim().toLowerCase()).not.toBe('wforacle');
+		expect(h1.textContent).toBeTruthy();
+
+		// directory section: planet name, frame name, guide link vs. plain text
+		expect(screen.getByText('Venus')).toBeInTheDocument();
+		expect(screen.getByText(/Rhino/)).toBeInTheDocument();
+		const resourceLink = screen.getByRole('link', { name: 'Ferrite' });
+		expect(resourceLink).toHaveAttribute('href', expect.stringMatching(/\/guides\/ferrite$/));
+		expect(screen.getByText('Salvage')).toBeInTheDocument();
+		expect(screen.queryByRole('link', { name: 'Salvage' })).toBeNull();
+
+		// hub link in the footer
+		const guidesLink = screen.getByRole('link', { name: /browse all resource farming guides/i });
+		expect(guidesLink).toHaveAttribute('href', expect.stringMatching(/\/guides$/));
+	});
+
 	it('renders brand immediately and chart+panel after data loads', async () => {
-		render(Page);
+		render(Page, { data: directoryFixture, params: {} });
 		// brand text is split across nested <span>s for styling, so the default
 		// getByText (which only checks direct text nodes) can't match it directly;
 		// use a matcher function that checks the element's full textContent instead.
@@ -107,7 +141,7 @@ describe('home page', () => {
 	});
 
 	it('opens the command palette via the header chip, selects a region, and navigates to a resource guide', async () => {
-		render(Page);
+		render(Page, { data: directoryFixture, params: {} });
 		await waitFor(() => expect(screen.getByText('VENUS')).toBeInTheDocument());
 
 		expect(screen.queryByRole('dialog')).toBeNull();
