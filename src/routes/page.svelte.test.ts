@@ -82,7 +82,7 @@ const directoryFixture = {
 
 describe('home page', () => {
 	it('renders the h1, intro, directory, and guides link immediately (before dataset onMount resolves)', () => {
-		render(Page, { data: directoryFixture, params: {} });
+		render(Page, { data: directoryFixture, params: {}, form: undefined });
 
 		const h1 = screen.getByRole('heading', { level: 1 });
 		expect(h1.textContent?.trim().toLowerCase()).not.toBe('wforacle');
@@ -102,7 +102,7 @@ describe('home page', () => {
 	});
 
 	it('renders brand immediately and chart+panel after data loads', async () => {
-		render(Page, { data: directoryFixture, params: {} });
+		render(Page, { data: directoryFixture, params: {}, form: undefined });
 		// brand text is split across nested <span>s for styling, so the default
 		// getByText (which only checks direct text nodes) can't match it directly;
 		// use a matcher function that checks the element's full textContent instead.
@@ -141,7 +141,7 @@ describe('home page', () => {
 	});
 
 	it('opens the command palette via the header chip, selects a region, and navigates to a resource guide', async () => {
-		render(Page, { data: directoryFixture, params: {} });
+		render(Page, { data: directoryFixture, params: {}, form: undefined });
 		await waitFor(() => expect(screen.getByText('VENUS')).toBeInTheDocument());
 
 		expect(screen.queryByRole('dialog')).toBeNull();

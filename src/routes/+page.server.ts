@@ -1,13 +1,16 @@
 import { loadDataset } from '$lib/data/dataset';
 import { resourcesForRegion } from '$lib/model/resources';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-// Universal load so the "Browse the Star Chart" directory below can render at
-// build time (prerender is inherited from +layout.ts). Only non-spoiler-gated
+// Server load (not universal) so the "Browse the Star Chart" directory below
+// can render at build time (prerender is inherited from +layout.ts) WITHOUT
+// SvelteKit embedding the ~177KB static/data/dataset.json fetch response into
+// the prerendered HTML as a `data-sveltekit-fetched` replay blob — that only
+// happens for `fetch` calls tracked by a universal load. Only non-spoiler-gated
 // planets are included — this mirrors the app's default pre-quest reveal
 // state (see `$lib/model/reveal`) and keeps spoiler content out of the
 // crawlable, prerendered HTML.
-export const load: PageLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch }) => {
 	const dataset = await loadDataset(fetch);
 
 	const directory = dataset.regions

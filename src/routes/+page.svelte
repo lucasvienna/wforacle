@@ -30,8 +30,10 @@
 	} from '$lib/import/importState.svelte';
 	import SeoHead from '$lib/seo/SeoHead.svelte';
 	import { webApplicationLd } from '$lib/seo/jsonld';
-	import { DEFAULT_DESCRIPTION } from '$lib/seo/config';
 	import type { PageProps } from './$types';
+
+	const HOME_DESCRIPTION =
+		'Interactive Warframe Star Chart tracker: mark owned frames, find every Warframe part location, and discover the best early and late-game resource farms.';
 
 	let { data }: PageProps = $props();
 
@@ -133,7 +135,7 @@
 
 <SeoHead
 	title="wforacle — Warframe Star Chart & Resource Farming Tracker"
-	description={DEFAULT_DESCRIPTION}
+	description={HOME_DESCRIPTION}
 	path="/"
 	type="website"
 	jsonLd={webApplicationLd()}
