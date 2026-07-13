@@ -17,16 +17,16 @@ The suite runs as a single `jsdom` vitest project (`vite.config.ts`) with one
 setup file (`vitest-setup.ts`) over node's global `fetch` (undici). A single
 `setupServer` from `msw/node` therefore intercepts all of the following:
 
-| Boundary | URL | Test file |
-| --- | --- | --- |
-| Profile API | `https://api.warframestat.us/profile/:id` | `src/lib/import/profileClient.test.ts` |
-| Worldstate upstream | `https://api.warframestat.us/pc/:endpoint?language=en` | `src/routes/api/worldstate/server.test.ts` |
-| Internal poll | `/api/worldstate` (relative, `base === ''`) | `src/lib/worldstate/worldstate.svelte.test.ts` |
-| Profile via store DI | `.../profile/:id` (through `createImportStore`) | `src/lib/import/importState.svelte.test.ts`, `src/lib/import/ImportDialog.svelte.test.ts` |
+| Boundary             | URL                                                    | Test file                                                                                 |
+| -------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| Profile API          | `https://api.warframestat.us/profile/:id`              | `src/lib/import/profileClient.test.ts`                                                    |
+| Worldstate upstream  | `https://api.warframestat.us/pc/:endpoint?language=en` | `src/routes/api/worldstate/server.test.ts`                                                |
+| Internal poll        | `/api/worldstate` (relative, `base === ''`)            | `src/lib/worldstate/worldstate.svelte.test.ts`                                            |
+| Profile via store DI | `.../profile/:id` (through `createImportStore`)        | `src/lib/import/importState.svelte.test.ts`, `src/lib/import/ImportDialog.svelte.test.ts` |
 
 The `importState` and `ImportDialog` tests currently inject a fake
 `fetchProfile`. They drop that injection and fall through the store's default
-`realFetch`, which then hits MSW. The store keeps its DI *capability*
+`realFetch`, which then hits MSW. The store keeps its DI _capability_
 (`deps.fetchProfile`) — production code is unchanged; only the tests stop
 injecting a fake.
 
@@ -58,16 +58,17 @@ Out of scope: tests that use `vi.fn`/`vi.mock` for non-network purposes
 
 Assertions that today read a `vi.fn`'s call record move to MSW equivalents:
 
-- *"fetch called with URL/headers"* → assert on the intercepted `request`
+- _"fetch called with URL/headers"_ → assert on the intercepted `request`
   inside the handler (`request.url`, `request.headers.get('accept')`), or via
   `server.events.on('request:start', …)`. This asserts what the server
   **received**, which is stronger than asserting call arguments.
-- *"fetch not called"* / *"no further fetches after dispose"* → count requests
+- _"fetch not called"_ / _"no further fetches after dispose"_ → count requests
   with `server.events.on('request:start', listener)` and assert the count.
 
 ## Per-file conversion
 
 ### `profileClient.test.ts`
+
 - success / notFound(404) / rateLimited(403) / empty-body(200 `{}`) →
   `server.use(http.get('https://api.warframestat.us/profile/:id', …))` returning
   `HttpResponse.json(...)` or `new HttpResponse(null, { status })`.
@@ -77,6 +78,7 @@ Assertions that today read a `vi.fn`'s call record move to MSW equivalents:
   and `request.headers.get('accept') === 'application/json'`.
 
 ### `server.test.ts` (`GET /api/worldstate`)
+
 - success → one `http.get('https://api.warframestat.us/pc/:endpoint', …)` keyed
   on `params.endpoint`, returning the matching fixture.
 - upstream failure → handler returns `HttpResponse.error()` (or 500) for the
@@ -84,6 +86,7 @@ Assertions that today read a `vi.fn`'s call record move to MSW equivalents:
   `cache-control: no-store`.
 
 ### `worldstate.svelte.test.ts`
+
 - populates state → `http.get('*/api/worldstate', () => HttpResponse.json(OK))`.
 - **cache test** (`'bypasses the browser HTTP cache…'`) → handler captures
   `request.cache` and asserts `'no-store'`. **Fallback:** if undici does not
@@ -96,6 +99,7 @@ Assertions that today read a `vi.fn`'s call record move to MSW equivalents:
   `dispose()` + advancing timers.
 
 ### `importState.svelte.test.ts` & `ImportDialog.svelte.test.ts`
+
 - Drop `{ fetchProfile: … }` injection; rely on the store default.
 - preview/apply cases → `server.use()` returns the test's `PROFILE`.
 - "rejects a malformed id without fetching" → assert `request:start` fired zero
