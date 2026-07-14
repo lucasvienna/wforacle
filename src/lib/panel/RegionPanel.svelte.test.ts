@@ -746,3 +746,132 @@ describe('RegionPanel — world-state overlay', () => {
 		expect(card.textContent).not.toMatch(/not this rotation/);
 	});
 });
+
+// Assassination source-label fixture. `regionFrames` maps exactly ONE frame
+// per node (via node.frameId), so each frame needs its own Assassination node.
+// Three frames exercise each blueprint source — Market credit, a bp that drops
+// from the boss (Wisp/Ropalolyst-style), and a curated bpSource (Mesa-style).
+const bpSourceRegion: Dataset = {
+	regions: [
+		{
+			id: 'earth',
+			name: 'Earth',
+			kind: 'planet',
+			progressionOrder: 1,
+			factions: ['Grineer'],
+			nodeIds: ['oro', 'ropa', 'eris'],
+			spoilerGated: false,
+			resourceIds: [],
+		},
+	],
+	nodes: [
+		{
+			id: 'oro',
+			regionId: 'earth',
+			name: 'Oro',
+			missionType: 'Assassination',
+			faction: 'Grineer',
+			isAssassination: true,
+			bossId: 'vayhek',
+			frameId: 'rhino',
+		},
+		{
+			id: 'ropa',
+			regionId: 'earth',
+			name: 'The Ropalolyst',
+			missionType: 'Assassination',
+			faction: 'Corpus',
+			isAssassination: true,
+			bossId: 'ropalolyst',
+			frameId: 'wisp',
+		},
+		{
+			id: 'eris',
+			regionId: 'earth',
+			name: 'Mutalist Alad V',
+			missionType: 'Assassination',
+			faction: 'Infested',
+			isAssassination: true,
+			bossId: 'mutalist',
+			frameId: 'mesa',
+		},
+	],
+	bosses: [
+		{ id: 'vayhek', name: 'Councilor Vay Hek', nodeId: 'oro', faction: 'Grineer' },
+		{ id: 'ropalolyst', name: 'Ropalolyst', nodeId: 'ropa', faction: 'Corpus' },
+		{ id: 'mutalist', name: 'Mutalist Alad V', nodeId: 'eris', faction: 'Infested' },
+	],
+	warframes: [
+		{
+			id: 'rhino',
+			name: 'Rhino',
+			nodeId: 'oro',
+			parts: [
+				{ id: 'rhino:bp', frameId: 'rhino', slot: 'bp', marketCost: 35000 },
+				{
+					id: 'rhino:chassis',
+					frameId: 'rhino',
+					slot: 'chassis',
+					dropSourceNodeId: 'oro',
+					chance: 38.72,
+				},
+			],
+		},
+		{
+			id: 'wisp',
+			name: 'Wisp',
+			nodeId: 'ropa',
+			parts: [
+				{ id: 'wisp:bp', frameId: 'wisp', slot: 'bp', dropSourceNodeId: 'ropa', chance: 22.56 },
+			],
+		},
+		{
+			id: 'mesa',
+			name: 'Mesa',
+			nodeId: 'eris',
+			parts: [{ id: 'mesa:bp', frameId: 'mesa', slot: 'bp', bpSource: 'Mutalist Alad V' }],
+		},
+	],
+	resources: [],
+	quests: [],
+	openWorldFarms: [],
+};
+
+describe('RegionPanel — assassination blueprint & drop-rate labels', () => {
+	it('shows the drop rate on a component row', () => {
+		render(RegionPanel, {
+			dataset: bpSourceRegion,
+			regionId: 'earth',
+			tracker: createTracker(bpSourceRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="rhino:chassis"]') as HTMLElement;
+		expect(row.textContent).toMatch(/Councilor Vay Hek · ~39%/);
+	});
+	it('shows the Market credit amount on a purchased blueprint row', () => {
+		render(RegionPanel, {
+			dataset: bpSourceRegion,
+			regionId: 'earth',
+			tracker: createTracker(bpSourceRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="rhino:bp"]') as HTMLElement;
+		expect(row.textContent).toMatch(/Market \(35,000cr\)/);
+	});
+	it('shows the boss + drop rate on a blueprint that drops from the boss', () => {
+		render(RegionPanel, {
+			dataset: bpSourceRegion,
+			regionId: 'earth',
+			tracker: createTracker(bpSourceRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="wisp:bp"]') as HTMLElement;
+		expect(row.textContent).toMatch(/Ropalolyst · ~23%/);
+	});
+	it('shows a curated bpSource verbatim', () => {
+		render(RegionPanel, {
+			dataset: bpSourceRegion,
+			regionId: 'earth',
+			tracker: createTracker(bpSourceRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="mesa:bp"]') as HTMLElement;
+		expect(row.textContent).toMatch(/Mutalist Alad V/);
+	});
+});

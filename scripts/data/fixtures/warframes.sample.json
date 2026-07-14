@@ -4,6 +4,7 @@
 		"uniqueName": "/Lotus/Powersuits/Rhino/Rhino",
 		"type": "Warframe",
 		"imageName": "rhino.png",
+		"bpCost": 35000,
 		"components": [
 			{ "name": "Blueprint", "drops": [] },
 			{ "name": "Neurodes", "drops": [] },
