@@ -8,7 +8,7 @@ import type {
 	OpenWorldFarm,
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
-import { PLANETS, BOSS_BY_NODE, KEY_BOSS_DROP_LOCATIONS } from './curated';
+import { PLANETS, BOSS_BY_NODE, KEY_BOSS_DROP_LOCATIONS, ASSASSINATION_BP_SOURCE } from './curated';
 import { SPECIAL_REGIONS, SPECIAL_REGION_NAMES } from './special';
 import { PLANET_RESOURCES } from './farming';
 import { partId } from '../../src/lib/model/completion';
@@ -79,6 +79,7 @@ export type RawWarframe = {
 	uniqueName: string;
 	type: string;
 	imageName?: string;
+	bpCost?: number;
 	components?: { name: string; drops?: { location: string; rarity?: string; chance?: number }[] }[];
 };
 
@@ -162,6 +163,23 @@ export function bestBountyStage(
 	return { chance: best.chance, bountyTier: best.tier, rotation };
 }
 
+/** Resolve a frame's blueprint `bp` part by source precedence: its own
+ * Assassination drop (Wisp → Ropalolyst) → curated label (Atlas, Mesa) →
+ * Market credit purchase (`bpCost`) → bare Market (no extra field). No real
+ * frame has more than one source; precedence is a defensive ordering. */
+function buildBpPart(
+	frameId: string,
+	bpDrop: { nodeId: string; chance?: number } | undefined,
+	bpCost: number | undefined,
+): WarframePart {
+	const base = { id: partId(frameId, 'bp'), frameId, slot: 'bp' as const };
+	if (bpDrop) return { ...base, dropSourceNodeId: bpDrop.nodeId, chance: bpDrop.chance };
+	const bpSource = ASSASSINATION_BP_SOURCE[frameId];
+	if (bpSource) return { ...base, bpSource };
+	if (bpCost != null) return { ...base, marketCost: bpCost };
+	return base;
+}
+
 export function buildFrames(
 	warframes: RawWarframe[],
 	nodes: StarNode[],
@@ -172,24 +190,29 @@ export function buildFrames(
 
 	for (const wf of warframes) {
 		if (wf.type !== 'Warframe' || !wf.components) continue;
-		// Find the assassination node this frame links to. A frame's farm node
-		// is where its COMPONENTS drop, not where its blueprint drops (the bp
-		// is bought from the Market) — so only non-bp component drops may set
-		// `node` or record a chance. A Blueprint-only Assassination drop must
-		// not fabricate a node link (and thus not create a frame at all).
+		// Find the assassination node this frame links to. Node linking comes
+		// ONLY from non-bp component drops (a frame's farm node is where its
+		// COMPONENTS drop). A blueprint's own Assassination drop (Wisp:
+		// Ropalolyst) is captured separately as `bpDrop` for display, and must
+		// never fabricate a node/frame on its own.
 		let node: StarNode | undefined;
 		const chanceBySlot = new Map<Slot, number>();
+		let bpDrop: { nodeId: string; chance?: number } | undefined;
 		for (const c of wf.components) {
 			const slot = SLOT_BY_COMPONENT[c.name];
-			if (!slot || slot === 'bp') continue;
+			if (!slot) continue;
 			for (const d of c.drops ?? []) {
 				const loc = resolveDropLocation(d.location);
 				if (!loc || loc.type !== 'Assassination') continue;
 				const key = `${slugify(loc.planet)}:${slugify(loc.node)}`;
 				const n = nodeByKey.get(key);
 				if (!n) continue;
-				node = n;
-				if (d.chance != null) chanceBySlot.set(slot, d.chance);
+				if (slot === 'bp') {
+					bpDrop = { nodeId: n.id, chance: d.chance ?? undefined };
+				} else {
+					node = n;
+					if (d.chance != null) chanceBySlot.set(slot, d.chance);
+				}
 			}
 		}
 		if (!node) continue;
@@ -200,13 +223,16 @@ export function buildFrames(
 			const slot = SLOT_BY_COMPONENT[c.name];
 			if (slot) present.add(slot);
 		}
-		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => ({
-			id: partId(frameId, slot),
-			frameId,
-			slot,
-			dropSourceNodeId: slot === 'bp' ? undefined : node!.id,
-			chance: chanceBySlot.get(slot),
-		}));
+		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => {
+			if (slot === 'bp') return buildBpPart(frameId, bpDrop, wf.bpCost);
+			return {
+				id: partId(frameId, slot),
+				frameId,
+				slot,
+				dropSourceNodeId: node!.id,
+				chance: chanceBySlot.get(slot),
+			};
+		});
 		frames.push({
 			id: frameId,
 			name: wf.name,

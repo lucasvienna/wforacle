@@ -11,6 +11,15 @@ export interface WarframePart {
 	bountyTier?: string;
 	/** Bounty rotation: "A" | "B" | "C" | "any" | joined like "A/B". Absent when N/A. */
 	rotation?: string;
+	/** Credit cost of buying this blueprint from the Market (`@wfcd/items`
+	 * `bpCost`). Set only on `bp` parts that are a Market purchase; absent for
+	 * drop-sourced, curated, and open-world blueprints. */
+	marketCost?: number;
+	/** Curated blueprint source label overriding the default rendering, for
+	 * blueprints that are neither a Market purchase nor a resolvable
+	 * assassination drop (quest / key-boss frames — Atlas, Mesa). Mirrors the
+	 * required `OpenWorldFarm.bpSource`. */
+	bpSource?: string;
 }
 
 export interface Warframe {

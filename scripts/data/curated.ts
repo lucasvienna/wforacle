@@ -84,3 +84,12 @@ export const KEY_BOSS_DROP_LOCATIONS: Record<
 	'Mutalist Alad V Assassinate': { planet: 'Eris', node: 'Mutalist Alad V', type: 'Assassination' },
 	'Jordas Golem Assassinate': { planet: 'Eris', node: 'Jordas Golem', type: 'Assassination' },
 };
+
+// Frames whose main blueprint is neither a Market credit purchase nor a
+// blueprint drop `@wfcd/items` can resolve. Wisp's blueprint IS a resolvable
+// Ropalolyst drop and is handled automatically by buildFrames; only these two
+// need a curated label. Keyed by frame id (slugified name).
+export const ASSASSINATION_BP_SOURCE: Record<string, string> = {
+	atlas: 'The Jordas Precept (quest)',
+	mesa: 'Mutalist Alad V',
+};

@@ -73,11 +73,18 @@ describe('buildFrames', () => {
 		const bp = rhino.parts.find((p) => p.slot === 'bp')!;
 		expect(bp.dropSourceNodeId).toBeUndefined();
 	});
+	it('sets marketCost on the bp part from the raw bpCost for a Market-purchased blueprint', () => {
+		const rhino = frames.find((f) => f.id === 'rhino')!;
+		const bp = rhino.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.marketCost).toBe(35000);
+		expect(bp.dropSourceNodeId).toBeUndefined();
+		expect(bp.bpSource).toBeUndefined();
+	});
 	it('emits a boss per linked node from the curated map', () => {
 		const jackal = bosses.find((b) => b.nodeId === 'SolNode104')!;
 		expect(jackal).toMatchObject({ id: 'fossa', name: 'Jackal', faction: 'Corpus' });
 	});
-	it('never attaches a chance to the bp part even if Blueprint has an Assassination drop, and the node link comes only from the component drop', () => {
+	it("captures the blueprint's own Assassination drop onto the bp part, while node-linking still comes from a component drop", () => {
 		const wf: RawWarframe[] = [
 			{
 				name: 'Trinity',
@@ -98,8 +105,11 @@ describe('buildFrames', () => {
 		const { frames } = buildFrames(wf, nodes);
 		const trinity = frames.find((f) => f.id === 'trinity')!;
 		const bp = trinity.parts.find((p) => p.slot === 'bp')!;
-		expect(bp.dropSourceNodeId).toBeUndefined();
-		expect(bp.chance).toBeUndefined();
+		// bp now carries its own drop source + chance (Wisp-style Ropalolyst case)
+		expect(bp.dropSourceNodeId).toBe('SolNode104');
+		expect(bp.chance).toBe(50);
+		expect(bp.marketCost).toBeUndefined();
+		// node link still established by the component drop
 		const chassis = trinity.parts.find((p) => p.slot === 'chassis')!;
 		expect(chassis.dropSourceNodeId).toBe('SolNode104');
 		expect(chassis.chance).toBe(25);
@@ -301,6 +311,17 @@ describe('curated Eris key-boss nodes (Mesa, Atlas)', () => {
 		const atlasBoss = bosses.find((b) => b.nodeId === 'CuratedJordasGolem')!;
 		expect(mesaBoss.name).toBe('Mutalist Alad V');
 		expect(atlasBoss.name).toBe('Jordas Golem');
+	});
+
+	it('applies a curated bpSource to Mesa and Atlas blueprints (neither Market nor resolvable drop)', () => {
+		const { frames } = buildFrames([mesa, atlas], keyBossNodes);
+		const mesaBp = frames.find((f) => f.id === 'mesa')!.parts.find((p) => p.slot === 'bp')!;
+		expect(mesaBp.bpSource).toBe('Mutalist Alad V');
+		expect(mesaBp.marketCost).toBeUndefined();
+		expect(mesaBp.dropSourceNodeId).toBeUndefined();
+		const atlasBp = frames.find((f) => f.id === 'atlas')!.parts.find((p) => p.slot === 'bp')!;
+		expect(atlasBp.bpSource).toBe('The Jordas Precept (quest)');
+		expect(atlasBp.marketCost).toBeUndefined();
 	});
 });
 
