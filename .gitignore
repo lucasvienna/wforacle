@@ -19,9 +19,11 @@ worker-configuration.d.ts
 Thumbs.db
 
 # Env
-.env
+# .env holds only PUBLIC_ build-time defaults (no secrets) and is committed so
+# `$env/static/public` always resolves; the `!.env` overrides a global-gitignore
+# `.env` rule. Real secrets go in .env.local (still ignored by `.env.*`).
+!.env
 .env.*
-!.env.example
 !.env.test
 
 # Vite

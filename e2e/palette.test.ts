@@ -20,9 +20,11 @@ test('Ctrl-K palette jumps to a region', async ({ page }) => {
 	await page.keyboard.press('Enter');
 	await expect(dialog).toBeHidden();
 
-	// RegionPanel renders the region name as an <h2>; use exact match since a
-	// second heading ("Resources on Mars") also contains the substring.
-	await expect(page.getByRole('heading', { name: 'Mars', exact: true })).toBeVisible();
+	// RegionPanel renders the region name as an <h2>; scope to level 2 since the
+	// prerendered "Browse the Star Chart" directory also renders "Mars" as an
+	// <h3>, and a second RegionPanel heading ("Resources on Mars") shares the
+	// substring — so exact match alone still resolves to multiple headings.
+	await expect(page.getByRole('heading', { name: 'Mars', exact: true, level: 2 })).toBeVisible();
 });
 
 test('Ctrl-K palette navigates to a resource guide', async ({ page }) => {

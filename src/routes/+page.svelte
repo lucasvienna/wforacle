@@ -28,8 +28,16 @@
 		createImportStore,
 		type ImportStore,
 	} from '$lib/import/importState.svelte';
+	import SeoHead from '$lib/seo/SeoHead.svelte';
+	import { webApplicationLd } from '$lib/seo/jsonld';
+	import type { PageProps } from './$types';
 
-	let data = $state<Dataset | null>(null);
+	const HOME_DESCRIPTION =
+		'Interactive Warframe Star Chart tracker: mark owned frames, find every Warframe part location, and discover the best early and late-game resource farms.';
+
+	let { data }: PageProps = $props();
+
+	let dataset = $state<Dataset | null>(null);
 	let tracker = $state<Tracker | null>(null);
 	let ws = $state<WorldStateStore | null>(null);
 	let importStore = $state<ImportStore | null>(null);
@@ -60,7 +68,7 @@
 		t.load(await loadOwned());
 		t.loadQuestState(await loadQuests());
 		ready = true;
-		data = ds;
+		dataset = ds;
 		tracker = t;
 		ws = createWorldStateStore();
 		importStore = createImportStore(ds);
@@ -73,11 +81,11 @@
 	});
 
 	function statusOf(regionId: string): 'done' | 'part' | 'none' {
-		if (!data || !tracker) return 'none';
+		if (!dataset || !tracker) return 'none';
 		// A region can have multiple Assassination-frame nodes (e.g. Jupiter:
 		// Themisto→Valkyr and The Ropalolyst→Wisp) — aggregate across all of
 		// them so the status only reports 'done' when every frame is complete.
-		const frameIds = data.nodes
+		const frameIds = dataset.nodes
 			.filter((n) => n.regionId === regionId && n.isAssassination && n.frameId)
 			.map((n) => n.frameId!);
 		let owned = 0;
@@ -91,14 +99,14 @@
 	}
 
 	let visible = $derived(
-		data && tracker ? revealedRegions(data, tracker.completedQuests) : [],
+		dataset && tracker ? revealedRegions(dataset, tracker.completedQuests) : [],
 	);
 	let planetRegions = $derived(visible.filter((r) => r.kind === 'planet'));
 	let specialRegions = $derived(visible.filter((r) => r.kind === 'special'));
 	let paletteItems = $derived(
-		data
+		dataset
 			? [
-					...buildPaletteItems(data, new Set(visible.map((r) => r.id))),
+					...buildPaletteItems(dataset, new Set(visible.map((r) => r.id))),
 					IMPORT_ACTION,
 				]
 			: ([] as PaletteItem[]),
@@ -124,6 +132,14 @@
 			goto(resolve('/guides/[resource]', { resource: item.id }));
 	}
 </script>
+
+<SeoHead
+	title="wforacle — Warframe Star Chart & Resource Farming Tracker"
+	description={HOME_DESCRIPTION}
+	path="/"
+	type="website"
+	jsonLd={webApplicationLd()}
+/>
 
 <svelte:window onkeydown={onWindowKey} />
 
@@ -168,7 +184,7 @@
 					</span>
 				</div>
 			{/if}
-			{#if data && tracker}
+			{#if dataset && tracker}
 				<button
 					type="button"
 					data-open-settings
@@ -177,7 +193,7 @@
 					class="relative rounded-lg border border-wf-edge bg-wf-panel px-2.5 py-1.5 text-wf-muted hover:text-wf-cyan"
 				>
 					<span aria-hidden="true">⚙</span>
-					{#if data.quests.some((q) => !tracker?.isQuestDone(q.id))}
+					{#if dataset.quests.some((q) => !tracker?.isQuestDone(q.id))}
 						<span
 							aria-hidden="true"
 							class="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-wf-gold"
@@ -188,13 +204,23 @@
 		</div>
 	</header>
 
+	<div class="mb-4">
+		<h1 class="text-xl font-bold text-slate-100">
+			Warframe Star Chart Tracker
+		</h1>
+		<p class="mt-1 text-sm text-wf-muted">
+			Track which Warframes you own, find the best farming spots for every
+			planet and boss, and never lose progress on a grind again.
+		</p>
+	</div>
+
 	{#if ws}
 		<div class="mb-4 rounded-xl border border-wf-edge bg-wf-panel px-4 py-2">
 			<WorldStateTicker store={ws} />
 		</div>
 	{/if}
 
-	{#if data && tracker}
+	{#if dataset && tracker}
 		<div class="mb-4 overflow-hidden rounded-xl border border-wf-edge">
 			<StarChart
 				regions={planetRegions}
@@ -205,7 +231,7 @@
 			/>
 		</div>
 		<RegionPanel
-			dataset={data}
+			{dataset}
 			regionId={selectedId}
 			{tracker}
 			worldState={ws?.state ?? null}
@@ -217,9 +243,51 @@
 		</div>
 	{/if}
 
+	<section class="mt-8">
+		<h2 class="mb-3 text-lg font-bold text-slate-100">Browse the Star Chart</h2>
+		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{#each data.directory as planet (planet.id)}
+				<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
+					<h3 class="text-base font-semibold text-slate-100">
+						{planet.name}
+					</h3>
+					{#if planet.frames.length}
+						<p class="mt-1 text-xs text-wf-muted">
+							Boss frame{planet.frames.length > 1 ? 's' : ''}: {planet.frames.join(
+								', ',
+							)}
+						</p>
+					{/if}
+					{#if planet.resources.length}
+						<ul class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm">
+							{#each planet.resources as r (r.id)}
+								<li>
+									{#if r.hasGuide}
+										<a
+											href={resolve('/guides/[resource]', { resource: r.id })}
+											class="text-wf-cyan hover:text-wf-cyan/80"
+										>
+											{r.name}
+										</a>
+									{:else}
+										<span class="text-wf-muted">{r.name}</span>
+									{/if}
+								</li>
+							{/each}
+						</ul>
+					{/if}
+				</div>
+			{/each}
+		</div>
+	</section>
+
 	<footer class="mt-8 text-center text-xs text-slate-600">
 		Planet art &amp; game data © Digital Extremes, via the Warframe wiki.
 		Fan-made tool — not affiliated with Digital Extremes.
+		<br />
+		<a href={resolve('/guides')} class="text-wf-cyan hover:text-wf-cyan/80">
+			Browse all resource farming guides
+		</a>
 	</footer>
 
 	<CommandPalette
@@ -228,9 +296,9 @@
 		onclose={() => (paletteOpen = false)}
 		onselect={handlePick}
 	/>
-	{#if data && tracker}
+	{#if dataset && tracker}
 		<SettingsDrawer
-			dataset={data}
+			{dataset}
 			{tracker}
 			open={settingsOpen}
 			onclose={() => (settingsOpen = false)}
