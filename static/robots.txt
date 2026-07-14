@@ -1,5 +1,0 @@
-# allow crawling everything by default
-User-agent: *
-Disallow:
-
-Sitemap: https://wforacle.avyiel.dev/sitemap.xml

@@ -1,19 +1,12 @@
-// `$env/dynamic/public` is the right tool for a build-time-overridable public
-// value on a fully prerendered site: it resolves from the real server/build
-// environment during SSR/prerender and from the hydration payload in the
-// browser. It relies on SvelteKit's request/hydration bootstrap though, so it
-// throws when this module is imported outside of that (e.g. by a unit test
-// importing `$lib/seo/config` directly). Import it dynamically so that case
-// can fall back to the empty env below instead of crashing the whole module.
-let publicEnv: Record<string, string | undefined> = {};
-try {
-	({ env: publicEnv } = await import('$env/dynamic/public'));
-} catch {
-	// Not running inside a SvelteKit request/hydration context (e.g. vitest
-	// importing this module directly) -- keep the production default below.
-}
+import { PUBLIC_SITE_URL } from '$env/static/public';
 
-export const SITE_URL = publicEnv.PUBLIC_SITE_URL || 'https://wforacle.avyiel.dev';
+// `$env/static/public` inlines the value at BUILD time (no `/_app/env.js`
+// runtime fetch), so canonical/OG/sitemap URLs are baked into the prerendered
+// output and the client stays offline-capable. Static env requires the var to
+// exist at build, so a committed `.env` supplies the production default;
+// setting `PUBLIC_SITE_URL` in the environment (preview/staging/CI) overrides
+// it. The `|| fallback` also guards an explicitly-empty value.
+export const SITE_URL = PUBLIC_SITE_URL || 'https://wforacle.avyiel.dev';
 export const SITE_NAME = 'wforacle';
 export const DEFAULT_DESCRIPTION =
 	'Track your Warframe Star Chart progress and find the best resource-farming locations for every planet, boss, and Warframe part.';
