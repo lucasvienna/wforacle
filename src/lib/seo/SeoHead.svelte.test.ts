@@ -6,12 +6,10 @@ describe('SeoHead JSON-LD escaping', () => {
 	it('escapes `</script>` inside jsonLd so it cannot break out of the script tag', () => {
 		const evil = '</script><script>alert(1)</script>';
 		render(SeoHead, {
-			props: {
-				title: 'Test',
-				description: 'desc',
-				path: '/test',
-				jsonLd: { evil },
-			},
+			title: 'Test',
+			description: 'desc',
+			path: '/test',
+			jsonLd: { evil },
 		});
 
 		const scripts = document.head.querySelectorAll('script[type="application/ld+json"]');
