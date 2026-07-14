@@ -7,24 +7,13 @@ export function formatChance(chance: number): string {
 	return `${Number(chance.toFixed(2))}%`;
 }
 
-/** Reference sub-blueprint line for a composite part (Equinox aspect):
- * "Aspect {chance}% · {grouped sub-components}". Consecutive sub-drops with
- * equal chances collapse to one segment, e.g. "Neuroptics/Chassis/Systems
- * 25.81%". */
-export function aspectBreakdownText(part: Pick<WarframePart, 'chance' | 'subDrops'>): string {
-	const segments: string[] = [];
-	if (part.chance != null) segments.push(`Aspect ${formatChance(part.chance)}`);
-	const subs = part.subDrops ?? [];
-	let i = 0;
-	while (i < subs.length) {
-		let j = i;
-		while (j + 1 < subs.length && subs[j + 1].chance === subs[i].chance) j++;
-		const labels = subs
-			.slice(i, j + 1)
-			.map((d) => d.label)
-			.join('/');
-		segments.push(`${labels} ${formatChance(subs[i].chance)}`);
-		i = j + 1;
-	}
-	return segments.join(' · ');
+/** Reference sub-blueprint lines for a composite part (Equinox aspect), one
+ * entry per line: the Aspect Blueprint (the part's own chance) followed by each
+ * sub-component, e.g. ["Aspect 22.56%", "Neuroptics 25.81%", "Chassis 25.81%",
+ * "Systems 25.81%"]. The caller renders each on its own line. */
+export function aspectBreakdownLines(part: Pick<WarframePart, 'chance' | 'subDrops'>): string[] {
+	const lines: string[] = [];
+	if (part.chance != null) lines.push(`Aspect ${formatChance(part.chance)}`);
+	for (const d of part.subDrops ?? []) lines.push(`${d.label} ${formatChance(d.chance)}`);
+	return lines;
 }

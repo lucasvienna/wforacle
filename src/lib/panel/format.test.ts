@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatChance, aspectBreakdownText } from './format';
+import { formatChance, aspectBreakdownLines } from './format';
 
 describe('formatChance', () => {
 	it('shows exact two-decimal values without a tilde', () => {
@@ -12,8 +12,8 @@ describe('formatChance', () => {
 	});
 });
 
-describe('aspectBreakdownText', () => {
-	it('groups equal-chance sub-blueprints after the aspect chance', () => {
+describe('aspectBreakdownLines', () => {
+	it('returns the aspect chance then one line per sub-blueprint', () => {
 		const part = {
 			chance: 22.56,
 			subDrops: [
@@ -22,9 +22,14 @@ describe('aspectBreakdownText', () => {
 				{ label: 'Systems', chance: 25.81 },
 			],
 		};
-		expect(aspectBreakdownText(part)).toBe('Aspect 22.56% · Neuroptics/Chassis/Systems 25.81%');
+		expect(aspectBreakdownLines(part)).toEqual([
+			'Aspect 22.56%',
+			'Neuroptics 25.81%',
+			'Chassis 25.81%',
+			'Systems 25.81%',
+		]);
 	});
-	it('keeps differing chances as separate segments', () => {
+	it('formats differing chances per line', () => {
 		const part = {
 			chance: 22.56,
 			subDrops: [
@@ -32,6 +37,10 @@ describe('aspectBreakdownText', () => {
 				{ label: 'Systems', chance: 10 },
 			],
 		};
-		expect(aspectBreakdownText(part)).toBe('Aspect 22.56% · Neuroptics 25.81% · Systems 10%');
+		expect(aspectBreakdownLines(part)).toEqual([
+			'Aspect 22.56%',
+			'Neuroptics 25.81%',
+			'Systems 10%',
+		]);
 	});
 });
