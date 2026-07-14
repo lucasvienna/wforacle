@@ -99,4 +99,12 @@ describe('guideLd', () => {
 		const ld = guideLd(reordered, canonical) as Record<string, unknown>;
 		expect(ld.dateModified).toBe('2026-03-02');
 	});
+
+	it('omits dateModified when the resource has no recommendations', () => {
+		const bare: Resource = { ...resource, recommendations: [] };
+		const ld = guideLd(bare, canonical) as Record<string, unknown>;
+		// An empty-string dateModified is invalid JSON-LD, so the key must be
+		// absent entirely rather than present with a falsy value.
+		expect('dateModified' in ld).toBe(false);
+	});
 });

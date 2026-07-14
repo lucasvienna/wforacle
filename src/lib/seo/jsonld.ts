@@ -41,6 +41,7 @@ export function latestLastVerified(resource: Resource): string {
 }
 
 export function guideLd(resource: Resource, canonical: string): object {
+	const dateModified = latestLastVerified(resource);
 	return {
 		'@context': CONTEXT,
 		'@type': 'Article',
@@ -55,6 +56,8 @@ export function guideLd(resource: Resource, canonical: string): object {
 			name: SITE_NAME,
 			url: SITE_URL,
 		},
-		dateModified: latestLastVerified(resource),
+		// Omit dateModified rather than emit an invalid empty string when the
+		// resource has no recommendations (and thus no verified date).
+		...(dateModified ? { dateModified } : {}),
 	};
 }
