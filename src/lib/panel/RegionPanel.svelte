@@ -16,6 +16,7 @@
 		nextActiveAt,
 		formatCountdown,
 	} from '$lib/worldstate/availability';
+	import { formatChance } from './format';
 
 	let {
 		dataset,
@@ -38,14 +39,6 @@
 	let region = $derived(dataset.regions.find((r) => r.id === regionId));
 	let resources = $derived(resourcesForRegion(dataset, regionId));
 	let frames = $derived(regionFrames(dataset, regionId));
-
-	// Drop chance shown to 2 decimals (trailing zeros trimmed). An assassination
-	// boss table is a single weighted roll per kill, so its parts' exact weights
-	// sum to 100% — rounding to whole numbers made them read as 101%. Open-world
-	// data also carries float noise (e.g. 39.4299…) that 2 decimals tidy.
-	function formatChance(chance: number): string {
-		return `${Number(chance.toFixed(2))}%`;
-	}
 
 	// Assassination source label. A `bp` bought from the Market reads
 	// "Market ({credits}cr)"; a curated bp (Atlas, Mesa) reads its bpSource
