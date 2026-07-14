@@ -240,27 +240,20 @@ export function formatChance(chance: number): string {
 	return `${Number(chance.toFixed(2))}%`;
 }
 
-/** Reference sub-blueprint line for a composite part (Equinox aspect):
- * "Aspect {chance}% · {grouped sub-components}". Consecutive sub-drops with
- * equal chances collapse to one segment, e.g. "Neuroptics/Chassis/Systems
- * 25.81%". */
-export function aspectBreakdownText(
-	part: Pick<WarframePart, 'chance' | 'subDrops'>,
-): string {
-	const segments: string[] = [];
-	if (part.chance != null) segments.push(`Aspect ${formatChance(part.chance)}`);
-	const subs = part.subDrops ?? [];
-	let i = 0;
-	while (i < subs.length) {
-		let j = i;
-		while (j + 1 < subs.length && subs[j + 1].chance === subs[i].chance) j++;
-		const labels = subs.slice(i, j + 1).map((d) => d.label).join('/');
-		segments.push(`${labels} ${formatChance(subs[i].chance)}`);
-		i = j + 1;
-	}
-	return segments.join(' · ');
+/** Reference sub-blueprint lines for a composite part (Equinox aspect), one
+ * entry per line: the Aspect Blueprint (the part's own chance) followed by each
+ * sub-component, e.g. ["Aspect 22.56%", "Neuroptics 25.81%", "Chassis 25.81%",
+ * "Systems 25.81%"]. The caller renders each on its own line. */
+export function aspectBreakdownLines(part: Pick<WarframePart, 'chance' | 'subDrops'>): string[] {
+	const lines: string[] = [];
+	if (part.chance != null) lines.push(`Aspect ${formatChance(part.chance)}`);
+	for (const d of part.subDrops ?? []) lines.push(`${d.label} ${formatChance(d.chance)}`);
+	return lines;
 }
 ```
+
+(Post-brainstorming refinement: the breakdown lists each sub-blueprint on its
+own line rather than grouping equal chances, so the helper returns `string[]`.)
 
 - [ ] **Step 4: Run to verify it passes**
 
@@ -304,7 +297,7 @@ git commit -m "refactor(panel): extract formatChance + add aspectBreakdownText h
 - Test: `src/lib/panel/RegionPanel.svelte.test.ts`
 
 **Interfaces:**
-- Consumes: `aspectBreakdownText` (Task 2), `WarframePart.subDrops` (Task 1).
+- Consumes: `aspectBreakdownLines(part): string[]` (Task 2 — returns one string per line: `["Aspect 22.56%", "Neuroptics 25.81%", "Chassis 25.81%", "Systems 25.81%"]`), `WarframePart.subDrops` (Task 1).
 - Produces: `AspectBreakdown` component (`props: { part: WarframePart; owned: boolean }`).
 
 - [ ] **Step 1: Write the failing AspectBreakdown test**
@@ -331,16 +324,18 @@ const part: WarframePart = {
 };
 
 describe('AspectBreakdown', () => {
-	it('is expanded by default when the aspect is not owned', () => {
+	it('is expanded by default when the aspect is not owned, one line per blueprint', () => {
 		render(AspectBreakdown, { part, owned: false });
-		expect(
-			document.body.textContent,
-		).toContain('Aspect 22.56% · Neuroptics/Chassis/Systems 25.81%');
+		const text = document.body.textContent ?? '';
+		expect(text).toContain('Aspect 22.56%');
+		expect(text).toContain('Neuroptics 25.81%');
+		expect(text).toContain('Chassis 25.81%');
+		expect(text).toContain('Systems 25.81%');
 	});
 
 	it('is collapsed by default when the aspect is already owned', () => {
 		render(AspectBreakdown, { part, owned: true });
-		expect(document.body.textContent).not.toContain('Neuroptics/Chassis/Systems');
+		expect(document.body.textContent).not.toContain('Neuroptics 25.81%');
 	});
 
 	it('toggles open on caret click', async () => {
@@ -348,7 +343,7 @@ describe('AspectBreakdown', () => {
 		const btn = container.querySelector('button')!;
 		btn.click();
 		await tick();
-		expect(document.body.textContent).toContain('Neuroptics/Chassis/Systems 25.81%');
+		expect(document.body.textContent).toContain('Neuroptics 25.81%');
 	});
 });
 ```
@@ -365,7 +360,7 @@ Create `src/lib/panel/AspectBreakdown.svelte`:
 ```svelte
 <script lang="ts">
 	import type { WarframePart } from '$lib/model/types';
-	import { aspectBreakdownText } from './format';
+	import { aspectBreakdownLines } from './format';
 
 	let { part, owned }: { part: WarframePart; owned: boolean } = $props();
 
@@ -391,12 +386,16 @@ Create `src/lib/panel/AspectBreakdown.svelte`:
 		Blueprints
 	</button>
 	{#if open}
-		<div class="mt-0.5 pl-4 text-[11px] text-wf-muted">{aspectBreakdownText(part)}</div>
+		<div class="mt-0.5 pl-4 text-[11px] text-wf-muted">
+			{#each aspectBreakdownLines(part) as line}
+				<div>{line}</div>
+			{/each}
+		</div>
 	{/if}
 </div>
 ```
 
-The `stopPropagation` on both `onclick` and `onkeydown` is required: the enclosing `FrameCard` part row is a `role="checkbox"` with its own `onclick`/`onkeydown` that toggle ownership — without it, opening the breakdown would also check the part.
+The `stopPropagation` on both `onclick` and `onkeydown` is required: the enclosing `FrameCard` part row is a `role="checkbox"` with its own `onclick`/`onkeydown` that toggle ownership — without it, opening the breakdown would also check the part. Each `aspectBreakdownLines(part)` entry renders on its own line (`Aspect 22.56%`, then `Neuroptics 25.81%`, `Chassis 25.81%`, `Systems 25.81%`).
 
 - [ ] **Step 4: Run to verify it passes; validate component**
 
@@ -492,7 +491,9 @@ describe('RegionPanel — Equinox aspect breakdown', () => {
 			tracker: createTracker(equinoxRegion.warframes),
 		});
 		const row = document.querySelector('[data-part="equinox:dayaspect"]') as HTMLElement;
-		expect(row.textContent).toContain('Aspect 22.56% · Neuroptics/Chassis/Systems 25.81%');
+		expect(row.textContent).toContain('Aspect 22.56%');
+		expect(row.textContent).toContain('Neuroptics 25.81%');
+		expect(row.textContent).toContain('Systems 25.81%');
 	});
 });
 ```
