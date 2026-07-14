@@ -54,14 +54,15 @@ vi.mock('$lib/data/dataset', () => ({
 	loadDataset: () => Promise.resolve(dataset),
 }));
 
-import { load } from './+page';
+import { load } from './+page.server';
 import Page from './+page.svelte';
 import type { PageData } from './$types';
 
 describe('guides hub page', () => {
 	it('lists only resources with recommendations, linking each to its guide', async () => {
 		const data = (await load({ fetch } as Parameters<typeof load>[0])) as PageData;
-		render(Page, { data, params: {} });
+		// A +page.server.ts adds `form` to PageProps, so include it in the render.
+		render(Page, { data, params: {}, form: undefined });
 
 		expect(
 			screen.getByRole('heading', { level: 1, name: 'Warframe Resource Farming Guides' }),
