@@ -290,7 +290,7 @@ describe('RegionPanel — open world', () => {
 		expect(screen.getByText('Plains of Eidolon')).toBeInTheDocument();
 		expect(screen.getByText(/Grineer · Free Roam/)).toBeInTheDocument();
 		expect(document.querySelector('[data-part="caliban:chassis"]')).toBeInTheDocument();
-		expect(screen.getByText(/Narmer Bounty · L50–70 · Rot B · ~21%/)).toBeInTheDocument();
+		expect(screen.getByText(/Narmer Bounty · L50–70 · Rot B · 21\.1%/)).toBeInTheDocument();
 	});
 
 	it('shows Caliban under BOTH earth and venus', () => {
@@ -307,7 +307,7 @@ describe('RegionPanel — open world', () => {
 		const tracker = createTracker(openWorld.warframes);
 		render(RegionPanel, { dataset: openWorld, regionId: 'venus', tracker });
 		const row = document.querySelector('[data-part="hildryn:chassis"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Exploiter Orb · ~39%/);
+		expect(row.textContent).toMatch(/Exploiter Orb · 38\.72%/);
 		expect(row.textContent).not.toMatch(/Rot /);
 	});
 
@@ -377,7 +377,7 @@ describe('RegionPanel — open world', () => {
 		};
 		const tracker = createTracker(anyRot.warframes);
 		render(RegionPanel, { dataset: anyRot, regionId: 'earth', tracker });
-		expect(screen.getByText(/Cetus Bounty · L5–15 · any rot · ~45%/)).toBeInTheDocument();
+		expect(screen.getByText(/Cetus Bounty · L5–15 · any rot · 45%/)).toBeInTheDocument();
 	});
 });
 
@@ -845,7 +845,7 @@ describe('RegionPanel — assassination blueprint & drop-rate labels', () => {
 			tracker: createTracker(bpSourceRegion.warframes),
 		});
 		const row = document.querySelector('[data-part="rhino:chassis"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Councilor Vay Hek · ~39%/);
+		expect(row.textContent).toMatch(/Councilor Vay Hek · 38\.72%/);
 	});
 	it('shows the Market credit amount on a purchased blueprint row', () => {
 		render(RegionPanel, {
@@ -863,7 +863,7 @@ describe('RegionPanel — assassination blueprint & drop-rate labels', () => {
 			tracker: createTracker(bpSourceRegion.warframes),
 		});
 		const row = document.querySelector('[data-part="wisp:bp"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Ropalolyst · ~23%/);
+		expect(row.textContent).toMatch(/Ropalolyst · 22\.56%/);
 	});
 	it('shows a curated bpSource verbatim', () => {
 		render(RegionPanel, {
