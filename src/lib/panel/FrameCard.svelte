@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Warframe, WarframePart } from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
+	import AspectBreakdown from './AspectBreakdown.svelte';
 
 	let {
 		frame,
@@ -171,6 +172,9 @@
 							{/if}
 						</div>
 						<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>
+						{#if part.subDrops}
+							<AspectBreakdown {part} {owned} />
+						{/if}
 					</div>
 				</div>
 			{/each}
