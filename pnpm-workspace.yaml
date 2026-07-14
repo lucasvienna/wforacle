@@ -3,4 +3,10 @@ allowBuilds:
   workerd: true
   sharp: true
   esbuild: true
-  msw: false
+  msw: true
+
+# @wfcd/items ships game data that lags Warframe patches; exempt it from the
+# release-age cooldown so we can pull drop-table/data updates as soon as they
+# publish. Data-only dev dependency (no install scripts, build-time use only).
+minimumReleaseAgeExclude:
+  - '@wfcd/items'
