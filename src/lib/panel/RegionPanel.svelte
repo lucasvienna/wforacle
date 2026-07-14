@@ -39,10 +39,18 @@
 	let resources = $derived(resourcesForRegion(dataset, regionId));
 	let frames = $derived(regionFrames(dataset, regionId));
 
+	// Drop chance shown to 2 decimals (trailing zeros trimmed). An assassination
+	// boss table is a single weighted roll per kill, so its parts' exact weights
+	// sum to 100% — rounding to whole numbers made them read as 101%. Open-world
+	// data also carries float noise (e.g. 39.4299…) that 2 decimals tidy.
+	function formatChance(chance: number): string {
+		return `${Number(chance.toFixed(2))}%`;
+	}
+
 	// Assassination source label. A `bp` bought from the Market reads
 	// "Market ({credits}cr)"; a curated bp (Atlas, Mesa) reads its bpSource
 	// verbatim; a component drop — and a bp that itself drops from the boss
-	// (Wisp/Ropalolyst) — reads "{boss} · ~{chance}%".
+	// (Wisp/Ropalolyst) — reads "{boss} · {chance}%".
 	function assassinationSourceText(
 		part: WarframePart,
 		bossName: string,
@@ -53,13 +61,12 @@
 				return `Market (${part.marketCost.toLocaleString('en-US')}cr)`;
 			return 'Market';
 		}
-		const chance =
-			part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
+		const chance = part.chance != null ? formatChance(part.chance) : undefined;
 		return [bossName, chance].filter(Boolean).join(' · ');
 	}
 
 	// Source label for an open-world part row: bp shows its bpSource; components
-	// show "{source} · {tier} · Rot {rotation} · ~{chance}%", omitting tier/rotation
+	// show "{source} · {tier} · Rot {rotation} · {chance}%", omitting tier/rotation
 	// for non-bounty sources (Exploiter Orb) that carry neither.
 	function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
 		if (part.slot === 'bp') return farm.bpSource;
@@ -69,8 +76,7 @@
 				: part.rotation
 					? `Rot ${part.rotation}`
 					: undefined;
-		const chance =
-			part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
+		const chance = part.chance != null ? formatChance(part.chance) : undefined;
 		return [farm.componentSource, part.bountyTier, rot, chance]
 			.filter(Boolean)
 			.join(' · ');
