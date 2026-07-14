@@ -21,6 +21,7 @@
 ### Task 1: Data model + build pipeline (blueprint sourcing)
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts` (`WarframePart` interface, ~lines 3-14)
 - Modify: `scripts/data/curated.ts` (append new export)
 - Modify: `scripts/data/build.ts` (`RawWarframe` type ~lines 77-83; `buildFrames` ~lines 165-229; new helper)
@@ -28,6 +29,7 @@
 - Test: `scripts/data/build.test.ts`
 
 **Interfaces:**
+
 - Consumes: existing `partId(frameId, slot)`, `slugify`, `resolveDropLocation`, `nodeByKey` (all already in `build.ts`).
 - Produces:
   - `WarframePart.marketCost?: number` and `WarframePart.bpSource?: string`.
@@ -96,63 +98,63 @@ In `scripts/data/build.test.ts`:
 (a) **Replace** the existing test titled `'never attaches a chance to the bp part even if Blueprint has an Assassination drop, and the node link comes only from the component drop'` (the `it(...)` block spanning roughly lines 80-106) with:
 
 ```ts
-	it("captures the blueprint's own Assassination drop onto the bp part, while node-linking still comes from a component drop", () => {
-		const wf: RawWarframe[] = [
-			{
-				name: 'Trinity',
-				uniqueName: '/Lotus/Powersuits/Trinity/Trinity',
-				type: 'Warframe',
-				components: [
-					{
-						name: 'Blueprint',
-						drops: [{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 50 }],
-					},
-					{
-						name: 'Chassis',
-						drops: [{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 25 }],
-					},
-				],
-			},
-		];
-		const { frames } = buildFrames(wf, nodes);
-		const trinity = frames.find((f) => f.id === 'trinity')!;
-		const bp = trinity.parts.find((p) => p.slot === 'bp')!;
-		// bp now carries its own drop source + chance (Wisp-style Ropalolyst case)
-		expect(bp.dropSourceNodeId).toBe('SolNode104');
-		expect(bp.chance).toBe(50);
-		expect(bp.marketCost).toBeUndefined();
-		// node link still established by the component drop
-		const chassis = trinity.parts.find((p) => p.slot === 'chassis')!;
-		expect(chassis.dropSourceNodeId).toBe('SolNode104');
-		expect(chassis.chance).toBe(25);
-	});
+it("captures the blueprint's own Assassination drop onto the bp part, while node-linking still comes from a component drop", () => {
+	const wf: RawWarframe[] = [
+		{
+			name: 'Trinity',
+			uniqueName: '/Lotus/Powersuits/Trinity/Trinity',
+			type: 'Warframe',
+			components: [
+				{
+					name: 'Blueprint',
+					drops: [{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 50 }],
+				},
+				{
+					name: 'Chassis',
+					drops: [{ location: 'Venus/Fossa (Assassination)', rarity: 'Common', chance: 25 }],
+				},
+			],
+		},
+	];
+	const { frames } = buildFrames(wf, nodes);
+	const trinity = frames.find((f) => f.id === 'trinity')!;
+	const bp = trinity.parts.find((p) => p.slot === 'bp')!;
+	// bp now carries its own drop source + chance (Wisp-style Ropalolyst case)
+	expect(bp.dropSourceNodeId).toBe('SolNode104');
+	expect(bp.chance).toBe(50);
+	expect(bp.marketCost).toBeUndefined();
+	// node link still established by the component drop
+	const chassis = trinity.parts.find((p) => p.slot === 'chassis')!;
+	expect(chassis.dropSourceNodeId).toBe('SolNode104');
+	expect(chassis.chance).toBe(25);
+});
 ```
 
 (b) **Add** a marketCost test inside the top-level `describe('buildFrames', ...)` block (which builds `frames` from the shared fixture at its top). Place it right after the `'links Rhino to Fossa with 4 parts and drop chances'` test:
 
 ```ts
-	it('sets marketCost on the bp part from the raw bpCost for a Market-purchased blueprint', () => {
-		const rhino = frames.find((f) => f.id === 'rhino')!;
-		const bp = rhino.parts.find((p) => p.slot === 'bp')!;
-		expect(bp.marketCost).toBe(35000);
-		expect(bp.dropSourceNodeId).toBeUndefined();
-		expect(bp.bpSource).toBeUndefined();
-	});
+it('sets marketCost on the bp part from the raw bpCost for a Market-purchased blueprint', () => {
+	const rhino = frames.find((f) => f.id === 'rhino')!;
+	const bp = rhino.parts.find((p) => p.slot === 'bp')!;
+	expect(bp.marketCost).toBe(35000);
+	expect(bp.dropSourceNodeId).toBeUndefined();
+	expect(bp.bpSource).toBeUndefined();
+});
 ```
 
 (c) **Add** a curated-source test inside the existing `describe('curated Eris key-boss nodes (Mesa, Atlas)', ...)` block, right after the `'links Mesa to Mutalist Alad V and Atlas to Jordas Golem...'` test:
 
 ```ts
-	it('applies a curated bpSource to Mesa and Atlas blueprints (neither Market nor resolvable drop)', () => {
-		const { frames } = buildFrames([mesa, atlas], keyBossNodes);
-		const mesaBp = frames.find((f) => f.id === 'mesa')!.parts.find((p) => p.slot === 'bp')!;
-		expect(mesaBp.bpSource).toBe('Mutalist Alad V');
-		expect(mesaBp.marketCost).toBeUndefined();
-		expect(mesaBp.dropSourceNodeId).toBeUndefined();
-		const atlasBp = frames.find((f) => f.id === 'atlas')!.parts.find((p) => p.slot === 'bp')!;
-		expect(atlasBp.bpSource).toBe('The Jordas Precept (quest)');
-		expect(atlasBp.marketCost).toBeUndefined();
-	});
+it('applies a curated bpSource to Mesa and Atlas blueprints (neither Market nor resolvable drop)', () => {
+	const { frames } = buildFrames([mesa, atlas], keyBossNodes);
+	const mesaBp = frames.find((f) => f.id === 'mesa')!.parts.find((p) => p.slot === 'bp')!;
+	expect(mesaBp.bpSource).toBe('Mutalist Alad V');
+	expect(mesaBp.marketCost).toBeUndefined();
+	expect(mesaBp.dropSourceNodeId).toBeUndefined();
+	const atlasBp = frames.find((f) => f.id === 'atlas')!.parts.find((p) => p.slot === 'bp')!;
+	expect(atlasBp.bpSource).toBe('The Jordas Precept (quest)');
+	expect(atlasBp.marketCost).toBeUndefined();
+});
 ```
 
 - [ ] **Step 6: Run the new tests to verify they fail**
@@ -204,47 +206,47 @@ Then, inside `buildFrames`, in the per-warframe loop:
 Replace the node-detection block (currently declares `let node` + `chanceBySlot` and loops components skipping `bp`) with a version that also captures the blueprint's own drop:
 
 ```ts
-		// Find the assassination node this frame links to. Node linking comes
-		// ONLY from non-bp component drops (a frame's farm node is where its
-		// COMPONENTS drop). A blueprint's own Assassination drop (Wisp:
-		// Ropalolyst) is captured separately as `bpDrop` for display, and must
-		// never fabricate a node/frame on its own.
-		let node: StarNode | undefined;
-		const chanceBySlot = new Map<Slot, number>();
-		let bpDrop: { nodeId: string; chance?: number } | undefined;
-		for (const c of wf.components) {
-			const slot = SLOT_BY_COMPONENT[c.name];
-			if (!slot) continue;
-			for (const d of c.drops ?? []) {
-				const loc = resolveDropLocation(d.location);
-				if (!loc || loc.type !== 'Assassination') continue;
-				const key = `${slugify(loc.planet)}:${slugify(loc.node)}`;
-				const n = nodeByKey.get(key);
-				if (!n) continue;
-				if (slot === 'bp') {
-					bpDrop = { nodeId: n.id, chance: d.chance ?? undefined };
-				} else {
-					node = n;
-					if (d.chance != null) chanceBySlot.set(slot, d.chance);
-				}
-			}
+// Find the assassination node this frame links to. Node linking comes
+// ONLY from non-bp component drops (a frame's farm node is where its
+// COMPONENTS drop). A blueprint's own Assassination drop (Wisp:
+// Ropalolyst) is captured separately as `bpDrop` for display, and must
+// never fabricate a node/frame on its own.
+let node: StarNode | undefined;
+const chanceBySlot = new Map<Slot, number>();
+let bpDrop: { nodeId: string; chance?: number } | undefined;
+for (const c of wf.components) {
+	const slot = SLOT_BY_COMPONENT[c.name];
+	if (!slot) continue;
+	for (const d of c.drops ?? []) {
+		const loc = resolveDropLocation(d.location);
+		if (!loc || loc.type !== 'Assassination') continue;
+		const key = `${slugify(loc.planet)}:${slugify(loc.node)}`;
+		const n = nodeByKey.get(key);
+		if (!n) continue;
+		if (slot === 'bp') {
+			bpDrop = { nodeId: n.id, chance: d.chance ?? undefined };
+		} else {
+			node = n;
+			if (d.chance != null) chanceBySlot.set(slot, d.chance);
 		}
-		if (!node) continue;
+	}
+}
+if (!node) continue;
 ```
 
 Then replace the `parts` construction (currently maps every present slot with a ternary on `slot === 'bp'` for `dropSourceNodeId`) with:
 
 ```ts
-		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => {
-			if (slot === 'bp') return buildBpPart(frameId, bpDrop, wf.bpCost);
-			return {
-				id: partId(frameId, slot),
-				frameId,
-				slot,
-				dropSourceNodeId: node!.id,
-				chance: chanceBySlot.get(slot),
-			};
-		});
+const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => {
+	if (slot === 'bp') return buildBpPart(frameId, bpDrop, wf.bpCost);
+	return {
+		id: partId(frameId, slot),
+		frameId,
+		slot,
+		dropSourceNodeId: node!.id,
+		chance: chanceBySlot.get(slot),
+	};
+});
 ```
 
 (The `frameId`, `present`, and `frames.push(...)` / `bossByNode` code between and after these blocks stays unchanged.)
@@ -266,10 +268,12 @@ git commit -m "feat(data): source blueprint credit cost, curated + drop bp sourc
 ### Task 2: RegionPanel display
 
 **Files:**
+
 - Modify: `src/lib/panel/RegionPanel.svelte` (`sourceLabel` ~lines 42-45; usage at ~line 170)
 - Test: `src/lib/panel/RegionPanel.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `WarframePart` (already imported), `marketCost` / `bpSource` / `chance` / `dropSourceNodeId` fields from Task 1, `boss.name` from the `frames.assassination` loop.
 - Produces: `assassinationSourceText(part: WarframePart, bossName: string): string`.
 
@@ -472,9 +476,11 @@ git commit -m "feat(panel): show credit cost + drop rate on assassination frame 
 ### Task 3: Regenerate dataset + full verification
 
 **Files:**
+
 - Modify (generated): `static/data/dataset.json`
 
 **Interfaces:**
+
 - Consumes: the updated `buildFrames` / `curated.ts` / `sources.ts` (`bpCost` flows through `loadSources`'s cast at runtime).
 - Produces: a rebuilt `dataset.json` where assassination `bp` parts carry `marketCost` / `bpSource` / drop fields.
 
@@ -486,10 +492,13 @@ Expected: writes `static/data/dataset.json`; no errors.
 - [ ] **Step 2: Spot-check the regenerated data**
 
 Run:
+
 ```bash
 node -e "const d=require('./static/data/dataset.json').data; const f=id=>d.warframes.find(w=>w.id===id); const bp=w=>w.parts.find(p=>p.slot==='bp'); console.log('rhino bp', JSON.stringify(bp(f('rhino')))); console.log('wisp  bp', JSON.stringify(bp(f('wisp')))); console.log('atlas bp', JSON.stringify(bp(f('atlas')))); console.log('mesa  bp', JSON.stringify(bp(f('mesa'))));"
 ```
+
 Expected:
+
 - `rhino` bp has `marketCost: 35000`, no `dropSourceNodeId`.
 - `wisp` bp has `dropSourceNodeId` (Ropalolyst node) + `chance` ~22.56, no `marketCost`.
 - `atlas` bp has `bpSource: "The Jordas Precept (quest)"`.

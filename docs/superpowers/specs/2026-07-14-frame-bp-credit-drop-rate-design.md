@@ -18,21 +18,21 @@ frame cards already show:
 
 `bpCost = undefined` in `@wfcd/items` is a meaningful signal, not noise: the
 exact three frames that lack it — **Wisp, Atlas, Mesa** — are precisely the ones
-whose blueprint is *not* a Market credit purchase, so the current hardcoded
+whose blueprint is _not_ a Market credit purchase, so the current hardcoded
 `"Market"` label is factually wrong for them.
 
 ### The 16 assassination frames
 
-| Group | Frames | Blueprint source | Target display |
-|---|---|---|---|
-| Standard (13) | Rhino, Excalibur, Ember, Frost, Hydroid, Loki, Mag, Nova, Saryn, Trinity, Valkyr, Equinox, Nekros | Market, `bpCost` 25k–100k | `Market (35,000cr)` |
-| Wisp | Wisp | Ropalolyst assassination drop @22.56% (in `@wfcd` bp drops) | `Ropalolyst · ~23%` |
-| Atlas | Atlas | The Jordas Precept quest (Cephalon Simaris) — not resolvable | curated `The Jordas Precept (quest)` |
-| Mesa | Mesa | Mutalist Alad V — absent from `@wfcd` entirely | curated `Mutalist Alad V` |
+| Group         | Frames                                                                                            | Blueprint source                                             | Target display                       |
+| ------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------ |
+| Standard (13) | Rhino, Excalibur, Ember, Frost, Hydroid, Loki, Mag, Nova, Saryn, Trinity, Valkyr, Equinox, Nekros | Market, `bpCost` 25k–100k                                    | `Market (35,000cr)`                  |
+| Wisp          | Wisp                                                                                              | Ropalolyst assassination drop @22.56% (in `@wfcd` bp drops)  | `Ropalolyst · ~23%`                  |
+| Atlas         | Atlas                                                                                             | The Jordas Precept quest (Cephalon Simaris) — not resolvable | curated `The Jordas Precept (quest)` |
+| Mesa          | Mesa                                                                                              | Mutalist Alad V — absent from `@wfcd` entirely               | curated `Mutalist Alad V`            |
 
 ## Decisions (from brainstorming)
 
-- **Scope:** implement *both* the component drop-rate `~%` and the Market credit
+- **Scope:** implement _both_ the component drop-rate `~%` and the Market credit
   amount — full parity with open-world cards.
 - **Non-market frames:** auto-resolve the bp drop chance from `@wfcd/items`
   generically (fixes Wisp), and curate only the two gaps `@wfcd` can't supply
@@ -62,7 +62,7 @@ than "buy from market", so it wins.
 
 1. Add `bpCost?: number` to the `RawWarframe` type. It already reaches the
    builder at runtime through `loadSources` (which casts raw `@wfcd` items).
-2. In `buildFrames`, capture a Blueprint's *own* assassination drop into a
+2. In `buildFrames`, capture a Blueprint's _own_ assassination drop into a
    `bpDrop` (`{ nodeId, chance }`) while resolving component drops. **Node
    detection stays strictly from non-bp components** so the existing invariant —
    a bp-only drop must not fabricate a frame — is preserved.
@@ -70,7 +70,7 @@ than "buy from market", so it wins.
    - `bpDrop` present → `{ dropSourceNodeId, chance }` (Wisp).
    - else `ASSASSINATION_BP_SOURCE[frameId]` present → `{ bpSource }` (Atlas, Mesa).
    - else → `{ marketCost: wf.bpCost }` (standard 13; `undefined` stays absent).
-   Components are built as before (`dropSourceNodeId = node.id`, `chance` per slot).
+     Components are built as before (`dropSourceNodeId = node.id`, `chance` per slot).
 
 ### Curated data — `scripts/data/curated.ts`
 
@@ -79,8 +79,8 @@ New map for the two blueprint sources `@wfcd` can't supply, keyed by frame id
 
 ```ts
 export const ASSASSINATION_BP_SOURCE: Record<string, string> = {
-  atlas: 'The Jordas Precept (quest)',
-  mesa: 'Mutalist Alad V',
+	atlas: 'The Jordas Precept (quest)',
+	mesa: 'Mutalist Alad V',
 };
 ```
 
@@ -105,7 +105,7 @@ string format. Chance rounding matches `owSourceText` (`Math.round`).
 
 - **Update** `build.test.ts` "never attaches a chance to the bp part…": bp now
   carries its own drop chance + `dropSourceNodeId` when the Blueprint has a
-  resolvable assassination drop *and* a component drop established the node.
+  resolvable assassination drop _and_ a component drop established the node.
   Keep the node-from-components assertion and the separate bp-only-no-frame
   invariant test unchanged.
 - **Add** build tests:

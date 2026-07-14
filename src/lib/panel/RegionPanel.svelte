@@ -43,14 +43,18 @@
 	// "Market ({credits}cr)"; a curated bp (Atlas, Mesa) reads its bpSource
 	// verbatim; a component drop — and a bp that itself drops from the boss
 	// (Wisp/Ropalolyst) — reads "{boss} · ~{chance}%".
-	function assassinationSourceText(part: WarframePart, bossName: string): string {
+	function assassinationSourceText(
+		part: WarframePart,
+		bossName: string,
+	): string {
 		if (part.slot === 'bp' && !part.dropSourceNodeId) {
 			if (part.bpSource) return part.bpSource;
 			if (part.marketCost != null)
 				return `Market (${part.marketCost.toLocaleString('en-US')}cr)`;
 			return 'Market';
 		}
-		const chance = part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
+		const chance =
+			part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
 		return [bossName, chance].filter(Boolean).join(' · ');
 	}
 
@@ -177,7 +181,8 @@
 									kindLabel="Assassination"
 									isKey={KEY_BOSSES.has(boss.name)}
 									defaultExpanded={defaultExpanded(frame.id)}
-									sourceText={(part) => assassinationSourceText(part, boss.name)}
+									sourceText={(part) =>
+										assassinationSourceText(part, boss.name)}
 								/>
 							{/each}
 						</div>
