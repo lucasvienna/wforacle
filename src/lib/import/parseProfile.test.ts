@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { frameFolder, matchOwnedFrames, matchCompletedQuests, parseProfile } from './parseProfile';
 import type { RawProfile } from './parseProfile';
-import type { Dataset, Warframe } from '$lib/model/types';
+import type { Dataset, Warframe, WarframePart } from '$lib/model/types';
 
 function frame(id: string, uniqueName: string, slots: string[]): Warframe {
 	return {
@@ -12,10 +12,27 @@ function frame(id: string, uniqueName: string, slots: string[]): Warframe {
 	};
 }
 
+const equinoxParts: WarframePart[] = [
+	{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp' },
+	{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day' },
+	{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'day' },
+	{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'day' },
+	{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems', aspect: 'day' },
+	{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp', aspect: 'night' },
+	{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'night' },
+	{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'night' },
+	{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems', aspect: 'night' },
+];
+
 const frames: Warframe[] = [
 	frame('rhino', '/Lotus/Powersuits/Rhino/Rhino', ['bp', 'neuroptics', 'chassis', 'systems']),
 	frame('mesa', '/Lotus/Powersuits/Cowgirl/Cowgirl', ['bp', 'neuroptics', 'chassis', 'systems']),
-	frame('equinox', '/Lotus/Powersuits/YinYang/YinYang', ['bp', 'dayaspect', 'nightaspect']),
+	{
+		id: 'equinox',
+		name: 'equinox',
+		uniqueName: '/Lotus/Powersuits/YinYang/YinYang',
+		parts: equinoxParts,
+	},
 ];
 
 const dataset = {
@@ -82,7 +99,17 @@ describe('parseProfile', () => {
 		};
 		const res = parseProfile(profile, dataset);
 		expect(res.frameIds).toEqual(['equinox']);
-		expect(res.partIds.sort()).toEqual(['equinox:bp', 'equinox:dayaspect', 'equinox:nightaspect']);
+		expect(res.partIds.sort()).toEqual([
+			'equinox:bp',
+			'equinox:day:bp',
+			'equinox:day:chassis',
+			'equinox:day:neuroptics',
+			'equinox:day:systems',
+			'equinox:night:bp',
+			'equinox:night:chassis',
+			'equinox:night:neuroptics',
+			'equinox:night:systems',
+		]);
 		expect(res.questIds).toEqual(['theseconddream']);
 	});
 });

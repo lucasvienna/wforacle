@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path';
 import { assembleDataset, validateDataset, buildResources, recRegionId } from './assemble';
 import type { SolNodes } from './build';
 import type { RawWarframe } from './build';
+import type { Dataset } from '../../src/lib/model/types';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -154,5 +155,30 @@ describe('recRegionId', () => {
 	});
 	it('returns undefined for an unknown leading token', () => {
 		expect(recRegionId('Nowhere — Somenode')).toBeUndefined();
+	});
+});
+
+describe('validateDataset aspect ids', () => {
+	it('accepts an aspect-scoped leaf part id', () => {
+		const ds = {
+			regions: [],
+			nodes: [{ id: 'titania' }],
+			bosses: [],
+			warframes: [
+				{
+					id: 'equinox',
+					name: 'Equinox',
+					nodeId: 'titania',
+					parts: [
+						{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp' },
+						{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day' },
+					],
+				},
+			],
+			resources: [],
+			quests: [],
+			openWorldFarms: [],
+		} as unknown as Dataset;
+		expect(validateDataset(ds)).toEqual([]);
 	});
 });

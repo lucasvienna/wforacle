@@ -25,8 +25,8 @@ describe('completion', () => {
 		const owned = new Set(['rhino:bp']);
 		expect(datasetCompletion([rhino, rhino], owned)).toEqual({ owned: 2, total: 8 });
 	});
-	it('builds stable part ids for Equinox day/night aspect slots', () => {
-		expect(partId('equinox', 'dayaspect')).toBe('equinox:dayaspect');
-		expect(partId('equinox', 'nightaspect')).toBe('equinox:nightaspect');
+	it('scopes aspect leaf part ids under their aspect', () => {
+		expect(partId('equinox', 'bp', 'day')).toBe('equinox:day:bp');
+		expect(partId('equinox', 'neuroptics', 'night')).toBe('equinox:night:neuroptics');
 	});
 });

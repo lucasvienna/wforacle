@@ -1,7 +1,7 @@
 import type { Slot, Warframe } from './types';
 
-export function partId(frameId: string, slot: Slot): string {
-	return `${frameId}:${slot}`;
+export function partId(frameId: string, slot: Slot, aspect?: 'day' | 'night'): string {
+	return aspect ? `${frameId}:${aspect}:${slot}` : `${frameId}:${slot}`;
 }
 
 export function frameCompletion(frame: Warframe, owned: ReadonlySet<string>) {

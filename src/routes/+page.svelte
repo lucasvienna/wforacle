@@ -165,10 +165,10 @@
 			{#if tracker}
 				<div
 					class="flex items-center gap-2 rounded-lg border border-wf-edge bg-wf-panel px-3 py-1.5 text-xs text-wf-muted"
-					title="Node frames owned"
+					title="Node frame parts owned"
 				>
 					<span
-						>Frames <b class="text-wf-gold"
+						>Frame Parts <b class="text-wf-gold"
 							>{tracker.total.owned}/{tracker.total.total}</b
 						></span
 					>

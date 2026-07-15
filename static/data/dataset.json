@@ -1,6 +1,6 @@
 {
-	"version": "items@1.1275.15+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-15T07:22:54.458Z",
+	"version": "items@1.1275.16+worldstate-data@3.16.3",
+	"generatedAt": "2026-07-15T21:26:52.839Z",
 	"data": {
 		"regions": [
 			{
@@ -4042,46 +4042,68 @@
 						"marketCost": 25000
 					},
 					{
-						"id": "equinox:dayaspect",
+						"id": "equinox:day:bp",
 						"frameId": "equinox",
-						"slot": "dayaspect",
+						"slot": "bp",
+						"aspect": "day",
 						"dropSourceNodeId": "SolNode105",
-						"chance": 22.56,
-						"subDrops": [
-							{
-								"label": "Neuroptics",
-								"chance": 25.81
-							},
-							{
-								"label": "Chassis",
-								"chance": 25.81
-							},
-							{
-								"label": "Systems",
-								"chance": 25.81
-							}
-						]
+						"chance": 22.56
 					},
 					{
-						"id": "equinox:nightaspect",
+						"id": "equinox:day:neuroptics",
 						"frameId": "equinox",
-						"slot": "nightaspect",
+						"slot": "neuroptics",
+						"aspect": "day",
 						"dropSourceNodeId": "SolNode105",
-						"chance": 22.56,
-						"subDrops": [
-							{
-								"label": "Neuroptics",
-								"chance": 25.81
-							},
-							{
-								"label": "Chassis",
-								"chance": 25.81
-							},
-							{
-								"label": "Systems",
-								"chance": 25.81
-							}
-						]
+						"chance": 25.81
+					},
+					{
+						"id": "equinox:day:chassis",
+						"frameId": "equinox",
+						"slot": "chassis",
+						"aspect": "day",
+						"dropSourceNodeId": "SolNode105",
+						"chance": 25.81
+					},
+					{
+						"id": "equinox:day:systems",
+						"frameId": "equinox",
+						"slot": "systems",
+						"aspect": "day",
+						"dropSourceNodeId": "SolNode105",
+						"chance": 25.81
+					},
+					{
+						"id": "equinox:night:bp",
+						"frameId": "equinox",
+						"slot": "bp",
+						"aspect": "night",
+						"dropSourceNodeId": "SolNode105",
+						"chance": 22.56
+					},
+					{
+						"id": "equinox:night:neuroptics",
+						"frameId": "equinox",
+						"slot": "neuroptics",
+						"aspect": "night",
+						"dropSourceNodeId": "SolNode105",
+						"chance": 25.81
+					},
+					{
+						"id": "equinox:night:chassis",
+						"frameId": "equinox",
+						"slot": "chassis",
+						"aspect": "night",
+						"dropSourceNodeId": "SolNode105",
+						"chance": 25.81
+					},
+					{
+						"id": "equinox:night:systems",
+						"frameId": "equinox",
+						"slot": "systems",
+						"aspect": "night",
+						"dropSourceNodeId": "SolNode105",
+						"chance": 25.81
 					}
 				]
 			},

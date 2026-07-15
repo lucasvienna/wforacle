@@ -54,7 +54,6 @@
 				return `Market (${part.marketCost.toLocaleString('en-US')}cr)`;
 			return 'Market';
 		}
-		if (part.subDrops) return `${bossName} · guaranteed each kill`;
 		const chance = part.chance != null ? formatChance(part.chance) : undefined;
 		return [bossName, chance].filter(Boolean).join(' · ');
 	}
@@ -183,6 +182,7 @@
 									defaultExpanded={defaultExpanded(frame.id)}
 									sourceText={(part) =>
 										assassinationSourceText(part, boss.name)}
+									aspectNote={`Each ${boss.name} kill drops one Day and one Night component.`}
 								/>
 							{/each}
 						</div>

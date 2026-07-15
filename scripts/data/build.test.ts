@@ -207,19 +207,43 @@ describe('buildFrames (Equinox: dual-aspect parts derived from components)', () 
 		},
 	];
 
-	it('links Equinox to Titania with dayaspect/nightaspect parts (not chassis/neuroptics/systems)', () => {
+	it('expands Equinox into 9 parts: main bp + 4 Day leaves + 4 Night leaves', () => {
 		const { frames } = buildFrames(equinoxWarframes, nodes);
 		const equinox = frames.find((f) => f.id === 'equinox')!;
 		expect(equinox).toBeDefined();
 		expect(equinox.nodeId).toBe('SolNodeTitania');
-		expect(equinox.parts.map((p) => p.slot)).toEqual(['bp', 'dayaspect', 'nightaspect']);
-		const bp = equinox.parts.find((p) => p.slot === 'bp')!;
-		expect(bp.dropSourceNodeId).toBeUndefined();
-		const day = equinox.parts.find((p) => p.slot === 'dayaspect')!;
-		expect(day.dropSourceNodeId).toBe('SolNodeTitania');
-		expect(day.chance).toBe(22.56);
-		const night = equinox.parts.find((p) => p.slot === 'nightaspect')!;
-		expect(night.dropSourceNodeId).toBe('SolNodeTitania');
+		expect(equinox.parts.map((p) => p.id)).toEqual([
+			'equinox:bp',
+			'equinox:day:bp',
+			'equinox:day:neuroptics',
+			'equinox:day:chassis',
+			'equinox:day:systems',
+			'equinox:night:bp',
+			'equinox:night:neuroptics',
+			'equinox:night:chassis',
+			'equinox:night:systems',
+		]);
+	});
+
+	it('tags leaves with their aspect and sources them from Titania with chances', () => {
+		const { frames } = buildFrames(equinoxWarframes, nodes);
+		const equinox = frames.find((f) => f.id === 'equinox')!;
+		const mainBp = equinox.parts.find((p) => p.id === 'equinox:bp')!;
+		expect(mainBp.aspect).toBeUndefined();
+		expect(mainBp.dropSourceNodeId).toBeUndefined();
+
+		const dayBp = equinox.parts.find((p) => p.id === 'equinox:day:bp')!;
+		expect(dayBp.aspect).toBe('day');
+		expect(dayBp.dropSourceNodeId).toBe('SolNodeTitania');
+		expect(dayBp.chance).toBe(22.56); // Aspect Blueprint drop chance
+
+		const dayNeuro = equinox.parts.find((p) => p.id === 'equinox:day:neuroptics')!;
+		expect(dayNeuro.aspect).toBe('day');
+		expect(dayNeuro.chance).toBe(25.81);
+
+		const nightSystems = equinox.parts.find((p) => p.id === 'equinox:night:systems')!;
+		expect(nightSystems.aspect).toBe('night');
+		expect(nightSystems.chance).toBe(25.81);
 	});
 
 	it('still yields exactly 4 standard parts for a regular frame (Rhino) in the same run', () => {
@@ -227,32 +251,7 @@ describe('buildFrames (Equinox: dual-aspect parts derived from components)', () 
 		const { frames } = buildFrames(warframes, rhinoNodes);
 		const rhino = frames.find((f) => f.id === 'rhino')!;
 		expect(rhino.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
-	});
-
-	it('attaches curated subDrops to Equinox aspects and nothing to normal parts', () => {
-		// NB: the top-level `describe('buildFrames', ...)`'s shared `frames` is
-		// built from warframes.sample.json, which does not contain Equinox
-		// (only mesa/rhino — see that block's first test). Equinox only exists
-		// in this describe's own inline fixture, so we build both frame sets
-		// here rather than assuming a shared `frames` with Equinox in it.
-		const { frames: equinoxFrames } = buildFrames(equinoxWarframes, nodes);
-		const equinox = equinoxFrames.find((f) => f.id === 'equinox')!;
-		const day = equinox.parts.find((p) => p.slot === 'dayaspect')!;
-		expect(day.chance).toBe(22.56); // Aspect Blueprint chance, unchanged
-		expect(day.subDrops).toEqual([
-			{ label: 'Neuroptics', chance: 25.81 },
-			{ label: 'Chassis', chance: 25.81 },
-			{ label: 'Systems', chance: 25.81 },
-		]);
-		const night = equinox.parts.find((p) => p.slot === 'nightaspect')!;
-		expect(night.subDrops).toHaveLength(3);
-		// Guardrail: no rotation leaks onto the aspect.
-		expect(day.rotation).toBeUndefined();
-		// A normal frame's parts carry no subDrops.
-		const rhinoNodes = buildNodes(solNodes);
-		const { frames: rhinoFrames } = buildFrames(warframes, rhinoNodes);
-		const rhino = rhinoFrames.find((f) => f.id === 'rhino')!;
-		expect(rhino.parts.every((p) => p.subDrops === undefined)).toBe(true);
+		expect(rhino.parts.every((p) => p.aspect === undefined)).toBe(true);
 	});
 });
 
