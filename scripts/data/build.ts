@@ -13,7 +13,7 @@ import {
 	BOSS_BY_NODE,
 	KEY_BOSS_DROP_LOCATIONS,
 	ASSASSINATION_BP_SOURCE,
-	ASSASSINATION_PART_DETAIL,
+	ASSASSINATION_ASPECTS,
 } from './curated';
 import { SPECIAL_REGIONS, SPECIAL_REGION_NAMES } from './special';
 import { PLANET_RESOURCES } from './farming';
@@ -104,11 +104,17 @@ const SLOT_BY_COMPONENT: Record<string, Slot> = {
 	Neuroptics: 'neuroptics',
 	Chassis: 'chassis',
 	Systems: 'systems',
-	'Day Aspect': 'dayaspect',
-	'Night Aspect': 'nightaspect',
 };
 
-const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems', 'dayaspect', 'nightaspect'];
+// Raw @wfcd component name → aspect side. Equinox's Day/Night Aspect components
+// each expand into four trackable leaves (Aspect Blueprint + 3 components); the
+// raw component supplies the node link and the Aspect Blueprint's drop chance.
+const ASPECT_BY_COMPONENT: Record<string, 'day' | 'night'> = {
+	'Day Aspect': 'day',
+	'Night Aspect': 'night',
+};
+
+const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems'];
 
 export interface BountyStage {
 	chance: number;
@@ -186,6 +192,28 @@ function buildBpPart(
 	return base;
 }
 
+/** Expand one aspect side into its trackable leaves: the Aspect Blueprint
+ * (slot `bp`, chance from the raw Day/Night Aspect drop) followed by the curated
+ * components. All share the boss node and carry the `aspect` tag; ids are
+ * aspect-scoped so Day and Night never collide. */
+function buildAspectLeaves(
+	frameId: string,
+	aspect: 'day' | 'night',
+	nodeId: string,
+	aspectChance: number | undefined,
+	components: { slot: Slot; chance: number }[],
+): WarframePart[] {
+	const leaf = (slot: Slot, chance: number | undefined): WarframePart => ({
+		id: partId(frameId, slot, aspect),
+		frameId,
+		slot,
+		aspect,
+		dropSourceNodeId: nodeId,
+		chance,
+	});
+	return [leaf('bp', aspectChance), ...components.map((c) => leaf(c.slot, c.chance))];
+}
+
 export function buildFrames(
 	warframes: RawWarframe[],
 	nodes: StarNode[],
@@ -203,10 +231,12 @@ export function buildFrames(
 		// never fabricate a node/frame on its own.
 		let node: StarNode | undefined;
 		const chanceBySlot = new Map<Slot, number>();
+		const aspectChance = new Map<'day' | 'night', number>();
 		let bpDrop: { nodeId: string; chance?: number } | undefined;
 		for (const c of wf.components) {
 			const slot = SLOT_BY_COMPONENT[c.name];
-			if (!slot) continue;
+			const aspect = ASPECT_BY_COMPONENT[c.name];
+			if (!slot && !aspect) continue;
 			for (const d of c.drops ?? []) {
 				const loc = resolveDropLocation(d.location);
 				if (!loc || loc.type !== 'Assassination') continue;
@@ -215,9 +245,12 @@ export function buildFrames(
 				if (!n) continue;
 				if (slot === 'bp') {
 					bpDrop = { nodeId: n.id, chance: d.chance ?? undefined };
+				} else if (aspect) {
+					node = n;
+					if (d.chance != null) aspectChance.set(aspect, d.chance);
 				} else {
 					node = n;
-					if (d.chance != null) chanceBySlot.set(slot, d.chance);
+					if (d.chance != null) chanceBySlot.set(slot!, d.chance);
 				}
 			}
 		}
@@ -237,9 +270,16 @@ export function buildFrames(
 				slot,
 				dropSourceNodeId: node!.id,
 				chance: chanceBySlot.get(slot),
-				subDrops: ASSASSINATION_PART_DETAIL[frameId]?.[slot]?.subDrops,
 			};
 		});
+		const aspects = ASSASSINATION_ASPECTS[frameId];
+		if (aspects) {
+			for (const side of ['day', 'night'] as const) {
+				parts.push(
+					...buildAspectLeaves(frameId, side, node!.id, aspectChance.get(side), aspects[side]),
+				);
+			}
+		}
 		frames.push({
 			id: frameId,
 			name: wf.name,

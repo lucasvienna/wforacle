@@ -54,11 +54,11 @@ async function main() {
 	}
 	// Node-linked-frame floor. Verified against the installed
 	// warframe-worldstate-data@3.16.2 + @wfcd/items@1.1274.72: 16
-	// node-linked frames. Nekros links at Deimos/Magnacidium; Equinox now
-	// links via its Day Aspect / Night Aspect components at Uranus/Titania
-	// (buildFrames generalized to handle non-standard slot names, Task 3);
-	// Mesa and Atlas link via the curated Eris key-boss nodes "Mutalist Alad
-	// V Assassinate" and "Jordas Golem Assassinate" (Task 3 curation).
+	// node-linked frames. Nekros links at Deimos/Magnacidium; Equinox links via
+	// its Day Aspect / Night Aspect components at Uranus/Titania, each expanded
+	// into four trackable leaves (buildAspectLeaves); Mesa and Atlas link via the
+	// curated Eris key-boss nodes "Mutalist Alad V Assassinate" and "Jordas Golem
+	// Assassinate" (Task 3 curation).
 	if (nodeFrames < 16) {
 		console.error(`Sanity check failed (expected >=16 node-linked frames, got ${nodeFrames})`);
 		process.exit(1);

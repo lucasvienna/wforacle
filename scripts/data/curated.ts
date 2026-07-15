@@ -95,30 +95,27 @@ export const ASSASSINATION_BP_SOURCE: Record<string, string> = {
 	mesa: 'Mutalist Alad V',
 };
 
-// frameId → per-slot composite sub-blueprints @wfcd/items flattens away.
-// Equinox is the only such frame: each aspect is a sub-build of its Aspect
-// Blueprint (the part's own 22.56% chance) + these three 25.81% components.
-// Post-Update-42 (2026) Tyl Regor drops one guaranteed component from each
-// side per kill; the old Rotation A/B gating is gone, but these within-side
-// weights are unchanged. Keyed by frame id (slugified name).
-export const ASSASSINATION_PART_DETAIL: Record<
+// frameId → per-aspect components (the sub-blueprints @wfcd/items flattens
+// away). Equinox is the only such frame: each aspect (Day/Night) is assembled
+// from its Aspect Blueprint — whose drop chance the build supplies from the
+// @wfcd Day/Night Aspect component drop — plus these three 25.81% components.
+// Post-Update-42 (2026) Tyl Regor drops one guaranteed component from each side
+// per kill; the old Rotation A/B gating is gone, but these within-side weights
+// are unchanged. Keyed by frame id (slugified name).
+export const ASSASSINATION_ASPECTS: Record<
 	string,
-	Partial<Record<Slot, { subDrops: { label: string; chance: number }[] }>>
+	{ day: { slot: Slot; chance: number }[]; night: { slot: Slot; chance: number }[] }
 > = {
 	equinox: {
-		dayaspect: {
-			subDrops: [
-				{ label: 'Neuroptics', chance: 25.81 },
-				{ label: 'Chassis', chance: 25.81 },
-				{ label: 'Systems', chance: 25.81 },
-			],
-		},
-		nightaspect: {
-			subDrops: [
-				{ label: 'Neuroptics', chance: 25.81 },
-				{ label: 'Chassis', chance: 25.81 },
-				{ label: 'Systems', chance: 25.81 },
-			],
-		},
+		day: [
+			{ slot: 'neuroptics', chance: 25.81 },
+			{ slot: 'chassis', chance: 25.81 },
+			{ slot: 'systems', chance: 25.81 },
+		],
+		night: [
+			{ slot: 'neuroptics', chance: 25.81 },
+			{ slot: 'chassis', chance: 25.81 },
+			{ slot: 'systems', chance: 25.81 },
+		],
 	},
 };

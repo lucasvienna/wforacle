@@ -12,10 +12,27 @@ function frame(id: string, uniqueName: string, slots: string[]): Warframe {
 	};
 }
 
+const equinoxParts = [
+	{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp' as never },
+	{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp' as never, aspect: 'day' },
+	{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics' as never, aspect: 'day' },
+	{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis' as never, aspect: 'day' },
+	{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems' as never, aspect: 'day' },
+	{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp' as never, aspect: 'night' },
+	{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics' as never, aspect: 'night' },
+	{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis' as never, aspect: 'night' },
+	{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems' as never, aspect: 'night' },
+];
+
 const frames: Warframe[] = [
 	frame('rhino', '/Lotus/Powersuits/Rhino/Rhino', ['bp', 'neuroptics', 'chassis', 'systems']),
 	frame('mesa', '/Lotus/Powersuits/Cowgirl/Cowgirl', ['bp', 'neuroptics', 'chassis', 'systems']),
-	frame('equinox', '/Lotus/Powersuits/YinYang/YinYang', ['bp', 'dayaspect', 'nightaspect']),
+	{
+		id: 'equinox',
+		name: 'equinox',
+		uniqueName: '/Lotus/Powersuits/YinYang/YinYang',
+		parts: equinoxParts,
+	} as unknown as Warframe,
 ];
 
 const dataset = {
@@ -82,7 +99,17 @@ describe('parseProfile', () => {
 		};
 		const res = parseProfile(profile, dataset);
 		expect(res.frameIds).toEqual(['equinox']);
-		expect(res.partIds.sort()).toEqual(['equinox:bp', 'equinox:dayaspect', 'equinox:nightaspect']);
+		expect(res.partIds.sort()).toEqual([
+			'equinox:bp',
+			'equinox:day:bp',
+			'equinox:day:chassis',
+			'equinox:day:neuroptics',
+			'equinox:day:systems',
+			'equinox:night:bp',
+			'equinox:night:chassis',
+			'equinox:night:neuroptics',
+			'equinox:night:systems',
+		]);
 		expect(res.questIds).toEqual(['theseconddream']);
 	});
 });
