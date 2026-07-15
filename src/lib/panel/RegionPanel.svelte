@@ -54,7 +54,6 @@
 				return `Market (${part.marketCost.toLocaleString('en-US')}cr)`;
 			return 'Market';
 		}
-		if (part.subDrops) return `${bossName} · guaranteed each kill`;
 		const chance = part.chance != null ? formatChance(part.chance) : undefined;
 		return [bossName, chance].filter(Boolean).join(' · ');
 	}
