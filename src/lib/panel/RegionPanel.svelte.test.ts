@@ -963,4 +963,19 @@ describe('RegionPanel — Equinox aspect breakdown', () => {
 		expect(row.textContent).toContain('Neuroptics 25.81%');
 		expect(row.textContent).toContain('Systems 25.81%');
 	});
+	it('toggling the breakdown caret does not toggle the aspect ownership', async () => {
+		render(RegionPanel, {
+			dataset: equinoxAspectRegion,
+			regionId: 'uranus',
+			tracker: createTracker(equinoxAspectRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="equinox:dayaspect"]') as HTMLElement;
+		expect(row.getAttribute('data-owned')).toBe('false');
+		// The caret lives inside the part row (a role="checkbox" that toggles
+		// ownership); its stopPropagation must keep the click from checking it.
+		const caret = row.querySelector('button') as HTMLButtonElement;
+		caret.click();
+		await tick();
+		expect(row.getAttribute('data-owned')).toBe('false');
+	});
 });

@@ -27,7 +27,7 @@
 	</button>
 	{#if open}
 		<div class="mt-0.5 pl-4 text-[11px] text-wf-muted">
-			{#each aspectBreakdownLines(part) as line (line)}
+			{#each aspectBreakdownLines(part) as line, i (i + '-' + line)}
 				<div>{line}</div>
 			{/each}
 		</div>
