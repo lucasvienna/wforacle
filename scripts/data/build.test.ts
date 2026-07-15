@@ -228,6 +228,32 @@ describe('buildFrames (Equinox: dual-aspect parts derived from components)', () 
 		const rhino = frames.find((f) => f.id === 'rhino')!;
 		expect(rhino.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
 	});
+
+	it('attaches curated subDrops to Equinox aspects and nothing to normal parts', () => {
+		// NB: the top-level `describe('buildFrames', ...)`'s shared `frames` is
+		// built from warframes.sample.json, which does not contain Equinox
+		// (only mesa/rhino — see that block's first test). Equinox only exists
+		// in this describe's own inline fixture, so we build both frame sets
+		// here rather than assuming a shared `frames` with Equinox in it.
+		const { frames: equinoxFrames } = buildFrames(equinoxWarframes, nodes);
+		const equinox = equinoxFrames.find((f) => f.id === 'equinox')!;
+		const day = equinox.parts.find((p) => p.slot === 'dayaspect')!;
+		expect(day.chance).toBe(22.56); // Aspect Blueprint chance, unchanged
+		expect(day.subDrops).toEqual([
+			{ label: 'Neuroptics', chance: 25.81 },
+			{ label: 'Chassis', chance: 25.81 },
+			{ label: 'Systems', chance: 25.81 },
+		]);
+		const night = equinox.parts.find((p) => p.slot === 'nightaspect')!;
+		expect(night.subDrops).toHaveLength(3);
+		// Guardrail: no rotation leaks onto the aspect.
+		expect(day.rotation).toBeUndefined();
+		// A normal frame's parts carry no subDrops.
+		const rhinoNodes = buildNodes(solNodes);
+		const { frames: rhinoFrames } = buildFrames(warframes, rhinoNodes);
+		const rhino = rhinoFrames.find((f) => f.id === 'rhino')!;
+		expect(rhino.parts.every((p) => p.subDrops === undefined)).toBe(true);
+	});
 });
 
 describe('curated Eris key-boss nodes (Mesa, Atlas)', () => {

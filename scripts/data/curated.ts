@@ -1,5 +1,6 @@
 import { slugify } from './parse';
 import type { SolNodes } from './build';
+import type { Slot } from '../../src/lib/model/types';
 
 export const PLANETS: { name: string; order: number; faction: string; spoilerGated: boolean }[] = [
 	{ name: 'Earth', order: 1, faction: 'Grineer', spoilerGated: false },
@@ -92,4 +93,32 @@ export const KEY_BOSS_DROP_LOCATIONS: Record<
 export const ASSASSINATION_BP_SOURCE: Record<string, string> = {
 	atlas: 'The Jordas Precept (quest)',
 	mesa: 'Mutalist Alad V',
+};
+
+// frameId → per-slot composite sub-blueprints @wfcd/items flattens away.
+// Equinox is the only such frame: each aspect is a sub-build of its Aspect
+// Blueprint (the part's own 22.56% chance) + these three 25.81% components.
+// Post-Update-42 (2026) Tyl Regor drops one guaranteed component from each
+// side per kill; the old Rotation A/B gating is gone, but these within-side
+// weights are unchanged. Keyed by frame id (slugified name).
+export const ASSASSINATION_PART_DETAIL: Record<
+	string,
+	Partial<Record<Slot, { subDrops: { label: string; chance: number }[] }>>
+> = {
+	equinox: {
+		dayaspect: {
+			subDrops: [
+				{ label: 'Neuroptics', chance: 25.81 },
+				{ label: 'Chassis', chance: 25.81 },
+				{ label: 'Systems', chance: 25.81 },
+			],
+		},
+		nightaspect: {
+			subDrops: [
+				{ label: 'Neuroptics', chance: 25.81 },
+				{ label: 'Chassis', chance: 25.81 },
+				{ label: 'Systems', chance: 25.81 },
+			],
+		},
+	},
 };

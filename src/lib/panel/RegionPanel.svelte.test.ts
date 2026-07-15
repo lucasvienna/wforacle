@@ -875,3 +875,107 @@ describe('RegionPanel — assassination blueprint & drop-rate labels', () => {
 		expect(row.textContent).toMatch(/Mutalist Alad V/);
 	});
 });
+
+const equinoxAspectRegion: Dataset = {
+	regions: [
+		{
+			id: 'uranus',
+			name: 'Uranus',
+			kind: 'planet',
+			progressionOrder: 10,
+			factions: ['Grineer'],
+			nodeIds: ['titania'],
+			spoilerGated: false,
+			resourceIds: [],
+		},
+	],
+	nodes: [
+		{
+			id: 'titania',
+			regionId: 'uranus',
+			name: 'Titania',
+			missionType: 'Assassination',
+			faction: 'Grineer',
+			isAssassination: true,
+			bossId: 'tylregor',
+			frameId: 'equinox',
+		},
+	],
+	bosses: [{ id: 'tylregor', name: 'Tyl Regor', nodeId: 'titania', faction: 'Grineer' }],
+	warframes: [
+		{
+			id: 'equinox',
+			name: 'Equinox',
+			nodeId: 'titania',
+			parts: [
+				{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp', marketCost: 25000 },
+				{
+					id: 'equinox:dayaspect',
+					frameId: 'equinox',
+					slot: 'dayaspect',
+					dropSourceNodeId: 'titania',
+					chance: 22.56,
+					subDrops: [
+						{ label: 'Neuroptics', chance: 25.81 },
+						{ label: 'Chassis', chance: 25.81 },
+						{ label: 'Systems', chance: 25.81 },
+					],
+				},
+				{
+					id: 'equinox:nightaspect',
+					frameId: 'equinox',
+					slot: 'nightaspect',
+					dropSourceNodeId: 'titania',
+					chance: 22.56,
+					subDrops: [
+						{ label: 'Neuroptics', chance: 25.81 },
+						{ label: 'Chassis', chance: 25.81 },
+						{ label: 'Systems', chance: 25.81 },
+					],
+				},
+			],
+		},
+	],
+	resources: [],
+	quests: [],
+	openWorldFarms: [],
+};
+
+describe('RegionPanel — Equinox aspect breakdown', () => {
+	it('shows the guaranteed-each-kill mechanic on an aspect row (no bare %)', () => {
+		render(RegionPanel, {
+			dataset: equinoxAspectRegion,
+			regionId: 'uranus',
+			tracker: createTracker(equinoxAspectRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="equinox:dayaspect"]') as HTMLElement;
+		expect(row.textContent).toContain('Tyl Regor · guaranteed each kill');
+		expect(row.textContent).not.toMatch(/Tyl Regor · 22\.56%/);
+	});
+	it('renders the sub-blueprint breakdown for an unobtained aspect', () => {
+		render(RegionPanel, {
+			dataset: equinoxAspectRegion,
+			regionId: 'uranus',
+			tracker: createTracker(equinoxAspectRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="equinox:dayaspect"]') as HTMLElement;
+		expect(row.textContent).toContain('Aspect 22.56%');
+		expect(row.textContent).toContain('Neuroptics 25.81%');
+		expect(row.textContent).toContain('Systems 25.81%');
+	});
+	it('toggling the breakdown caret does not toggle the aspect ownership', async () => {
+		render(RegionPanel, {
+			dataset: equinoxAspectRegion,
+			regionId: 'uranus',
+			tracker: createTracker(equinoxAspectRegion.warframes),
+		});
+		const row = document.querySelector('[data-part="equinox:dayaspect"]') as HTMLElement;
+		expect(row.getAttribute('data-owned')).toBe('false');
+		// The caret lives inside the part row (a role="checkbox" that toggles
+		// ownership); its stopPropagation must keep the click from checking it.
+		const caret = row.querySelector('button') as HTMLButtonElement;
+		caret.click();
+		await tick();
+		expect(row.getAttribute('data-owned')).toBe('false');
+	});
+});

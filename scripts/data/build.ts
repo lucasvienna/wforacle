@@ -8,7 +8,13 @@ import type {
 	OpenWorldFarm,
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
-import { PLANETS, BOSS_BY_NODE, KEY_BOSS_DROP_LOCATIONS, ASSASSINATION_BP_SOURCE } from './curated';
+import {
+	PLANETS,
+	BOSS_BY_NODE,
+	KEY_BOSS_DROP_LOCATIONS,
+	ASSASSINATION_BP_SOURCE,
+	ASSASSINATION_PART_DETAIL,
+} from './curated';
 import { SPECIAL_REGIONS, SPECIAL_REGION_NAMES } from './special';
 import { PLANET_RESOURCES } from './farming';
 import { partId } from '../../src/lib/model/completion';
@@ -231,6 +237,7 @@ export function buildFrames(
 				slot,
 				dropSourceNodeId: node!.id,
 				chance: chanceBySlot.get(slot),
+				subDrops: ASSASSINATION_PART_DETAIL[frameId]?.[slot]?.subDrops,
 			};
 		});
 		frames.push({
