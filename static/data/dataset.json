@@ -1,6 +1,6 @@
 {
-	"version": "items@1.1275.5+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-14T10:40:22.813Z",
+	"version": "items@1.1275.15+worldstate-data@3.16.3",
+	"generatedAt": "2026-07-15T07:22:54.458Z",
 	"data": {
 		"regions": [
 			{
@@ -4046,14 +4046,42 @@
 						"frameId": "equinox",
 						"slot": "dayaspect",
 						"dropSourceNodeId": "SolNode105",
-						"chance": 22.56
+						"chance": 22.56,
+						"subDrops": [
+							{
+								"label": "Neuroptics",
+								"chance": 25.81
+							},
+							{
+								"label": "Chassis",
+								"chance": 25.81
+							},
+							{
+								"label": "Systems",
+								"chance": 25.81
+							}
+						]
 					},
 					{
 						"id": "equinox:nightaspect",
 						"frameId": "equinox",
 						"slot": "nightaspect",
 						"dropSourceNodeId": "SolNode105",
-						"chance": 22.56
+						"chance": 22.56,
+						"subDrops": [
+							{
+								"label": "Neuroptics",
+								"chance": 25.81
+							},
+							{
+								"label": "Chassis",
+								"chance": 25.81
+							},
+							{
+								"label": "Systems",
+								"chance": 25.81
+							}
+						]
 					}
 				]
 			},
