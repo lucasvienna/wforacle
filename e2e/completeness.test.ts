@@ -11,17 +11,19 @@ test('Equinox aspects track and persist (Uranus, Titania)', async ({ page }) => 
 
 	await page.locator('svg [data-region="uranus"]').click();
 
-	const dayAspect = page.locator('[data-part="equinox:dayaspect"]');
-	const nightAspect = page.locator('[data-part="equinox:nightaspect"]');
+	// Equinox's Day/Night aspects each render as a collapsible group header
+	// (button) over four leaf checkboxes (Aspect Blueprint + Neuroptics/Chassis/
+	// Systems). Match the header buttons by role — plain getByText('Night Aspect')
+	// also hits the "…Day and Night aspects." intro paragraph (substring match).
+	await expect(page.getByRole('button', { name: /Day Aspect/ })).toBeVisible();
+	await expect(page.getByRole('button', { name: /Night Aspect/ })).toBeVisible();
 
-	await expect(dayAspect).toBeVisible();
-	await expect(nightAspect).toBeVisible();
-	await expect(dayAspect.getByText('Day Aspect')).toBeVisible();
-	await expect(nightAspect.getByText('Night Aspect')).toBeVisible();
-
-	await expect(dayAspect).toHaveAttribute('data-owned', 'false');
-	await dayAspect.click();
-	await expect(dayAspect).toHaveAttribute('data-owned', 'true');
+	// Toggle one leaf individually (the Day Aspect Blueprint).
+	const dayBp = page.locator('[data-part="equinox:day:bp"]');
+	await expect(dayBp).toBeVisible();
+	await expect(dayBp).toHaveAttribute('data-owned', 'false');
+	await dayBp.click();
+	await expect(dayBp).toHaveAttribute('data-owned', 'true');
 
 	await page.reload();
 
@@ -30,7 +32,7 @@ test('Equinox aspects track and persist (Uranus, Titania)', async ({ page }) => 
 	// re-select it before re-checking the part.
 	await expect(venus).toBeVisible();
 	await page.locator('svg [data-region="uranus"]').click();
-	await expect(page.locator('[data-part="equinox:dayaspect"]')).toHaveAttribute(
+	await expect(page.locator('[data-part="equinox:day:bp"]')).toHaveAttribute(
 		'data-owned',
 		'true',
 	);
