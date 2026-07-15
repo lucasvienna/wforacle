@@ -7,7 +7,13 @@ import type { Warframe, WarframePart } from '$lib/model/types';
 
 const dayParts: WarframePart[] = [
 	{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day', chance: 22.56 },
-	{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'day', chance: 25.81 },
+	{
+		id: 'equinox:day:neuroptics',
+		frameId: 'equinox',
+		slot: 'neuroptics',
+		aspect: 'day',
+		chance: 25.81,
+	},
 	{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'day', chance: 25.81 },
 	{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems', aspect: 'day', chance: 25.81 },
 ];

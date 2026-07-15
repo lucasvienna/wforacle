@@ -36,15 +36,7 @@
 		neuroptics: 'Neuroptics',
 		chassis: 'Chassis',
 		systems: 'Systems',
-		dayaspect: 'Day Aspect',
-		nightaspect: 'Night Aspect',
 	} as const;
-
-	// Equinox's day/night aspect slots get a decorative sun/moon glyph prefix.
-	const SLOT_ICON: Partial<Record<string, string>> = {
-		dayaspect: '☀',
-		nightaspect: '☾',
-	};
 
 	// Faction accent for the acquisition tag. Extend as new factions appear.
 	const FACTION_TAG: Record<string, string> = {
@@ -166,14 +158,17 @@
 					<PartRow {part} {tracker}>
 						{#snippet children(owned)}
 							<div class="flex items-center gap-2">
-								<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
-									{#if SLOT_ICON[part.slot]}<span
-											aria-hidden="true"
-											class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
-										>{/if}{SLOT_LABEL[part.slot]}
+								<span
+									class="text-sm {owned
+										? 'text-emerald-300'
+										: 'text-slate-200'}"
+								>
+									{SLOT_LABEL[part.slot]}
 								</span>
 								{#if chip}
-									<span class="ml-auto shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
+									<span class="ml-auto shrink-0 text-[11px] {chip.cls}"
+										>{chip.text}</span
+									>
 								{/if}
 							</div>
 							<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>

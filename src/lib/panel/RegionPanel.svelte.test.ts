@@ -116,13 +116,49 @@ const equinoxRegion: Dataset = {
 			parts: [
 				{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp', marketCost: 25000 },
 				{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day', chance: 22.56 },
-				{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'day', chance: 25.81 },
-				{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'day', chance: 25.81 },
-				{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems', aspect: 'day', chance: 25.81 },
+				{
+					id: 'equinox:day:neuroptics',
+					frameId: 'equinox',
+					slot: 'neuroptics',
+					aspect: 'day',
+					chance: 25.81,
+				},
+				{
+					id: 'equinox:day:chassis',
+					frameId: 'equinox',
+					slot: 'chassis',
+					aspect: 'day',
+					chance: 25.81,
+				},
+				{
+					id: 'equinox:day:systems',
+					frameId: 'equinox',
+					slot: 'systems',
+					aspect: 'day',
+					chance: 25.81,
+				},
 				{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp', aspect: 'night', chance: 22.56 },
-				{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'night', chance: 25.81 },
-				{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'night', chance: 25.81 },
-				{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems', aspect: 'night', chance: 25.81 },
+				{
+					id: 'equinox:night:neuroptics',
+					frameId: 'equinox',
+					slot: 'neuroptics',
+					aspect: 'night',
+					chance: 25.81,
+				},
+				{
+					id: 'equinox:night:chassis',
+					frameId: 'equinox',
+					slot: 'chassis',
+					aspect: 'night',
+					chance: 25.81,
+				},
+				{
+					id: 'equinox:night:systems',
+					frameId: 'equinox',
+					slot: 'systems',
+					aspect: 'night',
+					chance: 25.81,
+				},
 			],
 		},
 	],
@@ -885,4 +921,3 @@ describe('RegionPanel — assassination blueprint & drop-rate labels', () => {
 		expect(row.textContent).toMatch(/Mutalist Alad V/);
 	});
 });
-

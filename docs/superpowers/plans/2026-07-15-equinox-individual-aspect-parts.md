@@ -23,10 +23,12 @@
 ### Task 1: `partId` gains aspect scoping
 
 **Files:**
+
 - Modify: `src/lib/model/completion.ts:3-5`
 - Test: `src/lib/model/completion.test.ts:29-34`
 
 **Interfaces:**
+
 - Produces: `partId(frameId: string, slot: Slot, aspect?: 'day' | 'night'): string` — returns `${frameId}:${aspect}:${slot}` when `aspect` is given, else `${frameId}:${slot}`.
 
 - [ ] **Step 1: Update the failing test**
@@ -34,10 +36,10 @@
 Replace the existing `it('builds stable part ids for Equinox day/night aspect slots', ...)` block (currently at `src/lib/model/completion.test.ts:29-33`) with:
 
 ```ts
-	it('scopes aspect leaf part ids under their aspect', () => {
-		expect(partId('equinox', 'bp', 'day')).toBe('equinox:day:bp');
-		expect(partId('equinox', 'neuroptics', 'night')).toBe('equinox:night:neuroptics');
-	});
+it('scopes aspect leaf part ids under their aspect', () => {
+	expect(partId('equinox', 'bp', 'day')).toBe('equinox:day:bp');
+	expect(partId('equinox', 'neuroptics', 'night')).toBe('equinox:night:neuroptics');
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -72,11 +74,13 @@ git commit -m "feat(model): partId supports aspect-scoped ids"
 ### Task 2: Model gains `aspect` field; validation accepts aspect ids
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts:3-28`
 - Modify: `scripts/data/assemble.ts:1` (add import), `scripts/data/assemble.ts:108`
 - Test: `scripts/data/assemble.test.ts`
 
 **Interfaces:**
+
 - Consumes: `partId(frameId, slot, aspect?)` from Task 1.
 - Produces: `WarframePart.aspect?: 'day' | 'night'`. `validateDataset` accepts a part whose id equals `partId(frameId, slot, aspect)`.
 
@@ -143,14 +147,14 @@ import { partId } from '../../src/lib/model/completion';
 Replace line 108:
 
 ```ts
-		for (const p of f.parts) if (p.id !== `${f.id}:${p.slot}`) problems.push(`bad part id ${p.id}`);
+for (const p of f.parts) if (p.id !== `${f.id}:${p.slot}`) problems.push(`bad part id ${p.id}`);
 ```
 
 with:
 
 ```ts
-		for (const p of f.parts)
-			if (p.id !== partId(f.id, p.slot, p.aspect)) problems.push(`bad part id ${p.id}`);
+for (const p of f.parts)
+	if (p.id !== partId(f.id, p.slot, p.aspect)) problems.push(`bad part id ${p.id}`);
 ```
 
 - [ ] **Step 5: Run tests to verify they pass**
@@ -170,6 +174,7 @@ git commit -m "feat(model): add aspect field + aspect-aware part-id validation"
 ### Task 3: Build pipeline emits 9 aspect-leaf parts for Equinox
 
 **Files:**
+
 - Modify: `scripts/data/curated.ts:98-124`
 - Modify: `scripts/data/build.ts:12-17` (import), `:102-109` (`SLOT_BY_COMPONENT`), `:111` (`ORDER`), `:189-242` (`buildFrames`)
 - Modify: `scripts/data/build-data.ts:60-66` (stale comment)
@@ -178,6 +183,7 @@ git commit -m "feat(model): add aspect field + aspect-aware part-id validation"
 - Regenerate: `static/data/dataset.json`
 
 **Interfaces:**
+
 - Consumes: `partId(frameId, slot, aspect)`, `WarframePart.aspect`.
 - Produces: Equinox `parts` array of 9 entries in order `[bp, day:bp, day:neuroptics, day:chassis, day:systems, night:bp, night:neuroptics, night:chassis, night:systems]`; each Day/Night leaf carries `aspect`, `dropSourceNodeId`, and `chance`; `ASSASSINATION_ASPECTS` export replaces `ASSASSINATION_PART_DETAIL`.
 
@@ -217,52 +223,52 @@ export const ASSASSINATION_ASPECTS: Record<
 In `scripts/data/build.test.ts`, replace the two Equinox tests at lines 210-256 (the `it('links Equinox to Titania ...')` and `it('attaches curated subDrops ...')` blocks) with:
 
 ```ts
-	it('expands Equinox into 9 parts: main bp + 4 Day leaves + 4 Night leaves', () => {
-		const { frames } = buildFrames(equinoxWarframes, nodes);
-		const equinox = frames.find((f) => f.id === 'equinox')!;
-		expect(equinox).toBeDefined();
-		expect(equinox.nodeId).toBe('SolNodeTitania');
-		expect(equinox.parts.map((p) => p.id)).toEqual([
-			'equinox:bp',
-			'equinox:day:bp',
-			'equinox:day:neuroptics',
-			'equinox:day:chassis',
-			'equinox:day:systems',
-			'equinox:night:bp',
-			'equinox:night:neuroptics',
-			'equinox:night:chassis',
-			'equinox:night:systems',
-		]);
-	});
+it('expands Equinox into 9 parts: main bp + 4 Day leaves + 4 Night leaves', () => {
+	const { frames } = buildFrames(equinoxWarframes, nodes);
+	const equinox = frames.find((f) => f.id === 'equinox')!;
+	expect(equinox).toBeDefined();
+	expect(equinox.nodeId).toBe('SolNodeTitania');
+	expect(equinox.parts.map((p) => p.id)).toEqual([
+		'equinox:bp',
+		'equinox:day:bp',
+		'equinox:day:neuroptics',
+		'equinox:day:chassis',
+		'equinox:day:systems',
+		'equinox:night:bp',
+		'equinox:night:neuroptics',
+		'equinox:night:chassis',
+		'equinox:night:systems',
+	]);
+});
 
-	it('tags leaves with their aspect and sources them from Titania with chances', () => {
-		const { frames } = buildFrames(equinoxWarframes, nodes);
-		const equinox = frames.find((f) => f.id === 'equinox')!;
-		const mainBp = equinox.parts.find((p) => p.id === 'equinox:bp')!;
-		expect(mainBp.aspect).toBeUndefined();
-		expect(mainBp.dropSourceNodeId).toBeUndefined();
+it('tags leaves with their aspect and sources them from Titania with chances', () => {
+	const { frames } = buildFrames(equinoxWarframes, nodes);
+	const equinox = frames.find((f) => f.id === 'equinox')!;
+	const mainBp = equinox.parts.find((p) => p.id === 'equinox:bp')!;
+	expect(mainBp.aspect).toBeUndefined();
+	expect(mainBp.dropSourceNodeId).toBeUndefined();
 
-		const dayBp = equinox.parts.find((p) => p.id === 'equinox:day:bp')!;
-		expect(dayBp.aspect).toBe('day');
-		expect(dayBp.dropSourceNodeId).toBe('SolNodeTitania');
-		expect(dayBp.chance).toBe(22.56); // Aspect Blueprint drop chance
+	const dayBp = equinox.parts.find((p) => p.id === 'equinox:day:bp')!;
+	expect(dayBp.aspect).toBe('day');
+	expect(dayBp.dropSourceNodeId).toBe('SolNodeTitania');
+	expect(dayBp.chance).toBe(22.56); // Aspect Blueprint drop chance
 
-		const dayNeuro = equinox.parts.find((p) => p.id === 'equinox:day:neuroptics')!;
-		expect(dayNeuro.aspect).toBe('day');
-		expect(dayNeuro.chance).toBe(25.81);
+	const dayNeuro = equinox.parts.find((p) => p.id === 'equinox:day:neuroptics')!;
+	expect(dayNeuro.aspect).toBe('day');
+	expect(dayNeuro.chance).toBe(25.81);
 
-		const nightSystems = equinox.parts.find((p) => p.id === 'equinox:night:systems')!;
-		expect(nightSystems.aspect).toBe('night');
-		expect(nightSystems.chance).toBe(25.81);
-	});
+	const nightSystems = equinox.parts.find((p) => p.id === 'equinox:night:systems')!;
+	expect(nightSystems.aspect).toBe('night');
+	expect(nightSystems.chance).toBe(25.81);
+});
 
-	it('still yields exactly 4 standard parts for a regular frame (Rhino) in the same run', () => {
-		const rhinoNodes = buildNodes(solNodes);
-		const { frames } = buildFrames(warframes, rhinoNodes);
-		const rhino = frames.find((f) => f.id === 'rhino')!;
-		expect(rhino.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
-		expect(rhino.parts.every((p) => p.aspect === undefined)).toBe(true);
-	});
+it('still yields exactly 4 standard parts for a regular frame (Rhino) in the same run', () => {
+	const rhinoNodes = buildNodes(solNodes);
+	const { frames } = buildFrames(warframes, rhinoNodes);
+	const rhino = frames.find((f) => f.id === 'rhino')!;
+	expect(rhino.parts.map((p) => p.slot)).toEqual(['bp', 'neuroptics', 'chassis', 'systems']);
+	expect(rhino.parts.every((p) => p.aspect === undefined)).toBe(true);
+});
 ```
 
 (This removes all references to `subDrops` and the `dayaspect`/`nightaspect` slots from the test.)
@@ -338,57 +344,57 @@ function buildAspectLeaves(
 (d) In `buildFrames`, add an aspect-chance map next to `chanceBySlot` (line 205):
 
 ```ts
-		const chanceBySlot = new Map<Slot, number>();
-		const aspectChance = new Map<'day' | 'night', number>();
+const chanceBySlot = new Map<Slot, number>();
+const aspectChance = new Map<'day' | 'night', number>();
 ```
 
 (e) Replace the component-scanning loop (lines 207-223) with one that also recognizes aspect components:
 
 ```ts
-		for (const c of wf.components) {
-			const slot = SLOT_BY_COMPONENT[c.name];
-			const aspect = ASPECT_BY_COMPONENT[c.name];
-			if (!slot && !aspect) continue;
-			for (const d of c.drops ?? []) {
-				const loc = resolveDropLocation(d.location);
-				if (!loc || loc.type !== 'Assassination') continue;
-				const key = `${slugify(loc.planet)}:${slugify(loc.node)}`;
-				const n = nodeByKey.get(key);
-				if (!n) continue;
-				if (slot === 'bp') {
-					bpDrop = { nodeId: n.id, chance: d.chance ?? undefined };
-				} else if (aspect) {
-					node = n;
-					if (d.chance != null) aspectChance.set(aspect, d.chance);
-				} else {
-					node = n;
-					if (d.chance != null) chanceBySlot.set(slot!, d.chance);
-				}
-			}
+for (const c of wf.components) {
+	const slot = SLOT_BY_COMPONENT[c.name];
+	const aspect = ASPECT_BY_COMPONENT[c.name];
+	if (!slot && !aspect) continue;
+	for (const d of c.drops ?? []) {
+		const loc = resolveDropLocation(d.location);
+		if (!loc || loc.type !== 'Assassination') continue;
+		const key = `${slugify(loc.planet)}:${slugify(loc.node)}`;
+		const n = nodeByKey.get(key);
+		if (!n) continue;
+		if (slot === 'bp') {
+			bpDrop = { nodeId: n.id, chance: d.chance ?? undefined };
+		} else if (aspect) {
+			node = n;
+			if (d.chance != null) aspectChance.set(aspect, d.chance);
+		} else {
+			node = n;
+			if (d.chance != null) chanceBySlot.set(slot!, d.chance);
 		}
+	}
+}
 ```
 
 (f) Replace the parts construction (lines 232-242) with the standard parts plus appended aspect leaves:
 
 ```ts
-		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => {
-			if (slot === 'bp') return buildBpPart(frameId, bpDrop, wf.bpCost);
-			return {
-				id: partId(frameId, slot),
-				frameId,
-				slot,
-				dropSourceNodeId: node!.id,
-				chance: chanceBySlot.get(slot),
-			};
-		});
-		const aspects = ASSASSINATION_ASPECTS[frameId];
-		if (aspects) {
-			for (const side of ['day', 'night'] as const) {
-				parts.push(
-					...buildAspectLeaves(frameId, side, node!.id, aspectChance.get(side), aspects[side]),
-				);
-			}
-		}
+const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => {
+	if (slot === 'bp') return buildBpPart(frameId, bpDrop, wf.bpCost);
+	return {
+		id: partId(frameId, slot),
+		frameId,
+		slot,
+		dropSourceNodeId: node!.id,
+		chance: chanceBySlot.get(slot),
+	};
+});
+const aspects = ASSASSINATION_ASPECTS[frameId];
+if (aspects) {
+	for (const side of ['day', 'night'] as const) {
+		parts.push(
+			...buildAspectLeaves(frameId, side, node!.id, aspectChance.get(side), aspects[side]),
+		);
+	}
+}
 ```
 
 (The `present`-set loop at lines 227-231 is unchanged: aspect components are absent from `SLOT_BY_COMPONENT`, so they no longer add slots — Equinox's `present` is just `{bp}`.)
@@ -403,9 +409,9 @@ Expected: PASS.
 In `scripts/data/build-data.ts`, replace the comment fragment at lines 60-64 that reads "Equinox now links via its Day Aspect / Night Aspect components at Uranus/Titania (buildFrames generalized to handle non-standard slot names, Task 3);" with:
 
 ```ts
-	// node-linked frames. Nekros links at Deimos/Magnacidium; Equinox links via
-	// its Day Aspect / Night Aspect components at Uranus/Titania, each expanded
-	// into four trackable leaves (buildAspectLeaves);
+// node-linked frames. Nekros links at Deimos/Magnacidium; Equinox links via
+// its Day Aspect / Night Aspect components at Uranus/Titania, each expanded
+// into four trackable leaves (buildAspectLeaves);
 ```
 
 (Keep the surrounding sentence about Mesa/Atlas intact.)
@@ -443,7 +449,12 @@ const equinoxParts = [
 	{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis' as never, aspect: 'day' },
 	{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems' as never, aspect: 'day' },
 	{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp' as never, aspect: 'night' },
-	{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics' as never, aspect: 'night' },
+	{
+		id: 'equinox:night:neuroptics',
+		frameId: 'equinox',
+		slot: 'neuroptics' as never,
+		aspect: 'night',
+	},
 	{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis' as never, aspect: 'night' },
 	{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems' as never, aspect: 'night' },
 ];
@@ -463,23 +474,23 @@ const frames: Warframe[] = [
 Then replace the assertion at line 85:
 
 ```ts
-		expect(res.partIds.sort()).toEqual(['equinox:bp', 'equinox:dayaspect', 'equinox:nightaspect']);
+expect(res.partIds.sort()).toEqual(['equinox:bp', 'equinox:dayaspect', 'equinox:nightaspect']);
 ```
 
 with:
 
 ```ts
-		expect(res.partIds.sort()).toEqual([
-			'equinox:bp',
-			'equinox:day:bp',
-			'equinox:day:chassis',
-			'equinox:day:neuroptics',
-			'equinox:day:systems',
-			'equinox:night:bp',
-			'equinox:night:chassis',
-			'equinox:night:neuroptics',
-			'equinox:night:systems',
-		]);
+expect(res.partIds.sort()).toEqual([
+	'equinox:bp',
+	'equinox:day:bp',
+	'equinox:day:chassis',
+	'equinox:day:neuroptics',
+	'equinox:day:systems',
+	'equinox:night:bp',
+	'equinox:night:chassis',
+	'equinox:night:neuroptics',
+	'equinox:night:systems',
+]);
 ```
 
 - [ ] **Step 9: Run the full suite**
@@ -499,11 +510,13 @@ git commit -m "feat(data): expand Equinox aspects into individually-trackable le
 ### Task 4: Remove now-dead subDrops rendering
 
 **Files:**
+
 - Modify: `src/lib/panel/FrameCard.svelte:4` (import), `:175-177` (subDrops block)
 - Modify: `src/lib/panel/RegionPanel.svelte:57`
 - Delete: `src/lib/panel/AspectBreakdown.svelte`, `src/lib/panel/AspectBreakdown.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing new. After Task 3 no part carries `subDrops`, so this rendering is dead.
 
 - [ ] **Step 1: Delete the AspectBreakdown component and its test**
@@ -517,7 +530,7 @@ git rm src/lib/panel/AspectBreakdown.svelte src/lib/panel/AspectBreakdown.svelte
 In `src/lib/panel/FrameCard.svelte`, delete the import at line 4:
 
 ```ts
-	import AspectBreakdown from './AspectBreakdown.svelte';
+import AspectBreakdown from './AspectBreakdown.svelte';
 ```
 
 and delete the block at lines 175-177:
@@ -533,7 +546,7 @@ and delete the block at lines 175-177:
 In `src/lib/panel/RegionPanel.svelte`, delete line 57:
 
 ```ts
-			if (part.subDrops) return `${bossName} · guaranteed each kill`;
+if (part.subDrops) return `${bossName} · guaranteed each kill`;
 ```
 
 (The next two lines already fall through to the `[bossName, chance].join(' · ')` return, which now applies to aspect leaves too — leaves will temporarily render `Tyl Regor · 22.56%` until Task 6 gives them the compact chance-only layout.)
@@ -555,11 +568,13 @@ git commit -m "refactor(panel): drop dead subDrops rendering + AspectBreakdown"
 ### Task 5: Extract shared `PartRow.svelte`
 
 **Files:**
+
 - Create: `src/lib/panel/PartRow.svelte`
 - Create: `src/lib/panel/PartRow.svelte.test.ts`
 - Modify: `src/lib/panel/FrameCard.svelte:130-180` (use `PartRow`)
 
 **Interfaces:**
+
 - Produces: `PartRow` component. Props: `{ part: WarframePart; tracker: Tracker; children: Snippet<[boolean]> }`. Renders the interactive `role="checkbox"` wrapper (`data-part`, `data-owned`, keyboard Enter/Space toggle via `tracker.togglePart`, owned styling, the ✓ box) and calls `children(owned)` for the content area. Consumed by FrameCard (Task 5) and AspectGroup (Task 6).
 
 - [ ] **Step 1: Write the failing test**
@@ -672,7 +687,7 @@ Create `src/lib/panel/PartRow.svelte`:
 In `src/lib/panel/FrameCard.svelte`, add to the imports (after line 3):
 
 ```ts
-	import PartRow from './PartRow.svelte';
+import PartRow from './PartRow.svelte';
 ```
 
 Replace the entire part-row `{#each}` body (lines 130-180, from `{#each frame.parts as part (part.id)}` through its closing `{/each}`) with:
@@ -716,10 +731,12 @@ git commit -m "refactor(panel): extract shared PartRow checkbox wrapper"
 ### Task 6: New `AspectGroup.svelte`
 
 **Files:**
+
 - Create: `src/lib/panel/AspectGroup.svelte`
 - Create: `src/lib/panel/AspectGroup.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `PartRow` (Task 5), `formatChance` (`./format`), `Tracker`.
 - Produces: `AspectGroup` component. Props: `{ aspect: 'day' | 'night'; parts: WarframePart[]; tracker: Tracker }`. Renders a collapsible header (`▾`/`▸` caret + `☀`/`☾` glyph + `Day Aspect`/`Night Aspect` + `owned/total` count) over one `PartRow` per leaf; each leaf shows its label (`bp` → `Aspect Blueprint`, else the component name) and right-aligned `formatChance(part.chance)`. Header caret toggles collapse only and `stopPropagation`s; seed collapsed when all leaves already owned.
 
@@ -737,7 +754,13 @@ import type { Warframe, WarframePart } from '$lib/model/types';
 
 const dayParts: WarframePart[] = [
 	{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day', chance: 22.56 },
-	{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'day', chance: 25.81 },
+	{
+		id: 'equinox:day:neuroptics',
+		frameId: 'equinox',
+		slot: 'neuroptics',
+		aspect: 'day',
+		chance: 25.81,
+	},
 	{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'day', chance: 25.81 },
 	{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems', aspect: 'day', chance: 25.81 },
 ];
@@ -898,12 +921,14 @@ git commit -m "feat(panel): collapsible AspectGroup with per-aspect rollup"
 ### Task 7: FrameCard groups aspect parts + bottom note
 
 **Files:**
+
 - Modify: `src/lib/panel/FrameCard.svelte` (imports, `SLOT_LABEL`, render partition, `aspectNote` prop, bottom note)
 - Modify: `src/lib/panel/RegionPanel.svelte` (pass `aspectNote`)
 - Modify: `src/lib/panel/FrameCard.svelte.test.ts`
 - Modify: `src/lib/panel/RegionPanel.svelte.test.ts:83-127` (fixture) and `:495-510` (aspect tests)
 
 **Interfaces:**
+
 - Consumes: `AspectGroup` (Task 6), `PartRow` (Task 5).
 - Produces: FrameCard renders ungrouped parts as `PartRow`s and each aspect side as an `AspectGroup`, preserving `frame.parts` order; adds optional `aspectNote?: string` prop rendered as an info line when the frame has aspect parts; `SLOT_LABEL` renders `bp` as `Aspect Blueprint` when `part.aspect` is set.
 
@@ -921,13 +946,49 @@ const equinox: Warframe = {
 	parts: [
 		{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp', marketCost: 25000 },
 		{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day', chance: 22.56 },
-		{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'day', chance: 25.81 },
-		{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'day', chance: 25.81 },
-		{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems', aspect: 'day', chance: 25.81 },
+		{
+			id: 'equinox:day:neuroptics',
+			frameId: 'equinox',
+			slot: 'neuroptics',
+			aspect: 'day',
+			chance: 25.81,
+		},
+		{
+			id: 'equinox:day:chassis',
+			frameId: 'equinox',
+			slot: 'chassis',
+			aspect: 'day',
+			chance: 25.81,
+		},
+		{
+			id: 'equinox:day:systems',
+			frameId: 'equinox',
+			slot: 'systems',
+			aspect: 'day',
+			chance: 25.81,
+		},
 		{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp', aspect: 'night', chance: 22.56 },
-		{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'night', chance: 25.81 },
-		{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'night', chance: 25.81 },
-		{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems', aspect: 'night', chance: 25.81 },
+		{
+			id: 'equinox:night:neuroptics',
+			frameId: 'equinox',
+			slot: 'neuroptics',
+			aspect: 'night',
+			chance: 25.81,
+		},
+		{
+			id: 'equinox:night:chassis',
+			frameId: 'equinox',
+			slot: 'chassis',
+			aspect: 'night',
+			chance: 25.81,
+		},
+		{
+			id: 'equinox:night:systems',
+			frameId: 'equinox',
+			slot: 'systems',
+			aspect: 'night',
+			chance: 25.81,
+		},
 	],
 };
 
@@ -982,7 +1043,7 @@ In `src/lib/panel/FrameCard.svelte`:
 (a) Add the import (after the `PartRow` import from Task 5):
 
 ```ts
-	import AspectGroup from './AspectGroup.svelte';
+import AspectGroup from './AspectGroup.svelte';
 ```
 
 (b) Add `aspectNote` to the props type/destructure (add to the `$props()` object, after `summary`):
@@ -1000,40 +1061,40 @@ and in the type annotation:
 (c) Change `SLOT_LABEL` usage for the aspect blueprint. Replace the `SLOT_LABEL` const (lines 30-37) so the leaf renderer can special-case it — simplest is a helper below the existing consts:
 
 ```ts
-	function slotLabel(part: WarframePart): string {
-		if (part.slot === 'bp' && part.aspect) return 'Aspect Blueprint';
-		return SLOT_LABEL[part.slot];
-	}
+function slotLabel(part: WarframePart): string {
+	if (part.slot === 'bp' && part.aspect) return 'Aspect Blueprint';
+	return SLOT_LABEL[part.slot];
+}
 ```
 
 (d) Add a derived render list in the `<script>` (after the `pct` derived, ~line 62):
 
 ```ts
-	type Row =
-		| { kind: 'part'; part: WarframePart }
-		| { kind: 'aspect'; aspect: 'day' | 'night'; parts: WarframePart[] };
+type Row =
+	| { kind: 'part'; part: WarframePart }
+	| { kind: 'aspect'; aspect: 'day' | 'night'; parts: WarframePart[] };
 
-	// Partition parts into ungrouped rows and Day/Night aspect groups, preserving
-	// order: the first leaf of an aspect emits the whole group; later leaves of
-	// the same aspect are folded in and skipped.
-	let rows = $derived.by<Row[]>(() => {
-		const out: Row[] = [];
-		const seen = new Set<'day' | 'night'>();
-		for (const p of frame.parts) {
-			if (p.aspect) {
-				if (seen.has(p.aspect)) continue;
-				seen.add(p.aspect);
-				out.push({
-					kind: 'aspect',
-					aspect: p.aspect,
-					parts: frame.parts.filter((q) => q.aspect === p.aspect),
-				});
-			} else {
-				out.push({ kind: 'part', part: p });
-			}
+// Partition parts into ungrouped rows and Day/Night aspect groups, preserving
+// order: the first leaf of an aspect emits the whole group; later leaves of
+// the same aspect are folded in and skipped.
+let rows = $derived.by<Row[]>(() => {
+	const out: Row[] = [];
+	const seen = new Set<'day' | 'night'>();
+	for (const p of frame.parts) {
+		if (p.aspect) {
+			if (seen.has(p.aspect)) continue;
+			seen.add(p.aspect);
+			out.push({
+				kind: 'aspect',
+				aspect: p.aspect,
+				parts: frame.parts.filter((q) => q.aspect === p.aspect),
+			});
+		} else {
+			out.push({ kind: 'part', part: p });
 		}
-		return out;
-	});
+	}
+	return out;
+});
 ```
 
 (e) Replace the `{#each frame.parts ...}` block (the PartRow loop from Task 5) with a loop over `rows`:
@@ -1108,26 +1169,26 @@ and the `warframes` entry's `parts`:
 Then replace the two aspect tests (lines 495-510):
 
 ```ts
-	it('renders Equinox as collapsible Day/Night aspect groups', () => {
-		const tracker = createTracker(equinoxRegion.warframes);
-		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
-		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
-		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
-		expect(document.querySelector('[data-part="equinox:day:bp"]')).toBeInTheDocument();
-	});
-	it('prefixes Equinox aspect group headers with sun/moon glyphs', () => {
-		const tracker = createTracker(equinoxRegion.warframes);
-		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
-		expect(screen.getByText('☀')).toBeInTheDocument();
-		expect(screen.getByText('☾')).toBeInTheDocument();
-	});
-	it('shows the per-kill note naming the boss', () => {
-		const tracker = createTracker(equinoxRegion.warframes);
-		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
-		expect(
-			screen.getByText('Each Tyl Regor kill drops one Day and one Night component.'),
-		).toBeInTheDocument();
-	});
+it('renders Equinox as collapsible Day/Night aspect groups', () => {
+	const tracker = createTracker(equinoxRegion.warframes);
+	render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
+	expect(screen.getByText('Day Aspect')).toBeInTheDocument();
+	expect(screen.getByText('Night Aspect')).toBeInTheDocument();
+	expect(document.querySelector('[data-part="equinox:day:bp"]')).toBeInTheDocument();
+});
+it('prefixes Equinox aspect group headers with sun/moon glyphs', () => {
+	const tracker = createTracker(equinoxRegion.warframes);
+	render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
+	expect(screen.getByText('☀')).toBeInTheDocument();
+	expect(screen.getByText('☾')).toBeInTheDocument();
+});
+it('shows the per-kill note naming the boss', () => {
+	const tracker = createTracker(equinoxRegion.warframes);
+	render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
+	expect(
+		screen.getByText('Each Tyl Regor kill drops one Day and one Night component.'),
+	).toBeInTheDocument();
+});
 ```
 
 - [ ] **Step 6: Validate Svelte components**
@@ -1151,12 +1212,14 @@ git commit -m "feat(panel): render Equinox aspect groups + per-kill note"
 ### Task 8: Remove the retired model surface + final gates
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts` (remove `subDrops`, narrow `Slot`)
 - Modify: `src/lib/panel/format.ts` (remove `aspectBreakdownLines`)
 - Modify: `src/lib/panel/format.test.ts` (remove its tests)
 - Modify: `src/lib/panel/FrameCard.svelte` (drop unused `SLOT_ICON` + aspect entries in `SLOT_LABEL`)
 
 **Interfaces:**
+
 - Consumes: nothing — this task deletes now-unreferenced surface. Verified by full typecheck + suite.
 
 - [ ] **Step 1: Remove `aspectBreakdownLines` and its tests**
@@ -1188,12 +1251,12 @@ In `src/lib/panel/FrameCard.svelte`:
 Remove the `dayaspect`/`nightaspect` entries from `SLOT_LABEL` so it reads:
 
 ```ts
-	const SLOT_LABEL = {
-		bp: 'Blueprint',
-		neuroptics: 'Neuroptics',
-		chassis: 'Chassis',
-		systems: 'Systems',
-	} as const;
+const SLOT_LABEL = {
+	bp: 'Blueprint',
+	neuroptics: 'Neuroptics',
+	chassis: 'Chassis',
+	systems: 'Systems',
+} as const;
 ```
 
 Delete the now-unused `SLOT_ICON` const entirely (the sun/moon glyphs live in `AspectGroup` now; no ungrouped part uses an icon).
@@ -1226,6 +1289,7 @@ git commit -m "refactor(model): retire subDrops + aspect slots after leaf migrat
 ## Self-Review
 
 **Spec coverage:**
+
 - Fully-trackable sub-blueprints replacing single aspect checkboxes → Tasks 1-3 (ids, model, build), Task 7 (UI). ✓
 - Collapsible aspect groups with `n/4` rollup → Task 6. ✓
 - Bottom note "Each Tyl Regor kill drops one Day and one Night component." → Task 7 (via `aspectNote`). ✓

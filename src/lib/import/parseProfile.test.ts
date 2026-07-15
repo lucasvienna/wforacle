@@ -19,7 +19,12 @@ const equinoxParts = [
 	{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis' as never, aspect: 'day' },
 	{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems' as never, aspect: 'day' },
 	{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp' as never, aspect: 'night' },
-	{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics' as never, aspect: 'night' },
+	{
+		id: 'equinox:night:neuroptics',
+		frameId: 'equinox',
+		slot: 'neuroptics' as never,
+		aspect: 'night',
+	},
 	{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis' as never, aspect: 'night' },
 	{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems' as never, aspect: 'night' },
 ];

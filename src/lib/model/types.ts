@@ -1,4 +1,4 @@
-export type Slot = 'bp' | 'neuroptics' | 'chassis' | 'systems' | 'dayaspect' | 'nightaspect';
+export type Slot = 'bp' | 'neuroptics' | 'chassis' | 'systems';
 
 export interface WarframePart {
 	id: string;
@@ -20,11 +20,6 @@ export interface WarframePart {
 	 * assassination drop (quest / key-boss frames — Atlas, Mesa). Mirrors the
 	 * required `OpenWorldFarm.bpSource`. */
 	bpSource?: string;
-	/** Reference-only sub-blueprints of a composite part — the components you
-	 * must farm to build it — that @wfcd/items flattens away. Not individually
-	 * tracked. Only Equinox's Day/Night aspects use this: the aspect's own
-	 * chance is the Aspect Blueprint; these are its Neuroptics/Chassis/Systems. */
-	subDrops?: { label: string; chance: number }[];
 	/** For a composite frame assembled from sub-aspects (only Equinox), the
 	 * aspect this leaf belongs to. Day and Night each contribute an Aspect
 	 * Blueprint plus Neuroptics/Chassis/Systems. Absent on all normal parts. */

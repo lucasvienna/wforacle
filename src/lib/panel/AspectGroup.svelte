@@ -51,7 +51,9 @@
 		<span aria-hidden="true" class="text-wf-muted">{open ? '▾' : '▸'}</span>
 		<span aria-hidden="true" class="text-wf-gold">{HEAD[aspect].glyph}</span>
 		<span class="font-medium">{HEAD[aspect].name}</span>
-		<span class="ml-auto shrink-0 text-xs text-wf-muted">{ownedCount}/{parts.length}</span>
+		<span class="ml-auto shrink-0 text-xs text-wf-muted"
+			>{ownedCount}/{parts.length}</span
+		>
 	</button>
 	{#if open}
 		<div class="mt-1 space-y-1 pl-4">
@@ -59,7 +61,9 @@
 				<PartRow {part} {tracker}>
 					{#snippet children(owned)}
 						<div class="flex items-center gap-2">
-							<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
+							<span
+								class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}"
+							>
 								{LEAF_LABEL[part.slot] ?? part.slot}
 							</span>
 							{#if part.chance != null}
