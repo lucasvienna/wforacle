@@ -32,10 +32,7 @@ test('Equinox aspects track and persist (Uranus, Titania)', async ({ page }) => 
 	// re-select it before re-checking the part.
 	await expect(venus).toBeVisible();
 	await page.locator('svg [data-region="uranus"]').click();
-	await expect(page.locator('[data-part="equinox:day:bp"]')).toHaveAttribute(
-		'data-owned',
-		'true',
-	);
+	await expect(page.locator('[data-part="equinox:day:bp"]')).toHaveAttribute('data-owned', 'true');
 });
 
 test('Mesa and Atlas render with the key-boss hint on Eris', async ({ page }) => {
