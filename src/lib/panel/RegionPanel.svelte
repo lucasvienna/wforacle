@@ -182,6 +182,7 @@
 									defaultExpanded={defaultExpanded(frame.id)}
 									sourceText={(part) =>
 										assassinationSourceText(part, boss.name)}
+									aspectNote={`Each ${boss.name} kill drops one Day and one Night component.`}
 								/>
 							{/each}
 						</div>

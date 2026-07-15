@@ -80,8 +80,8 @@ const multiNodeRegion: Dataset = {
 };
 
 // Equinox-shaped fixture: Uranus region with a Titania Assassination node
-// linking Equinox, whose parts include the widened dayaspect/nightaspect
-// slots (instead of the usual neuroptics/chassis/systems).
+// linking Equinox, whose parts include eight aspect leaves (Day/Night ×
+// {Aspect Blueprint, Neuroptics, Chassis, Systems}) plus the market blueprint.
 const equinoxRegion: Dataset = {
 	regions: [
 		{
@@ -114,9 +114,15 @@ const equinoxRegion: Dataset = {
 			name: 'Equinox',
 			nodeId: 'titania',
 			parts: [
-				{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp' },
-				{ id: 'equinox:dayaspect', frameId: 'equinox', slot: 'dayaspect' },
-				{ id: 'equinox:nightaspect', frameId: 'equinox', slot: 'nightaspect' },
+				{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp', marketCost: 25000 },
+				{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day', chance: 22.56 },
+				{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'day', chance: 25.81 },
+				{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'day', chance: 25.81 },
+				{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems', aspect: 'day', chance: 25.81 },
+				{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp', aspect: 'night', chance: 22.56 },
+				{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'night', chance: 25.81 },
+				{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'night', chance: 25.81 },
+				{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems', aspect: 'night', chance: 25.81 },
 			],
 		},
 	],
@@ -492,21 +498,25 @@ describe('RegionPanel', () => {
 			'/guides/alloyplate',
 		);
 	});
-	it('renders Equinox day/night aspect parts (widened SLOT_LABEL, no fixed 4-row assumption)', () => {
+	it('renders Equinox as collapsible Day/Night aspect groups', () => {
 		const tracker = createTracker(equinoxRegion.warframes);
 		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
 		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
 		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
-		expect(document.querySelector('[data-part="equinox:dayaspect"]')).toBeInTheDocument();
+		expect(document.querySelector('[data-part="equinox:day:bp"]')).toBeInTheDocument();
 	});
-	it('prefixes Equinox aspect labels with sun/moon glyphs', () => {
+	it('prefixes Equinox aspect group headers with sun/moon glyphs', () => {
 		const tracker = createTracker(equinoxRegion.warframes);
 		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
 		expect(screen.getByText('☀')).toBeInTheDocument();
 		expect(screen.getByText('☾')).toBeInTheDocument();
-		expect(document.querySelector('[data-part="equinox:dayaspect"]')).toBeInTheDocument();
-		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
-		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
+	});
+	it('shows the per-kill note naming the boss', () => {
+		const tracker = createTracker(equinoxRegion.warframes);
+		render(RegionPanel, { dataset: equinoxRegion, regionId: 'uranus', tracker });
+		expect(
+			screen.getByText('Each Tyl Regor kill drops one Day and one Night component.'),
+		).toBeInTheDocument();
 	});
 	it('lays out a frames band alongside the resource rail', () => {
 		const tracker = createTracker(seed.warframes);

@@ -114,3 +114,51 @@ describe('FrameCard', () => {
 		expect(group).toContainElement(screen.getByRole('checkbox', { name: /Chassis/ }));
 	});
 });
+
+const equinox: Warframe = {
+	id: 'equinox',
+	name: 'Equinox',
+	nodeId: 'titania',
+	parts: [
+		{ id: 'equinox:bp', frameId: 'equinox', slot: 'bp', marketCost: 25000 },
+		{ id: 'equinox:day:bp', frameId: 'equinox', slot: 'bp', aspect: 'day', chance: 22.56 },
+		{ id: 'equinox:day:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'day', chance: 25.81 },
+		{ id: 'equinox:day:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'day', chance: 25.81 },
+		{ id: 'equinox:day:systems', frameId: 'equinox', slot: 'systems', aspect: 'day', chance: 25.81 },
+		{ id: 'equinox:night:bp', frameId: 'equinox', slot: 'bp', aspect: 'night', chance: 22.56 },
+		{ id: 'equinox:night:neuroptics', frameId: 'equinox', slot: 'neuroptics', aspect: 'night', chance: 25.81 },
+		{ id: 'equinox:night:chassis', frameId: 'equinox', slot: 'chassis', aspect: 'night', chance: 25.81 },
+		{ id: 'equinox:night:systems', frameId: 'equinox', slot: 'systems', aspect: 'night', chance: 25.81 },
+	],
+};
+
+function equinoxProps(tracker = createTracker([equinox]), overrides = {}) {
+	return {
+		frame: equinox,
+		tracker,
+		subLine: 'Titania · Boss: Tyl Regor',
+		faction: 'Grineer',
+		kindLabel: 'Assassination',
+		sourceText: () => 'Market (25,000cr)',
+		aspectNote: 'Each Tyl Regor kill drops one Day and one Night component.',
+		...overrides,
+	};
+}
+
+describe('FrameCard (Equinox aspect groups)', () => {
+	it('renders a Day and Night aspect group plus the market blueprint', () => {
+		render(FrameCard, equinoxProps());
+		expect(screen.getByText('Day Aspect')).toBeInTheDocument();
+		expect(screen.getByText('Night Aspect')).toBeInTheDocument();
+		// Day/Night BP leaves are labelled "Aspect Blueprint", not "Blueprint".
+		expect(screen.getAllByText('Aspect Blueprint').length).toBe(2);
+		expect(document.querySelector('[data-part="equinox:day:systems"]')).toBeInTheDocument();
+	});
+
+	it('shows the per-kill bottom note when the frame has aspects', () => {
+		render(FrameCard, equinoxProps());
+		expect(
+			screen.getByText('Each Tyl Regor kill drops one Day and one Night component.'),
+		).toBeInTheDocument();
+	});
+});
