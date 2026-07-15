@@ -11,7 +11,7 @@ Equinox is the one star-chart frame our `@wfcd/items`-sourced data misrepresents
 1. **Flattened components.** `@wfcd` models Equinox as `Blueprint` + `Day Aspect` + `Night Aspect`, collapsing each aspect and hiding that each is itself built from an **Aspect Blueprint + Neuroptics + Chassis + Systems**. The tracker shows two aspect rows with no indication of the real sub-build.
 2. **Stale mechanic.** `@wfcd` still encodes the pre-Update-42 single-drop **Rotation A/B** model. **Update 42: The Shadowgrapher (2026)** changed Tyl Regor: defeating him now **drops two guaranteed component blueprints per kill — one from the Day side, one from the Night side** — the rotation gating is gone.
 
-The per-component *rates* are still current (each side is a 100% table: Aspect 22.56% + Neuroptics/Chassis/Systems 25.81% each). Update 42 only removed the gating, so the numbers stay valid; only "Rotation A/B" is obsolete.
+The per-component _rates_ are still current (each side is a 100% table: Aspect 22.56% + Neuroptics/Chassis/Systems 25.81% each). Update 42 only removed the gating, so the numbers stay valid; only "Rotation A/B" is obsolete.
 
 ## Decisions (from brainstorming)
 
@@ -39,25 +39,25 @@ No `rotation` is set on Equinox (Update 42 removed the gating).
 // (2026) Tyl Regor drops one guaranteed component from each side per kill; the
 // old Rotation A/B gating is gone but these within-side weights are unchanged.
 export const ASSASSINATION_PART_DETAIL: Record<
-  string,
-  Partial<Record<Slot, { subDrops: { label: string; chance: number }[] }>>
+	string,
+	Partial<Record<Slot, { subDrops: { label: string; chance: number }[] }>>
 > = {
-  equinox: {
-    dayaspect: {
-      subDrops: [
-        { label: 'Neuroptics', chance: 25.81 },
-        { label: 'Chassis', chance: 25.81 },
-        { label: 'Systems', chance: 25.81 },
-      ],
-    },
-    nightaspect: {
-      subDrops: [
-        { label: 'Neuroptics', chance: 25.81 },
-        { label: 'Chassis', chance: 25.81 },
-        { label: 'Systems', chance: 25.81 },
-      ],
-    },
-  },
+	equinox: {
+		dayaspect: {
+			subDrops: [
+				{ label: 'Neuroptics', chance: 25.81 },
+				{ label: 'Chassis', chance: 25.81 },
+				{ label: 'Systems', chance: 25.81 },
+			],
+		},
+		nightaspect: {
+			subDrops: [
+				{ label: 'Neuroptics', chance: 25.81 },
+				{ label: 'Chassis', chance: 25.81 },
+				{ label: 'Systems', chance: 25.81 },
+			],
+		},
+	},
 };
 ```
 
@@ -114,9 +114,9 @@ Equinox
 - **Build:** Equinox `dayaspect`/`nightaspect` carry the three 25.81% `subDrops`
   and keep `chance: 22.56`; a normal frame (Rhino) has no `subDrops`.
 - **RegionPanel:** an aspect (composite) row renders `Tyl Regor · guaranteed each
-  kill` with no bare `%`; a normal component row still renders `{boss} · {n}%`.
+kill` with no bare `%`; a normal component row still renders `{boss} · {n}%`.
 - **AspectBreakdown:** renders `Aspect 22.56% · Neuroptics/Chassis/Systems
-  25.81%` (equal chances grouped); default collapsed when `owned`, expanded when
+25.81%` (equal chances grouped); default collapsed when `owned`, expanded when
   not; caret toggles; a part without `subDrops` renders nothing.
 - **Dataset:** regenerate `static/data/dataset.json`; spot-check Equinox aspects
   carry `subDrops`. Completion stays at 3 parts.

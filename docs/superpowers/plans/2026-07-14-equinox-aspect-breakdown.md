@@ -21,12 +21,14 @@
 ### Task 1: Data model + curated `subDrops` + build wiring
 
 **Files:**
+
 - Modify: `src/lib/model/types.ts` (`WarframePart` interface)
 - Modify: `scripts/data/curated.ts` (append new export)
 - Modify: `scripts/data/build.ts` (import; attach `subDrops` in `buildFrames`)
 - Test: `scripts/data/build.test.ts`
 
 **Interfaces:**
+
 - Consumes: existing `buildFrames` component loop, `partId`, `ASSASSINATION_BP_SOURCE` import.
 - Produces:
   - `WarframePart.subDrops?: { label: string; chance: number }[]`.
@@ -102,23 +104,23 @@ import {
 In `scripts/data/build.test.ts`, add inside the top-level `describe('buildFrames', ...)` block (which builds `frames` from the shared fixture — the fixture already contains Equinox, whose aspects drop at Uranus/Titania). Place it after the Equinox-related assertions if present, else at the end of that block:
 
 ```ts
-	it('attaches curated subDrops to Equinox aspects and nothing to normal parts', () => {
-		const equinox = frames.find((f) => f.id === 'equinox')!;
-		const day = equinox.parts.find((p) => p.slot === 'dayaspect')!;
-		expect(day.chance).toBe(22.56); // Aspect Blueprint chance, unchanged
-		expect(day.subDrops).toEqual([
-			{ label: 'Neuroptics', chance: 25.81 },
-			{ label: 'Chassis', chance: 25.81 },
-			{ label: 'Systems', chance: 25.81 },
-		]);
-		const night = equinox.parts.find((p) => p.slot === 'nightaspect')!;
-		expect(night.subDrops).toHaveLength(3);
-		// Guardrail: no rotation leaks onto the aspect.
-		expect(day.rotation).toBeUndefined();
-		// A normal frame's parts carry no subDrops.
-		const rhino = frames.find((f) => f.id === 'rhino')!;
-		expect(rhino.parts.every((p) => p.subDrops === undefined)).toBe(true);
-	});
+it('attaches curated subDrops to Equinox aspects and nothing to normal parts', () => {
+	const equinox = frames.find((f) => f.id === 'equinox')!;
+	const day = equinox.parts.find((p) => p.slot === 'dayaspect')!;
+	expect(day.chance).toBe(22.56); // Aspect Blueprint chance, unchanged
+	expect(day.subDrops).toEqual([
+		{ label: 'Neuroptics', chance: 25.81 },
+		{ label: 'Chassis', chance: 25.81 },
+		{ label: 'Systems', chance: 25.81 },
+	]);
+	const night = equinox.parts.find((p) => p.slot === 'nightaspect')!;
+	expect(night.subDrops).toHaveLength(3);
+	// Guardrail: no rotation leaks onto the aspect.
+	expect(day.rotation).toBeUndefined();
+	// A normal frame's parts carry no subDrops.
+	const rhino = frames.find((f) => f.id === 'rhino')!;
+	expect(rhino.parts.every((p) => p.subDrops === undefined)).toBe(true);
+});
 ```
 
 If the shared `frames` in this describe is not built from a fixture containing Equinox, instead build one inline like the existing tests: an Equinox `RawWarframe` with `Day Aspect`/`Night Aspect` components dropping at `Uranus/Titania (Assassination)`, passed through `buildFrames(wf, nodes)` where `nodes` includes Titania. (Check the file's existing Equinox test to reuse its fixture.)
@@ -133,17 +135,17 @@ Expected: FAIL — `day.subDrops` is `undefined` (field not yet attached).
 In `scripts/data/build.ts`, inside `buildFrames`, find the non-bp branch of the `parts` construction (the `return { id: partId(frameId, slot), frameId, slot, dropSourceNodeId: node!.id, chance: chanceBySlot.get(slot) };`). Replace it so it also attaches curated `subDrops`:
 
 ```ts
-		const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => {
-			if (slot === 'bp') return buildBpPart(frameId, bpDrop, wf.bpCost);
-			return {
-				id: partId(frameId, slot),
-				frameId,
-				slot,
-				dropSourceNodeId: node!.id,
-				chance: chanceBySlot.get(slot),
-				subDrops: ASSASSINATION_PART_DETAIL[frameId]?.[slot]?.subDrops,
-			};
-		});
+const parts: WarframePart[] = ORDER.filter((slot) => present.has(slot)).map((slot) => {
+	if (slot === 'bp') return buildBpPart(frameId, bpDrop, wf.bpCost);
+	return {
+		id: partId(frameId, slot),
+		frameId,
+		slot,
+		dropSourceNodeId: node!.id,
+		chance: chanceBySlot.get(slot),
+		subDrops: ASSASSINATION_PART_DETAIL[frameId]?.[slot]?.subDrops,
+	};
+});
 ```
 
 (The `bp` path via `buildBpPart` is unchanged. `subDrops` is `undefined` for every non-curated part, so it is simply omitted from those objects.)
@@ -165,11 +167,13 @@ git commit -m "feat(data): curate Equinox aspect sub-blueprints (subDrops)"
 ### Task 2: Shared formatting helpers (`format.ts`)
 
 **Files:**
+
 - Create: `src/lib/panel/format.ts`
 - Modify: `src/lib/panel/RegionPanel.svelte` (import `formatChance`, remove local copy)
 - Test: `src/lib/panel/format.test.ts`
 
 **Interfaces:**
+
 - Consumes: `WarframePart` shape (`chance`, `subDrops`).
 - Produces:
   - `formatChance(chance: number): string` — moved out of `RegionPanel`.
@@ -204,9 +208,7 @@ describe('aspectBreakdownText', () => {
 				{ label: 'Systems', chance: 25.81 },
 			],
 		};
-		expect(aspectBreakdownText(part)).toBe(
-			'Aspect 22.56% · Neuroptics/Chassis/Systems 25.81%',
-		);
+		expect(aspectBreakdownText(part)).toBe('Aspect 22.56% · Neuroptics/Chassis/Systems 25.81%');
 	});
 	it('keeps differing chances as separate segments', () => {
 		const part = {
@@ -267,10 +269,10 @@ In `src/lib/panel/RegionPanel.svelte`:
 1. Add an import (alongside the existing `$lib` imports in the `<script>`):
 
 ```ts
-	import { formatChance } from './format';
+import { formatChance } from './format';
 ```
 
-2. Delete the local `formatChance` function (the `function formatChance(chance: number): string { return \`${Number(chance.toFixed(2))}%\`; }` block added on the stacked branch, together with its leading comment). `owSourceText` and `assassinationSourceText` keep calling `formatChance(...)` — now resolved via the import.
+2. Delete the local `formatChance` function (the `function formatChance(chance: number): string { return \`${Number(chance.toFixed(2))}%\`; }`block added on the stacked branch, together with its leading comment).`owSourceText`and`assassinationSourceText`keep calling`formatChance(...)` — now resolved via the import.
 
 - [ ] **Step 6: Validate the component + run the panel tests**
 
@@ -290,6 +292,7 @@ git commit -m "refactor(panel): extract formatChance + add aspectBreakdownText h
 ### Task 3: `AspectBreakdown` component + panel wiring
 
 **Files:**
+
 - Create: `src/lib/panel/AspectBreakdown.svelte`
 - Create: `src/lib/panel/AspectBreakdown.svelte.test.ts`
 - Modify: `src/lib/panel/RegionPanel.svelte` (`assassinationSourceText` composite branch)
@@ -297,6 +300,7 @@ git commit -m "refactor(panel): extract formatChance + add aspectBreakdownText h
 - Test: `src/lib/panel/RegionPanel.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `aspectBreakdownLines(part): string[]` (Task 2 — returns one string per line: `["Aspect 22.56%", "Neuroptics 25.81%", "Chassis 25.81%", "Systems 25.81%"]`), `WarframePart.subDrops` (Task 1).
 - Produces: `AspectBreakdown` component (`props: { part: WarframePart; owned: boolean }`).
 
@@ -508,9 +512,9 @@ Expected: FAIL — the aspect row shows `Tyl Regor · 22.56%` and no breakdown (
 In `src/lib/panel/RegionPanel.svelte`, in `assassinationSourceText`, add a composite check immediately before the `const chance = …` line (after the `bp` block):
 
 ```ts
-		if (part.subDrops) return `${bossName} · guaranteed each kill`;
-		const chance = part.chance != null ? formatChance(part.chance) : undefined;
-		return [bossName, chance].filter(Boolean).join(' · ');
+if (part.subDrops) return `${bossName} · guaranteed each kill`;
+const chance = part.chance != null ? formatChance(part.chance) : undefined;
+return [bossName, chance].filter(Boolean).join(' · ');
 ```
 
 - [ ] **Step 8: Render AspectBreakdown in FrameCard**
@@ -520,7 +524,7 @@ In `src/lib/panel/FrameCard.svelte`:
 1. Add the import in `<script>`:
 
 ```ts
-	import AspectBreakdown from './AspectBreakdown.svelte';
+import AspectBreakdown from './AspectBreakdown.svelte';
 ```
 
 2. In the part-row markup, immediately after the source line
@@ -557,9 +561,11 @@ git commit -m "feat(panel): collapsible Equinox aspect breakdown + guaranteed-pe
 ### Task 4: Regenerate dataset + full verification
 
 **Files:**
+
 - Modify (generated): `static/data/dataset.json`
 
 **Interfaces:**
+
 - Consumes: the updated `buildFrames` / `curated.ts` (Task 1).
 - Produces: rebuilt `dataset.json` where Equinox's aspects carry `subDrops`.
 
@@ -571,9 +577,11 @@ Expected: writes `static/data/dataset.json`; no errors.
 - [ ] **Step 2: Spot-check Equinox**
 
 Run:
+
 ```bash
 node -e "const d=require('./static/data/dataset.json').data; const e=d.warframes.find(w=>w.id==='equinox'); for (const s of ['dayaspect','nightaspect']){const p=e.parts.find(x=>x.slot===s); console.log(s, 'chance='+p.chance, 'rotation='+p.rotation, 'subDrops='+JSON.stringify(p.subDrops));}"
 ```
+
 Expected: each aspect has `chance=22.56`, `rotation=undefined`, and `subDrops` = three `{label, chance:25.81}` entries (Neuroptics/Chassis/Systems).
 
 - [ ] **Step 3: Full unit suite**
