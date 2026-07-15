@@ -12,6 +12,7 @@ import { PLANETS, KEY_BOSS_SOLNODES } from './curated';
 import { QUESTS, SPECIAL_REGIONS } from './special';
 import { OPEN_WORLD_SOLNODES, OPEN_WORLD_FARMS } from './openworld';
 import { slugify } from './parse';
+import { partId } from '../../src/lib/model/completion';
 
 export type RawResource = { name: string; imageName?: string };
 
@@ -105,7 +106,8 @@ export function validateDataset(ds: Dataset): string[] {
 	for (const f of ds.warframes) {
 		if (f.nodeId && !nodeIds.has(f.nodeId))
 			problems.push(`frame ${f.id} → missing node ${f.nodeId}`);
-		for (const p of f.parts) if (p.id !== `${f.id}:${p.slot}`) problems.push(`bad part id ${p.id}`);
+		for (const p of f.parts)
+			if (p.id !== partId(f.id, p.slot, p.aspect)) problems.push(`bad part id ${p.id}`);
 	}
 	for (const r of ds.regions) {
 		for (const rid of r.resourceIds)

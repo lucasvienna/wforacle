@@ -25,6 +25,10 @@ export interface WarframePart {
 	 * tracked. Only Equinox's Day/Night aspects use this: the aspect's own
 	 * chance is the Aspect Blueprint; these are its Neuroptics/Chassis/Systems. */
 	subDrops?: { label: string; chance: number }[];
+	/** For a composite frame assembled from sub-aspects (only Equinox), the
+	 * aspect this leaf belongs to. Day and Night each contribute an Aspect
+	 * Blueprint plus Neuroptics/Chassis/Systems. Absent on all normal parts. */
+	aspect?: 'day' | 'night';
 }
 
 export interface Warframe {
