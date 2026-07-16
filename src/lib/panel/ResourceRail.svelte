@@ -8,8 +8,10 @@
 </script>
 
 <section class="lg:sticky lg:top-4" data-resource-rail>
-	<h2 class="text-lg font-semibold text-wf-gold">Resources</h2>
-	<p class="mt-0.5 mb-4 text-xs text-wf-muted">
+	<!-- Mirrors the left column's header rhythm (h2 mb-4, then a text-xs
+	     label line with mb-3) so the first card tops align across columns. -->
+	<h2 class="mb-4 text-lg font-semibold text-wf-gold">Resources</h2>
+	<p class="mb-3 text-xs text-wf-muted">
 		Informational · best farm spots badged by game phase
 	</p>
 	{#if resources.length > 0}
