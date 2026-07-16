@@ -13,7 +13,9 @@ set -e
 mkdir -p static/frames
 U="wforacle"
 B="https://wiki.warframe.com/images"
-dl() { curl -sL -A "$U" -o "/tmp/glyph-$1" "$B/$2" && convert "/tmp/glyph-$1" -resize 96x96 -strip "static/frames/$1" && echo "ok $1"; }
+T=$(mktemp -d)
+trap 'rm -rf "$T"' EXIT
+dl() { curl -fsSL -A "$U" -o "$T/$1" "$B/$2" && convert "$T/$1" -resize 96x96 -strip "static/frames/$1" && echo "ok $1"; }
 
 dl atlas.webp AtlasGlyph-Dark.png
 dl ember.webp EmberGlyph-Dark.png
