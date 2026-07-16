@@ -2,11 +2,14 @@
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { onMount } from 'svelte';
-	import { checkForUpdate, reloadOnUpdate } from '$lib/sw/update';
+	import { checkForUpdate, onUpdateAvailable } from '$lib/sw/update';
+	import UpdateToast from '$lib/sw/UpdateToast.svelte';
 
 	let { children } = $props();
 
-	onMount(reloadOnUpdate);
+	let updateAvailable = $state(false);
+
+	onMount(() => onUpdateAvailable(() => (updateAvailable = true)));
 
 	$effect(() => {
 		document.addEventListener('visibilitychange', checkForUpdate);
@@ -20,3 +23,10 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 {@render children()}
+
+{#if updateAvailable}
+	<UpdateToast
+		onrefresh={() => location.reload()}
+		ondismiss={() => (updateAvailable = false)}
+	/>
+{/if}

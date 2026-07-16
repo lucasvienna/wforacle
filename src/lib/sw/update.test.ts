@@ -20,7 +20,7 @@ function stubServiceWorker({
 	return container;
 }
 
-// The module keeps `reloaded`/`lastCheck` at module level, so every test
+// The module keeps `notified`/`lastCheck` at module level, so every test
 // re-imports a fresh copy. Fake timers must be installed first: `lastCheck`
 // captures Date.now() at import time.
 async function importUpdate() {
@@ -37,47 +37,47 @@ afterEach(() => {
 	Reflect.deleteProperty(navigator, 'serviceWorker');
 });
 
-describe('reloadOnUpdate', () => {
+describe('onUpdateAvailable', () => {
 	it('is a no-op when the browser has no service worker support', async () => {
-		const { reloadOnUpdate } = await importUpdate();
-		expect(reloadOnUpdate(vi.fn())).toBeUndefined();
+		const { onUpdateAvailable } = await importUpdate();
+		expect(onUpdateAvailable(vi.fn())).toBeUndefined();
 	});
 
 	it('does not listen on a first-ever visit (no controller yet)', async () => {
 		const container = stubServiceWorker({ controller: null });
-		const { reloadOnUpdate } = await importUpdate();
-		const doReload = vi.fn();
-		expect(reloadOnUpdate(doReload)).toBeUndefined();
+		const { onUpdateAvailable } = await importUpdate();
+		const onUpdate = vi.fn();
+		expect(onUpdateAvailable(onUpdate)).toBeUndefined();
 		expect(container.addEventListener).not.toHaveBeenCalled();
 	});
 
-	it('reloads when a new worker takes control of an already-controlled page', async () => {
+	it('notifies when a new worker takes control of an already-controlled page', async () => {
 		const container = stubServiceWorker();
-		const { reloadOnUpdate } = await importUpdate();
-		const doReload = vi.fn();
-		reloadOnUpdate(doReload);
+		const { onUpdateAvailable } = await importUpdate();
+		const onUpdate = vi.fn();
+		onUpdateAvailable(onUpdate);
 		container.fireControllerChange();
-		expect(doReload).toHaveBeenCalledOnce();
+		expect(onUpdate).toHaveBeenCalledOnce();
 	});
 
-	it('reloads at most once even if control changes again', async () => {
+	it('notifies at most once even if control changes again', async () => {
 		const container = stubServiceWorker();
-		const { reloadOnUpdate } = await importUpdate();
-		const doReload = vi.fn();
-		reloadOnUpdate(doReload);
+		const { onUpdateAvailable } = await importUpdate();
+		const onUpdate = vi.fn();
+		onUpdateAvailable(onUpdate);
 		container.fireControllerChange();
 		container.fireControllerChange();
-		expect(doReload).toHaveBeenCalledOnce();
+		expect(onUpdate).toHaveBeenCalledOnce();
 	});
 
 	it('stops listening after its cleanup runs', async () => {
 		const container = stubServiceWorker();
-		const { reloadOnUpdate } = await importUpdate();
-		const doReload = vi.fn();
-		const cleanup = reloadOnUpdate(doReload);
+		const { onUpdateAvailable } = await importUpdate();
+		const onUpdate = vi.fn();
+		const cleanup = onUpdateAvailable(onUpdate);
 		cleanup?.();
 		container.fireControllerChange();
-		expect(doReload).not.toHaveBeenCalled();
+		expect(onUpdate).not.toHaveBeenCalled();
 	});
 });
 
@@ -87,10 +87,10 @@ describe('checkForUpdate', () => {
 		await expect(checkForUpdate()).resolves.toBeUndefined();
 	});
 
-	it('skips the check inside the throttle window after load', async () => {
+	it('skips the check inside the two-minute throttle window after load', async () => {
 		const container = stubServiceWorker();
 		const { checkForUpdate } = await importUpdate();
-		vi.advanceTimersByTime(4 * 60 * 1000);
+		vi.advanceTimersByTime(1 * 60 * 1000);
 		await checkForUpdate();
 		expect(container.getRegistration).not.toHaveBeenCalled();
 	});
@@ -99,7 +99,7 @@ describe('checkForUpdate', () => {
 		const registration = { update: vi.fn(async () => {}) };
 		stubServiceWorker({ registration });
 		const { checkForUpdate } = await importUpdate();
-		vi.advanceTimersByTime(6 * 60 * 1000);
+		vi.advanceTimersByTime(3 * 60 * 1000);
 		await checkForUpdate();
 		expect(registration.update).toHaveBeenCalledOnce();
 	});
@@ -107,7 +107,7 @@ describe('checkForUpdate', () => {
 	it('resolves quietly when no registration exists (e.g. dev mode)', async () => {
 		stubServiceWorker({ registration: undefined });
 		const { checkForUpdate } = await importUpdate();
-		vi.advanceTimersByTime(6 * 60 * 1000);
+		vi.advanceTimersByTime(3 * 60 * 1000);
 		await expect(checkForUpdate()).resolves.toBeUndefined();
 	});
 
@@ -119,7 +119,7 @@ describe('checkForUpdate', () => {
 		const registration = { update: vi.fn(async () => Promise.reject(new Error('offline'))) };
 		stubServiceWorker({ registration });
 		const { checkForUpdate } = await importUpdate();
-		vi.advanceTimersByTime(6 * 60 * 1000);
+		vi.advanceTimersByTime(3 * 60 * 1000);
 		await expect(checkForUpdate()).resolves.toBeUndefined();
 		expect(warn).toHaveBeenCalledOnce();
 	});
@@ -128,7 +128,7 @@ describe('checkForUpdate', () => {
 		const registration = { update: vi.fn(async () => {}) };
 		stubServiceWorker({ registration });
 		const { checkForUpdate } = await importUpdate();
-		vi.advanceTimersByTime(6 * 60 * 1000);
+		vi.advanceTimersByTime(3 * 60 * 1000);
 		await checkForUpdate();
 		// A burst of visibility flips right after a check must not spam
 		// registration.update() — the previous check re-set the clock.
