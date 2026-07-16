@@ -111,6 +111,19 @@ describe('checkForUpdate', () => {
 		await expect(checkForUpdate()).resolves.toBeUndefined();
 	});
 
+	it('contains update() rejections so fire-and-forget callers never see them', async () => {
+		// checkForUpdate is used directly as an event listener / interval
+		// callback; update() rejects while offline, and that must not become
+		// an unhandled promise rejection.
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const registration = { update: vi.fn(async () => Promise.reject(new Error('offline'))) };
+		stubServiceWorker({ registration });
+		const { checkForUpdate } = await importUpdate();
+		vi.advanceTimersByTime(6 * 60 * 1000);
+		await expect(checkForUpdate()).resolves.toBeUndefined();
+		expect(warn).toHaveBeenCalledOnce();
+	});
+
 	it('re-arms the throttle after a successful check', async () => {
 		const registration = { update: vi.fn(async () => {}) };
 		stubServiceWorker({ registration });

@@ -19,8 +19,13 @@ export async function checkForUpdate() {
 	if (!('serviceWorker' in navigator)) return;
 	const now = Date.now();
 	if (now - lastCheck < 1000 * 60 * 5) return;
-	const sw = await navigator.serviceWorker.getRegistration();
-	if (sw === undefined) return;
-	lastCheck = now;
-	return sw.update();
+	try {
+		const sw = await navigator.serviceWorker.getRegistration();
+		if (sw === undefined) return;
+		lastCheck = now;
+		await sw.update();
+	} catch (err) {
+		// Ignore update errors (e.g. offline/race conditions) so callers don't get unhandled rejections.
+		console.warn('SW update check failed:', (err as Error).toString());
+	}
 }
