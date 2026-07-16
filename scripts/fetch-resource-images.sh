@@ -11,7 +11,9 @@ set -e
 mkdir -p static/resources
 U="wforacle"
 B="https://cdn.warframestat.us/img"
-dl() { curl -sL -A "$U" -o "/tmp/res-$1" "$B/$2" && convert "/tmp/res-$1" -resize 64x64 -strip "static/resources/$1" && echo "ok $1"; }
+T=$(mktemp -d)
+trap 'rm -rf "$T"' EXIT
+dl() { curl -fsSL -A "$U" -o "$T/$1" "$B/$2" && convert "$T/$1" -resize 64x64 -strip "static/resources/$1" && echo "ok $1"; }
 
 dl orokincell.webp ComponentCell.png
 dl neurodes.webp ComponentNeurode.png
