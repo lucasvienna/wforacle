@@ -1,24 +1,37 @@
-let reloaded = false;
+// Deploy checks are cheap (conditional GET of service-worker.js, a 304 with
+// no body after the first fetch), so a short window just narrows how long a
+// tab stays unaware of a new build.
+const CHECK_THROTTLE_MS = 1000 * 60 * 2;
+
+let notified = false;
 let lastCheck = Date.now();
 
-// `doReload` is injectable because jsdom (and real browsers) make
-// `location.reload` unforgeable — tests can't spy on it directly.
-export function reloadOnUpdate(doReload: () => void = () => location.reload()) {
+/**
+ * Calls `onUpdate` (at most once) when a new service worker takes control of
+ * an already-controlled page — i.e. a fresh deploy just activated. The page
+ * decides how to react (we show a toast; reloading stays the user's choice).
+ *
+ * No-op on pages the SW doesn't control yet: a first-ever visit fires
+ * controllerchange when the initial worker claims the page, and announcing
+ * "new version available" to a page that already is the newest version
+ * would be wrong.
+ */
+export function onUpdateAvailable(onUpdate: () => void) {
 	if (!('serviceWorker' in navigator)) return;
 	if (!navigator.serviceWorker.controller) return;
-	const reload = () => {
-		if (reloaded) return;
-		reloaded = true;
-		doReload();
+	const notify = () => {
+		if (notified) return;
+		notified = true;
+		onUpdate();
 	};
-	navigator.serviceWorker.addEventListener('controllerchange', reload);
-	return () => navigator.serviceWorker.removeEventListener('controllerchange', reload);
+	navigator.serviceWorker.addEventListener('controllerchange', notify);
+	return () => navigator.serviceWorker.removeEventListener('controllerchange', notify);
 }
 
 export async function checkForUpdate() {
 	if (!('serviceWorker' in navigator)) return;
 	const now = Date.now();
-	if (now - lastCheck < 1000 * 60 * 5) return;
+	if (now - lastCheck < CHECK_THROTTLE_MS) return;
 	try {
 		const sw = await navigator.serviceWorker.getRegistration();
 		if (sw === undefined) return;
