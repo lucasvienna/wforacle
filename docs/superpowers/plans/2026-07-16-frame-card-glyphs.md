@@ -24,10 +24,12 @@
 ### Task 1: Fetch script + committed glyph assets
 
 **Files:**
+
 - Create: `scripts/fetch-frame-glyphs.sh`
 - Create (generated): `static/frames/*.webp` (23 files)
 
 **Interfaces:**
+
 - Produces: `static/frames/<frameId>.webp` for every frame id in `static/data/dataset.json` (`atlas`, `ember`, `equinox`, `excalibur`, `frost`, `hydroid`, `loki`, `mag`, `mesa`, `nekros`, `nova`, `rhino`, `saryn`, `trinity`, `valkyr`, `wisp`, `gara`, `revenant`, `caliban`, `garuda`, `hildryn`, `xaku`, `qorvex`). Task 2's component resolves `asset('/frames/${frame.id}.webp')` against these.
 
 No unit test — this is an asset-generation task; verification is the file count + format check below.
@@ -101,10 +103,12 @@ git commit -m "feat(assets): fetch Dark frame glyphs from the wiki"
 ### Task 2: FrameCard renders the glyph with letter fallback
 
 **Files:**
+
 - Modify: `src/lib/panel/FrameCard.svelte` (script block + header tile, currently lines 100–105)
 - Test: `src/lib/panel/FrameCard.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: `static/frames/<frameId>.webp` from Task 1; `asset` from `$app/paths` (already used by `ResourceRail.svelte`, works in vitest without mocking).
 - Produces: no new exports — visual change inside `FrameCard` only.
 
@@ -196,9 +200,11 @@ git commit -m "feat(panel): show Dark frame glyphs on drop cards, letter fallbac
 ### Task 3: Full verification + format/lint
 
 **Files:**
+
 - Modify: none expected (format/lint may touch the two files from Task 2).
 
 **Interfaces:**
+
 - Consumes: everything above.
 - Produces: a branch ready for PR.
 
