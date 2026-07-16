@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Warframe, WarframePart } from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
+	import { asset } from '$app/paths';
 	import PartRow from './PartRow.svelte';
 	import AspectGroup from './AspectGroup.svelte';
 
@@ -51,6 +52,9 @@
 	// state per visit comes from region-prefixed {#each} keys in RegionPanel.
 	// svelte-ignore state_referenced_locally
 	let expanded = $state(defaultExpanded);
+	// Wiki glyphs are committed to static/frames/<id>.webp; if one is missing
+	// or fails to load, fall back to the initial-letter tile.
+	let iconFailed = $state(false);
 	let count = $derived(tracker.frameCount(frame.id));
 	let done = $derived(count.total > 0 && count.owned === count.total);
 	let pct = $derived(
@@ -98,10 +102,20 @@
 		onclick={() => (expanded = !expanded)}
 	>
 		<div
-			class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-wf-edge bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
+			class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-wf-edge bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold text-slate-300"
 			aria-hidden="true"
 		>
-			{frame.name[0]}
+			{#if iconFailed}
+				{frame.name[0]}
+			{:else}
+				<img
+					src={asset(`/frames/${frame.id}.webp`)}
+					alt=""
+					loading="lazy"
+					class="h-full w-full object-cover"
+					onerror={() => (iconFailed = true)}
+				/>
+			{/if}
 		</div>
 		<div class="min-w-0 flex-1">
 			<div class="flex items-center gap-2">

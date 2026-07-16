@@ -101,6 +101,23 @@ describe('FrameCard', () => {
 		expect(document.querySelector('[data-key]')).toBeInTheDocument();
 	});
 
+	it('renders the frame glyph in the header tile', () => {
+		render(FrameCard, props(undefined, { defaultExpanded: true }));
+		const img = document.querySelector('[data-frame="rhino"] img');
+		expect(img).toBeInTheDocument();
+		expect(img?.getAttribute('src')).toContain('/frames/rhino.webp');
+		expect(img).toHaveAttribute('alt', '');
+	});
+
+	it('falls back to the initial letter when the glyph fails to load', async () => {
+		render(FrameCard, props(undefined, { defaultExpanded: true }));
+		const img = document.querySelector('[data-frame="rhino"] img') as HTMLImageElement;
+		img.dispatchEvent(new Event('error'));
+		await tick();
+		expect(document.querySelector('[data-frame="rhino"] img')).toBeNull();
+		expect(screen.getByText('R')).toBeInTheDocument();
+	});
+
 	it('exposes part rows as checkboxes whose name carries the slot and source', () => {
 		render(FrameCard, props(undefined, { defaultExpanded: true }));
 		const row = screen.getByRole('checkbox', { name: /Chassis/ });
