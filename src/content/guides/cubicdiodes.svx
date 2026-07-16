@@ -1,0 +1,21 @@
+## Early game
+
+**Larzac** on Europa (Dark Sector Defense) is the go-to ground farm: Cubic
+Diodes drop from Eximus units on Europa, and Eximus spawns scale up the longer
+a Defense runs — the wiki cites 100+ Cubic Diodes by wave 20 here. The Dark
+Sector resource drop-chance bonus and Resource Drop Boosters both apply, since
+everything comes from enemy drop tables. **Ose** (Interception) is a decent
+alternative if you prefer that mission type.
+
+## Mid & late game
+
+Once you have a Railjack, Corpus Proxima is in a different league: Cubic
+Diodes are significantly more common in Empyrean than on the Corpus Ice Planet
+tileset. End-of-mission bonuses across Venus, Neptune and Pluto Proxima can
+award 200 Cubic Diodes at once, and sweeping the storage containers at points
+of interest like **Nu-gua Mines** (Neptune Proxima) stacks more on top —
+container and mission-reward payouts, so drop boosters don't help there.
+
+## Sources
+
+- [Cubic Diodes — Warframe Wiki](https://wiki.warframe.com/w/Cubic_Diodes)

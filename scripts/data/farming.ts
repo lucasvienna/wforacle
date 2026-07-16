@@ -609,4 +609,24 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 			lastVerified: '2026-07-06',
 		},
 	],
+	[R['Cubic Diodes']]: [
+		{
+			phase: 'early',
+			nodeLabel: 'Europa — Larzac (Dark Sector Defense)',
+			nodeId: undefined,
+			boostersApply: true,
+			note: 'Cubic Diodes drop from Eximus units on Europa, and this Dark Sector Defense stacks its resource drop-chance bonus on top of the Eximus spawns that ramp up with waves — the wiki cites 100+ Cubic Diodes by wave 20.',
+			source: 'https://wiki.warframe.com/w/Cubic_Diodes',
+			lastVerified: '2026-07-16',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Neptune Proxima — Nu-gua Mines (Railjack)',
+			nodeId: undefined,
+			boostersApply: false,
+			note: 'Cubic Diodes are significantly more common in Empyrean than on Europa: Corpus Proxima end-of-mission bonuses can award 200 at once, and sweeping the storage containers at points of interest like Nu-gua Mines adds more — a container/reward farm, so drop boosters don’t apply.',
+			source: 'https://wiki.warframe.com/w/Cubic_Diodes',
+			lastVerified: '2026-07-16',
+		},
+	],
 };
