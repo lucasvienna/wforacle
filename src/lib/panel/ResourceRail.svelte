@@ -7,22 +7,21 @@
 		$props();
 </script>
 
-<section
-	class="rounded-xl border border-wf-edge bg-wf-panel p-5 lg:sticky lg:top-4"
-	data-resource-rail
->
-	<h2 class="text-lg font-semibold text-wf-gold">Resources</h2>
-	<p class="mt-0.5 mb-4 text-xs text-wf-muted">
+<section class="lg:sticky lg:top-4" data-resource-rail>
+	<!-- Mirrors the left column's header rhythm (h2 mb-4, then a text-xs
+	     label line with mb-3) so the first card tops align across columns. -->
+	<h2 class="mb-4 text-lg font-semibold text-wf-gold">Resources</h2>
+	<p class="mb-3 text-xs text-wf-muted">
 		Informational · best farm spots badged by game phase
 	</p>
 	{#if resources.length > 0}
-		<ul class="space-y-2">
+		<ul class="space-y-3">
 			{#each resources as r (r.id)}
 				{@const early = bestPhaseRec(r, 'early')}
 				{@const late = bestPhaseRec(r, 'late')}
 				{@const earlyHere = !!early && early.regionId === regionId}
 				{@const lateHere = !!late && late.regionId === regionId}
-				<li class="rounded-lg border border-wf-edge px-3 py-2">
+				<li class="rounded-xl border border-wf-edge bg-wf-panel p-4">
 					<div class="flex flex-wrap items-center gap-2">
 						<img
 							src={asset(`/resources/${r.id}.webp`)}
