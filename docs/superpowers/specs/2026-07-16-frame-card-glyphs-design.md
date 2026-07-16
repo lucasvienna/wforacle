@@ -47,7 +47,8 @@ The header tile keeps its `h-11 w-11 shrink-0 rounded-lg border border-wf-edge`
 shell and stays `aria-hidden` (the frame name sits beside it).
 
 - Default: `<img src={asset('/frames/${frame.id}.webp')} alt="" loading="lazy"
-class="h-full w-full rounded-[inherit] object-cover">`.
+  class="h-full w-full object-cover">`, clipped to the rounded corners by
+  `overflow-hidden` on the tile container.
 - `let iconFailed = $state(false)`; the img's `onerror` sets it.
 - When `iconFailed`: render today's gradient + `{frame.name[0]}` letter
   (`bg-gradient-to-br from-slate-600 to-slate-900 text-lg font-bold
