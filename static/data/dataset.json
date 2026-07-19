@@ -1,6 +1,6 @@
 {
-	"version": "items@1.1275.16+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-16T07:46:26.756Z",
+	"version": "items@1.1275.18+worldstate-data@3.16.3",
+	"generatedAt": "2026-07-19T16:22:13.181Z",
 	"data": {
 		"regions": [
 			{
@@ -39,7 +39,8 @@
 					"ferrite",
 					"rubedo",
 					"neurodes",
-					"detoniteampule"
+					"detoniteampule",
+					"cryotic"
 				]
 			},
 			{
@@ -494,7 +495,8 @@
 					"plastids",
 					"alloyplate",
 					"fieldronsample",
-					"oxium"
+					"oxium",
+					"cryotic"
 				]
 			},
 			{
@@ -5509,6 +5511,46 @@
 						"note": "Cubic Diodes are significantly more common in Empyrean than on Europa: Corpus Proxima end-of-mission bonuses can award 200 at once, and sweeping the storage containers at points of interest like Nu-gua Mines adds more — a container/reward farm, so drop boosters don’t apply.",
 						"source": "https://wiki.warframe.com/w/Cubic_Diodes",
 						"lastVerified": "2026-07-16"
+					}
+				]
+			},
+			{
+				"id": "cryotic",
+				"name": "Cryotic",
+				"image": "ComponentCryotic.png",
+				"regionIds": [
+					"earth",
+					"pluto"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Earth — Everest (Excavation)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: Resource Boosters and Smeeta Charm double the mission payout — drop-chance boosters do nothing here.",
+						"note": "Every completed excavator pays a flat 100 Cryotic regardless of mission level, so this low-level Grineer Excavation earns as much per dig as any endgame node while staying safe from the very start of the star chart; a Resource Booster silently doubles the payout (the in-mission counter still shows 100). Tikal, Earth’s Dark Sector Excavation, is an Infested alternative.",
+						"source": "https://wiki.warframe.com/w/Cryotic",
+						"lastVerified": "2026-07-19",
+						"regionId": "earth"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Pluto — Hieracon (Dark Sector Excavation)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: Resource Boosters and Smeeta Charm double the mission payout — drop-chance boosters only affect the side loot, not Cryotic.",
+						"note": "The classic endgame spot: Cryotic is still 100 per dig, but the Dark Sector +35% resource drop chance boosts everything else the Infested drop, and reward rotations here also pay out Neo/Axi relics and Endo — a Cryotic, relic and Endo farm in one. Bring Frost, Gara or Limbo to keep excavators alive.",
+						"source": "https://wiki.warframe.com/w/Hieracon",
+						"lastVerified": "2026-07-19",
+						"regionId": "pluto"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Excavation Void Fissures (rotating nodes)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: the fissure’s stacking in-mission Resource Booster multiplies with your account booster and Smeeta Charm — drop-chance boosters do nothing for Cryotic.",
+						"note": "The Cryotic ceiling, out-earning even Hieracon: in an endless Excavation fissure every 200 Cryotic (2 digs) cracks a relic, and each cracked relic grants a stacking in-mission booster — the Resource Booster tier multiplies the Cryotic payout itself, climbing from 1.25x to a 2x cap, and it stacks with your account Resource Booster and Smeeta Charm. Prime parts and bonus relics come along for free.",
+						"source": "https://wiki.warframe.com/w/Void_Fissure",
+						"lastVerified": "2026-07-19"
 					}
 				]
 			},

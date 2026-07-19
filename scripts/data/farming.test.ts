@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS } from './farming';
+import { recRegionId } from './assemble';
 import { slugify } from './parse';
 import { SPECIAL_REGIONS } from './special';
 
@@ -44,6 +45,23 @@ describe('curated farming data', () => {
 		for (const rids of Object.values(PLANET_RESOURCES)) {
 			for (const rid of rids) expect(ids.has(rid)).toBe(true);
 		}
+	});
+	it('includes a curated Cryotic excavation guide', () => {
+		const id = slugify('Cryotic');
+		expect(ids.has(id)).toBe(true);
+		// Cryotic is an Excavation payout, farmed on Earth (Everest) and Pluto
+		// (Hieracon) — the two planets its recommendations point at.
+		expect(PLANET_RESOURCES.earth).toContain(id);
+		expect(PLANET_RESOURCES.pluto).toContain(id);
+		const recs = RECOMMENDATIONS[id];
+		expect(recs.some((x) => x.phase === 'early' && x.nodeLabel.includes('Everest'))).toBe(true);
+		expect(recs.some((x) => x.phase === 'late' && x.nodeLabel.includes('Hieracon'))).toBe(true);
+		// The top-tier farm: endless Excavation Void Fissures (stacking in-mission
+		// resource boosters). Rotating nodes, so its label must not resolve to a
+		// region — otherwise a "best farm here" badge lands on the wrong panel.
+		const fissure = recs.find((x) => /fissure/i.test(x.nodeLabel));
+		expect(fissure?.phase).toBe('late');
+		expect(recRegionId(fissure!.nodeLabel)).toBeUndefined();
 	});
 	it('each curated recommendation targets a real resource with an early + late rec', () => {
 		for (const [rid, recs] of Object.entries(RECOMMENDATIONS)) {

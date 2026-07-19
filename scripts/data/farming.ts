@@ -29,6 +29,7 @@ export const RESOURCES = [
 	{ id: slugify('Fieldron Sample'), name: 'Fieldron Sample' },
 	{ id: slugify('Carbides'), name: 'Carbides' },
 	{ id: slugify('Cubic Diodes'), name: 'Cubic Diodes' },
+	{ id: slugify('Cryotic'), name: 'Cryotic' },
 	{ id: slugify('Argon Crystal'), name: 'Argon Crystal' },
 	{ id: slugify('Somatic Fibers'), name: 'Somatic Fibers' },
 	{ id: slugify('Kuva'), name: 'Kuva' },
@@ -48,7 +49,10 @@ const R = Object.fromEntries(RESOURCES.map((r) => [r.name, r.id])) as Record<str
 export const PLANET_RESOURCES: Record<string, string[]> = {
 	mercury: [R['Ferrite'], R['Polymer Bundle'], R['Morphics'], R['Detonite Ampule']],
 	venus: [R['Alloy Plate'], R['Polymer Bundle'], R['Circuits'], R['Fieldron Sample'], R['Oxium']],
-	earth: [R['Ferrite'], R['Rubedo'], R['Neurodes'], R['Detonite Ampule']],
+	// Cryotic is an Excavation mission payout, not an infobox pool item (like
+	// Oxium above), so it's mapped onto the planets you genuinely farm it on:
+	// Earth (Everest/Tikal) and Pluto (Hieracon).
+	earth: [R['Ferrite'], R['Rubedo'], R['Neurodes'], R['Detonite Ampule'], R['Cryotic']],
 	mars: [R['Gallium'], R['Morphics'], R['Salvage'], R['Fieldron Sample'], R['Oxium']],
 	phobos: [R['Rubedo'], R['Morphics'], R['Plastids'], R['Alloy Plate']],
 	ceres: [R['Alloy Plate'], R['Circuits'], R['Orokin Cell'], R['Detonite Ampule'], R['Carbides']],
@@ -71,6 +75,7 @@ export const PLANET_RESOURCES: Record<string, string[]> = {
 		R['Alloy Plate'],
 		R['Fieldron Sample'],
 		R['Oxium'],
+		R['Cryotic'],
 	],
 	eris: [R['Nano Spores'], R['Plastids'], R['Neurodes'], R['Mutagen Sample'], R['Oxium']],
 	sedna: [R['Alloy Plate'], R['Rubedo'], R['Salvage'], R['Detonite Ampule']],
@@ -607,6 +612,41 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 			note: 'Entrati Lanthorn also appears in the Cambion Drift bounty reward tables (as it does in Zariman bounties), giving a steady endgame supply alongside standing and other bounty rewards; bounty rewards are fixed-table payouts, so resource drop boosters don’t apply here.',
 			source: 'https://wiki.warframe.com/w/Entrati_Lanthorn',
 			lastVerified: '2026-07-06',
+		},
+	],
+	[R['Cryotic']]: [
+		{
+			phase: 'early',
+			nodeLabel: 'Earth — Everest (Excavation)',
+			nodeId: undefined,
+			boostersApply: true,
+			boosterNote:
+				'Boosters help: Resource Boosters and Smeeta Charm double the mission payout — drop-chance boosters do nothing here.',
+			note: 'Every completed excavator pays a flat 100 Cryotic regardless of mission level, so this low-level Grineer Excavation earns as much per dig as any endgame node while staying safe from the very start of the star chart; a Resource Booster silently doubles the payout (the in-mission counter still shows 100). Tikal, Earth’s Dark Sector Excavation, is an Infested alternative.',
+			source: 'https://wiki.warframe.com/w/Cryotic',
+			lastVerified: '2026-07-19',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Pluto — Hieracon (Dark Sector Excavation)',
+			nodeId: undefined,
+			boostersApply: true,
+			boosterNote:
+				'Boosters help: Resource Boosters and Smeeta Charm double the mission payout — drop-chance boosters only affect the side loot, not Cryotic.',
+			note: 'The classic endgame spot: Cryotic is still 100 per dig, but the Dark Sector +35% resource drop chance boosts everything else the Infested drop, and reward rotations here also pay out Neo/Axi relics and Endo — a Cryotic, relic and Endo farm in one. Bring Frost, Gara or Limbo to keep excavators alive.',
+			source: 'https://wiki.warframe.com/w/Hieracon',
+			lastVerified: '2026-07-19',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Excavation Void Fissures (rotating nodes)',
+			nodeId: undefined,
+			boostersApply: true,
+			boosterNote:
+				'Boosters help: the fissure’s stacking in-mission Resource Booster multiplies with your account booster and Smeeta Charm — drop-chance boosters do nothing for Cryotic.',
+			note: 'The Cryotic ceiling, out-earning even Hieracon: in an endless Excavation fissure every 200 Cryotic (2 digs) cracks a relic, and each cracked relic grants a stacking in-mission booster — the Resource Booster tier multiplies the Cryotic payout itself, climbing from 1.25x to a 2x cap, and it stacks with your account Resource Booster and Smeeta Charm. Prime parts and bonus relics come along for free.',
+			source: 'https://wiki.warframe.com/w/Void_Fissure',
+			lastVerified: '2026-07-19',
 		},
 	],
 	[R['Cubic Diodes']]: [
