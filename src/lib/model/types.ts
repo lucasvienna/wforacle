@@ -64,6 +64,10 @@ export interface Recommendation {
 	 * undefined for special-region nodes (Void/Lua/…). Drives the "best farm here" badge. */
 	regionId?: string;
 	boostersApply: boolean;
+	/** Overrides the guide page's canned booster copy (which assumes enemy-drop
+	 * vs container farms) for recs where neither framing is accurate, e.g.
+	 * mission-payout resources like Cryotic. */
+	boosterNote?: string;
 	note: string;
 	source: string;
 	lastVerified: string;

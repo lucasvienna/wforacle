@@ -76,9 +76,10 @@
 				</h2>
 				<p class="mt-1 text-sm text-wf-muted">{rec.note}</p>
 				<p class="mt-2 text-xs text-wf-muted">
-					{rec.boostersApply
-						? 'Boosters help: this spot relies on enemy drop tables.'
-						: "Boosters don't apply: this spot is a container/deposit pickup, not an enemy drop."}
+					{rec.boosterNote ??
+						(rec.boostersApply
+							? 'Boosters help: this spot relies on enemy drop tables.'
+							: "Boosters don't apply: this spot is a container/deposit pickup, not an enemy drop.")}
 				</p>
 				<div
 					class="mt-3 flex items-center justify-between text-xs text-wf-muted"

@@ -48,6 +48,26 @@ describe('guide detail page', () => {
 		expect(jsonLd).not.toBeNull();
 	});
 
+	it('renders a custom boosterNote instead of the canned booster copy', () => {
+		const custom: Resource = {
+			...resource,
+			recommendations: [
+				{
+					...resource.recommendations[0],
+					boosterNote:
+						'Resource Boosters double the mission payout — drop-chance boosters do nothing here.',
+				},
+			],
+		};
+		render(Page, {
+			data: { resource: custom, guide: null } as PageData,
+			params: { resource: custom.id },
+		});
+
+		expect(screen.getByText(/drop-chance boosters do nothing here/)).toBeInTheDocument();
+		expect(screen.queryByText(/relies on enemy drop tables/)).not.toBeInTheDocument();
+	});
+
 	it('gives the resource icon a descriptive alt instead of a decorative empty one', () => {
 		render(Page, { data, params: { resource: resource.id } });
 
