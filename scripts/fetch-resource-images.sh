@@ -36,6 +36,7 @@ dl salvage.webp ComponentSalvage.png
 dl carbides.webp RailjackComponentCarbides.png
 dl hexenon.webp ComponentConcentratedGas.png
 dl cubicdiodes.webp RailjackComponentCubics.png
+dl cryotic.webp ComponentCryotic.png
 dl tellurium.webp Tellurium.png
 dl mutagensample.webp InfestedFragment.png
 dl somaticfibers.webp MemoryCryptoFragment.png

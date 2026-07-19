@@ -1,0 +1,42 @@
+## How Cryotic works
+
+Cryotic only comes from Excavation missions: every completed excavator pays a
+flat **100 Cryotic** (1 per 1% of dig progress, so partial digs still count),
+and the amount never scales with mission level — a dig on Earth pays the same
+as one on Steel Path. A dig takes 100 seconds and burns four power cells
+(20 seconds each), carried by specific enemies you kill near the site.
+
+Because it's a mission payout rather than an enemy drop, only some boosters
+touch it: a **Resource Booster doubles Cryotic** (silently — the in-mission
+counter still shows 100) and a **Smeeta Kavat's Charm** proc doubles it too,
+but Resource *Drop Chance* Boosters and blessings do nothing for it.
+
+## Early game
+
+**Everest** on Earth (Excavation) is the easiest farm and pays exactly as much
+per dig as anything endgame. Keep one or two excavators running solo, feed
+them power cells, and extract whenever you're done. **Tikal**, Earth's Dark
+Sector Excavation, is a low-level Infested alternative with bonus credits.
+
+## Late game
+
+**Hieracon** on Pluto (Dark Sector Excavation) is the classic answer: Cryotic
+is still 100 per dig, but the Dark Sector's +35% resource drop chance boosts
+everything else the Infested drop, and reward rotations pay out Neo/Axi relics
+and Endo on top. Bring Frost, Gara or Limbo to keep excavators alive, and a
+Khora with Pilfering Strangledome if you want more power cells dropped.
+
+The real ceiling, though, is an **endless Excavation Void Fissure**: every
+200 Cryotic (two digs) cracks a relic, and each cracked relic grants a
+stacking in-mission booster. The Resource Booster tier multiplies the Cryotic
+payout itself — climbing from 1.25x to a 2x cap the longer you stay — and it
+stacks with your account Resource Booster and Smeeta Charm, so long runs earn
+300+ Cryotic per dig while banking prime parts and bonus relics for free.
+Keep a single dig site active in fissures: Void Tear spawns are boosted when
+only one excavator runs, keeping Reactant flowing.
+
+## Sources
+
+- [Cryotic — Warframe Wiki](https://wiki.warframe.com/w/Cryotic)
+- [Excavation — Warframe Wiki](https://wiki.warframe.com/w/Excavation)
+- [Void Fissure — Warframe Wiki](https://wiki.warframe.com/w/Void_Fissure)
