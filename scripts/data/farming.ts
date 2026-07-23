@@ -35,6 +35,7 @@ export const RESOURCES = [
 	{ id: slugify('Kuva'), name: 'Kuva' },
 	{ id: slugify('Voidgel Orb'), name: 'Voidgel Orb' },
 	{ id: slugify('Entrati Lanthorn'), name: 'Entrati Lanthorn' },
+	{ id: slugify('Credits'), name: 'Credits' },
 ];
 
 const R = Object.fromEntries(RESOURCES.map((r) => [r.name, r.id])) as Record<string, string>;
@@ -48,14 +49,18 @@ const R = Object.fromEntries(RESOURCES.map((r) => [r.name, r.id])) as Record<str
 // whose signature resource is the Void-exclusive Argon Crystal.
 export const PLANET_RESOURCES: Record<string, string[]> = {
 	mercury: [R['Ferrite'], R['Polymer Bundle'], R['Morphics'], R['Detonite Ampule']],
-	venus: [R['Alloy Plate'], R['Polymer Bundle'], R['Circuits'], R['Fieldron Sample'], R['Oxium']],
+	venus: [R['Alloy Plate'], R['Polymer Bundle'], R['Circuits'], R['Fieldron Sample'], R['Oxium'], R['Credits']],
 	// Cryotic is an Excavation mission payout, not an infobox pool item (like
 	// Oxium above), so it's mapped onto the planets you genuinely farm it on:
 	// Earth (Everest/Tikal) and Pluto (Hieracon).
 	earth: [R['Ferrite'], R['Rubedo'], R['Neurodes'], R['Detonite Ampule'], R['Cryotic']],
 	mars: [R['Gallium'], R['Morphics'], R['Salvage'], R['Fieldron Sample'], R['Oxium']],
 	phobos: [R['Rubedo'], R['Morphics'], R['Plastids'], R['Alloy Plate']],
-	ceres: [R['Alloy Plate'], R['Circuits'], R['Orokin Cell'], R['Detonite Ampule'], R['Carbides']],
+	// Credits are a currency, not a drop-pool resource, but (like Cryotic)
+	// they're mapped onto the planets their signature farms live on: Ceres
+	// (Seimeni/Gabii Dark Sectors), Neptune (The Index, Laomedeia) and Venus
+	// (Profit-Taker via Orb Vallis).
+	ceres: [R['Alloy Plate'], R['Circuits'], R['Orokin Cell'], R['Detonite Ampule'], R['Carbides'], R['Credits']],
 	jupiter: [R['Salvage'], R['Hexenon'], R['Neural Sensors'], R['Alloy Plate'], R['Oxium']],
 	europa: [
 		R['Morphics'],
@@ -67,7 +72,7 @@ export const PLANET_RESOURCES: Record<string, string[]> = {
 	],
 	saturn: [R['Nano Spores'], R['Plastids'], R['Orokin Cell'], R['Detonite Ampule']],
 	uranus: [R['Gallium'], R['Plastids'], R['Polymer Bundle'], R['Detonite Ampule'], R['Tellurium']],
-	neptune: [R['Nano Spores'], R['Ferrite'], R['Control Module'], R['Fieldron Sample'], R['Oxium']],
+	neptune: [R['Nano Spores'], R['Ferrite'], R['Control Module'], R['Fieldron Sample'], R['Oxium'], R['Credits']],
 	pluto: [
 		R['Rubedo'],
 		R['Morphics'],
@@ -647,6 +652,74 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 			note: 'The Cryotic ceiling, out-earning even Hieracon: in an endless Excavation fissure every 200 Cryotic (2 digs) cracks a relic, and each cracked relic grants a stacking in-mission booster — the Resource Booster tier multiplies the Cryotic payout itself, climbing from 1.25x to a 2x cap, and it stacks with your account Resource Booster and Smeeta Charm. Prime parts and bonus relics come along for free.',
 			source: 'https://wiki.warframe.com/w/Void_Fissure',
 			lastVerified: '2026-07-19',
+		},
+	],
+	// Credits pay through two channels, and every multiplier attaches to
+	// exactly one: end-of-mission REWARDS (doubled by the Daily First Win
+	// Bonus and Credit Boosters) vs in-mission DROPS/CACHES (doubled by
+	// Credit Boosters, Chroma's Effigy, the MR30 Blessing and Retriever mods
+	// — never by First Win, which a cache mission silently consumes). All
+	// verified against wiki.warframe.com 2026-07-23; see the credits spec.
+	[R['Credits']]: [
+		{
+			phase: 'early',
+			nodeLabel: 'Ceres — Seimeni / Gabii (Dark Sector)',
+			boostersApply: true,
+			boosterNote:
+				'Boosters help: this is an end-of-mission reward, so a Credit Booster doubles it and the Daily First Win Bonus doubles it again — resource boosters do nothing for credits.',
+			note: 'Dark Sectors pay a flat credit bonus on completion — not a percentage: Seimeni (Defense) and Gabii (Survival) add ~20,000 on top of the base reward for ~22,400 per run. Run five waves (or five minutes) and re-queue; staying longer never repeats the bonus. Same payout as the famous Akkad on Eris, four planets closer to the start of the chart.',
+			source: 'https://wiki.warframe.com/w/Dark_Sector',
+			lastVerified: '2026-07-23',
+		},
+		{
+			phase: 'early',
+			nodeLabel: 'Anywhere — Daily First Win Bonus',
+			boostersApply: true,
+			boosterNote:
+				'Boosters help: the daily double multiplies with a Credit Booster — a 50,000-credit Arbitration pays 200,000 with both running.',
+			note: 'The first mission you complete after 00:00 UTC pays double end-of-mission credits. Spend it on your biggest flat payout — an Arbitration (50,000 → 100,000) or a Dark Sector run — and never on the Index, Laomedeia or open-world bounties: those pay through credit caches, which the bonus skips entirely while still being used up.',
+			source: 'https://wiki.warframe.com/w/Daily_Tribute',
+			lastVerified: '2026-07-23',
+		},
+		{
+			phase: 'early',
+			nodeLabel: 'Neptune — The Index (High Risk)',
+			boostersApply: true,
+			boosterNote:
+				'Boosters help, with a catch: a Credit Booster only doubles the first round of a match — one round and re-queue beats marathons — and the Daily First Win Bonus never applies to Index winnings.',
+			note: 'Wager 50,000, reach 100 points, collect 250,000 — and every extra round pays another 250,000 with no new stake. Bring a frame that ignores Financial Stress (Rhino or Nezha early, Revenant later), bank around 15 points at a time and keep a small point buffer so the enemy team can never score. Only the host needs the node unlocked, so newer players can be taxied in.',
+			source: 'https://wiki.warframe.com/w/The_Index',
+			lastVerified: '2026-07-23',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Neptune — Laomedeia (Disruption)',
+			boostersApply: true,
+			boosterNote:
+				'Boosters help: a Credit Booster doubles every cache — silently, the reward screen never shows it — while the Daily First Win Bonus does not apply here.',
+			note: 'A Disruption whose reward table is mostly credit caches: defend all four conduits and rounds 1–4 pay 30k / 30k / 50k / 50k — 160,000 in under twenty minutes, then 50,000 every round for as long as you stay. No wager to front, and normal mission rules mean squads, companions and loot frames all work.',
+			source: 'https://wiki.warframe.com/w/Laomedeia',
+			lastVerified: '2026-07-23',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Höllvania — Legacyte Harvest (Techrot Safes)',
+			boostersApply: true,
+			boosterNote:
+				"Boosters help — all of them: safe credits are an in-mission drop, so a Credit Booster, Chroma's Effigy, the MR30 Credit Blessing and Prosperous Retriever all stack on top of each other.",
+			note: "Every Höllvania mission except Exterminate can spawn one Techrot Safe holding a 100,000-credit drop plus an Arcane. Spam short Legacyte Harvest runs (requires The Hex quest), and take SHELL CRACKER bounties or bring Loot Detector so finding the safe doesn't eat the run time. The current top-tier credit farm, at a fraction of Profit-Taker's gear bar.",
+			source: 'https://wiki.warframe.com/w/Legacyte_Harvest',
+			lastVerified: '2026-07-23',
+		},
+		{
+			phase: 'late',
+			nodeLabel: 'Venus — Profit-Taker Orb (Heist Phase 4)',
+			boostersApply: true,
+			boosterNote:
+				"Boosters help — the stacking showcase: the credits arrive as drops, so Chroma's Effigy doubles them and a Credit Booster doubles them again for 500,000 per kill — but the Daily First Win Bonus skips drops entirely.",
+			note: 'Killing the Profit-Taker drops a guaranteed 125,000 credits (5 × 25,000 pickups) plus a Crisma Toroid. Requires Old Mate rank with Solaris United and an arch-gun fitted with a Gravimag; once geared, kills take two to eight minutes. Cast Effigy near the corpse before picking the credits up.',
+			source: 'https://wiki.warframe.com/w/Profit-Taker_Orb',
+			lastVerified: '2026-07-23',
 		},
 	],
 	[R['Cubic Diodes']]: [

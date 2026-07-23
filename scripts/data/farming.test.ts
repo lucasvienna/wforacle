@@ -63,6 +63,33 @@ describe('curated farming data', () => {
 		expect(fissure?.phase).toBe('late');
 		expect(recRegionId(fissure!.nodeLabel)).toBeUndefined();
 	});
+	it('includes a curated Credits farming guide', () => {
+		const id = slugify('Credits');
+		expect(ids.has(id)).toBe(true);
+		// Credits are mapped (like Cryotic) onto their signature farm planets:
+		// Ceres (Seimeni/Gabii), Neptune (Index, Laomedeia), Venus (Profit-Taker).
+		expect(PLANET_RESOURCES.ceres).toContain(id);
+		expect(PLANET_RESOURCES.neptune).toContain(id);
+		expect(PLANET_RESOURCES.venus).toContain(id);
+		const recs = RECOMMENDATIONS[id];
+		expect(recs).toHaveLength(6);
+		expect(recs.filter((x) => x.phase === 'early')).toHaveLength(3);
+		// Credit boosters ≠ resource boosters: every rec must override the
+		// canned booster copy.
+		for (const x of recs) expect(x.boosterNote).toBeTruthy();
+		// 'Anywhere' (First Win habit) and 'Höllvania' (not a chart region)
+		// must not resolve to a region, or a "best farm here" badge lands on
+		// the wrong panel.
+		const firstWin = recs.find((x) => /first win/i.test(x.nodeLabel));
+		expect(recRegionId(firstWin!.nodeLabel)).toBeUndefined();
+		const techrot = recs.find((x) => /legacyte/i.test(x.nodeLabel));
+		expect(techrot?.phase).toBe('late');
+		expect(recRegionId(techrot!.nodeLabel)).toBeUndefined();
+		// The guide's core rule: cache-paying farms must warn that the Daily
+		// First Win Bonus doesn't apply to them.
+		const index = recs.find((x) => /index/i.test(x.nodeLabel));
+		expect(index?.boosterNote).toMatch(/first win/i);
+	});
 	it('each curated recommendation targets a real resource with an early + late rec', () => {
 		for (const [rid, recs] of Object.entries(RECOMMENDATIONS)) {
 			expect(ids.has(rid)).toBe(true);
