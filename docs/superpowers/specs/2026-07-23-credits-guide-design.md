@@ -15,7 +15,7 @@ All game data was researched and verified against wiki.warframe.com and official
 - Index: 50k wager → 250k per High-Risk round; booster doubles round 1 only.
 - Laomedeia: rot A/B/C caches = 20k/30k/50k; 160k over the first 4 rounds with all conduits defended; booster applies but is not shown on the reward screen.
 - Techrot Safes (Legacyte Harvest, needs The Hex): 100k credit drop per safe, stacks with every drop-channel multiplier; current community top-tier alongside Profit-Taker.
-- Profit-Taker: 5 × 25,000 guaranteed credit drops; requires Solaris United Old Mate + Gravimag arch-gun; ~1M on a fully stacked first kill of the day.
+- Profit-Taker: 5 × 25,000 guaranteed credit drops; requires Solaris United Old Mate + Gravimag arch-gun; 500k per kill fully stacked (Effigy ×2 · booster ×2). **The Daily First Win Bonus does NOT apply to drop-based credits** — the wiki lists only Booster/Blessing/Retriever (plus Effigy) for drops; community "1M first kill of the day" math is wrong and must not appear in copy.
 - Secura Lecta farm is dead (Hotfix 42.0.10, 2026-05-06); Chroma Effigy credit doubling was NOT removed (rumor conflates the Lecta nerf); Gian Point was removed in 2021.
 - Railjack Veil pays 80–150k/mission per official patch notes 27.4 (wiki node infoboxes show a conflicting base value — cite the patch note, hedge the copy).
 
@@ -32,7 +32,7 @@ All game data was researched and verified against wiki.warframe.com and official
 | 3 | early | `Neptune — The Index (High Risk)` | neptune | 50k wager → 250k/round; Rhino/Nezha (later Revenant) to ignore Financial Stress; bank ~15 points, hold a buffer; only the host needs the node unlocked | Booster doubles round 1 only → one-round-and-requeue; First Win does NOT apply (cache) |
 | 4 | late | `Neptune — Laomedeia (Disruption)` | neptune | Defend all 4 conduits: B/B/C/C = 160k across rounds 1–4, 50k/round after; no wager, normal mission rules (companions/loot frames work) | Booster doubles the caches silently (not shown on reward screen); First Win doesn't apply |
 | 5 | late | `Höllvania — Legacyte Harvest (Techrot Safes)` | — | One Techrot Safe per mission drops 100k credits (plus an Arcane); needs The Hex quest; run SHELL CRACKER bounties / Loot Detector to find the safe; the current top-tier farm at a fraction of Profit-Taker's gear bar | Drop-channel: stacks with booster, Effigy, MR30 Blessing, Prosperous Retriever |
-| 6 | late | `Venus — Profit-Taker Orb (Heist Phase 4)` | venus | 5 × 25k guaranteed credit drops; needs Solaris United Old Mate + Gravimag arch-gun; 2–8 min kills once geared; ~1M on the first kill of the day fully stacked | Drops, not rewards: Effigy 2× + booster 2× (+ First Win on top) |
+| 6 | late | `Venus — Profit-Taker Orb (Heist Phase 4)` | venus | 5 × 25k guaranteed credit drops; needs Solaris United Old Mate + Gravimag arch-gun; 2–8 min kills once geared; 500k per kill with Effigy + booster | Drops, not rewards: Effigy 2× + booster 2× — First Win skips drops entirely |
 
 `recRegionId` derives regionId from the leading token; `Anywhere` / `Höllvania` are not regions and safely yield `undefined` (no "best farm here" badge) — verified in `assemble.ts:29`.
 
@@ -49,7 +49,7 @@ Page sections, top to bottom (reusing `wf-panel` / `wf-edge` / `wf-cyan` tokens 
 1. **Hero** — credits icon, `h1`, one-line thesis introducing the two-channel rule.
 2. **Two-channel rule** — compact two-column comparison: *End-of-mission rewards* (Dark Sectors, Arbitrations, sorties, Railjack — doubled by First Win + booster) vs *Pickups & caches* (Index, Laomedeia, Techrot, Profit-Taker — doubled by Effigy/Retriever/Blessing/booster, immune to First Win). Explicit warning that a cache mission as first-of-day wastes the bonus.
 3. **Progression path** — the six recommendation cards rendered from `data.resource.recommendations`, early group then late group, same card anatomy as the generic page (phase chip, nodeLabel, note, boosterNote, source link, verified date).
-4. **Multiplier stacking table** — Credit Booster ×2 (everything), Daily First Win ×2 (rewards only), Effigy ×2 (drops within 10 m), MR30 Blessing +25% (additive with booster), Prosperous Retriever (18% chance ×2 per pickup; deterministic slot vs Smeeta Charm), double-credit weekends; worked example: Profit-Taker 125k → 250k (Effigy) → 500k (booster) → ~1M (first kill of day).
+4. **Multiplier stacking table** — Credit Booster ×2 (everything), Daily First Win ×2 (rewards only), Effigy ×2 (drops within 10 m), MR30 Blessing +25% (additive with booster), Prosperous Retriever (18% chance ×2 per pickup; deterministic slot vs Smeeta Charm), double-credit weekends; worked example: Profit-Taker 125k → 250k (Effigy) → 500k (booster); First Win never touches drops.
 5. **Outdated advice panel** — myth-bust list: Secura Lecta farm dead (Hotfix 42.0.10, May 2026, multi-trigger fix); "Effigy credit doubling was removed" is false (patch history clean through 2026; open Techrot-cache bug noted); Dark Sector credit "+%" is a myth (flat bonus); Gian Point removed (U29.10, 2021); Ayatan sculptures are endo/plat, not credits.
 6. **Honorable mentions & sources** — Railjack Veil 80–150k/mission (patch-note figure, "the relaxed multi-loot farm"), sorties (fixed 100k/day), Zariman bounties (~60k, standing-adjacent); then the full source link list (wiki pages + patch notes).
 
