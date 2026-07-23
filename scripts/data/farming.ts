@@ -49,7 +49,14 @@ const R = Object.fromEntries(RESOURCES.map((r) => [r.name, r.id])) as Record<str
 // whose signature resource is the Void-exclusive Argon Crystal.
 export const PLANET_RESOURCES: Record<string, string[]> = {
 	mercury: [R['Ferrite'], R['Polymer Bundle'], R['Morphics'], R['Detonite Ampule']],
-	venus: [R['Alloy Plate'], R['Polymer Bundle'], R['Circuits'], R['Fieldron Sample'], R['Oxium'], R['Credits']],
+	venus: [
+		R['Alloy Plate'],
+		R['Polymer Bundle'],
+		R['Circuits'],
+		R['Fieldron Sample'],
+		R['Oxium'],
+		R['Credits'],
+	],
 	// Cryotic is an Excavation mission payout, not an infobox pool item (like
 	// Oxium above), so it's mapped onto the planets you genuinely farm it on:
 	// Earth (Everest/Tikal) and Pluto (Hieracon).
@@ -60,7 +67,14 @@ export const PLANET_RESOURCES: Record<string, string[]> = {
 	// they're mapped onto the planets their signature farms live on: Ceres
 	// (Seimeni/Gabii Dark Sectors), Neptune (The Index, Laomedeia) and Venus
 	// (Profit-Taker via Orb Vallis).
-	ceres: [R['Alloy Plate'], R['Circuits'], R['Orokin Cell'], R['Detonite Ampule'], R['Carbides'], R['Credits']],
+	ceres: [
+		R['Alloy Plate'],
+		R['Circuits'],
+		R['Orokin Cell'],
+		R['Detonite Ampule'],
+		R['Carbides'],
+		R['Credits'],
+	],
 	jupiter: [R['Salvage'], R['Hexenon'], R['Neural Sensors'], R['Alloy Plate'], R['Oxium']],
 	europa: [
 		R['Morphics'],
@@ -72,7 +86,14 @@ export const PLANET_RESOURCES: Record<string, string[]> = {
 	],
 	saturn: [R['Nano Spores'], R['Plastids'], R['Orokin Cell'], R['Detonite Ampule']],
 	uranus: [R['Gallium'], R['Plastids'], R['Polymer Bundle'], R['Detonite Ampule'], R['Tellurium']],
-	neptune: [R['Nano Spores'], R['Ferrite'], R['Control Module'], R['Fieldron Sample'], R['Oxium'], R['Credits']],
+	neptune: [
+		R['Nano Spores'],
+		R['Ferrite'],
+		R['Control Module'],
+		R['Fieldron Sample'],
+		R['Oxium'],
+		R['Credits'],
+	],
 	pluto: [
 		R['Rubedo'],
 		R['Morphics'],

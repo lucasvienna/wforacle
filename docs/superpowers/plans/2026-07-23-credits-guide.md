@@ -25,10 +25,12 @@
 ### Task 1: Curated Credits data (RESOURCES, PLANET_RESOURCES, RECOMMENDATIONS)
 
 **Files:**
+
 - Modify: `scripts/data/farming.ts` (RESOURCES list ~line 37, PLANET_RESOURCES `ceres`/`neptune`/`venus` entries ~lines 51–80, RECOMMENDATIONS record)
 - Test: `scripts/data/farming.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Recommendation` from `src/lib/model/types.ts`, `slugify` from `./parse`, `recRegionId` from `./assemble` (all existing).
 - Produces: `RECOMMENDATIONS['credits']` — six `Recommendation` objects (3 early, 3 late) consumed by the build pipeline in Task 2; resource id `'credits'` referenced by Tasks 3–6.
 
@@ -37,33 +39,33 @@
 Append inside the `describe('curated farming data', …)` block of `scripts/data/farming.test.ts`, after the Cryotic test:
 
 ```ts
-	it('includes a curated Credits farming guide', () => {
-		const id = slugify('Credits');
-		expect(ids.has(id)).toBe(true);
-		// Credits are mapped (like Cryotic) onto their signature farm planets:
-		// Ceres (Seimeni/Gabii), Neptune (Index, Laomedeia), Venus (Profit-Taker).
-		expect(PLANET_RESOURCES.ceres).toContain(id);
-		expect(PLANET_RESOURCES.neptune).toContain(id);
-		expect(PLANET_RESOURCES.venus).toContain(id);
-		const recs = RECOMMENDATIONS[id];
-		expect(recs).toHaveLength(6);
-		expect(recs.filter((x) => x.phase === 'early')).toHaveLength(3);
-		// Credit boosters ≠ resource boosters: every rec must override the
-		// canned booster copy.
-		for (const x of recs) expect(x.boosterNote).toBeTruthy();
-		// 'Anywhere' (First Win habit) and 'Höllvania' (not a chart region)
-		// must not resolve to a region, or a "best farm here" badge lands on
-		// the wrong panel.
-		const firstWin = recs.find((x) => /first win/i.test(x.nodeLabel));
-		expect(recRegionId(firstWin!.nodeLabel)).toBeUndefined();
-		const techrot = recs.find((x) => /legacyte/i.test(x.nodeLabel));
-		expect(techrot?.phase).toBe('late');
-		expect(recRegionId(techrot!.nodeLabel)).toBeUndefined();
-		// The guide's core rule: cache-paying farms must warn that the Daily
-		// First Win Bonus doesn't apply to them.
-		const index = recs.find((x) => /index/i.test(x.nodeLabel));
-		expect(index?.boosterNote).toMatch(/first win/i);
-	});
+it('includes a curated Credits farming guide', () => {
+	const id = slugify('Credits');
+	expect(ids.has(id)).toBe(true);
+	// Credits are mapped (like Cryotic) onto their signature farm planets:
+	// Ceres (Seimeni/Gabii), Neptune (Index, Laomedeia), Venus (Profit-Taker).
+	expect(PLANET_RESOURCES.ceres).toContain(id);
+	expect(PLANET_RESOURCES.neptune).toContain(id);
+	expect(PLANET_RESOURCES.venus).toContain(id);
+	const recs = RECOMMENDATIONS[id];
+	expect(recs).toHaveLength(6);
+	expect(recs.filter((x) => x.phase === 'early')).toHaveLength(3);
+	// Credit boosters ≠ resource boosters: every rec must override the
+	// canned booster copy.
+	for (const x of recs) expect(x.boosterNote).toBeTruthy();
+	// 'Anywhere' (First Win habit) and 'Höllvania' (not a chart region)
+	// must not resolve to a region, or a "best farm here" badge lands on
+	// the wrong panel.
+	const firstWin = recs.find((x) => /first win/i.test(x.nodeLabel));
+	expect(recRegionId(firstWin!.nodeLabel)).toBeUndefined();
+	const techrot = recs.find((x) => /legacyte/i.test(x.nodeLabel));
+	expect(techrot?.phase).toBe('late');
+	expect(recRegionId(techrot!.nodeLabel)).toBeUndefined();
+	// The guide's core rule: cache-paying farms must warn that the Daily
+	// First Win Bonus doesn't apply to them.
+	const index = recs.find((x) => /index/i.test(x.nodeLabel));
+	expect(index?.boosterNote).toMatch(/first win/i);
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -84,10 +86,10 @@ In `scripts/data/farming.ts`:
 (b) Append `R['Credits']` to the `ceres`, `neptune`, and `venus` arrays in `PLANET_RESOURCES`, with a comment above the `ceres` entry:
 
 ```ts
-	// Credits are a currency, not a drop-pool resource, but (like Cryotic)
-	// they're mapped onto the planets their signature farms live on: Ceres
-	// (Seimeni/Gabii Dark Sectors), Neptune (The Index, Laomedeia) and Venus
-	// (Profit-Taker via Orb Vallis).
+// Credits are a currency, not a drop-pool resource, but (like Cryotic)
+// they're mapped onto the planets their signature farms live on: Ceres
+// (Seimeni/Gabii Dark Sectors), Neptune (The Index, Laomedeia) and Venus
+// (Profit-Taker via Orb Vallis).
 ```
 
 (c) Add to `RECOMMENDATIONS` (after the Cryotic entry), preceded by this comment:
@@ -180,11 +182,13 @@ git commit -m "feat(data): add curated Credits farming recommendations"
 ### Task 2: Dataset rebuild + Credits icon
 
 **Files:**
+
 - Modify: `scripts/fetch-resource-images.sh`
 - Create: `static/resources/credits.webp`
 - Regenerate: `static/data/dataset.json` (via `pnpm data:build`)
 
 **Interfaces:**
+
 - Consumes: Task 1's `RECOMMENDATIONS['credits']` (picked up by `scripts/build-data.ts`).
 - Produces: `dataset.json` `data.resources[]` entry `{ id: 'credits', regionIds: ['ceres','neptune','venus'], recommendations: […6] }` consumed by Tasks 3–6; icon at `/resources/credits.webp` (the page hardcodes this path — the dataset `image` field may stay absent, that's fine).
 
@@ -248,10 +252,12 @@ git commit -m "feat(data): build Credits into dataset + fetch icon"
 ### Task 3: Exclude `credits` from the dynamic guide route's prerender entries
 
 **Files:**
+
 - Modify: `src/routes/guides/[resource]/+page.ts:39-44` (`entries()`)
 - Test: `src/routes/guides/[resource]/entries.test.ts` (create)
 
 **Interfaces:**
+
 - Consumes: `entries` export from `./+page` (existing), Task 2's regenerated dataset.
 - Produces: guarantee that `/guides/credits` is prerendered only by the static route added in Task 4.
 
@@ -287,12 +293,14 @@ Expected: FAIL — the list currently contains `{ resource: 'credits' }` (it has
 In `src/routes/guides/[resource]/+page.ts`, change the return of `entries()`:
 
 ```ts
-	return raw.data.resources
+return (
+	raw.data.resources
 		// credits has curated recommendations but its page is the bespoke
 		// static route at src/routes/guides/credits — listing it here would
 		// prerender /guides/credits from both routes.
 		.filter((r) => r.recommendations.length > 0 && r.id !== 'credits')
-		.map((r) => ({ resource: r.id }));
+		.map((r) => ({ resource: r.id }))
+);
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
@@ -312,11 +320,13 @@ git commit -m "feat(guides): exclude credits from dynamic guide prerender entrie
 ### Task 4: Bespoke route skeleton — load, SEO, hero, recommendation cards
 
 **Files:**
+
 - Create: `src/routes/guides/credits/+page.ts`
 - Create: `src/routes/guides/credits/+page.svelte`
 - Test: `src/routes/guides/credits/page.svelte.test.ts` (create)
 
 **Interfaces:**
+
 - Consumes: `loadDataset(fetch)` from `$lib/data/dataset`; `SeoHead`, `breadcrumbLd`, `guideLd`, `guideDescription`, `SITE_URL` (same imports as `[resource]/+page.svelte`); `Recommendation` type.
 - Produces: `PageData = { resource: Resource }`; the page structure Task 5 extends (section order: hero → `<!-- two-channel -->` placeholder position → cards → Task 5 sections). Test fixture `fixtureResource` reused by Task 5's tests.
 
@@ -544,10 +554,12 @@ git commit -m "feat(guides): bespoke credits guide route with data-driven cards"
 ### Task 5: Content sections — two-channel rule, stacking table, myth-bust, honorable mentions & sources
 
 **Files:**
+
 - Modify: `src/routes/guides/credits/+page.svelte`
 - Modify: `src/routes/guides/credits/page.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: Task 4's page skeleton (`fixtureResource`, the two HTML comment placeholders mark the insertion points).
 - Produces: the finished page; no downstream consumers.
 
@@ -565,35 +577,35 @@ Expected: `200` each. If a patch-notes URL 404s, link the wiki mirror instead (`
 Append to the `describe` block in `page.svelte.test.ts`:
 
 ```ts
-	it('explains the two-channel rule with the first-win warning', () => {
-		render(Page, { data });
-		expect(screen.getByRole('heading', { name: /two-channel rule/i })).toBeInTheDocument();
-		expect(screen.getByText('End-of-mission rewards')).toBeInTheDocument();
-		expect(screen.getByText(/Pickups & caches/)).toBeInTheDocument();
-		expect(screen.getByText(/wastes the First Win Bonus/i)).toBeInTheDocument();
-	});
+it('explains the two-channel rule with the first-win warning', () => {
+	render(Page, { data });
+	expect(screen.getByRole('heading', { name: /two-channel rule/i })).toBeInTheDocument();
+	expect(screen.getByText('End-of-mission rewards')).toBeInTheDocument();
+	expect(screen.getByText(/Pickups & caches/)).toBeInTheDocument();
+	expect(screen.getByText(/wastes the First Win Bonus/i)).toBeInTheDocument();
+});
 
-	it('renders the multiplier stacking table with the 500k worked example', () => {
-		render(Page, { data });
-		expect(screen.getByRole('heading', { name: /stacking multipliers/i })).toBeInTheDocument();
-		expect(screen.getByRole('cell', { name: "Chroma's Effigy" })).toBeInTheDocument();
-		expect(screen.getByText(/500,000 per kill/)).toBeInTheDocument();
-	});
+it('renders the multiplier stacking table with the 500k worked example', () => {
+	render(Page, { data });
+	expect(screen.getByRole('heading', { name: /stacking multipliers/i })).toBeInTheDocument();
+	expect(screen.getByRole('cell', { name: "Chroma's Effigy" })).toBeInTheDocument();
+	expect(screen.getByText(/500,000 per kill/)).toBeInTheDocument();
+});
 
-	it('busts outdated advice', () => {
-		render(Page, { data });
-		expect(screen.getByRole('heading', { name: /outdated advice/i })).toBeInTheDocument();
-		// "Secura Lecta" appears in two myth entries — assert presence, not uniqueness.
-		expect(screen.getAllByText(/Secura Lecta/).length).toBeGreaterThan(0);
-		expect(screen.getByText(/Gian Point/)).toBeInTheDocument();
-	});
+it('busts outdated advice', () => {
+	render(Page, { data });
+	expect(screen.getByRole('heading', { name: /outdated advice/i })).toBeInTheDocument();
+	// "Secura Lecta" appears in two myth entries — assert presence, not uniqueness.
+	expect(screen.getAllByText(/Secura Lecta/).length).toBeGreaterThan(0);
+	expect(screen.getByText(/Gian Point/)).toBeInTheDocument();
+});
 
-	it('lists honorable mentions and sources', () => {
-		render(Page, { data });
-		// "Railjack" also appears in the two-channel rewards panel.
-		expect(screen.getAllByText(/Railjack/).length).toBeGreaterThan(0);
-		expect(screen.getByRole('link', { name: /Credits — Warframe Wiki/i })).toBeInTheDocument();
-	});
+it('lists honorable mentions and sources', () => {
+	render(Page, { data });
+	// "Railjack" also appears in the two-channel rewards panel.
+	expect(screen.getAllByText(/Railjack/).length).toBeGreaterThan(0);
+	expect(screen.getByRole('link', { name: /Credits — Warframe Wiki/i })).toBeInTheDocument();
+});
 ```
 
 - [ ] **Step 3: Run tests to verify the new ones fail**
@@ -606,73 +618,92 @@ Expected: 4 PASS (Task 4), 4 FAIL (headings not found).
 Insert after the `canonical` constant in `+page.svelte`:
 
 ```ts
-	const MULTIPLIERS = [
-		{
-			name: 'Credit Booster',
-			channel: 'Everything',
-			effect: '×2 on rewards, caches and drops. 40p/3d · 80p/7d · 200p/30d; also from Daily Tribute and occasionally Baro Ki’Teer.',
-		},
-		{
-			name: 'Daily First Win Bonus',
-			channel: 'Rewards only',
-			effect: '×2 on the first mission completed after 00:00 UTC — silently consumed by cache/drop missions.',
-		},
-		{
-			name: "Chroma's Effigy",
-			channel: 'Drops only',
-			effect: '×2 on credit pickups within 10 m of the sentry — cast it before collecting.',
-		},
-		{
-			name: 'MR30 Credit Blessing',
-			channel: 'Drops & caches',
-			effect: '+25% for 3 h, free from any MR30 player in a relay; additive with the booster.',
-		},
-		{
-			name: 'Prosperous Retriever',
-			channel: 'Drops only',
-			effect: '18% chance to double each pickup (beast companions) — the deterministic Smeeta alternative.',
-		},
-		{
-			name: 'Double-credit weekends',
-			channel: 'Everything',
-			effect: 'Occasional official events; multiply with a booster for ×4.',
-		},
-	];
+const MULTIPLIERS = [
+	{
+		name: 'Credit Booster',
+		channel: 'Everything',
+		effect:
+			'×2 on rewards, caches and drops. 40p/3d · 80p/7d · 200p/30d; also from Daily Tribute and occasionally Baro Ki’Teer.',
+	},
+	{
+		name: 'Daily First Win Bonus',
+		channel: 'Rewards only',
+		effect:
+			'×2 on the first mission completed after 00:00 UTC — silently consumed by cache/drop missions.',
+	},
+	{
+		name: "Chroma's Effigy",
+		channel: 'Drops only',
+		effect: '×2 on credit pickups within 10 m of the sentry — cast it before collecting.',
+	},
+	{
+		name: 'MR30 Credit Blessing',
+		channel: 'Drops & caches',
+		effect: '+25% for 3 h, free from any MR30 player in a relay; additive with the booster.',
+	},
+	{
+		name: 'Prosperous Retriever',
+		channel: 'Drops only',
+		effect:
+			'18% chance to double each pickup (beast companions) — the deterministic Smeeta alternative.',
+	},
+	{
+		name: 'Double-credit weekends',
+		channel: 'Everything',
+		effect: 'Occasional official events; multiply with a booster for ×4.',
+	},
+];
 
-	const MYTHS = [
-		{
-			claim: 'Secura Lecta is a credit printer',
-			truth: 'Dead since Hotfix 42.0.10 (May 2026): the multi-trigger exploit was fixed. The weapon keeps only a modest MR-scaled bonus on its own kills.',
-		},
-		{
-			claim: "Chroma's Effigy credit doubling was removed",
-			truth: 'False — the patch history is clean through 2026. The rumor conflates the Secura Lecta nerf; only a bug with Techrot cache credits is open.',
-		},
-		{
-			claim: 'Dark Sectors boost credits by +35%',
-			truth: 'Those percentages are the resource and affinity bonuses. The credit benefit is a flat ~20,000 added to the mission reward.',
-		},
-		{
-			claim: 'Farm credits on Gian Point',
-			truth: 'Removed in Update 29.10 (2021). Veil Proxima skirmishes still pay 80–150k per mission.',
-		},
-		{
-			claim: 'Sell Ayatan sculptures for credits',
-			truth: 'Their credit sell value is negligible — Ayatans are Endo (or platinum), not a credit source.',
-		},
-	];
+const MYTHS = [
+	{
+		claim: 'Secura Lecta is a credit printer',
+		truth:
+			'Dead since Hotfix 42.0.10 (May 2026): the multi-trigger exploit was fixed. The weapon keeps only a modest MR-scaled bonus on its own kills.',
+	},
+	{
+		claim: "Chroma's Effigy credit doubling was removed",
+		truth:
+			'False — the patch history is clean through 2026. The rumor conflates the Secura Lecta nerf; only a bug with Techrot cache credits is open.',
+	},
+	{
+		claim: 'Dark Sectors boost credits by +35%',
+		truth:
+			'Those percentages are the resource and affinity bonuses. The credit benefit is a flat ~20,000 added to the mission reward.',
+	},
+	{
+		claim: 'Farm credits on Gian Point',
+		truth: 'Removed in Update 29.10 (2021). Veil Proxima skirmishes still pay 80–150k per mission.',
+	},
+	{
+		claim: 'Sell Ayatan sculptures for credits',
+		truth:
+			'Their credit sell value is negligible — Ayatans are Endo (or platinum), not a credit source.',
+	},
+];
 
-	const SOURCES = [
-		{ label: 'Credits — Warframe Wiki', url: 'https://wiki.warframe.com/w/Credits' },
-		{ label: 'Dark Sector — Warframe Wiki', url: 'https://wiki.warframe.com/w/Dark_Sector' },
-		{ label: 'Daily Tribute — Warframe Wiki', url: 'https://wiki.warframe.com/w/Daily_Tribute' },
-		{ label: 'The Index — Warframe Wiki', url: 'https://wiki.warframe.com/w/The_Index' },
-		{ label: 'Laomedeia — Warframe Wiki', url: 'https://wiki.warframe.com/w/Laomedeia' },
-		{ label: 'Legacyte Harvest — Warframe Wiki', url: 'https://wiki.warframe.com/w/Legacyte_Harvest' },
-		{ label: 'Profit-Taker Orb — Warframe Wiki', url: 'https://wiki.warframe.com/w/Profit-Taker_Orb' },
-		{ label: 'Hotfix 42.0.10 (Secura Lecta fix)', url: 'https://www.warframe.com/en/patch-notes/pc/42-0-10' },
-		{ label: 'Update 27.4 (Railjack credit rewards)', url: 'https://www.warframe.com/en/patch-notes/pc/27-4-0' },
-	];
+const SOURCES = [
+	{ label: 'Credits — Warframe Wiki', url: 'https://wiki.warframe.com/w/Credits' },
+	{ label: 'Dark Sector — Warframe Wiki', url: 'https://wiki.warframe.com/w/Dark_Sector' },
+	{ label: 'Daily Tribute — Warframe Wiki', url: 'https://wiki.warframe.com/w/Daily_Tribute' },
+	{ label: 'The Index — Warframe Wiki', url: 'https://wiki.warframe.com/w/The_Index' },
+	{ label: 'Laomedeia — Warframe Wiki', url: 'https://wiki.warframe.com/w/Laomedeia' },
+	{
+		label: 'Legacyte Harvest — Warframe Wiki',
+		url: 'https://wiki.warframe.com/w/Legacyte_Harvest',
+	},
+	{
+		label: 'Profit-Taker Orb — Warframe Wiki',
+		url: 'https://wiki.warframe.com/w/Profit-Taker_Orb',
+	},
+	{
+		label: 'Hotfix 42.0.10 (Secura Lecta fix)',
+		url: 'https://www.warframe.com/en/patch-notes/pc/42-0-10',
+	},
+	{
+		label: 'Update 27.4 (Railjack credit rewards)',
+		url: 'https://www.warframe.com/en/patch-notes/pc/27-4-0',
+	},
+];
 ```
 
 - [ ] **Step 5: Replace the first placeholder comment with the two-channel section**
@@ -820,9 +851,11 @@ git commit -m "feat(guides): credits guide content — two-channel rule, stackin
 ### Task 6: End-to-end test + full verification
 
 **Files:**
+
 - Modify: `e2e/guides.test.ts`
 
 **Interfaces:**
+
 - Consumes: everything above; the built app (`pnpm build` + `pnpm preview`, which `playwright.config` orchestrates).
 - Produces: a merge-ready branch.
 
