@@ -36,3 +36,15 @@ test('credits guide renders the bespoke page', async ({ page }) => {
 	await expect(page.getByRole('heading', { name: /two-channel rule/i })).toBeVisible();
 	await expect(page.getByRole('heading', { name: /outdated advice/i })).toBeVisible();
 });
+
+test('affinity guide renders the bespoke page', async ({ page }) => {
+	const response = await page.goto('/guides/affinity');
+
+	expect(response?.status()).toBe(200);
+	await expect(page.getByRole('heading', { name: /Affinity farming guide/i })).toBeVisible();
+	// Data-driven card from the dataset entry.
+	await expect(page.getByText('Saturn — Helene (Defense)')).toBeVisible();
+	// Bespoke sections that the generic [resource] shell doesn't have.
+	await expect(page.getByRole('heading', { name: /sharing rules/i })).toBeVisible();
+	await expect(page.getByRole('heading', { name: /stacking multipliers/i })).toBeVisible();
+});
