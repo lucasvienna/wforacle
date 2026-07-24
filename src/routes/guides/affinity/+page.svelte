@@ -229,8 +229,8 @@
 				<p class="mt-2 text-sm text-wf-muted">
 					An ability kill sends <strong>100% to your Warframe</strong>; a weapon
 					kill splits <strong>50/50</strong> between frame and killing weapon. Since
-					Update 43.0, damaging an enemy your companion finishes (or vice versa) grants
-					both of you full kill affinity.
+					Update 43.0, damaging an enemy that your companion finishes (or vice versa)
+					grants both of you full kill affinity.
 				</p>
 			</div>
 			<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">

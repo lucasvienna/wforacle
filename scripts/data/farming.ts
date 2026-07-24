@@ -768,7 +768,7 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 			boostersApply: true,
 			boosterNote:
 				'Boosters help: an Affinity Booster doubles every point of XP earned here — resource boosters do nothing for affinity.',
-			note: 'The early-game leveling node: level 21–26 Grineer on a compact Galleon Defense map, unlocked mid star chart — well before Hydron. Join a full public squad, bring only the gear you’re leveling plus one strong weapon, and stay inside the 50-metre share range. Since Update 38.5 rewards and extraction come every 3 waves, so leave as soon as your gear is capped.',
+			note: 'The early-game leveling node: level 21–26 Grineer on a compact Galleon Defense map, unlocked mid star chart — well before Hydron. Join a full public squad, bring only the gear you’re leveling plus one strong weapon, and stay inside the 50-metre share range. Since Update 38.5, rewards and extraction come every 3 waves, so leave as soon as your gear is capped.',
 			source: 'https://wiki.warframe.com/w/Helene',
 			lastVerified: '2026-07-24',
 		},
