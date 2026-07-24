@@ -398,6 +398,75 @@ describe('RegionPanel — open world', () => {
 		expect(screen.getByText(/^Shrine Defense · 4\.09%$/)).toBeInTheDocument();
 	});
 
+	it('renders a drop-sourced blueprint like a component row, not the bpSource label', () => {
+		const mirror: Dataset = {
+			regions: [
+				{
+					id: 'mars',
+					name: 'Mars',
+					kind: 'planet',
+					progressionOrder: 4,
+					factions: ['Grineer'],
+					nodeIds: ['tyanapass'],
+					spoilerGated: false,
+					resourceIds: [],
+				},
+			],
+			nodes: [
+				{
+					id: 'tyanapass',
+					regionId: 'mars',
+					name: 'Tyana Pass',
+					missionType: 'Mirror Defense',
+					faction: 'Crossfire',
+					isAssassination: false,
+				},
+			],
+			bosses: [],
+			warframes: [
+				{
+					id: 'citrine',
+					name: 'Citrine',
+					nodeId: 'tyanapass',
+					parts: [
+						{
+							id: 'citrine:bp',
+							frameId: 'citrine',
+							slot: 'bp',
+							dropSourceNodeId: 'tyanapass',
+							chance: 9.3,
+							bountyTier: 'Rotation C',
+						},
+						{
+							id: 'citrine:systems',
+							frameId: 'citrine',
+							slot: 'systems',
+							dropSourceNodeId: 'tyanapass',
+							chance: 6.1,
+							bountyTier: 'Rotation C',
+						},
+					],
+				},
+			],
+			resources: [],
+			quests: [],
+			openWorldFarms: [
+				{
+					frameId: 'citrine',
+					nodeId: 'tyanapass',
+					regionId: 'mars',
+					componentSource: 'Mirror Defense',
+					bpSource: 'Mirror Defense drop (Rot C)',
+				},
+			],
+		};
+		const tracker = createTracker(mirror.warframes);
+		render(RegionPanel, { dataset: mirror, regionId: 'mars', tracker });
+		const bpRow = document.querySelector('[data-part="citrine:bp"]') as HTMLElement;
+		expect(bpRow.textContent).toMatch(/Mirror Defense · Rotation C · 9\.3%/);
+		expect(bpRow.textContent).not.toMatch(/drop \(Rot C\)/);
+	});
+
 	it('shows Caliban under BOTH earth and venus', () => {
 		const t1 = createTracker(openWorld.warframes);
 		const { unmount } = render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker: t1 });
