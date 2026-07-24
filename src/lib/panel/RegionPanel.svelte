@@ -107,7 +107,8 @@
 	function owAvailabilityChip(
 		part: WarframePart,
 	): { cls: string; text: string } | null {
-		if (!worldState || (part.slot === 'bp' && !part.dropSourceNodeId)) return null;
+		if (!worldState || (part.slot === 'bp' && !part.dropSourceNodeId))
+			return null;
 		const rot = worldState.rotation;
 		const a = partAvailability(part.rotation, rot.letter);
 		if (a === 'available') {
@@ -136,7 +137,9 @@
 		if (!worldState) return null;
 		const letter = worldState.rotation.letter;
 		const needed = frame.parts.filter(
-			(p) => (p.slot !== 'bp' || p.dropSourceNodeId != null) && !tracker.isOwned(p.id),
+			(p) =>
+				(p.slot !== 'bp' || p.dropSourceNodeId != null) &&
+				!tracker.isOwned(p.id),
 		);
 		if (needed.length === 0) return null;
 		const upNow = needed.some((p) => {

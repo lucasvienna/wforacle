@@ -20,10 +20,12 @@
 ### Task 1: Curated farm entries (`openworld.ts`)
 
 **Files:**
+
 - Modify: `scripts/data/openworld.ts`
 - Test: `scripts/data/openworld.test.ts`
 
 **Interfaces:**
+
 - Produces: 7 new `OPEN_WORLD_FARMS` entries (frameIds `citrine`, `dante`, `gauss`, `voruna`, `nidus`, `jade`, `gyre`) and 5 new `PER_RUN_ROTATION_FARMS` keys (`citrine`, `dante`, `gauss`, `voruna`, `nidus`). Task 2 reads `PER_RUN_ROTATION_FARMS[frameId][slot]`; Task 5's dataset rebuild consumes the farm entries.
 
 - [ ] **Step 1: Write the failing tests**
@@ -50,60 +52,60 @@ const ZONE_NODES = new Set([
 ```
 
 ```ts
-	it('has 17 entries covering all sixteen frames', () => {
-		expect(OPEN_WORLD_FARMS).toHaveLength(17);
-		expect(new Set(OPEN_WORLD_FARMS.map((f) => f.frameId))).toEqual(
-			new Set([
-				'gara',
-				'revenant',
-				'caliban',
-				'garuda',
-				'hildryn',
-				'xaku',
-				'qorvex',
-				'protea',
-				'koumei',
-				'citrine',
-				'dante',
-				'gauss',
-				'voruna',
-				'nidus',
-				'jade',
-				'gyre',
-			]),
-		);
-	});
+it('has 17 entries covering all sixteen frames', () => {
+	expect(OPEN_WORLD_FARMS).toHaveLength(17);
+	expect(new Set(OPEN_WORLD_FARMS.map((f) => f.frameId))).toEqual(
+		new Set([
+			'gara',
+			'revenant',
+			'caliban',
+			'garuda',
+			'hildryn',
+			'xaku',
+			'qorvex',
+			'protea',
+			'koumei',
+			'citrine',
+			'dante',
+			'gauss',
+			'voruna',
+			'nidus',
+			'jade',
+			'gyre',
+		]),
+	);
+});
 ```
 
 In the `PER_RUN_ROTATION_FARMS` describe block, replace the coverage test and add one for the mission farms:
 
 ```ts
-	it('covers exactly the farms whose rewards are per-run ranks, not the bounty cycle', () => {
-		expect(Object.keys(PER_RUN_ROTATION_FARMS).sort()).toEqual([
-			'citrine',
-			'dante',
-			'gauss',
-			'koumei',
-			'nidus',
-			'protea',
-			'voruna',
-		]);
-	});
+it('covers exactly the farms whose rewards are per-run ranks, not the bounty cycle', () => {
+	expect(Object.keys(PER_RUN_ROTATION_FARMS).sort()).toEqual([
+		'citrine',
+		'dante',
+		'gauss',
+		'koumei',
+		'nidus',
+		'protea',
+		'voruna',
+	]);
+});
 
-	it('labels every mission-farm slot Rotation C, including drop-sourced blueprints', () => {
-		expect(PER_RUN_ROTATION_FARMS.citrine).toEqual({
-			bp: 'Rotation C',
-			neuroptics: 'Rotation C',
-			chassis: 'Rotation C',
-			systems: 'Rotation C',
-		});
-		// Gauss's bp is a Market purchase, not a drop — no bp label.
-		expect(PER_RUN_ROTATION_FARMS.gauss).toEqual({
-			neuroptics: 'Rotation C',
-			chassis: 'Rotation C',
-			systems: 'Rotation C',
-		});
+it('labels every mission-farm slot Rotation C, including drop-sourced blueprints', () => {
+	expect(PER_RUN_ROTATION_FARMS.citrine).toEqual({
+		bp: 'Rotation C',
+		neuroptics: 'Rotation C',
+		chassis: 'Rotation C',
+		systems: 'Rotation C',
 	});
+	// Gauss's bp is a Market purchase, not a drop — no bp label.
+	expect(PER_RUN_ROTATION_FARMS.gauss).toEqual({
+		neuroptics: 'Rotation C',
+		chassis: 'Rotation C',
+		systems: 'Rotation C',
+	});
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -223,10 +225,12 @@ git commit -m "feat(data): curate seven mission-node farms (Citrine, Dante, Gaus
 ### Task 2: Blueprint-drop support in `buildOpenWorldFrames`
 
 **Files:**
+
 - Modify: `scripts/data/build.ts` (the `buildOpenWorldFrames` function, ~lines 305–351)
 - Test: `scripts/data/build.test.ts` (the `buildOpenWorldFrames` describe block)
 
 **Interfaces:**
+
 - Consumes: `PER_RUN_ROTATION_FARMS` from Task 1 (already imported in build.ts).
 - Produces: `bp` parts gain `dropSourceNodeId`/`chance`/`bountyTier`/`rotation` when the Blueprint has farm-shaped drops; stay bare (`{id, frameId, slot}`) otherwise. Task 3's UI relies on `part.slot === 'bp' && part.dropSourceNodeId` to switch rendering.
 
@@ -235,125 +239,125 @@ git commit -m "feat(data): curate seven mission-node farms (Citrine, Dante, Gaus
 Add to the `buildOpenWorldFrames` describe block in `scripts/data/build.test.ts` (fixtures use the real @wfcd location strings; note Gyre's double space after `Level`):
 
 ```ts
-	// Citrine's main blueprint drops at the farm node itself (Mirror Defense
-	// Rot C). The bp part must become drop-sourced, with the per-run static
-	// label and NO live rotation.
-	const citrine: RawWarframe = {
-		name: 'Citrine',
-		uniqueName: '/Lotus/Powersuits/Citrine/Citrine',
-		type: 'Warframe',
-		components: [
-			{
-				name: 'Blueprint',
-				drops: [{ location: 'Mars/Tyana Pass (Defense), Rotation C', chance: 9.3 }],
-			},
-			{
-				name: 'Systems',
-				drops: [{ location: 'Mars/Tyana Pass (Defense), Rotation C', chance: 6.1 }],
-			},
-		],
-	};
-	// Nidus's blueprint rows are vendor/quest entries (Cephalon Simaris @100),
-	// which must NOT turn the bp part into a fake 100% drop.
-	const nidus: RawWarframe = {
-		name: 'Nidus',
-		uniqueName: '/Lotus/Powersuits/Nidus/Nidus',
-		type: 'Warframe',
-		components: [
-			{
-				name: 'Blueprint',
-				drops: [{ location: 'Cephalon Simaris, Complete The Glast Gambit', chance: 100 }],
-			},
-			{
-				name: 'Systems',
-				drops: [{ location: 'Eris/Oestrus (Infested Salvage), Rotation C', chance: 14.29 }],
-			},
-		],
-	};
-	// Gyre's blueprint is a bounty reward at two tiers (equal chance → the
-	// lower tier wins); Zariman bounty rotations are the live cycle, so the
-	// rotation letter is kept.
-	const gyre: RawWarframe = {
-		name: 'Gyre',
-		uniqueName: '/Lotus/Powersuits/Gyre/Gyre',
-		type: 'Warframe',
-		components: [
-			{
-				name: 'Blueprint',
-				drops: [
-					{
-						location: 'Zariman Ten Zero (Level  110 - 115 Zariman Bounty), Rotation C',
-						chance: 12.99,
-					},
-					{
-						location: 'Zariman Ten Zero (Level  90 - 95 Zariman Bounty), Rotation C',
-						chance: 12.99,
-					},
-				],
-			},
-			{
-				name: 'Neuroptics',
-				drops: [
-					{
-						location: 'Zariman Ten Zero (Level  50 - 55 Zariman Bounty), Rotation C',
-						chance: 13.04,
-					},
-				],
-			},
-		],
-	};
-	const missionFarms: OpenWorldFarm[] = [
+// Citrine's main blueprint drops at the farm node itself (Mirror Defense
+// Rot C). The bp part must become drop-sourced, with the per-run static
+// label and NO live rotation.
+const citrine: RawWarframe = {
+	name: 'Citrine',
+	uniqueName: '/Lotus/Powersuits/Citrine/Citrine',
+	type: 'Warframe',
+	components: [
 		{
-			frameId: 'citrine',
-			nodeId: 'SolNode450',
-			regionId: 'mars',
-			componentSource: 'Mirror Defense',
-			bpSource: 'Mirror Defense drop (Rot C)',
+			name: 'Blueprint',
+			drops: [{ location: 'Mars/Tyana Pass (Defense), Rotation C', chance: 9.3 }],
 		},
 		{
-			frameId: 'nidus',
-			nodeId: 'SolNode167',
-			regionId: 'eris',
-			componentSource: 'Infested Salvage',
-			bpSource: 'Complete The Glast Gambit',
+			name: 'Systems',
+			drops: [{ location: 'Mars/Tyana Pass (Defense), Rotation C', chance: 6.1 }],
+		},
+	],
+};
+// Nidus's blueprint rows are vendor/quest entries (Cephalon Simaris @100),
+// which must NOT turn the bp part into a fake 100% drop.
+const nidus: RawWarframe = {
+	name: 'Nidus',
+	uniqueName: '/Lotus/Powersuits/Nidus/Nidus',
+	type: 'Warframe',
+	components: [
+		{
+			name: 'Blueprint',
+			drops: [{ location: 'Cephalon Simaris, Complete The Glast Gambit', chance: 100 }],
 		},
 		{
-			frameId: 'gyre',
-			nodeId: 'ZarimanHub',
-			regionId: 'zariman',
-			componentSource: 'Zariman Bounty',
-			bpSource: 'Zariman Bounty drop (L90–95+)',
+			name: 'Systems',
+			drops: [{ location: 'Eris/Oestrus (Infested Salvage), Rotation C', chance: 14.29 }],
 		},
-	];
+	],
+};
+// Gyre's blueprint is a bounty reward at two tiers (equal chance → the
+// lower tier wins); Zariman bounty rotations are the live cycle, so the
+// rotation letter is kept.
+const gyre: RawWarframe = {
+	name: 'Gyre',
+	uniqueName: '/Lotus/Powersuits/Gyre/Gyre',
+	type: 'Warframe',
+	components: [
+		{
+			name: 'Blueprint',
+			drops: [
+				{
+					location: 'Zariman Ten Zero (Level  110 - 115 Zariman Bounty), Rotation C',
+					chance: 12.99,
+				},
+				{
+					location: 'Zariman Ten Zero (Level  90 - 95 Zariman Bounty), Rotation C',
+					chance: 12.99,
+				},
+			],
+		},
+		{
+			name: 'Neuroptics',
+			drops: [
+				{
+					location: 'Zariman Ten Zero (Level  50 - 55 Zariman Bounty), Rotation C',
+					chance: 13.04,
+				},
+			],
+		},
+	],
+};
+const missionFarms: OpenWorldFarm[] = [
+	{
+		frameId: 'citrine',
+		nodeId: 'SolNode450',
+		regionId: 'mars',
+		componentSource: 'Mirror Defense',
+		bpSource: 'Mirror Defense drop (Rot C)',
+	},
+	{
+		frameId: 'nidus',
+		nodeId: 'SolNode167',
+		regionId: 'eris',
+		componentSource: 'Infested Salvage',
+		bpSource: 'Complete The Glast Gambit',
+	},
+	{
+		frameId: 'gyre',
+		nodeId: 'ZarimanHub',
+		regionId: 'zariman',
+		componentSource: 'Zariman Bounty',
+		bpSource: 'Zariman Bounty drop (L90–95+)',
+	},
+];
 
-	it('makes a node-dropped blueprint a drop-sourced part with the per-run label', () => {
-		const cit = buildOpenWorldFrames([citrine], missionFarms).find((f) => f.id === 'citrine')!;
-		const bp = cit.parts.find((p) => p.slot === 'bp')!;
-		expect(bp.dropSourceNodeId).toBe('SolNode450');
-		expect(bp.chance).toBeCloseTo(9.3, 1);
-		expect(bp.bountyTier).toBe('Rotation C');
-		expect(bp.rotation).toBeUndefined();
-	});
+it('makes a node-dropped blueprint a drop-sourced part with the per-run label', () => {
+	const cit = buildOpenWorldFrames([citrine], missionFarms).find((f) => f.id === 'citrine')!;
+	const bp = cit.parts.find((p) => p.slot === 'bp')!;
+	expect(bp.dropSourceNodeId).toBe('SolNode450');
+	expect(bp.chance).toBeCloseTo(9.3, 1);
+	expect(bp.bountyTier).toBe('Rotation C');
+	expect(bp.rotation).toBeUndefined();
+});
 
-	it('keeps a vendor/quest-sourced blueprint bare', () => {
-		const nid = buildOpenWorldFrames([nidus], missionFarms).find((f) => f.id === 'nidus')!;
-		const bp = nid.parts.find((p) => p.slot === 'bp')!;
-		expect(bp.dropSourceNodeId).toBeUndefined();
-		expect(bp.chance).toBeUndefined();
-		const sys = nid.parts.find((p) => p.slot === 'systems')!;
-		expect(sys.chance).toBeCloseTo(14.29, 2);
-		expect(sys.bountyTier).toBe('Rotation C');
-		expect(sys.rotation).toBeUndefined();
-	});
+it('keeps a vendor/quest-sourced blueprint bare', () => {
+	const nid = buildOpenWorldFrames([nidus], missionFarms).find((f) => f.id === 'nidus')!;
+	const bp = nid.parts.find((p) => p.slot === 'bp')!;
+	expect(bp.dropSourceNodeId).toBeUndefined();
+	expect(bp.chance).toBeUndefined();
+	const sys = nid.parts.find((p) => p.slot === 'systems')!;
+	expect(sys.chance).toBeCloseTo(14.29, 2);
+	expect(sys.bountyTier).toBe('Rotation C');
+	expect(sys.rotation).toBeUndefined();
+});
 
-	it('resolves a bounty-dropped blueprint with live rotation and lowest-tier tiebreak', () => {
-		const gy = buildOpenWorldFrames([gyre], missionFarms).find((f) => f.id === 'gyre')!;
-		const bp = gy.parts.find((p) => p.slot === 'bp')!;
-		expect(bp.dropSourceNodeId).toBe('ZarimanHub');
-		expect(bp.chance).toBeCloseTo(12.99, 2);
-		expect(bp.bountyTier).toBe('L90–95');
-		expect(bp.rotation).toBe('C');
-	});
+it('resolves a bounty-dropped blueprint with live rotation and lowest-tier tiebreak', () => {
+	const gy = buildOpenWorldFrames([gyre], missionFarms).find((f) => f.id === 'gyre')!;
+	const bp = gy.parts.find((p) => p.slot === 'bp')!;
+	expect(bp.dropSourceNodeId).toBe('ZarimanHub');
+	expect(bp.chance).toBeCloseTo(12.99, 2);
+	expect(bp.bountyTier).toBe('L90–95');
+	expect(bp.rotation).toBe('C');
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -378,38 +382,36 @@ function isFarmDropLocation(loc: string): boolean {
 Then rework the component loop and parts mapping inside `buildOpenWorldFrames` (replacing the current `if (slot !== 'bp')` stage guard and the `if (slot === 'bp') return …` bare-part branch):
 
 ```ts
-		const present = new Set<Slot>(['bp']);
-		const stageBySlot = new Map<Slot, BountyStage | null>();
-		for (const c of wf.components) {
-			const slot = SLOT_BY_COMPONENT[c.name];
-			if (!slot) continue;
-			present.add(slot);
-			const drops =
-				slot === 'bp'
-					? (c.drops ?? []).filter((d) => isFarmDropLocation(d.location))
-					: (c.drops ?? []);
-			stageBySlot.set(slot, bestBountyStage(drops));
-		}
-		// Per-run-rotation farms (Granum Void, Shrine Defense, mission-node
-		// farms): the rotation letter parsed from drop locations is an in-run
-		// rank/cadence, not the 150-min bounty cycle, so it's discarded; curated
-		// tier labels replace it.
-		const perRun = PER_RUN_ROTATION_FARMS[frameId];
-		const parts: WarframePart[] = ORDER.filter((s) => present.has(s)).map((slot) => {
-			const stage = stageBySlot.get(slot);
-			// A bp without a farmable drop stays bare: the panel renders the
-			// farm's bpSource label for it (quest/Market/vendor blueprints).
-			if (slot === 'bp' && !stage) return { id: partId(frameId, slot), frameId, slot };
-			return {
-				id: partId(frameId, slot),
-				frameId,
-				slot,
-				dropSourceNodeId: nodeId,
-				chance: stage?.chance,
-				bountyTier: perRun ? perRun[slot] : stage?.bountyTier,
-				rotation: perRun ? undefined : stage?.rotation,
-			};
-		});
+const present = new Set<Slot>(['bp']);
+const stageBySlot = new Map<Slot, BountyStage | null>();
+for (const c of wf.components) {
+	const slot = SLOT_BY_COMPONENT[c.name];
+	if (!slot) continue;
+	present.add(slot);
+	const drops =
+		slot === 'bp' ? (c.drops ?? []).filter((d) => isFarmDropLocation(d.location)) : (c.drops ?? []);
+	stageBySlot.set(slot, bestBountyStage(drops));
+}
+// Per-run-rotation farms (Granum Void, Shrine Defense, mission-node
+// farms): the rotation letter parsed from drop locations is an in-run
+// rank/cadence, not the 150-min bounty cycle, so it's discarded; curated
+// tier labels replace it.
+const perRun = PER_RUN_ROTATION_FARMS[frameId];
+const parts: WarframePart[] = ORDER.filter((s) => present.has(s)).map((slot) => {
+	const stage = stageBySlot.get(slot);
+	// A bp without a farmable drop stays bare: the panel renders the
+	// farm's bpSource label for it (quest/Market/vendor blueprints).
+	if (slot === 'bp' && !stage) return { id: partId(frameId, slot), frameId, slot };
+	return {
+		id: partId(frameId, slot),
+		frameId,
+		slot,
+		dropSourceNodeId: nodeId,
+		chance: stage?.chance,
+		bountyTier: perRun ? perRun[slot] : stage?.bountyTier,
+		rotation: perRun ? undefined : stage?.rotation,
+	};
+});
 ```
 
 `parseDropLocation` is already imported in build.ts.
@@ -431,10 +433,12 @@ git commit -m "feat(data): drop-sourced blueprints in buildOpenWorldFrames"
 ### Task 3: Panel rendering for drop-sourced blueprints
 
 **Files:**
+
 - Modify: `src/lib/panel/RegionPanel.svelte` (`owSourceText` ~line 64, `owAvailabilityChip` ~line 109)
 - Test: `src/lib/panel/RegionPanel.svelte.test.ts`
 
 **Interfaces:**
+
 - Consumes: Task 2's contract — drop-sourced bp parts carry `dropSourceNodeId`; bare bp parts don't.
 
 **IMPORTANT:** `.svelte` edits must go through the svelte skill/agent and be checked with the svelte MCP autofixer.
@@ -444,74 +448,74 @@ git commit -m "feat(data): drop-sourced blueprints in buildOpenWorldFrames"
 Add to `RegionPanel.svelte.test.ts`, inside the open-world describe block (reuse the `createTracker`/`render`/`screen` harness used by the "labels a mission-farm zone" test; the fixture mirrors that test's shape):
 
 ```ts
-	it('renders a drop-sourced blueprint like a component row, not the bpSource label', () => {
-		const mirror: Dataset = {
-			regions: [
-				{
-					id: 'mars',
-					name: 'Mars',
-					kind: 'planet',
-					progressionOrder: 4,
-					factions: ['Grineer'],
-					nodeIds: ['tyanapass'],
-					spoilerGated: false,
-					resourceIds: [],
-				},
-			],
-			nodes: [
-				{
-					id: 'tyanapass',
-					regionId: 'mars',
-					name: 'Tyana Pass',
-					missionType: 'Mirror Defense',
-					faction: 'Crossfire',
-					isAssassination: false,
-				},
-			],
-			bosses: [],
-			warframes: [
-				{
-					id: 'citrine',
-					name: 'Citrine',
-					nodeId: 'tyanapass',
-					parts: [
-						{
-							id: 'citrine:bp',
-							frameId: 'citrine',
-							slot: 'bp',
-							dropSourceNodeId: 'tyanapass',
-							chance: 9.3,
-							bountyTier: 'Rotation C',
-						},
-						{
-							id: 'citrine:systems',
-							frameId: 'citrine',
-							slot: 'systems',
-							dropSourceNodeId: 'tyanapass',
-							chance: 6.1,
-							bountyTier: 'Rotation C',
-						},
-					],
-				},
-			],
-			resources: [],
-			quests: [],
-			openWorldFarms: [
-				{
-					frameId: 'citrine',
-					nodeId: 'tyanapass',
-					regionId: 'mars',
-					componentSource: 'Mirror Defense',
-					bpSource: 'Mirror Defense drop (Rot C)',
-				},
-			],
-		};
-		const tracker = createTracker(mirror.warframes);
-		render(RegionPanel, { dataset: mirror, regionId: 'mars', tracker });
-		const bpRow = document.querySelector('[data-part="citrine:bp"]') as HTMLElement;
-		expect(bpRow.textContent).toMatch(/Mirror Defense · Rotation C · 9\.3%/);
-		expect(bpRow.textContent).not.toMatch(/drop \(Rot C\)/);
-	});
+it('renders a drop-sourced blueprint like a component row, not the bpSource label', () => {
+	const mirror: Dataset = {
+		regions: [
+			{
+				id: 'mars',
+				name: 'Mars',
+				kind: 'planet',
+				progressionOrder: 4,
+				factions: ['Grineer'],
+				nodeIds: ['tyanapass'],
+				spoilerGated: false,
+				resourceIds: [],
+			},
+		],
+		nodes: [
+			{
+				id: 'tyanapass',
+				regionId: 'mars',
+				name: 'Tyana Pass',
+				missionType: 'Mirror Defense',
+				faction: 'Crossfire',
+				isAssassination: false,
+			},
+		],
+		bosses: [],
+		warframes: [
+			{
+				id: 'citrine',
+				name: 'Citrine',
+				nodeId: 'tyanapass',
+				parts: [
+					{
+						id: 'citrine:bp',
+						frameId: 'citrine',
+						slot: 'bp',
+						dropSourceNodeId: 'tyanapass',
+						chance: 9.3,
+						bountyTier: 'Rotation C',
+					},
+					{
+						id: 'citrine:systems',
+						frameId: 'citrine',
+						slot: 'systems',
+						dropSourceNodeId: 'tyanapass',
+						chance: 6.1,
+						bountyTier: 'Rotation C',
+					},
+				],
+			},
+		],
+		resources: [],
+		quests: [],
+		openWorldFarms: [
+			{
+				frameId: 'citrine',
+				nodeId: 'tyanapass',
+				regionId: 'mars',
+				componentSource: 'Mirror Defense',
+				bpSource: 'Mirror Defense drop (Rot C)',
+			},
+		],
+	};
+	const tracker = createTracker(mirror.warframes);
+	render(RegionPanel, { dataset: mirror, regionId: 'mars', tracker });
+	const bpRow = document.querySelector('[data-part="citrine:bp"]') as HTMLElement;
+	expect(bpRow.textContent).toMatch(/Mirror Defense · Rotation C · 9\.3%/);
+	expect(bpRow.textContent).not.toMatch(/drop \(Rot C\)/);
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -535,7 +539,7 @@ Update its preceding comment to say "a bare bp shows its bpSource; a drop-source
 In `owAvailabilityChip`, let a drop-sourced bp get the same chip treatment as components:
 
 ```ts
-		if (!worldState || (part.slot === 'bp' && !part.dropSourceNodeId)) return null;
+if (!worldState || (part.slot === 'bp' && !part.dropSourceNodeId)) return null;
 ```
 
 Update its comment's "(bp slot, …)" to "(bare bp slot, …)".
@@ -557,6 +561,7 @@ git commit -m "feat(panel): render drop-sourced open-world blueprints as drop ro
 ### Task 4: Frame glyphs
 
 **Files:**
+
 - Modify: `scripts/fetch-frame-glyphs.sh`
 - Create (generated): `static/frames/{citrine,dante,gauss,voruna,nidus,jade,gyre}.webp`
 
@@ -594,6 +599,7 @@ git commit -m "feat(assets): Dark glyphs for the seven mission-node frames"
 ### Task 5: Dataset rebuild + integrity assertions
 
 **Files:**
+
 - Modify (generated): `static/data/dataset.json`
 - Modify: `src/lib/data/dataset.test.ts` (only if it asserts frame counts/names — check first)
 
@@ -633,6 +639,7 @@ git commit -m "feat(frames): add Citrine, Dante, Gauss, Voruna, Nidus, Jade, Gyr
 ### Task 6: E2E coverage
 
 **Files:**
+
 - Modify: `e2e/completeness.test.ts`
 
 - [ ] **Step 1: Add the test** (pattern: the existing "Protea and Koumei render as mission farms" test; Mars and Uranus are ungated so no quest toggles needed):
@@ -651,7 +658,9 @@ test('Citrine and Jade render as mission-node farms on Mars and Uranus', async (
 	// Jade: Brutus Ascension — flat chance, no rotation labels at all.
 	await page.locator('svg [data-region="uranus"]').click();
 	await expect(page.locator('[data-part="jade:systems"]')).toBeVisible();
-	await expect(page.getByText('Blueprint: Complete Jade Shadows or 450 Vestigial Motes')).toBeVisible();
+	await expect(
+		page.getByText('Blueprint: Complete Jade Shadows or 450 Vestigial Motes'),
+	).toBeVisible();
 });
 ```
 

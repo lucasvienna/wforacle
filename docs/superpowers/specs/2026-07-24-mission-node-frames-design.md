@@ -22,15 +22,15 @@ reference real SolNode ids (Plains = SolNode228 precedent) and
 
 ## Frames
 
-| Frame | Node (id) | Region | Mode | Parts | Blueprint |
-|---|---|---|---|---|---|
-| Citrine | Tyana Pass (`SolNode450`) | Mars | Mirror Defense | all, Rot C 6.1% | node drop, Rot C 9.3% |
-| Dante | Armatus (`SolNode721`) | Deimos | Disruption | all, Rot C 5% | node drop, Rot C 7.5% |
-| Gauss | Kappa (`SolNode177`) | Sedna | Disruption | all, Rot C 7.84% | Market 30,000cr |
-| Voruna | Circulus (`SolNode310`) | Lua | Conjunction Survival | all, Rot C 8.16% | node drop, Rot C 12.24% |
-| Nidus | Oestrus (`SolNode167`) | Eris | Infested Salvage | all, Rot C 14.29% | Complete The Glast Gambit |
-| Jade | Brutus (`SolNode723`) | Uranus | Ascension | all, 4.63% (no rotation) | Complete Jade Shadows |
-| Gyre | Chrysalith (`ZarimanHub`) | Zariman | Zariman Bounty | per-tier bounty drops ~12–14% | bounty drop, L90–95+ 12.99% |
+| Frame   | Node (id)                 | Region  | Mode                 | Parts                         | Blueprint                   |
+| ------- | ------------------------- | ------- | -------------------- | ----------------------------- | --------------------------- |
+| Citrine | Tyana Pass (`SolNode450`) | Mars    | Mirror Defense       | all, Rot C 6.1%               | node drop, Rot C 9.3%       |
+| Dante   | Armatus (`SolNode721`)    | Deimos  | Disruption           | all, Rot C 5%                 | node drop, Rot C 7.5%       |
+| Gauss   | Kappa (`SolNode177`)      | Sedna   | Disruption           | all, Rot C 7.84%              | Market 30,000cr             |
+| Voruna  | Circulus (`SolNode310`)   | Lua     | Conjunction Survival | all, Rot C 8.16%              | node drop, Rot C 12.24%     |
+| Nidus   | Oestrus (`SolNode167`)    | Eris    | Infested Salvage     | all, Rot C 14.29%             | Complete The Glast Gambit   |
+| Jade    | Brutus (`SolNode723`)     | Uranus  | Ascension            | all, 4.63% (no rotation)      | Complete Jade Shadows       |
+| Gyre    | Chrysalith (`ZarimanHub`) | Zariman | Zariman Bounty       | per-tier bounty drops ~12–14% | bounty drop, L90–95+ 12.99% |
 
 Notes verified against wiki.warframe.com (2026-07-24):
 
@@ -70,7 +70,8 @@ stage resolves (bare part otherwise). `RegionPanel`'s open-world part label
 renders bp rows with drop data like component rows, falling back to
 `farm.bpSource` when bare. `bpSource` remains the required farm-level label
 (shown as the card's "Blueprint:" subline) and for these four states the drop
-+ any vendor alternative.
+
+- any vendor alternative.
 
 ### 4. No new quest gating
 
