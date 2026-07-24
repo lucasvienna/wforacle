@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1275.18+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-24T10:53:47.026Z",
+	"generatedAt": "2026-07-24T12:55:48.747Z",
 	"data": {
 		"regions": [
 			{
@@ -282,7 +282,8 @@
 					"hexenon",
 					"neuralsensors",
 					"alloyplate",
-					"oxium"
+					"oxium",
+					"affinity"
 				]
 			},
 			{
@@ -371,7 +372,8 @@
 					"nanospores",
 					"plastids",
 					"orokincell",
-					"detoniteampule"
+					"detoniteampule",
+					"affinity"
 				]
 			},
 			{
@@ -597,7 +599,8 @@
 					"alloyplate",
 					"rubedo",
 					"salvage",
-					"detoniteampule"
+					"detoniteampule",
+					"affinity"
 				]
 			},
 			{
@@ -747,7 +750,8 @@
 				],
 				"resourceIds": [
 					"voidgelorb",
-					"entratilanthorn"
+					"entratilanthorn",
+					"affinity"
 				],
 				"questId": "angelsofthezariman"
 			}
@@ -6134,6 +6138,76 @@
 						"source": "https://wiki.warframe.com/w/Profit-Taker_Orb",
 						"lastVerified": "2026-07-23",
 						"regionId": "venus"
+					}
+				]
+			},
+			{
+				"id": "affinity",
+				"name": "Affinity",
+				"regionIds": [
+					"jupiter",
+					"saturn",
+					"sedna",
+					"zariman"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Saturn — Helene (Defense)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: an Affinity Booster doubles every point of XP earned here — resource boosters do nothing for affinity.",
+						"note": "The early-game leveling node: level 21–26 Grineer on a compact Galleon Defense map, unlocked mid star chart — well before Hydron. Join a full public squad, bring only the gear you’re leveling plus one strong weapon, and stay inside the 50-metre share range. Since Update 38.5, rewards and extraction come every 3 waves, so leave as soon as your gear is capped.",
+						"source": "https://wiki.warframe.com/w/Helene",
+						"lastVerified": "2026-07-24",
+						"regionId": "saturn"
+					},
+					{
+						"phase": "early",
+						"nodeLabel": "Sedna — Hydron (Defense)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: Affinity Booster 2×, and grab the free MR30 Affinity Blessing (+25% for 3 hours) in any relay — the two stack multiplicatively.",
+						"note": "The classic name every guide repeats — level 30–40 Grineer with reliable public lobbies — but its own wiki page now calls it outclassed by Sanctuary Onslaught, and Sedna sits deep in the star chart, so Helene usually comes first. Same routine: full squad, minimal loadout, and rewards every 3 waves since Update 38.5.",
+						"source": "https://wiki.warframe.com/w/Hydron",
+						"lastVerified": "2026-07-24",
+						"regionId": "sedna"
+					},
+					{
+						"phase": "mid",
+						"nodeLabel": "Sanctuary Onslaught (Cephalon Simaris)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: an Affinity Booster doubles the enormous kill volume, and a Smeeta Kavat’s Charm can proc triple affinity for 120 seconds on top.",
+						"note": "Purpose-built XP: complete The New Strange and queue from the Star Chart. Zones last 2.5 minutes and demand constant killing to keep efficiency up; rewards run AABC every two zones, making zone 8 the natural exit. The gear wheel and Specters are disabled and enemies drop no loot — this is the frame-leveling farm, with weapons better saved for Elite.",
+						"source": "https://wiki.warframe.com/w/Sanctuary_Onslaught",
+						"lastVerified": "2026-07-24"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Elite Sanctuary Onslaught (Cephalon Simaris)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: the Affinity Booster also doubles Focus from lensed max-rank gear — which is why ESO doubles as the game’s best Focus farm.",
+						"note": "The weapon-XP ceiling: entry needs a rank-30 Warframe, enemies start at level 60–70, and the level-scaled affinity multiplier means a full squad maxes a weapon in around five minutes. Update 42.0 sweetened the pot by adding Braton and Lato Vandal parts to every reward rotation. The veteran loop: relay blessing → ESO → Forma → repeat.",
+						"source": "https://wiki.warframe.com/w/Sanctuary_Onslaught",
+						"lastVerified": "2026-07-24"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Jupiter — Elara (Steel Path Survival)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: Affinity Booster 2× as always — but note Steel Path’s own +100% bonuses are resource and mod drop chance, not affinity.",
+						"note": "The wiki’s documented “lazy” farm: Steel Path Corpus at level 115–120 die fast (no armor scaling) and Survival never stops spawning, so one strong player — or an On Call Crew member — kills while everyone’s leveling gear soaks shared affinity from within 50 metres. The XP edge is enemy level, and level alone: higher-level kills are worth several times more affinity.",
+						"source": "https://wiki.warframe.com/w/Elara",
+						"lastVerified": "2026-07-24",
+						"regionId": "jupiter"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Zariman — Void Cascade (Steel Path)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help twice over: an Affinity Booster doubles the XP and the Focus, while Steel Path’s +100% drop-chance bonus fattens the arcane and Steel Essence side of the farm.",
+						"note": "The community’s level-while-farming pick since 2022: the highest sustained spawn density in the game, with Thrax kills paying 2,500 Focus each plus Steel Essence and arcanes from the same run. It demands a self-sufficient endgame loadout, though — bring one leveling weapon alongside real gear, not six unranked ones.",
+						"source": "https://wiki.warframe.com/w/Void_Cascade",
+						"lastVerified": "2026-07-24",
+						"regionId": "zariman"
 					}
 				]
 			}

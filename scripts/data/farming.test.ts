@@ -94,6 +94,40 @@ describe('curated farming data', () => {
 		const index = recs.find((x) => /index/i.test(x.nodeLabel));
 		expect(index?.boosterNote).toMatch(/first win/i);
 	});
+	it('includes a curated Affinity farming guide', () => {
+		const id = slugify('Affinity');
+		expect(ids.has(id)).toBe(true);
+		const recs = RECOMMENDATIONS[id];
+		expect(recs).toHaveLength(6);
+		// Affinity Boosters ≠ resource boosters: every rec must override the
+		// canned booster copy.
+		for (const x of recs) expect(x.boosterNote).toBeTruthy();
+		// SO/ESO are Simaris queue modes, not chart nodes — they must not
+		// resolve to a region, or a "best farm here" badge lands on the wrong
+		// panel.
+		const onslaughts = recs.filter((x) => /onslaught/i.test(x.nodeLabel));
+		expect(onslaughts).toHaveLength(2);
+		for (const x of onslaughts) expect(recRegionId(x.nodeLabel)).toBeUndefined();
+		// The "Steel Path gives +100% affinity" myth must not leak into copy:
+		// Elara's booster note carries the correction instead.
+		const elara = recs.find((x) => /elara/i.test(x.nodeLabel));
+		expect(elara?.boosterNote).toMatch(/not affinity/i);
+	});
+	it('keeps Credits and Affinity scoped to their signature farm regions only', () => {
+		// Both are first-class header destinations, not drop-pool resources —
+		// they may only surface on the regions hosting their curated farm nodes.
+		const scoped: Record<string, string[]> = {
+			[slugify('Credits')]: ['ceres', 'neptune', 'venus'],
+			[slugify('Affinity')]: ['jupiter', 'saturn', 'sedna', 'zariman'],
+		};
+		for (const [rid, expected] of Object.entries(scoped)) {
+			const actual = Object.entries(PLANET_RESOURCES)
+				.filter(([, rids]) => rids.includes(rid))
+				.map(([region]) => region)
+				.sort();
+			expect(actual).toEqual(expected);
+		}
+	});
 	it('each curated recommendation targets a real resource with an early + late rec', () => {
 		for (const [rid, recs] of Object.entries(RECOMMENDATIONS)) {
 			expect(ids.has(rid)).toBe(true);

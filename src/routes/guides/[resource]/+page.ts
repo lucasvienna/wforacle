@@ -40,10 +40,10 @@ export async function entries() {
 	const raw = (await import('../../../../static/data/dataset.json')).default;
 	return (
 		raw.data.resources
-			// credits has curated recommendations but its page is the bespoke
-			// static route at src/routes/guides/credits — listing it here would
-			// prerender /guides/credits from both routes.
-			.filter((r) => r.recommendations.length > 0 && r.id !== 'credits')
+			// credits and affinity have curated recommendations but their pages
+			// are bespoke static routes (src/routes/guides/{credits,affinity}) —
+			// listing them here would prerender those paths from both routes.
+			.filter((r) => r.recommendations.length > 0 && r.id !== 'credits' && r.id !== 'affinity')
 			.map((r) => ({ resource: r.id }))
 	);
 }
