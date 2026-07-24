@@ -37,9 +37,37 @@ export const OPEN_WORLD_SOLNODES: SolNodes = {
 // labels land in WarframePart.bountyTier as static tier text. Protea's
 // Extended/Nightmare tiers need Exemplar/Zenith Granum Crowns, dropped by
 // Treasurers on level 16-30 / 30+ Corpus missions.
+//
+// Mission-node farms (Mirror Defense, Disruption, Conjunction Survival,
+// Infested Salvage) are also per-run: their "Rotation C" is the in-mission
+// AABC reward cadence, not the 150-min cycle. The parsed letter is discarded
+// and a static "Rotation C" label lands in bountyTier — including on bp slots
+// whose blueprint drops at the node (Citrine, Dante, Voruna). Jade's Ascension
+// rewards have no rotation at all, and Gyre's Zariman bounty rotations ARE the
+// live cycle, so neither is listed.
 export const PER_RUN_ROTATION_FARMS: Record<string, Partial<Record<Slot, string>>> = {
 	protea: { chassis: 'Extended', systems: 'Nightmare' },
 	koumei: {},
+	citrine: {
+		bp: 'Rotation C',
+		neuroptics: 'Rotation C',
+		chassis: 'Rotation C',
+		systems: 'Rotation C',
+	},
+	dante: {
+		bp: 'Rotation C',
+		neuroptics: 'Rotation C',
+		chassis: 'Rotation C',
+		systems: 'Rotation C',
+	},
+	gauss: { neuroptics: 'Rotation C', chassis: 'Rotation C', systems: 'Rotation C' },
+	voruna: {
+		bp: 'Rotation C',
+		neuroptics: 'Rotation C',
+		chassis: 'Rotation C',
+		systems: 'Rotation C',
+	},
+	nidus: { neuroptics: 'Rotation C', chassis: 'Rotation C', systems: 'Rotation C' },
 };
 
 // Curated frame → open-world zone table. The three real Free Roam zones reuse
@@ -118,5 +146,57 @@ export const OPEN_WORLD_FARMS: OpenWorldFarm[] = [
 		regionId: 'earth',
 		componentSource: 'Shrine Defense',
 		bpSource: 'Shrine Defense drop or 165 Fate Pearls',
+	},
+	// Mission-node farms: real star-chart SolNodes (all present in
+	// warframe-worldstate-data), rewards on the in-mission rotation table.
+	// bpSource strings verified against wiki.warframe.com (2026-07-24).
+	{
+		frameId: 'citrine',
+		nodeId: 'SolNode450',
+		regionId: 'mars',
+		componentSource: 'Mirror Defense',
+		bpSource: 'Mirror Defense drop (Rot C)',
+	},
+	{
+		frameId: 'dante',
+		nodeId: 'SolNode721',
+		regionId: 'deimos',
+		componentSource: 'Disruption',
+		bpSource: 'Disruption drop (Rot C)',
+	},
+	{
+		frameId: 'gauss',
+		nodeId: 'SolNode177',
+		regionId: 'sedna',
+		componentSource: 'Disruption',
+		bpSource: 'Market (30,000cr)',
+	},
+	{
+		frameId: 'voruna',
+		nodeId: 'SolNode310',
+		regionId: 'lua',
+		componentSource: 'Conjunction Survival',
+		bpSource: 'Circulus drop or Yonta (125 Lua Thrax Plasm)',
+	},
+	{
+		frameId: 'nidus',
+		nodeId: 'SolNode167',
+		regionId: 'eris',
+		componentSource: 'Infested Salvage',
+		bpSource: 'Complete The Glast Gambit',
+	},
+	{
+		frameId: 'jade',
+		nodeId: 'SolNode723',
+		regionId: 'uranus',
+		componentSource: 'Ascension',
+		bpSource: 'Complete Jade Shadows or 450 Vestigial Motes',
+	},
+	{
+		frameId: 'gyre',
+		nodeId: 'ZarimanHub',
+		regionId: 'zariman',
+		componentSource: 'Zariman Bounty',
+		bpSource: 'Zariman Bounty drop (L90–95+)',
 	},
 ];

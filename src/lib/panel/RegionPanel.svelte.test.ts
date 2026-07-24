@@ -398,6 +398,154 @@ describe('RegionPanel — open world', () => {
 		expect(screen.getByText(/^Shrine Defense · 4\.09%$/)).toBeInTheDocument();
 	});
 
+	it('renders a drop-sourced blueprint like a component row, not the bpSource label', () => {
+		const mirror: Dataset = {
+			regions: [
+				{
+					id: 'mars',
+					name: 'Mars',
+					kind: 'planet',
+					progressionOrder: 4,
+					factions: ['Grineer'],
+					nodeIds: ['tyanapass'],
+					spoilerGated: false,
+					resourceIds: [],
+				},
+			],
+			nodes: [
+				{
+					id: 'tyanapass',
+					regionId: 'mars',
+					name: 'Tyana Pass',
+					missionType: 'Mirror Defense',
+					faction: 'Crossfire',
+					isAssassination: false,
+				},
+			],
+			bosses: [],
+			warframes: [
+				{
+					id: 'citrine',
+					name: 'Citrine',
+					nodeId: 'tyanapass',
+					parts: [
+						{
+							id: 'citrine:bp',
+							frameId: 'citrine',
+							slot: 'bp',
+							dropSourceNodeId: 'tyanapass',
+							chance: 9.3,
+							bountyTier: 'Rotation C',
+						},
+						{
+							id: 'citrine:systems',
+							frameId: 'citrine',
+							slot: 'systems',
+							dropSourceNodeId: 'tyanapass',
+							chance: 6.1,
+							bountyTier: 'Rotation C',
+						},
+					],
+				},
+			],
+			resources: [],
+			quests: [],
+			openWorldFarms: [
+				{
+					frameId: 'citrine',
+					nodeId: 'tyanapass',
+					regionId: 'mars',
+					componentSource: 'Mirror Defense',
+					bpSource: 'Mirror Defense drop (Rot C)',
+				},
+			],
+		};
+		const tracker = createTracker(mirror.warframes);
+		render(RegionPanel, { dataset: mirror, regionId: 'mars', tracker });
+		const bpRow = document.querySelector('[data-part="citrine:bp"]') as HTMLElement;
+		expect(bpRow.textContent).toMatch(/Mirror Defense · Rotation C · 9\.3%/);
+		expect(bpRow.textContent).not.toMatch(/drop \(Rot C\)/);
+	});
+
+	// Gyre-shaped fixture: a frame whose only unowned part is a drop-sourced bp.
+	// Regression test for the collapsed-card summary cue ignoring drop-sourced
+	// blueprints (it used to filter out every `bp` slot, drop-sourced or not).
+	it('shows the collapsed summary "up now" when a drop-sourced blueprint is the only thing left to farm', async () => {
+		const gyre: Dataset = {
+			regions: [
+				{
+					id: 'neptune',
+					name: 'Neptune',
+					kind: 'planet',
+					progressionOrder: 8,
+					factions: ['Corpus'],
+					nodeIds: ['zariman'],
+					spoilerGated: false,
+					resourceIds: [],
+				},
+			],
+			nodes: [
+				{
+					id: 'zariman',
+					regionId: 'neptune',
+					name: 'Zariman Ten Zero',
+					missionType: 'Void Flood',
+					faction: 'Corpus',
+					isAssassination: false,
+				},
+			],
+			bosses: [],
+			warframes: [
+				{
+					id: 'gyre',
+					name: 'Gyre',
+					nodeId: 'zariman',
+					parts: [
+						{
+							id: 'gyre:bp',
+							frameId: 'gyre',
+							slot: 'bp',
+							dropSourceNodeId: 'zariman',
+							chance: 12.99,
+							rotation: 'C',
+						},
+					],
+				},
+			],
+			resources: [],
+			quests: [],
+			openWorldFarms: [
+				{
+					frameId: 'gyre',
+					nodeId: 'zariman',
+					regionId: 'neptune',
+					componentSource: 'Zariman Bounty',
+					bpSource: 'Zariman Bounty drop (Rot C)',
+				},
+			],
+		};
+		const tracker = createTracker(gyre.warframes);
+		render(RegionPanel, {
+			dataset: gyre,
+			regionId: 'neptune',
+			tracker,
+			worldState: {
+				ok: true,
+				fetchedAt: 't',
+				cetus: { state: 'night', expiry: '2026-07-11T21:00:00.000Z' },
+				vallis: { state: 'cold', expiry: '2026-07-11T20:57:00.000Z' },
+				cambion: { state: 'fass', expiry: '2026-07-11T21:00:00.000Z' },
+				rotation: { letter: 'C', expiry: '2026-07-11T21:00:00.000Z' },
+			},
+		});
+		// Collapse the card so the summary cue (rather than the per-part chip) renders.
+		(document.querySelector('[data-frame="gyre"] button') as HTMLElement).click();
+		await tick();
+		const card = document.querySelector('[data-frame="gyre"]') as HTMLElement;
+		expect(card).toHaveAttribute('data-expanded', 'false');
+		expect(card.textContent).toMatch(/up now/);
+	});
+
 	it('shows Caliban under BOTH earth and venus', () => {
 		const t1 = createTracker(openWorld.warframes);
 		const { unmount } = render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker: t1 });

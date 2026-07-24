@@ -108,3 +108,21 @@ test('Protea and Koumei render as mission farms on Venus and Earth', async ({ pa
 	await expect(page.locator('[data-part="koumei:systems"]')).toBeVisible();
 	await expect(page.getByText('Blueprint: Shrine Defense drop or 165 Fate Pearls')).toBeVisible();
 });
+
+test('Citrine and Jade render as mission-node farms on Mars and Uranus', async ({ page }) => {
+	await page.goto('/');
+	await expect(page.locator('svg').getByText('MARS')).toBeVisible();
+
+	// Citrine: Tyana Pass Mirror Defense; drop-sourced blueprint renders as a
+	// drop row (static Rotation C label, no live rotation chip).
+	await page.locator('svg [data-region="mars"]').click();
+	await expect(page.locator('[data-part="citrine:bp"]')).toBeVisible();
+	await expect(page.getByText(/Mirror Defense · Rotation C · 9\.3%/)).toBeVisible();
+
+	// Jade: Brutus Ascension — flat chance, no rotation labels at all.
+	await page.locator('svg [data-region="uranus"]').click();
+	await expect(page.locator('[data-part="jade:systems"]')).toBeVisible();
+	await expect(
+		page.getByText('Blueprint: Complete Jade Shadows or 450 Vestigial Motes'),
+	).toBeVisible();
+});

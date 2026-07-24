@@ -42,3 +42,10 @@ dl xaku.webp XakuGlyph-Dark.png
 dl qorvex.webp QorvexGlyph-Dark.png
 dl protea.webp ProteaGlyph-Dark.png
 dl koumei.webp KoumeiGlyph-Dark.png
+dl citrine.webp CitrineGlyph-Dark.png
+dl dante.webp DanteGlyph-Dark.png
+dl gauss.webp GaussGlyph-Dark.png
+dl voruna.webp VorunaGlyph-Dark.png
+dl nidus.webp NidusGlyph-Dark.png
+dl jade.webp JadeGlyph-Dark.png
+dl gyre.webp GyreGlyph-Dark.png

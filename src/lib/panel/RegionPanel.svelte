@@ -58,11 +58,12 @@
 		return [bossName, chance].filter(Boolean).join(' · ');
 	}
 
-	// Source label for an open-world part row: bp shows its bpSource; components
-	// show "{source} · {tier} · Rot {rotation} · {chance}%", omitting tier/rotation
+	// Source label for an open-world part row: a bare bp shows its bpSource; a
+	// drop-sourced bp (Citrine, Dante, Voruna, Gyre) and components show
+	// "{source} · {tier} · Rot {rotation} · {chance}%", omitting tier/rotation
 	// for non-bounty sources (Exploiter Orb) that carry neither.
 	function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
-		if (part.slot === 'bp') return farm.bpSource;
+		if (part.slot === 'bp' && !part.dropSourceNodeId) return farm.bpSource;
 		const rot =
 			part.rotation === 'any'
 				? 'any rot'
@@ -102,11 +103,12 @@
 	}
 
 	// Per-part availability chip for an open-world component row. Null → render
-	// nothing (bp slot, unknown rotation, or no live data).
+	// nothing (bare bp slot, unknown rotation, or no live data).
 	function owAvailabilityChip(
 		part: WarframePart,
 	): { cls: string; text: string } | null {
-		if (!worldState || part.slot === 'bp') return null;
+		if (!worldState || (part.slot === 'bp' && !part.dropSourceNodeId))
+			return null;
 		const rot = worldState.rotation;
 		const a = partAvailability(part.rotation, rot.letter);
 		if (a === 'available') {
@@ -127,14 +129,17 @@
 		return null;
 	}
 
-	// Collapsed-state farm cue for a free-roam frame: is any still-needed component
-	// available on the current rotation? Null when there's no live data or nothing
-	// left to farm (a completed frame shows its ✓ instead).
+	// Collapsed-state farm cue for a free-roam frame: is any still-needed
+	// component — or drop-sourced blueprint — available on the current
+	// rotation? Null when there's no live data or nothing left to farm (a
+	// completed frame shows its ✓ instead).
 	function owSummary(frame: Warframe): { cls: string; text: string } | null {
 		if (!worldState) return null;
 		const letter = worldState.rotation.letter;
 		const needed = frame.parts.filter(
-			(p) => p.slot !== 'bp' && !tracker.isOwned(p.id),
+			(p) =>
+				(p.slot !== 'bp' || p.dropSourceNodeId != null) &&
+				!tracker.isOwned(p.id),
 		);
 		if (needed.length === 0) return null;
 		const upNow = needed.some((p) => {

@@ -302,6 +302,14 @@ export function buildFrames(
 	return { frames, bosses: [...bossByNode.values()] };
 }
 
+/** A Blueprint's drop rows may be vendor/quest entries ("Cephalon Simaris,
+ * Complete …" @100, "Vox Solaris, Agent") rather than farmable drops. Only
+ * node-shaped ("Planet/Node (Type)") or bounty-shaped locations may turn the
+ * bp part into a drop-sourced row. */
+function isFarmDropLocation(loc: string): boolean {
+	return parseDropLocation(loc) != null || /Bounty\)/.test(loc);
+}
+
 export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldFarm[]): Warframe[] {
 	const byId = new Map(warframes.map((w) => [slugify(w.name), w]));
 	// Primary node = the first farm listed for each frame (drives Warframe.nodeId
@@ -319,15 +327,22 @@ export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldF
 			const slot = SLOT_BY_COMPONENT[c.name];
 			if (!slot) continue;
 			present.add(slot);
-			if (slot !== 'bp') stageBySlot.set(slot, bestBountyStage(c.drops ?? []));
+			const drops =
+				slot === 'bp'
+					? (c.drops ?? []).filter((d) => isFarmDropLocation(d.location))
+					: (c.drops ?? []);
+			stageBySlot.set(slot, bestBountyStage(drops));
 		}
-		// Per-run-rotation farms (Granum Void, Shrine Defense): the rotation
-		// letter parsed from drop locations is an in-run rank, not the 150-min
-		// bounty cycle, so it's discarded; curated tier labels replace it.
+		// Per-run-rotation farms (Granum Void, Shrine Defense, mission-node
+		// farms): the rotation letter parsed from drop locations is an in-run
+		// rank/cadence, not the 150-min bounty cycle, so it's discarded; curated
+		// tier labels replace it.
 		const perRun = PER_RUN_ROTATION_FARMS[frameId];
 		const parts: WarframePart[] = ORDER.filter((s) => present.has(s)).map((slot) => {
-			if (slot === 'bp') return { id: partId(frameId, slot), frameId, slot };
 			const stage = stageBySlot.get(slot);
+			// A bp without a farmable drop stays bare: the panel renders the
+			// farm's bpSource label for it (quest/Market/vendor blueprints).
+			if (slot === 'bp' && !stage) return { id: partId(frameId, slot), frameId, slot };
 			return {
 				id: partId(frameId, slot),
 				frameId,
