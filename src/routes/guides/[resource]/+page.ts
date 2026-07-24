@@ -38,7 +38,12 @@ export const load: PageLoad = async ({ params, fetch }) => {
 // duplicating the dataset that `load()` already `fetch`es at runtime.
 export async function entries() {
 	const raw = (await import('../../../../static/data/dataset.json')).default;
-	return raw.data.resources
-		.filter((r) => r.recommendations.length > 0)
-		.map((r) => ({ resource: r.id }));
+	return (
+		raw.data.resources
+			// credits has curated recommendations but its page is the bespoke
+			// static route at src/routes/guides/credits — listing it here would
+			// prerender /guides/credits from both routes.
+			.filter((r) => r.recommendations.length > 0 && r.id !== 'credits')
+			.map((r) => ({ resource: r.id }))
+	);
 }

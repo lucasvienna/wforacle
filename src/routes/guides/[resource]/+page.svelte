@@ -10,19 +10,22 @@
 
 	const PHASE_LABEL = {
 		early: '⚡ Early game',
+		mid: '🌗 Mid game',
 		late: '💀 Late / endgame',
 	} as const;
 	const PHASE_TAG = {
 		early: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300',
+		mid: 'border-sky-500/40 bg-sky-500/10 text-sky-300',
 		late: 'border-amber-500/40 bg-amber-500/10 text-amber-300',
 	} as const;
+	const PHASE_ORDER = { early: 0, mid: 1, late: 2 } as const;
 
-	// Early recs first, then late — recommendations come back from the
-	// dataset in that order already, but sort defensively so the layout is
-	// stable even if that ever changes.
+	// Early recs first, then mid, then late — recommendations come back from
+	// the dataset in that order already, but sort defensively so the layout
+	// is stable even if that ever changes.
 	let recommendations = $derived(
-		[...data.resource.recommendations].sort((a, b) =>
-			a.phase === b.phase ? 0 : a.phase === 'early' ? -1 : 1,
+		[...data.resource.recommendations].sort(
+			(a, b) => PHASE_ORDER[a.phase] - PHASE_ORDER[b.phase],
 		),
 	);
 

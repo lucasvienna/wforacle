@@ -43,3 +43,6 @@ dl somaticfibers.webp MemoryCryptoFragment.png
 dl kuva.webp Kuva.png
 dl voidgelorb.webp ZarimanMiscItemA.png
 dl entratilanthorn.webp ZarimanMiscItemB.png
+
+# Credits has no @wfcd/items entry — icon comes from the official wiki instead.
+curl -fsSL -A "$U" -o "$T/credits.webp" "https://wiki.warframe.com/images/Credits64.png" && convert "$T/credits.webp" -resize 64x64 -strip "static/resources/credits.webp" && echo "ok credits.webp"
