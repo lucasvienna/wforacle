@@ -66,9 +66,17 @@ describe('assembleDataset', () => {
 			},
 		],
 	});
-	const owWarframes = ['Gara', 'Revenant', 'Garuda', 'Hildryn', 'Xaku', 'Qorvex', 'Caliban'].map(
-		ow,
-	);
+	const owWarframes = [
+		'Gara',
+		'Revenant',
+		'Garuda',
+		'Hildryn',
+		'Xaku',
+		'Qorvex',
+		'Caliban',
+		'Protea',
+		'Koumei',
+	].map(ow);
 	const ds = assembleDataset(solNodes, [...warframes, ...owWarframes], rawResources);
 	it('back-fills bossId/frameId on the assassination node', () => {
 		const fossa = ds.nodes.find((n) => n.id === 'SolNode104')!;
@@ -106,9 +114,9 @@ describe('assembleDataset', () => {
 		broken.quests[0].revealsFrameIds = ['ghostframe'];
 		expect(validateDataset(broken).join(' ')).toMatch(/ghostframe/);
 	});
-	it('attaches the 8 open-world farms and builds their frames', () => {
-		expect(ds.openWorldFarms).toHaveLength(8);
-		for (const id of ['gara', 'xaku', 'caliban', 'qorvex']) {
+	it('attaches the 10 open-world farms and builds their frames', () => {
+		expect(ds.openWorldFarms).toHaveLength(10);
+		for (const id of ['gara', 'xaku', 'caliban', 'qorvex', 'protea', 'koumei']) {
 			expect(ds.warframes.some((f) => f.id === id)).toBe(true);
 		}
 	});
@@ -117,6 +125,18 @@ describe('assembleDataset', () => {
 		expect(n).toMatchObject({
 			regionId: 'deimos',
 			missionType: 'Free Roam',
+			isAssassination: false,
+		});
+	});
+	it("injects Saya's Visions (earth) and Granum Void (venus) as mission-farm nodes", () => {
+		expect(ds.nodes.find((x) => x.id === 'CuratedSayasVisions')).toMatchObject({
+			regionId: 'earth',
+			missionType: 'Shrine Defense',
+			isAssassination: false,
+		});
+		expect(ds.nodes.find((x) => x.id === 'CuratedGranumVoid')).toMatchObject({
+			regionId: 'venus',
+			missionType: 'Granum Void',
 			isAssassination: false,
 		});
 	});

@@ -16,6 +16,7 @@ import {
 	ASSASSINATION_ASPECTS,
 } from './curated';
 import { SPECIAL_REGIONS, SPECIAL_REGION_NAMES } from './special';
+import { PER_RUN_ROTATION_FARMS } from './openworld';
 import { PLANET_RESOURCES } from './farming';
 import { partId } from '../../src/lib/model/completion';
 
@@ -320,6 +321,10 @@ export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldF
 			present.add(slot);
 			if (slot !== 'bp') stageBySlot.set(slot, bestBountyStage(c.drops ?? []));
 		}
+		// Per-run-rotation farms (Granum Void, Shrine Defense): the rotation
+		// letter parsed from drop locations is an in-run rank, not the 150-min
+		// bounty cycle, so it's discarded; curated tier labels replace it.
+		const perRun = PER_RUN_ROTATION_FARMS[frameId];
 		const parts: WarframePart[] = ORDER.filter((s) => present.has(s)).map((slot) => {
 			if (slot === 'bp') return { id: partId(frameId, slot), frameId, slot };
 			const stage = stageBySlot.get(slot);
@@ -329,8 +334,8 @@ export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldF
 				slot,
 				dropSourceNodeId: nodeId,
 				chance: stage?.chance,
-				bountyTier: stage?.bountyTier,
-				rotation: stage?.rotation,
+				bountyTier: perRun ? perRun[slot] : stage?.bountyTier,
+				rotation: perRun ? undefined : stage?.rotation,
 			};
 		});
 		frames.push({
