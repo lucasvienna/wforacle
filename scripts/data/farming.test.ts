@@ -84,6 +84,10 @@ describe('curated farming data', () => {
 		expect(recRegionId(firstWin!.nodeLabel)).toBeUndefined();
 		const techrot = recs.find((x) => /legacyte/i.test(x.nodeLabel));
 		expect(techrot?.phase).toBe('late');
+		// Laomedeia is the mid-game (~MR7–14) step: Disruption Demolishers are
+		// too much for a fresh account but it's far from endgame.
+		const laomedeia = recs.find((x) => /laomedeia/i.test(x.nodeLabel));
+		expect(laomedeia?.phase).toBe('mid');
 		expect(recRegionId(techrot!.nodeLabel)).toBeUndefined();
 		// The guide's core rule: cache-paying farms must warn that the Daily
 		// First Win Bonus doesn't apply to them.

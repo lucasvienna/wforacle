@@ -6,7 +6,7 @@ export function resourcesForRegion(dataset: Dataset, regionId: string): Resource
 
 export function bestPhaseRec(
 	resource: Resource,
-	phase: 'early' | 'late',
+	phase: Recommendation['phase'],
 ): Recommendation | undefined {
 	return resource.recommendations.find((r) => r.phase === phase);
 }

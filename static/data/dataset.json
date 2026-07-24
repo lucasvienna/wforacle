@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1275.18+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-24T06:40:26.724Z",
+	"generatedAt": "2026-07-24T08:50:40.587Z",
 	"data": {
 		"regions": [
 			{
@@ -5711,7 +5711,7 @@
 						"nodeLabel": "Ceres — Seimeni / Gabii (Dark Sector)",
 						"boostersApply": true,
 						"boosterNote": "Boosters help: this is an end-of-mission reward, so a Credit Booster doubles it and the Daily First Win Bonus doubles it again — resource boosters do nothing for credits.",
-						"note": "Dark Sectors pay a flat credit bonus on completion — not a percentage: Seimeni (Defense) and Gabii (Survival) add ~20,000 on top of the base reward for ~22,400 per run. Run five waves (or five minutes) and re-queue; staying longer never repeats the bonus. Same payout as the famous Akkad on Eris, four planets closer to the start of the chart.",
+						"note": "Dark Sectors pay a flat credit bonus on completion: Seimeni (Defense) and Gabii (Survival) carry the chart’s biggest bonus, 20,000 on a 2,400 base for 22,400 per run. Defense rewards rotate every three waves now, so run three waves (or five minutes of Survival), extract and re-queue — staying longer never repeats the bonus. The famous Akkad on Eris nets the same 22,400 from a smaller 18,000 bonus much deeper in the chart, and Pluto’s Sechura/Hieracon top out at 24,400.",
 						"source": "https://wiki.warframe.com/w/Dark_Sector",
 						"lastVerified": "2026-07-23",
 						"regionId": "ceres"
@@ -5730,17 +5730,17 @@
 						"nodeLabel": "Neptune — The Index (High Risk)",
 						"boostersApply": true,
 						"boosterNote": "Boosters help, with a catch: a Credit Booster only doubles the first round of a match — one round and re-queue beats marathons — and the Daily First Win Bonus never applies to Index winnings.",
-						"note": "Wager 50,000, reach 100 points, collect 250,000 — and every extra round pays another 250,000 with no new stake. Bring a frame that ignores Financial Stress (Rhino or Nezha early, Revenant later), bank around 15 points at a time and keep a small point buffer so the enemy team can never score. Only the host needs the node unlocked, so newer players can be taxied in.",
+						"note": "Wager 50,000, reach 100 points, collect 250,000 — and every extra round pays another 250,000 with no new stake. Bring a frame that ignores Financial Stress (Rhino or Nezha early, Revenant later) and deposit at exactly 15 points every time: the bulk bonus peaks there (+8 points, +53.3%), smaller banks waste it, and it caps at +10 by 20 so holding longer only adds risk. Only the host needs the node unlocked, so newer players can be taxied in.",
 						"source": "https://wiki.warframe.com/w/The_Index",
 						"lastVerified": "2026-07-23",
 						"regionId": "neptune"
 					},
 					{
-						"phase": "late",
+						"phase": "mid",
 						"nodeLabel": "Neptune — Laomedeia (Disruption)",
 						"boostersApply": true,
 						"boosterNote": "Boosters help: a Credit Booster doubles every cache — silently, the reward screen never shows it — while the Daily First Win Bonus does not apply here.",
-						"note": "A Disruption whose reward table is mostly credit caches: defend all four conduits and rounds 1–4 pay 30k / 30k / 50k / 50k — 160,000 in under twenty minutes, then 50,000 every round for as long as you stay. No wager to front, and normal mission rules mean squads, companions and loot frames all work.",
+						"note": "A Disruption whose reward table is mostly credit caches: defend all four conduits and rounds 1–4 pay 30k / 30k / 50k / 50k — 160,000 in under twenty minutes, then 50,000 every round for as long as you stay. No wager to front, but Demolishers punish unmodded gear — treat it as the mid-game (roughly MR7–14) step between Dark Sectors and the endgame farms.",
 						"source": "https://wiki.warframe.com/w/Laomedeia",
 						"lastVerified": "2026-07-23",
 						"regionId": "neptune"

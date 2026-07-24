@@ -57,7 +57,7 @@ export interface StarNode {
 }
 
 export interface Recommendation {
-	phase: 'early' | 'late';
+	phase: 'early' | 'mid' | 'late';
 	nodeLabel: string;
 	nodeId?: string;
 	/** Main-planet region id the recommended node is on (parsed from nodeLabel);

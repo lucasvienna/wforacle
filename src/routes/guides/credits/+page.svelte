@@ -11,15 +11,20 @@
 
 	const PHASE_LABEL = {
 		early: '⚡ Early game',
+		mid: '🌗 Mid game',
 		late: '💀 Late / endgame',
 	} as const;
 	const PHASE_TAG = {
 		early: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300',
+		mid: 'border-sky-500/40 bg-sky-500/10 text-sky-300',
 		late: 'border-amber-500/40 bg-amber-500/10 text-amber-300',
 	} as const;
 
 	let early = $derived(
 		data.resource.recommendations.filter((r) => r.phase === 'early'),
+	);
+	let mid = $derived(
+		data.resource.recommendations.filter((r) => r.phase === 'mid'),
 	);
 	let late = $derived(
 		data.resource.recommendations.filter((r) => r.phase === 'late'),
@@ -174,7 +179,7 @@
 	]}
 />
 
-<div class="mx-auto max-w-3xl p-6 text-slate-100">
+<div class="mx-auto max-w-5xl p-6 text-slate-100">
 	<a
 		href={resolve('/')}
 		class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
@@ -241,8 +246,11 @@
 
 	<section class="mb-8">
 		<h2 class="mb-3 text-lg font-semibold">The progression path</h2>
-		<div class="grid gap-4 sm:grid-cols-2">
+		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each early as rec (rec.nodeLabel)}
+				{@render recCard(rec)}
+			{/each}
+			{#each mid as rec (rec.nodeLabel)}
 				{@render recCard(rec)}
 			{/each}
 			{#each late as rec (rec.nodeLabel)}

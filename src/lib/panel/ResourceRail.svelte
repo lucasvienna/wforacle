@@ -18,8 +18,10 @@
 		<ul class="space-y-3">
 			{#each resources as r (r.id)}
 				{@const early = bestPhaseRec(r, 'early')}
+				{@const mid = bestPhaseRec(r, 'mid')}
 				{@const late = bestPhaseRec(r, 'late')}
 				{@const earlyHere = !!early && early.regionId === regionId}
+				{@const midHere = !!mid && mid.regionId === regionId}
 				{@const lateHere = !!late && late.regionId === regionId}
 				<li class="rounded-xl border border-wf-edge bg-wf-panel p-4">
 					<div class="flex flex-wrap items-center gap-2">
@@ -35,6 +37,13 @@
 								class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-300"
 							>
 								⚡ early best
+							</span>
+						{/if}
+						{#if midHere}
+							<span
+								class="rounded-full border border-sky-500/40 bg-sky-500/10 px-2 py-0.5 text-[11px] font-medium text-sky-300"
+							>
+								🌗 mid best
 							</span>
 						{/if}
 						{#if lateHere}
@@ -60,6 +69,15 @@
 								: 'text-wf-muted'}"
 						>
 							⚡ Early: {early.nodeLabel}
+						</p>
+					{/if}
+					{#if mid}
+						<p
+							class="mt-0.5 text-xs {midHere
+								? 'text-sky-300'
+								: 'text-wf-muted'}"
+						>
+							🌗 Mid: {mid.nodeLabel}
 						</p>
 					{/if}
 					{#if late}

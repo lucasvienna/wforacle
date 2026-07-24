@@ -21,6 +21,8 @@ const fixtureResource: Resource = {
 			regionId: 'ceres',
 		},
 		{
+			// Out of phase order on purpose: the page must group by phase, not
+			// trust dataset order.
 			phase: 'late',
 			nodeLabel: 'Venus — Profit-Taker Orb (Heist Phase 4)',
 			boostersApply: true,
@@ -29,6 +31,16 @@ const fixtureResource: Resource = {
 			source: 'https://wiki.warframe.com/w/Profit-Taker_Orb',
 			lastVerified: '2026-07-23',
 			regionId: 'venus',
+		},
+		{
+			phase: 'mid',
+			nodeLabel: 'Neptune — Laomedeia (Disruption)',
+			boostersApply: true,
+			boosterNote: 'Booster doubles the caches silently.',
+			note: 'Rounds 1–4 pay 160,000 with all conduits defended.',
+			source: 'https://wiki.warframe.com/w/Laomedeia',
+			lastVerified: '2026-07-23',
+			regionId: 'neptune',
 		},
 	],
 };
@@ -47,18 +59,21 @@ describe('bespoke credits guide page', () => {
 	it('renders every recommendation card with its booster note and source', () => {
 		render(Page, { data, params: {} });
 		expect(screen.getByText('Ceres — Seimeni / Gabii (Dark Sector)')).toBeInTheDocument();
+		expect(screen.getByText('Neptune — Laomedeia (Disruption)')).toBeInTheDocument();
 		expect(screen.getByText('Venus — Profit-Taker Orb (Heist Phase 4)')).toBeInTheDocument();
 		expect(screen.getByText(/Effigy and booster double the drops/)).toBeInTheDocument();
-		expect(screen.getAllByRole('link', { name: /source/i })).toHaveLength(2);
+		expect(screen.getAllByRole('link', { name: /source/i })).toHaveLength(3);
 	});
 
-	it('groups early cards before late cards', () => {
+	it('groups cards early → mid → late regardless of dataset order', () => {
 		render(Page, { data, params: {} });
 		const headings = screen.getAllByRole('heading', { level: 3 });
 		const labels = headings.map((h) => h.textContent);
-		expect(labels.indexOf('Ceres — Seimeni / Gabii (Dark Sector)')).toBeLessThan(
-			labels.indexOf('Venus — Profit-Taker Orb (Heist Phase 4)'),
-		);
+		const early = labels.indexOf('Ceres — Seimeni / Gabii (Dark Sector)');
+		const mid = labels.indexOf('Neptune — Laomedeia (Disruption)');
+		const late = labels.indexOf('Venus — Profit-Taker Orb (Heist Phase 4)');
+		expect(early).toBeLessThan(mid);
+		expect(mid).toBeLessThan(late);
 	});
 
 	it('gives the credits icon a descriptive alt', () => {
