@@ -65,4 +65,34 @@ describe('bespoke credits guide page', () => {
 		render(Page, { data, params: {} });
 		expect(screen.getByRole('img', { name: 'Credits' })).toBeInTheDocument();
 	});
+
+	it('explains the two-channel rule with the first-win warning', () => {
+		render(Page, { data, params: {} });
+		expect(screen.getByRole('heading', { name: /two-channel rule/i })).toBeInTheDocument();
+		expect(screen.getByText('End-of-mission rewards')).toBeInTheDocument();
+		expect(screen.getByText(/Pickups & caches/)).toBeInTheDocument();
+		expect(screen.getByText(/wastes the First Win Bonus/i)).toBeInTheDocument();
+	});
+
+	it('renders the multiplier stacking table with the 500k worked example', () => {
+		render(Page, { data, params: {} });
+		expect(screen.getByRole('heading', { name: /stacking multipliers/i })).toBeInTheDocument();
+		expect(screen.getByRole('cell', { name: "Chroma's Effigy" })).toBeInTheDocument();
+		expect(screen.getByText(/500,000 per kill/)).toBeInTheDocument();
+	});
+
+	it('busts outdated advice', () => {
+		render(Page, { data, params: {} });
+		expect(screen.getByRole('heading', { name: /outdated advice/i })).toBeInTheDocument();
+		// "Secura Lecta" appears in two myth entries — assert presence, not uniqueness.
+		expect(screen.getAllByText(/Secura Lecta/).length).toBeGreaterThan(0);
+		expect(screen.getByText(/Gian Point/)).toBeInTheDocument();
+	});
+
+	it('lists honorable mentions and sources', () => {
+		render(Page, { data, params: {} });
+		// "Railjack" also appears in the two-channel rewards panel.
+		expect(screen.getAllByText(/Railjack/).length).toBeGreaterThan(0);
+		expect(screen.getByRole('link', { name: /Credits — Warframe Wiki/i })).toBeInTheDocument();
+	});
 });
