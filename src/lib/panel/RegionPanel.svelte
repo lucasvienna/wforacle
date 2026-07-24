@@ -194,7 +194,7 @@
 						<h3
 							class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase"
 						>
-							Free Roam
+							Zones &amp; Missions
 						</h3>
 						<div class="space-y-5">
 							{#each frames.zones as zone (zone.node.id)}
@@ -219,7 +219,7 @@
 												{tracker}
 												subLine={`Blueprint: ${farm.bpSource}`}
 												faction={zone.node.faction}
-												kindLabel="Free Roam"
+												kindLabel={zone.node.missionType}
 												defaultExpanded={defaultExpanded(frame.id)}
 												sourceText={(part) => owSourceText(part, farm)}
 												avail={owAvailabilityChip}

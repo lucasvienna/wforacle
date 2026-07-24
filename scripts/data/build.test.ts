@@ -553,4 +553,87 @@ describe('buildOpenWorldFrames', () => {
 		const cal = buildOpenWorldFrames([caliban], farms).find((f) => f.id === 'caliban')!;
 		expect(cal.parts.find((p) => p.slot === 'chassis')!.chance).toBeCloseTo(21.1, 1);
 	});
+
+	// Protea's "Rotation C" is a kill-count rank inside one Granum Void run, not
+	// the 150-min bounty cycle WarframePart.rotation feeds — so the letter must
+	// be discarded and the curated tier label carried instead.
+	const protea: RawWarframe = {
+		name: 'Protea',
+		uniqueName: '/Lotus/Powersuits/Odalisk/Odalisk',
+		type: 'Warframe',
+		components: [
+			{
+				name: 'Blueprint',
+				drops: [{ location: 'Cephalon Simaris, Complete The Deadlock Protocol', chance: 100 }],
+			},
+			{ name: 'Chassis', drops: [{ location: 'Extended Granum Void, Rotation C', chance: 11.11 }] },
+			{ name: 'Neuroptics', drops: [{ location: 'Granum Void, Rotation C', chance: 11.11 }] },
+			{
+				name: 'Systems',
+				drops: [{ location: 'Nightmare Granum Void, Rotation C', chance: 11.11 }],
+			},
+		],
+	};
+	const koumei: RawWarframe = {
+		name: 'Koumei',
+		uniqueName: '/Lotus/Powersuits/Koumei/Koumei',
+		type: 'Warframe',
+		components: [
+			{
+				name: 'Blueprint',
+				drops: [{ location: "Earth/Saya's Visions (Shrine Defense)", chance: 4.09 }],
+			},
+			{
+				name: 'Chassis',
+				drops: [{ location: "Earth/Saya's Visions (Shrine Defense)", chance: 4.09 }],
+			},
+			{
+				name: 'Neuroptics',
+				drops: [{ location: "Earth/Saya's Visions (Shrine Defense)", chance: 4.09 }],
+			},
+			{
+				name: 'Systems',
+				drops: [{ location: "Earth/Saya's Visions (Shrine Defense)", chance: 4.09 }],
+			},
+		],
+	};
+	const perRunFarms: OpenWorldFarm[] = [
+		{
+			frameId: 'protea',
+			nodeId: 'CuratedGranumVoid',
+			regionId: 'venus',
+			componentSource: 'Granum Void (Rot C)',
+			bpSource: 'Complete The Deadlock Protocol',
+		},
+		{
+			frameId: 'koumei',
+			nodeId: 'CuratedSayasVisions',
+			regionId: 'earth',
+			componentSource: 'Shrine Defense',
+			bpSource: 'Shrine Defense drop or 165 Fate Pearls',
+		},
+	];
+
+	it('suppresses the rotation letter and applies curated tier labels for Protea', () => {
+		const p = buildOpenWorldFrames([protea], perRunFarms).find((f) => f.id === 'protea')!;
+		const bySlot = new Map(p.parts.map((part) => [part.slot, part]));
+		expect(bySlot.get('chassis')).toMatchObject({
+			dropSourceNodeId: 'CuratedGranumVoid',
+			bountyTier: 'Extended',
+		});
+		expect(bySlot.get('chassis')!.rotation).toBeUndefined();
+		expect(bySlot.get('systems')!.bountyTier).toBe('Nightmare');
+		expect(bySlot.get('systems')!.rotation).toBeUndefined();
+		expect(bySlot.get('neuroptics')!.bountyTier).toBeUndefined();
+		expect(bySlot.get('neuroptics')!.chance).toBeCloseTo(11.11, 2);
+	});
+
+	it('builds Koumei parts with the flat completion chance and no rotation', () => {
+		const k = buildOpenWorldFrames([koumei], perRunFarms).find((f) => f.id === 'koumei')!;
+		const systems = k.parts.find((p) => p.slot === 'systems')!;
+		expect(systems).toMatchObject({ dropSourceNodeId: 'CuratedSayasVisions' });
+		expect(systems.chance).toBeCloseTo(4.09, 2);
+		expect(systems.rotation).toBeUndefined();
+		expect(systems.bountyTier).toBeUndefined();
+	});
 });

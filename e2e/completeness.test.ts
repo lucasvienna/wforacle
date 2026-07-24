@@ -89,3 +89,22 @@ test('special-region resource cards show signature resources', async ({ page }) 
 	await expect(page.getByText('Voidgel Orb')).toBeVisible();
 	await expect(page.getByText('Entrati Lanthorn')).toBeVisible();
 });
+
+test('Protea and Koumei render as mission farms on Venus and Earth', async ({ page }) => {
+	await page.goto('/');
+
+	const venus = page.locator('svg').getByText('VENUS');
+	await expect(venus).toBeVisible();
+
+	// Protea: Granum Void pseudo-node on Venus, tier-labelled parts, no
+	// worldstate rotation chip (per-run kill ranks, not the bounty cycle).
+	await page.locator('svg [data-region="venus"]').click();
+	await expect(page.locator('[data-part="protea:systems"]')).toBeVisible();
+	await expect(page.getByText(/Granum Void \(Rot C\) · Nightmare · 11\.11%/)).toBeVisible();
+	await expect(page.getByText('Blueprint: Complete The Deadlock Protocol')).toBeVisible();
+
+	// Koumei: Saya's Visions (Shrine Defense) pseudo-node on Earth.
+	await page.locator('svg [data-region="earth"]').click();
+	await expect(page.locator('[data-part="koumei:systems"]')).toBeVisible();
+	await expect(page.getByText('Blueprint: Shrine Defense drop or 165 Fate Pearls')).toBeVisible();
+});

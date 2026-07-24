@@ -335,6 +335,69 @@ describe('RegionPanel — open world', () => {
 		expect(screen.getByText(/Narmer Bounty · L50–70 · Rot B · 21\.1%/)).toBeInTheDocument();
 	});
 
+	// The zone card's kind chip comes from the node's mission type, so non-Free-
+	// Roam mission farms (Shrine Defense, Granum Void) label themselves correctly.
+	it('labels a mission-farm zone with its mission type, not Free Roam', () => {
+		const shrine: Dataset = {
+			regions: [
+				{
+					id: 'earth',
+					name: 'Earth',
+					kind: 'planet',
+					progressionOrder: 1,
+					factions: ['Grineer'],
+					nodeIds: ['sayasvisions'],
+					spoilerGated: false,
+					resourceIds: [],
+				},
+			],
+			nodes: [
+				{
+					id: 'sayasvisions',
+					regionId: 'earth',
+					name: "Saya's Visions",
+					missionType: 'Shrine Defense',
+					faction: 'Infested',
+					isAssassination: false,
+				},
+			],
+			bosses: [],
+			warframes: [
+				{
+					id: 'koumei',
+					name: 'Koumei',
+					nodeId: 'sayasvisions',
+					parts: [
+						{ id: 'koumei:bp', frameId: 'koumei', slot: 'bp' },
+						{
+							id: 'koumei:systems',
+							frameId: 'koumei',
+							slot: 'systems',
+							dropSourceNodeId: 'sayasvisions',
+							chance: 4.09,
+						},
+					],
+				},
+			],
+			resources: [],
+			quests: [],
+			openWorldFarms: [
+				{
+					frameId: 'koumei',
+					nodeId: 'sayasvisions',
+					regionId: 'earth',
+					componentSource: 'Shrine Defense',
+					bpSource: 'Shrine Defense drop or 165 Fate Pearls',
+				},
+			],
+		};
+		const tracker = createTracker(shrine.warframes);
+		render(RegionPanel, { dataset: shrine, regionId: 'earth', tracker });
+		expect(screen.getByText("Saya's Visions")).toBeInTheDocument();
+		expect(screen.getByText(/Infested · Shrine Defense/)).toBeInTheDocument();
+		expect(screen.getByText(/^Shrine Defense · 4\.09%$/)).toBeInTheDocument();
+	});
+
 	it('shows Caliban under BOTH earth and venus', () => {
 		const t1 = createTracker(openWorld.warframes);
 		const { unmount } = render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker: t1 });
@@ -574,13 +637,13 @@ describe('RegionPanel', () => {
 		const tracker = createTracker(seed.warframes);
 		render(RegionPanel, { dataset: seed, regionId: 'venus', tracker });
 		expect(screen.getByRole('heading', { name: 'Assassination' })).toBeInTheDocument();
-		expect(screen.queryByRole('heading', { name: 'Free Roam' })).toBeNull();
+		expect(screen.queryByRole('heading', { name: 'Zones & Missions' })).toBeNull();
 	});
 
-	it('shows only the Free Roam group header for an open-world-only region', () => {
+	it('shows only the Zones & Missions group header for an open-world-only region', () => {
 		const tracker = createTracker(openWorld.warframes);
 		render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
-		expect(screen.getByRole('heading', { name: 'Free Roam' })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: 'Zones & Missions' })).toBeInTheDocument();
 		expect(screen.queryByRole('heading', { name: 'Assassination' })).toBeNull();
 	});
 

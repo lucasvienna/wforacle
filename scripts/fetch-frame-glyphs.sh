@@ -40,3 +40,5 @@ dl garuda.webp GarudaGlyph-Dark.png
 dl hildryn.webp HildrynGlyph-Dark.png
 dl xaku.webp XakuGlyph-Dark.png
 dl qorvex.webp QorvexGlyph-Dark.png
+dl protea.webp ProteaGlyph-Dark.png
+dl koumei.webp KoumeiGlyph-Dark.png
