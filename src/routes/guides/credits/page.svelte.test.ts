@@ -5,7 +5,7 @@ import { SITE_URL } from '$lib/seo/config';
 import Page from './+page.svelte';
 import type { PageData } from './$types';
 
-export const fixtureResource: Resource = {
+const fixtureResource: Resource = {
 	id: 'credits',
 	name: 'Credits',
 	regionIds: ['ceres', 'neptune', 'venus'],

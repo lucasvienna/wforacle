@@ -727,7 +727,7 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 			nodeLabel: 'Höllvania — Legacyte Harvest (Techrot Safes)',
 			boostersApply: true,
 			boosterNote:
-				"Boosters help — all of them: safe credits are an in-mission drop, so a Credit Booster, Chroma's Effigy, the MR30 Credit Blessing and Prosperous Retriever all stack on top of each other.",
+				"Boosters help — nearly all of them: safe credits are an in-mission drop, so a Credit Booster, the MR30 Credit Blessing and Prosperous Retriever all stack — and Chroma's Effigy should too, though an open bug report has it currently missing Techrot cache credits.",
 			note: "Every Höllvania mission except Exterminate can spawn one Techrot Safe holding a 100,000-credit drop plus an Arcane. Spam short Legacyte Harvest runs (requires The Hex quest), and take SHELL CRACKER bounties or bring Loot Detector so finding the safe doesn't eat the run time. The current top-tier credit farm, at a fraction of Profit-Taker's gear bar.",
 			source: 'https://wiki.warframe.com/w/Legacyte_Harvest',
 			lastVerified: '2026-07-23',

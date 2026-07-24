@@ -26,8 +26,9 @@ test('argoncrystal guide prerenders even though it has no panel link', async ({ 
 });
 
 test('credits guide renders the bespoke page', async ({ page }) => {
-	await page.goto('/guides/credits');
+	const response = await page.goto('/guides/credits');
 
+	expect(response?.status()).toBe(200);
 	await expect(page.getByRole('heading', { name: /Credits farming guide/i })).toBeVisible();
 	// Data-driven card from the dataset entry.
 	await expect(page.getByText('Ceres — Seimeni / Gabii (Dark Sector)')).toBeVisible();

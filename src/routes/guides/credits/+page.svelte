@@ -56,7 +56,7 @@
 			name: 'Prosperous Retriever',
 			channel: 'Drops only',
 			effect:
-				'18% chance to double each pickup (beast companions) — the deterministic Smeeta alternative.',
+				"18% chance to double each pickup (beast companions) — a mod slot you control, unlike Smeeta's random Charm procs.",
 		},
 		{
 			name: 'Double-credit weekends',
