@@ -636,4 +636,124 @@ describe('buildOpenWorldFrames', () => {
 		expect(systems.rotation).toBeUndefined();
 		expect(systems.bountyTier).toBeUndefined();
 	});
+
+	// Citrine's main blueprint drops at the farm node itself (Mirror Defense
+	// Rot C). The bp part must become drop-sourced, with the per-run static
+	// label and NO live rotation.
+	const citrine: RawWarframe = {
+		name: 'Citrine',
+		uniqueName: '/Lotus/Powersuits/Citrine/Citrine',
+		type: 'Warframe',
+		components: [
+			{
+				name: 'Blueprint',
+				drops: [{ location: 'Mars/Tyana Pass (Defense), Rotation C', chance: 9.3 }],
+			},
+			{
+				name: 'Systems',
+				drops: [{ location: 'Mars/Tyana Pass (Defense), Rotation C', chance: 6.1 }],
+			},
+		],
+	};
+	// Nidus's blueprint rows are vendor/quest entries (Cephalon Simaris @100),
+	// which must NOT turn the bp part into a fake 100% drop.
+	const nidus: RawWarframe = {
+		name: 'Nidus',
+		uniqueName: '/Lotus/Powersuits/Nidus/Nidus',
+		type: 'Warframe',
+		components: [
+			{
+				name: 'Blueprint',
+				drops: [{ location: 'Cephalon Simaris, Complete The Glast Gambit', chance: 100 }],
+			},
+			{
+				name: 'Systems',
+				drops: [{ location: 'Eris/Oestrus (Infested Salvage), Rotation C', chance: 14.29 }],
+			},
+		],
+	};
+	// Gyre's blueprint is a bounty reward at two tiers (equal chance → the
+	// lower tier wins); Zariman bounty rotations are the live cycle, so the
+	// rotation letter is kept.
+	const gyre: RawWarframe = {
+		name: 'Gyre',
+		uniqueName: '/Lotus/Powersuits/Gyre/Gyre',
+		type: 'Warframe',
+		components: [
+			{
+				name: 'Blueprint',
+				drops: [
+					{
+						location: 'Zariman Ten Zero (Level  110 - 115 Zariman Bounty), Rotation C',
+						chance: 12.99,
+					},
+					{
+						location: 'Zariman Ten Zero (Level  90 - 95 Zariman Bounty), Rotation C',
+						chance: 12.99,
+					},
+				],
+			},
+			{
+				name: 'Neuroptics',
+				drops: [
+					{
+						location: 'Zariman Ten Zero (Level  50 - 55 Zariman Bounty), Rotation C',
+						chance: 13.04,
+					},
+				],
+			},
+		],
+	};
+	const missionFarms: OpenWorldFarm[] = [
+		{
+			frameId: 'citrine',
+			nodeId: 'SolNode450',
+			regionId: 'mars',
+			componentSource: 'Mirror Defense',
+			bpSource: 'Mirror Defense drop (Rot C)',
+		},
+		{
+			frameId: 'nidus',
+			nodeId: 'SolNode167',
+			regionId: 'eris',
+			componentSource: 'Infested Salvage',
+			bpSource: 'Complete The Glast Gambit',
+		},
+		{
+			frameId: 'gyre',
+			nodeId: 'ZarimanHub',
+			regionId: 'zariman',
+			componentSource: 'Zariman Bounty',
+			bpSource: 'Zariman Bounty drop (L90–95+)',
+		},
+	];
+
+	it('makes a node-dropped blueprint a drop-sourced part with the per-run label', () => {
+		const cit = buildOpenWorldFrames([citrine], missionFarms).find((f) => f.id === 'citrine')!;
+		const bp = cit.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.dropSourceNodeId).toBe('SolNode450');
+		expect(bp.chance).toBeCloseTo(9.3, 1);
+		expect(bp.bountyTier).toBe('Rotation C');
+		expect(bp.rotation).toBeUndefined();
+	});
+
+	it('keeps a vendor/quest-sourced blueprint bare', () => {
+		const nid = buildOpenWorldFrames([nidus], missionFarms).find((f) => f.id === 'nidus')!;
+		const bp = nid.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.dropSourceNodeId).toBeUndefined();
+		expect(bp.chance).toBeUndefined();
+		const sys = nid.parts.find((p) => p.slot === 'systems')!;
+		expect(sys.chance).toBeCloseTo(14.29, 2);
+		expect(sys.bountyTier).toBe('Rotation C');
+		expect(sys.rotation).toBeUndefined();
+	});
+
+	it('resolves a bounty-dropped blueprint with live rotation and lowest-tier tiebreak', () => {
+		const gy = buildOpenWorldFrames([gyre], missionFarms).find((f) => f.id === 'gyre')!;
+		const bp = gy.parts.find((p) => p.slot === 'bp')!;
+		expect(bp.dropSourceNodeId).toBe('ZarimanHub');
+		expect(bp.chance).toBeCloseTo(12.99, 2);
+		expect(bp.bountyTier).toBe('L90–95');
+		expect(bp.rotation).toBe('C');
+	});
 });
