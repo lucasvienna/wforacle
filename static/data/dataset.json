@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1275.18+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-24T09:48:51.626Z",
+	"generatedAt": "2026-07-24T10:53:47.026Z",
 	"data": {
 		"regions": [
 			{
@@ -4927,7 +4927,9 @@
 					{
 						"id": "koumei:bp",
 						"frameId": "koumei",
-						"slot": "bp"
+						"slot": "bp",
+						"dropSourceNodeId": "CuratedSayasVisions",
+						"chance": 4.09
 					},
 					{
 						"id": "koumei:neuroptics",
@@ -4949,6 +4951,285 @@
 						"slot": "systems",
 						"dropSourceNodeId": "CuratedSayasVisions",
 						"chance": 4.09
+					}
+				]
+			},
+			{
+				"id": "citrine",
+				"name": "Citrine",
+				"uniqueName": "/Lotus/Powersuits/Geode/Geode",
+				"nodeId": "SolNode450",
+				"image": "Citrine.png",
+				"parts": [
+					{
+						"id": "citrine:bp",
+						"frameId": "citrine",
+						"slot": "bp",
+						"dropSourceNodeId": "SolNode450",
+						"chance": 9.3,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "citrine:neuroptics",
+						"frameId": "citrine",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode450",
+						"chance": 6.1,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "citrine:chassis",
+						"frameId": "citrine",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode450",
+						"chance": 6.1,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "citrine:systems",
+						"frameId": "citrine",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode450",
+						"chance": 6.1,
+						"bountyTier": "Rotation C"
+					}
+				]
+			},
+			{
+				"id": "dante",
+				"name": "Dante",
+				"uniqueName": "/Lotus/Powersuits/Pagemaster/Pagemaster",
+				"nodeId": "SolNode721",
+				"image": "Pagemaster.png",
+				"parts": [
+					{
+						"id": "dante:bp",
+						"frameId": "dante",
+						"slot": "bp",
+						"dropSourceNodeId": "SolNode721",
+						"chance": 7.5,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "dante:neuroptics",
+						"frameId": "dante",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode721",
+						"chance": 5,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "dante:chassis",
+						"frameId": "dante",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode721",
+						"chance": 5,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "dante:systems",
+						"frameId": "dante",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode721",
+						"chance": 5,
+						"bountyTier": "Rotation C"
+					}
+				]
+			},
+			{
+				"id": "gauss",
+				"name": "Gauss",
+				"uniqueName": "/Lotus/Powersuits/Runner/Runner",
+				"nodeId": "SolNode177",
+				"image": "Gauss.png",
+				"parts": [
+					{
+						"id": "gauss:bp",
+						"frameId": "gauss",
+						"slot": "bp"
+					},
+					{
+						"id": "gauss:neuroptics",
+						"frameId": "gauss",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode177",
+						"chance": 7.84,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "gauss:chassis",
+						"frameId": "gauss",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode177",
+						"chance": 7.84,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "gauss:systems",
+						"frameId": "gauss",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode177",
+						"chance": 7.84,
+						"bountyTier": "Rotation C"
+					}
+				]
+			},
+			{
+				"id": "voruna",
+				"name": "Voruna",
+				"uniqueName": "/Lotus/Powersuits/Werewolf/Werewolf",
+				"nodeId": "SolNode310",
+				"image": "Voruna.png",
+				"parts": [
+					{
+						"id": "voruna:bp",
+						"frameId": "voruna",
+						"slot": "bp",
+						"dropSourceNodeId": "SolNode310",
+						"chance": 12.24,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "voruna:neuroptics",
+						"frameId": "voruna",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode310",
+						"chance": 8.16,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "voruna:chassis",
+						"frameId": "voruna",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode310",
+						"chance": 8.16,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "voruna:systems",
+						"frameId": "voruna",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode310",
+						"chance": 8.16,
+						"bountyTier": "Rotation C"
+					}
+				]
+			},
+			{
+				"id": "nidus",
+				"name": "Nidus",
+				"uniqueName": "/Lotus/Powersuits/Infestation/Infestation",
+				"nodeId": "SolNode167",
+				"image": "Nidus.png",
+				"parts": [
+					{
+						"id": "nidus:bp",
+						"frameId": "nidus",
+						"slot": "bp"
+					},
+					{
+						"id": "nidus:neuroptics",
+						"frameId": "nidus",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode167",
+						"chance": 14.29,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "nidus:chassis",
+						"frameId": "nidus",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode167",
+						"chance": 14.29,
+						"bountyTier": "Rotation C"
+					},
+					{
+						"id": "nidus:systems",
+						"frameId": "nidus",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode167",
+						"chance": 14.29,
+						"bountyTier": "Rotation C"
+					}
+				]
+			},
+			{
+				"id": "jade",
+				"name": "Jade",
+				"uniqueName": "/Lotus/Powersuits/Choir/Choir",
+				"nodeId": "SolNode723",
+				"image": "Jade.png",
+				"parts": [
+					{
+						"id": "jade:bp",
+						"frameId": "jade",
+						"slot": "bp"
+					},
+					{
+						"id": "jade:neuroptics",
+						"frameId": "jade",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "SolNode723",
+						"chance": 4.63
+					},
+					{
+						"id": "jade:chassis",
+						"frameId": "jade",
+						"slot": "chassis",
+						"dropSourceNodeId": "SolNode723",
+						"chance": 4.63
+					},
+					{
+						"id": "jade:systems",
+						"frameId": "jade",
+						"slot": "systems",
+						"dropSourceNodeId": "SolNode723",
+						"chance": 4.63
+					}
+				]
+			},
+			{
+				"id": "gyre",
+				"name": "Gyre",
+				"uniqueName": "/Lotus/Powersuits/Gyre/Gyre",
+				"nodeId": "ZarimanHub",
+				"image": "Gyre.png",
+				"parts": [
+					{
+						"id": "gyre:bp",
+						"frameId": "gyre",
+						"slot": "bp",
+						"dropSourceNodeId": "ZarimanHub",
+						"chance": 12.99,
+						"bountyTier": "L90–95",
+						"rotation": "C"
+					},
+					{
+						"id": "gyre:neuroptics",
+						"frameId": "gyre",
+						"slot": "neuroptics",
+						"dropSourceNodeId": "ZarimanHub",
+						"chance": 13.04,
+						"bountyTier": "L50–55",
+						"rotation": "C"
+					},
+					{
+						"id": "gyre:chassis",
+						"frameId": "gyre",
+						"slot": "chassis",
+						"dropSourceNodeId": "ZarimanHub",
+						"chance": 13.56,
+						"bountyTier": "L60–65",
+						"rotation": "C"
+					},
+					{
+						"id": "gyre:systems",
+						"frameId": "gyre",
+						"slot": "systems",
+						"dropSourceNodeId": "ZarimanHub",
+						"chance": 11.9,
+						"bountyTier": "L70–75",
+						"rotation": "C"
 					}
 				]
 			}
@@ -5963,6 +6244,55 @@
 				"regionId": "earth",
 				"componentSource": "Shrine Defense",
 				"bpSource": "Shrine Defense drop or 165 Fate Pearls"
+			},
+			{
+				"frameId": "citrine",
+				"nodeId": "SolNode450",
+				"regionId": "mars",
+				"componentSource": "Mirror Defense",
+				"bpSource": "Mirror Defense drop (Rot C)"
+			},
+			{
+				"frameId": "dante",
+				"nodeId": "SolNode721",
+				"regionId": "deimos",
+				"componentSource": "Disruption",
+				"bpSource": "Disruption drop (Rot C)"
+			},
+			{
+				"frameId": "gauss",
+				"nodeId": "SolNode177",
+				"regionId": "sedna",
+				"componentSource": "Disruption",
+				"bpSource": "Market (30,000cr)"
+			},
+			{
+				"frameId": "voruna",
+				"nodeId": "SolNode310",
+				"regionId": "lua",
+				"componentSource": "Conjunction Survival",
+				"bpSource": "Circulus drop or Yonta (125 Lua Thrax Plasm)"
+			},
+			{
+				"frameId": "nidus",
+				"nodeId": "SolNode167",
+				"regionId": "eris",
+				"componentSource": "Infested Salvage",
+				"bpSource": "Complete The Glast Gambit"
+			},
+			{
+				"frameId": "jade",
+				"nodeId": "SolNode723",
+				"regionId": "uranus",
+				"componentSource": "Ascension",
+				"bpSource": "Complete Jade Shadows or 450 Vestigial Motes"
+			},
+			{
+				"frameId": "gyre",
+				"nodeId": "ZarimanHub",
+				"regionId": "zariman",
+				"componentSource": "Zariman Bounty",
+				"bpSource": "Zariman Bounty drop (L90–95+)"
 			}
 		]
 	}
