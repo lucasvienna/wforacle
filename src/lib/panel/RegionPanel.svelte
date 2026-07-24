@@ -128,14 +128,15 @@
 		return null;
 	}
 
-	// Collapsed-state farm cue for a free-roam frame: is any still-needed component
-	// available on the current rotation? Null when there's no live data or nothing
-	// left to farm (a completed frame shows its ✓ instead).
+	// Collapsed-state farm cue for a free-roam frame: is any still-needed
+	// component — or drop-sourced blueprint — available on the current
+	// rotation? Null when there's no live data or nothing left to farm (a
+	// completed frame shows its ✓ instead).
 	function owSummary(frame: Warframe): { cls: string; text: string } | null {
 		if (!worldState) return null;
 		const letter = worldState.rotation.letter;
 		const needed = frame.parts.filter(
-			(p) => p.slot !== 'bp' && !tracker.isOwned(p.id),
+			(p) => (p.slot !== 'bp' || p.dropSourceNodeId != null) && !tracker.isOwned(p.id),
 		);
 		if (needed.length === 0) return null;
 		const upNow = needed.some((p) => {
