@@ -24,3 +24,14 @@ test('argoncrystal guide prerenders even though it has no panel link', async ({ 
 	await expect(page.getByRole('heading', { name: /Argon Crystal farming guide/i })).toBeVisible();
 	await expect(page.getByText('Void — Hepit')).toBeVisible();
 });
+
+test('credits guide renders the bespoke page', async ({ page }) => {
+	await page.goto('/guides/credits');
+
+	await expect(page.getByRole('heading', { name: /Credits farming guide/i })).toBeVisible();
+	// Data-driven card from the dataset entry.
+	await expect(page.getByText('Ceres — Seimeni / Gabii (Dark Sector)')).toBeVisible();
+	// Bespoke sections that the generic [resource] shell doesn't have.
+	await expect(page.getByRole('heading', { name: /two-channel rule/i })).toBeVisible();
+	await expect(page.getByRole('heading', { name: /outdated advice/i })).toBeVisible();
+});
