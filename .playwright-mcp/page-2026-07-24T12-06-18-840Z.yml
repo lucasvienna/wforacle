@@ -1,0 +1,270 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]: wforacle
+    - button "Search Ctrl K" [ref=e7] [cursor=pointer]:
+      - generic [ref=e8]: 🔍
+      - text: Search
+      - generic [ref=e9]: Ctrl K
+  - generic [ref=e10]:
+    - heading "Warframe Star Chart Tracker" [level=1] [ref=e11]
+    - paragraph [ref=e12]: Track which Warframes you own, find the best farming spots for every planet and boss, and never lose progress on a grind again.
+  - generic [ref=e13]: Loading Star Chart…
+  - generic [ref=e14]:
+    - heading "Browse the Star Chart" [level=2] [ref=e15]
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - heading "Earth" [level=3] [ref=e18]
+        - paragraph [ref=e19]: "Boss frame: Hydroid"
+        - list [ref=e20]:
+          - listitem [ref=e21]:
+            - link "Ferrite" [ref=e22] [cursor=pointer]:
+              - /url: ./guides/ferrite
+          - listitem [ref=e23]:
+            - link "Rubedo" [ref=e24] [cursor=pointer]:
+              - /url: ./guides/rubedo
+          - listitem [ref=e25]:
+            - link "Neurodes" [ref=e26] [cursor=pointer]:
+              - /url: ./guides/neurodes
+          - listitem [ref=e27]:
+            - link "Detonite Ampule" [ref=e28] [cursor=pointer]:
+              - /url: ./guides/detoniteampule
+      - generic [ref=e29]:
+        - heading "Venus" [level=3] [ref=e30]
+        - paragraph [ref=e31]: "Boss frame: Rhino"
+        - list [ref=e32]:
+          - listitem [ref=e33]:
+            - link "Alloy Plate" [ref=e34] [cursor=pointer]:
+              - /url: ./guides/alloyplate
+          - listitem [ref=e35]:
+            - link "Circuits" [ref=e36] [cursor=pointer]:
+              - /url: ./guides/circuits
+          - listitem [ref=e37]:
+            - link "Polymer Bundle" [ref=e38] [cursor=pointer]:
+              - /url: ./guides/polymerbundle
+          - listitem [ref=e39]:
+            - link "Oxium" [ref=e40] [cursor=pointer]:
+              - /url: ./guides/oxium
+          - listitem [ref=e41]:
+            - link "Fieldron Sample" [ref=e42] [cursor=pointer]:
+              - /url: ./guides/fieldronsample
+      - generic [ref=e43]:
+        - heading "Mercury" [level=3] [ref=e44]
+        - list [ref=e45]:
+          - listitem [ref=e46]:
+            - link "Ferrite" [ref=e47] [cursor=pointer]:
+              - /url: ./guides/ferrite
+          - listitem [ref=e48]:
+            - link "Polymer Bundle" [ref=e49] [cursor=pointer]:
+              - /url: ./guides/polymerbundle
+          - listitem [ref=e50]:
+            - link "Morphics" [ref=e51] [cursor=pointer]:
+              - /url: ./guides/morphics
+          - listitem [ref=e52]:
+            - link "Detonite Ampule" [ref=e53] [cursor=pointer]:
+              - /url: ./guides/detoniteampule
+      - generic [ref=e54]:
+        - heading "Mars" [level=3] [ref=e55]
+        - paragraph [ref=e56]: "Boss frame: Excalibur"
+        - list [ref=e57]:
+          - listitem [ref=e58]:
+            - link "Salvage" [ref=e59] [cursor=pointer]:
+              - /url: ./guides/salvage
+          - listitem [ref=e60]:
+            - link "Morphics" [ref=e61] [cursor=pointer]:
+              - /url: ./guides/morphics
+          - listitem [ref=e62]:
+            - link "Gallium" [ref=e63] [cursor=pointer]:
+              - /url: ./guides/gallium
+          - listitem [ref=e64]:
+            - link "Oxium" [ref=e65] [cursor=pointer]:
+              - /url: ./guides/oxium
+          - listitem [ref=e66]:
+            - link "Fieldron Sample" [ref=e67] [cursor=pointer]:
+              - /url: ./guides/fieldronsample
+      - generic [ref=e68]:
+        - heading "Phobos" [level=3] [ref=e69]
+        - paragraph [ref=e70]: "Boss frame: Mag"
+        - list [ref=e71]:
+          - listitem [ref=e72]:
+            - link "Alloy Plate" [ref=e73] [cursor=pointer]:
+              - /url: ./guides/alloyplate
+          - listitem [ref=e74]:
+            - link "Plastids" [ref=e75] [cursor=pointer]:
+              - /url: ./guides/plastids
+          - listitem [ref=e76]:
+            - link "Rubedo" [ref=e77] [cursor=pointer]:
+              - /url: ./guides/rubedo
+          - listitem [ref=e78]:
+            - link "Morphics" [ref=e79] [cursor=pointer]:
+              - /url: ./guides/morphics
+      - generic [ref=e80]:
+        - heading "Ceres" [level=3] [ref=e81]
+        - paragraph [ref=e82]: "Boss frame: Frost"
+        - list [ref=e83]:
+          - listitem [ref=e84]:
+            - link "Alloy Plate" [ref=e85] [cursor=pointer]:
+              - /url: ./guides/alloyplate
+          - listitem [ref=e86]:
+            - link "Circuits" [ref=e87] [cursor=pointer]:
+              - /url: ./guides/circuits
+          - listitem [ref=e88]:
+            - link "Orokin Cell" [ref=e89] [cursor=pointer]:
+              - /url: ./guides/orokincell
+          - listitem [ref=e90]:
+            - link "Detonite Ampule" [ref=e91] [cursor=pointer]:
+              - /url: ./guides/detoniteampule
+          - listitem [ref=e92]: Carbides
+      - generic [ref=e93]:
+        - heading "Jupiter" [level=3] [ref=e94]
+        - paragraph [ref=e95]: "Boss frames: Valkyr, Wisp"
+        - list [ref=e96]:
+          - listitem [ref=e97]:
+            - link "Alloy Plate" [ref=e98] [cursor=pointer]:
+              - /url: ./guides/alloyplate
+          - listitem [ref=e99]:
+            - link "Salvage" [ref=e100] [cursor=pointer]:
+              - /url: ./guides/salvage
+          - listitem [ref=e101]:
+            - link "Neural Sensors" [ref=e102] [cursor=pointer]:
+              - /url: ./guides/neuralsensors
+          - listitem [ref=e103]:
+            - link "Oxium" [ref=e104] [cursor=pointer]:
+              - /url: ./guides/oxium
+          - listitem [ref=e105]:
+            - link "Hexenon" [ref=e106] [cursor=pointer]:
+              - /url: ./guides/hexenon
+      - generic [ref=e107]:
+        - heading "Europa" [level=3] [ref=e108]
+        - paragraph [ref=e109]: "Boss frame: Nova"
+        - list [ref=e110]:
+          - listitem [ref=e111]:
+            - link "Rubedo" [ref=e112] [cursor=pointer]:
+              - /url: ./guides/rubedo
+          - listitem [ref=e113]:
+            - link "Morphics" [ref=e114] [cursor=pointer]:
+              - /url: ./guides/morphics
+          - listitem [ref=e115]:
+            - link "Control Module" [ref=e116] [cursor=pointer]:
+              - /url: ./guides/controlmodule
+          - listitem [ref=e117]:
+            - link "Oxium" [ref=e118] [cursor=pointer]:
+              - /url: ./guides/oxium
+          - listitem [ref=e119]:
+            - link "Fieldron Sample" [ref=e120] [cursor=pointer]:
+              - /url: ./guides/fieldronsample
+          - listitem [ref=e121]: Cubic Diodes
+      - generic [ref=e122]:
+        - heading "Saturn" [level=3] [ref=e123]
+        - paragraph [ref=e124]: "Boss frame: Ember"
+        - list [ref=e125]:
+          - listitem [ref=e126]:
+            - link "Nano Spores" [ref=e127] [cursor=pointer]:
+              - /url: ./guides/nanospores
+          - listitem [ref=e128]:
+            - link "Plastids" [ref=e129] [cursor=pointer]:
+              - /url: ./guides/plastids
+          - listitem [ref=e130]:
+            - link "Orokin Cell" [ref=e131] [cursor=pointer]:
+              - /url: ./guides/orokincell
+          - listitem [ref=e132]:
+            - link "Detonite Ampule" [ref=e133] [cursor=pointer]:
+              - /url: ./guides/detoniteampule
+      - generic [ref=e134]:
+        - heading "Uranus" [level=3] [ref=e135]
+        - paragraph [ref=e136]: "Boss frame: Equinox"
+        - list [ref=e137]:
+          - listitem [ref=e138]:
+            - link "Polymer Bundle" [ref=e139] [cursor=pointer]:
+              - /url: ./guides/polymerbundle
+          - listitem [ref=e140]:
+            - link "Plastids" [ref=e141] [cursor=pointer]:
+              - /url: ./guides/plastids
+          - listitem [ref=e142]:
+            - link "Gallium" [ref=e143] [cursor=pointer]:
+              - /url: ./guides/gallium
+          - listitem [ref=e144]:
+            - link "Tellurium" [ref=e145] [cursor=pointer]:
+              - /url: ./guides/tellurium
+          - listitem [ref=e146]:
+            - link "Detonite Ampule" [ref=e147] [cursor=pointer]:
+              - /url: ./guides/detoniteampule
+      - generic [ref=e148]:
+        - heading "Neptune" [level=3] [ref=e149]
+        - paragraph [ref=e150]: "Boss frame: Loki"
+        - list [ref=e151]:
+          - listitem [ref=e152]:
+            - link "Ferrite" [ref=e153] [cursor=pointer]:
+              - /url: ./guides/ferrite
+          - listitem [ref=e154]:
+            - link "Nano Spores" [ref=e155] [cursor=pointer]:
+              - /url: ./guides/nanospores
+          - listitem [ref=e156]:
+            - link "Control Module" [ref=e157] [cursor=pointer]:
+              - /url: ./guides/controlmodule
+          - listitem [ref=e158]:
+            - link "Oxium" [ref=e159] [cursor=pointer]:
+              - /url: ./guides/oxium
+          - listitem [ref=e160]:
+            - link "Fieldron Sample" [ref=e161] [cursor=pointer]:
+              - /url: ./guides/fieldronsample
+      - generic [ref=e162]:
+        - heading "Pluto" [level=3] [ref=e163]
+        - paragraph [ref=e164]: "Boss frame: Trinity"
+        - list [ref=e165]:
+          - listitem [ref=e166]:
+            - link "Alloy Plate" [ref=e167] [cursor=pointer]:
+              - /url: ./guides/alloyplate
+          - listitem [ref=e168]:
+            - link "Plastids" [ref=e169] [cursor=pointer]:
+              - /url: ./guides/plastids
+          - listitem [ref=e170]:
+            - link "Rubedo" [ref=e171] [cursor=pointer]:
+              - /url: ./guides/rubedo
+          - listitem [ref=e172]:
+            - link "Morphics" [ref=e173] [cursor=pointer]:
+              - /url: ./guides/morphics
+          - listitem [ref=e174]:
+            - link "Oxium" [ref=e175] [cursor=pointer]:
+              - /url: ./guides/oxium
+          - listitem [ref=e176]:
+            - link "Fieldron Sample" [ref=e177] [cursor=pointer]:
+              - /url: ./guides/fieldronsample
+      - generic [ref=e178]:
+        - heading "Eris" [level=3] [ref=e179]
+        - paragraph [ref=e180]: "Boss frames: Mesa, Atlas"
+        - list [ref=e181]:
+          - listitem [ref=e182]:
+            - link "Nano Spores" [ref=e183] [cursor=pointer]:
+              - /url: ./guides/nanospores
+          - listitem [ref=e184]:
+            - link "Plastids" [ref=e185] [cursor=pointer]:
+              - /url: ./guides/plastids
+          - listitem [ref=e186]:
+            - link "Neurodes" [ref=e187] [cursor=pointer]:
+              - /url: ./guides/neurodes
+          - listitem [ref=e188]:
+            - link "Oxium" [ref=e189] [cursor=pointer]:
+              - /url: ./guides/oxium
+          - listitem [ref=e190]:
+            - link "Mutagen Sample" [ref=e191] [cursor=pointer]:
+              - /url: ./guides/mutagensample
+      - generic [ref=e192]:
+        - heading "Sedna" [level=3] [ref=e193]
+        - paragraph [ref=e194]: "Boss frame: Saryn"
+        - list [ref=e195]:
+          - listitem [ref=e196]:
+            - link "Alloy Plate" [ref=e197] [cursor=pointer]:
+              - /url: ./guides/alloyplate
+          - listitem [ref=e198]:
+            - link "Salvage" [ref=e199] [cursor=pointer]:
+              - /url: ./guides/salvage
+          - listitem [ref=e200]:
+            - link "Rubedo" [ref=e201] [cursor=pointer]:
+              - /url: ./guides/rubedo
+          - listitem [ref=e202]:
+            - link "Detonite Ampule" [ref=e203] [cursor=pointer]:
+              - /url: ./guides/detoniteampule
+  - contentinfo [ref=e204]:
+    - text: Planet art & game data © Digital Extremes, via the Warframe wiki. Fan-made tool — not affiliated with Digital Extremes.
+    - link "Browse all resource farming guides" [ref=e205] [cursor=pointer]:
+      - /url: ./guides

@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
+	import { asset, resolve } from '$app/paths';
 	import { loadDataset } from '$lib/data/dataset';
 	import type { Dataset } from '$lib/model/types';
 	import StarChart from '$lib/starchart/StarChart.svelte';
@@ -162,6 +162,22 @@
 					>Ctrl K</kbd
 				>
 			</button>
+			<a
+				href={resolve('/guides/credits')}
+				title="Credits farming guide"
+				aria-label="Credits farming guide"
+				class="rounded-lg border border-wf-edge bg-wf-panel px-2.5 py-1.5 hover:border-wf-cyan/40"
+			>
+				<img src={asset('/resources/credits.webp')} alt="" class="h-4 w-4" />
+			</a>
+			<a
+				href={resolve('/guides/affinity')}
+				title="Affinity farming guide"
+				aria-label="Affinity farming guide"
+				class="rounded-lg border border-wf-edge bg-wf-panel px-2.5 py-1.5 hover:border-wf-cyan/40"
+			>
+				<img src={asset('/resources/affinity.webp')} alt="" class="h-4 w-4" />
+			</a>
 			{#if tracker}
 				<div
 					class="flex items-center gap-2 rounded-lg border border-wf-edge bg-wf-panel px-3 py-1.5 text-xs text-wf-muted"
