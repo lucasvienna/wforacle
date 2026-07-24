@@ -51,6 +51,14 @@ const solNodes: SolNodes = {
 	SolNode228: { value: 'Plains of Eidolon (Earth)', enemy: 'Grineer', type: 'Free Roam' },
 	SolNode129: { value: 'Orb Vallis (Venus)', enemy: 'Corpus', type: 'Free Roam' },
 	SolNode229: { value: 'Cambion Drift (Deimos)', enemy: 'Infested', type: 'Free Roam' },
+	// Mission-node farm nodes (Task: mission-node frames)
+	SolNode450: { value: 'Tyana Pass (Mars)', enemy: 'Crossfire', type: 'Mirror Defense' },
+	SolNode721: { value: 'Armatus (Deimos)', enemy: 'The Murmur', type: 'Disruption' },
+	SolNode177: { value: 'Kappa (Sedna)', enemy: 'Grineer', type: 'Disruption' },
+	SolNode310: { value: 'Circulus (Lua)', enemy: 'Grineer', type: 'Survival' },
+	SolNode167: { value: 'Oestrus (Eris)', enemy: 'Infested', type: 'Infested Salvage' },
+	SolNode723: { value: 'Brutus (Uranus)', enemy: 'Corpus', type: 'Ascension' },
+	ZarimanHub: { value: 'Chrysalith (Zariman)', enemy: 'Tenno', type: 'Relay' },
 };
 
 describe('assembleDataset', () => {
@@ -76,6 +84,13 @@ describe('assembleDataset', () => {
 		'Caliban',
 		'Protea',
 		'Koumei',
+		'Citrine',
+		'Dante',
+		'Gauss',
+		'Voruna',
+		'Nidus',
+		'Jade',
+		'Gyre',
 	].map(ow);
 	const ds = assembleDataset(solNodes, [...warframes, ...owWarframes], rawResources);
 	it('back-fills bossId/frameId on the assassination node', () => {
@@ -114,9 +129,23 @@ describe('assembleDataset', () => {
 		broken.quests[0].revealsFrameIds = ['ghostframe'];
 		expect(validateDataset(broken).join(' ')).toMatch(/ghostframe/);
 	});
-	it('attaches the 10 open-world farms and builds their frames', () => {
-		expect(ds.openWorldFarms).toHaveLength(10);
-		for (const id of ['gara', 'xaku', 'caliban', 'qorvex', 'protea', 'koumei']) {
+	it('attaches the 17 open-world farms and builds their frames', () => {
+		expect(ds.openWorldFarms).toHaveLength(17);
+		for (const id of [
+			'gara',
+			'xaku',
+			'caliban',
+			'qorvex',
+			'protea',
+			'koumei',
+			'citrine',
+			'dante',
+			'gauss',
+			'voruna',
+			'nidus',
+			'jade',
+			'gyre',
+		]) {
 			expect(ds.warframes.some((f) => f.id === id)).toBe(true);
 		}
 	});
