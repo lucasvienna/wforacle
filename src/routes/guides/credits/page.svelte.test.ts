@@ -37,7 +37,7 @@ const data = { resource: fixtureResource } as PageData;
 
 describe('bespoke credits guide page', () => {
 	it('sets the guide title, canonical and JSON-LD', () => {
-		render(Page, { data });
+		render(Page, { data, params: {} });
 		expect(document.title).toBe('Credits Farming Guide — Best Locations | wforacle');
 		const canonical = document.head.querySelector('link[rel="canonical"]');
 		expect(canonical?.getAttribute('href')).toBe(`${SITE_URL}/guides/credits`);
@@ -45,7 +45,7 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('renders every recommendation card with its booster note and source', () => {
-		render(Page, { data });
+		render(Page, { data, params: {} });
 		expect(screen.getByText('Ceres — Seimeni / Gabii (Dark Sector)')).toBeInTheDocument();
 		expect(screen.getByText('Venus — Profit-Taker Orb (Heist Phase 4)')).toBeInTheDocument();
 		expect(screen.getByText(/Effigy and booster double the drops/)).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('groups early cards before late cards', () => {
-		render(Page, { data });
+		render(Page, { data, params: {} });
 		const headings = screen.getAllByRole('heading', { level: 3 });
 		const labels = headings.map((h) => h.textContent);
 		expect(labels.indexOf('Ceres — Seimeni / Gabii (Dark Sector)')).toBeLessThan(
@@ -62,7 +62,7 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('gives the credits icon a descriptive alt', () => {
-		render(Page, { data });
+		render(Page, { data, params: {} });
 		expect(screen.getByRole('img', { name: 'Credits' })).toBeInTheDocument();
 	});
 });
