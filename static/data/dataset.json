@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1275.18+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-19T16:22:13.181Z",
+	"generatedAt": "2026-07-23T22:02:21.664Z",
 	"data": {
 		"regions": [
 			{
@@ -84,7 +84,8 @@
 					"polymerbundle",
 					"circuits",
 					"fieldronsample",
-					"oxium"
+					"oxium",
+					"credits"
 				]
 			},
 			{
@@ -239,7 +240,8 @@
 					"circuits",
 					"orokincell",
 					"detoniteampule",
-					"carbides"
+					"carbides",
+					"credits"
 				]
 			},
 			{
@@ -453,7 +455,8 @@
 					"ferrite",
 					"controlmodule",
 					"fieldronsample",
-					"oxium"
+					"oxium",
+					"credits"
 				]
 			},
 			{
@@ -5691,6 +5694,75 @@
 						"source": "https://wiki.warframe.com/w/Entrati_Lanthorn",
 						"lastVerified": "2026-07-06",
 						"regionId": "deimos"
+					}
+				]
+			},
+			{
+				"id": "credits",
+				"name": "Credits",
+				"regionIds": [
+					"venus",
+					"ceres",
+					"neptune"
+				],
+				"recommendations": [
+					{
+						"phase": "early",
+						"nodeLabel": "Ceres — Seimeni / Gabii (Dark Sector)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: this is an end-of-mission reward, so a Credit Booster doubles it and the Daily First Win Bonus doubles it again — resource boosters do nothing for credits.",
+						"note": "Dark Sectors pay a flat credit bonus on completion — not a percentage: Seimeni (Defense) and Gabii (Survival) add ~20,000 on top of the base reward for ~22,400 per run. Run five waves (or five minutes) and re-queue; staying longer never repeats the bonus. Same payout as the famous Akkad on Eris, four planets closer to the start of the chart.",
+						"source": "https://wiki.warframe.com/w/Dark_Sector",
+						"lastVerified": "2026-07-23",
+						"regionId": "ceres"
+					},
+					{
+						"phase": "early",
+						"nodeLabel": "Anywhere — Daily First Win Bonus",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: the daily double multiplies with a Credit Booster — a 50,000-credit Arbitration pays 200,000 with both running.",
+						"note": "The first mission you complete after 00:00 UTC pays double end-of-mission credits. Spend it on your biggest flat payout — an Arbitration (50,000 → 100,000) or a Dark Sector run — and never on the Index, Laomedeia or open-world bounties: those pay through credit caches, which the bonus skips entirely while still being used up.",
+						"source": "https://wiki.warframe.com/w/Daily_Tribute",
+						"lastVerified": "2026-07-23"
+					},
+					{
+						"phase": "early",
+						"nodeLabel": "Neptune — The Index (High Risk)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help, with a catch: a Credit Booster only doubles the first round of a match — one round and re-queue beats marathons — and the Daily First Win Bonus never applies to Index winnings.",
+						"note": "Wager 50,000, reach 100 points, collect 250,000 — and every extra round pays another 250,000 with no new stake. Bring a frame that ignores Financial Stress (Rhino or Nezha early, Revenant later), bank around 15 points at a time and keep a small point buffer so the enemy team can never score. Only the host needs the node unlocked, so newer players can be taxied in.",
+						"source": "https://wiki.warframe.com/w/The_Index",
+						"lastVerified": "2026-07-23",
+						"regionId": "neptune"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Neptune — Laomedeia (Disruption)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help: a Credit Booster doubles every cache — silently, the reward screen never shows it — while the Daily First Win Bonus does not apply here.",
+						"note": "A Disruption whose reward table is mostly credit caches: defend all four conduits and rounds 1–4 pay 30k / 30k / 50k / 50k — 160,000 in under twenty minutes, then 50,000 every round for as long as you stay. No wager to front, and normal mission rules mean squads, companions and loot frames all work.",
+						"source": "https://wiki.warframe.com/w/Laomedeia",
+						"lastVerified": "2026-07-23",
+						"regionId": "neptune"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Höllvania — Legacyte Harvest (Techrot Safes)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help — all of them: safe credits are an in-mission drop, so a Credit Booster, Chroma's Effigy, the MR30 Credit Blessing and Prosperous Retriever all stack on top of each other.",
+						"note": "Every Höllvania mission except Exterminate can spawn one Techrot Safe holding a 100,000-credit drop plus an Arcane. Spam short Legacyte Harvest runs (requires The Hex quest), and take SHELL CRACKER bounties or bring Loot Detector so finding the safe doesn't eat the run time. The current top-tier credit farm, at a fraction of Profit-Taker's gear bar.",
+						"source": "https://wiki.warframe.com/w/Legacyte_Harvest",
+						"lastVerified": "2026-07-23"
+					},
+					{
+						"phase": "late",
+						"nodeLabel": "Venus — Profit-Taker Orb (Heist Phase 4)",
+						"boostersApply": true,
+						"boosterNote": "Boosters help — the stacking showcase: the credits arrive as drops, so Chroma's Effigy doubles them and a Credit Booster doubles them again for 500,000 per kill — but the Daily First Win Bonus skips drops entirely.",
+						"note": "Killing the Profit-Taker drops a guaranteed 125,000 credits (5 × 25,000 pickups) plus a Crisma Toroid. Requires Old Mate rank with Solaris United and an arch-gun fitted with a Gravimag; once geared, kills take two to eight minutes. Cast Effigy near the corpse before picking the credits up.",
+						"source": "https://wiki.warframe.com/w/Profit-Taker_Orb",
+						"lastVerified": "2026-07-23",
+						"regionId": "venus"
 					}
 				]
 			}
