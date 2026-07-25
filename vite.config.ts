@@ -27,8 +27,11 @@ export default defineConfig({
 		// the untested single points of failure are, not to gate PRs on a number.
 		coverage: {
 			provider: 'v8',
-			// Summary only — nothing is written to disk for CI to collect.
-			reporter: ['text-summary'],
+			// text-summary for the job log; the two json reporters exist only so
+			// the CI step can render the PR comment (json-summary = the totals
+			// table, json = per-file uncovered lines). Output lands in coverage/,
+			// which is gitignored.
+			reporter: ['text-summary', 'json-summary', 'json'],
 			// Extension-scoped: a bare `src/**` makes the provider try to parse
 			// app.html and the .svx guide bodies as JS.
 			include: ['src/**/*.{ts,svelte}', 'scripts/**/*.ts'],

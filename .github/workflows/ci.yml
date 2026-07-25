@@ -46,14 +46,27 @@ jobs:
 
   unit:
     runs-on: ubuntu-latest
+    # Only this job needs to write; the workflow default stays contents: read.
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      # Report-only: the summary lands in the job log, no threshold gates the PR.
+      # Report-only: no threshold gates the PR.
       - run: pnpm test:coverage
+      - name: Report coverage
+        # v2.12.2, pinned to a SHA — a mutable tag on a third-party action is a
+        # supply-chain hole. `always()` so the report still posts when a test
+        # fails (vitest writes the coverage files either way), and
+        # continue-on-error because fork PRs get a read-only token and cannot
+        # comment — the job summary still renders there.
+        uses: davelosert/vitest-coverage-report-action@8b157684c6a6b259b97d45e72b44242865c0f6a5
+        if: always()
+        continue-on-error: true
 
   build:
     runs-on: ubuntu-latest
