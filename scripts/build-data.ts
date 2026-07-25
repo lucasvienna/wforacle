@@ -2,7 +2,12 @@ import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { loadSources } from './data/sources';
-import { assembleDataset, validateDataset } from './data/assemble';
+import {
+	assembleDataset,
+	validateDataset,
+	validateRecommendationLabels,
+	staleRecommendations,
+} from './data/assemble';
 import { PLANETS } from './data/curated';
 
 const OUT = 'static/data/dataset.json';
@@ -40,6 +45,29 @@ async function main() {
 	if (problems.length) {
 		console.error('Dataset invalid:\n' + problems.join('\n'));
 		process.exit(1);
+	}
+	// Curated free-text labels checked against the real node names. Separate
+	// from validateDataset because it is only meaningful against the complete
+	// node set, which only exists here.
+	const labelProblems = validateRecommendationLabels(data);
+	if (labelProblems.length) {
+		console.error(
+			'Curated nodeLabels do not resolve against the star chart:\n' +
+				labelProblems.join('\n') +
+				'\n\nEither the label is stale (a game update renamed the node) or it ' +
+				'intentionally names something that is not a chart node, in which case ' +
+				'add it to NON_NODE_LABELS in scripts/data/assemble.ts with a reason.',
+		);
+		process.exit(1);
+	}
+	// Warn, don't fail: a stale date means nobody has re-read the wiki page
+	// lately, which is worth surfacing but isn't a broken build.
+	const stale = staleRecommendations(data, new Date());
+	if (stale.length) {
+		console.warn(
+			`Warning: ${stale.length} recommendation(s) not re-verified in over 6 months:\n` +
+				stale.map((s) => `  ${s.resourceId}: ${s.nodeLabel} (${s.lastVerified})`).join('\n'),
+		);
 	}
 	const nodeFrames = data.warframes.length;
 	console.log(
