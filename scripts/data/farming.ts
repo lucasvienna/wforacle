@@ -243,7 +243,7 @@ export const RECOMMENDATIONS: Record<string, Recommendation[]> = {
 		},
 		{
 			phase: 'late',
-			nodeLabel: 'Zariman Ten Zero — Tuvul Commons (Void Cascade)',
+			nodeLabel: 'Zariman — Tuvul Commons (Void Cascade)',
 			nodeId: undefined,
 			boostersApply: true,
 			note: 'Endless Void Cascade enemy density makes this the highest-yield Alloy Plate farm for geared squads; Ceres Gabii Steel Path with a booster is a solid alternative.',
