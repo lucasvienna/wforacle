@@ -34,7 +34,7 @@ const data = { resource, guide: null } as PageData;
 
 describe('guide detail page', () => {
 	it('sets a unique title, description, canonical, and JSON-LD', () => {
-		render(Page, { data, params: { resource: resource.id } });
+		render(Page, { data, params: { resource: resource.id }, form: undefined });
 
 		expect(document.title).toBe('Neurodes Farming Guide — Best Locations | wforacle');
 
@@ -62,6 +62,7 @@ describe('guide detail page', () => {
 		render(Page, {
 			data: { resource: custom, guide: null } as PageData,
 			params: { resource: custom.id },
+			form: undefined,
 		});
 
 		expect(screen.getByText(/drop-chance boosters do nothing here/)).toBeInTheDocument();
@@ -69,7 +70,7 @@ describe('guide detail page', () => {
 	});
 
 	it('gives the resource icon a descriptive alt instead of a decorative empty one', () => {
-		render(Page, { data, params: { resource: resource.id } });
+		render(Page, { data, params: { resource: resource.id }, form: undefined });
 
 		expect(screen.getByRole('img', { name: 'Neurodes' })).toBeInTheDocument();
 	});

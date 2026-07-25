@@ -48,7 +48,7 @@ const data = { resource: fixtureResource } as PageData;
 
 describe('bespoke affinity guide page', () => {
 	it('sets the guide title, canonical and JSON-LD', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(document.title).toBe('Affinity Farming Guide — Fastest XP Locations | wforacle');
 		const canonical = document.head.querySelector('link[rel="canonical"]');
 		expect(canonical?.getAttribute('href')).toBe(`${SITE_URL}/guides/affinity`);
@@ -56,7 +56,7 @@ describe('bespoke affinity guide page', () => {
 	});
 
 	it('renders every recommendation card with its booster note and source', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByText('Saturn — Helene (Defense)')).toBeInTheDocument();
 		expect(screen.getByText('Sanctuary Onslaught (Cephalon Simaris)')).toBeInTheDocument();
 		expect(screen.getByText('Jupiter — Elara (Steel Path Survival)')).toBeInTheDocument();
@@ -65,7 +65,7 @@ describe('bespoke affinity guide page', () => {
 	});
 
 	it('groups cards early → mid → late regardless of dataset order', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		const headings = screen.getAllByRole('heading', { level: 3 });
 		const labels = headings.map((h) => h.textContent);
 		const early = labels.indexOf('Saturn — Helene (Defense)');
@@ -76,12 +76,12 @@ describe('bespoke affinity guide page', () => {
 	});
 
 	it('gives the affinity icon a descriptive alt', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('img', { name: 'Affinity' })).toBeInTheDocument();
 	});
 
 	it('explains the sharing rules with the loadout warning', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('heading', { name: /sharing rules/i })).toBeInTheDocument();
 		expect(screen.getByText('Your kills')).toBeInTheDocument();
 		expect(screen.getByText(/Squad kills/)).toBeInTheDocument();
@@ -89,14 +89,14 @@ describe('bespoke affinity guide page', () => {
 	});
 
 	it('renders the multiplier stacking table with the ×5 worked example', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('heading', { name: /stacking multipliers/i })).toBeInTheDocument();
 		expect(screen.getByRole('cell', { name: 'Smeeta Kavat Charm' })).toBeInTheDocument();
 		expect(screen.getByText(/×5 on every kill/)).toBeInTheDocument();
 	});
 
 	it('busts outdated advice', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('heading', { name: /outdated advice/i })).toBeInTheDocument();
 		// "Draco" and "Steel Path" each appear in both a claim and elsewhere —
 		// assert presence, not uniqueness.
@@ -105,7 +105,7 @@ describe('bespoke affinity guide page', () => {
 	});
 
 	it('lists honorable mentions and sources', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByText(/Solstice Square/)).toBeInTheDocument();
 		expect(screen.getByRole('link', { name: /Affinity — Warframe Wiki/i })).toBeInTheDocument();
 	});

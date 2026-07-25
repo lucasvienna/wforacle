@@ -49,7 +49,7 @@ const data = { resource: fixtureResource } as PageData;
 
 describe('bespoke credits guide page', () => {
 	it('sets the guide title, canonical and JSON-LD', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(document.title).toBe('Credits Farming Guide — Best Locations | wforacle');
 		const canonical = document.head.querySelector('link[rel="canonical"]');
 		expect(canonical?.getAttribute('href')).toBe(`${SITE_URL}/guides/credits`);
@@ -57,7 +57,7 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('renders every recommendation card with its booster note and source', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByText('Ceres — Seimeni / Gabii (Dark Sector)')).toBeInTheDocument();
 		expect(screen.getByText('Neptune — Laomedeia (Disruption)')).toBeInTheDocument();
 		expect(screen.getByText('Venus — Profit-Taker Orb (Heist Phase 4)')).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('groups cards early → mid → late regardless of dataset order', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		const headings = screen.getAllByRole('heading', { level: 3 });
 		const labels = headings.map((h) => h.textContent);
 		const early = labels.indexOf('Ceres — Seimeni / Gabii (Dark Sector)');
@@ -77,12 +77,12 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('gives the credits icon a descriptive alt', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('img', { name: 'Credits' })).toBeInTheDocument();
 	});
 
 	it('explains the two-channel rule with the first-win warning', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('heading', { name: /two-channel rule/i })).toBeInTheDocument();
 		expect(screen.getByText('End-of-mission rewards')).toBeInTheDocument();
 		expect(screen.getByText(/Pickups & caches/)).toBeInTheDocument();
@@ -90,14 +90,14 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('renders the multiplier stacking table with the 500k worked example', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('heading', { name: /stacking multipliers/i })).toBeInTheDocument();
 		expect(screen.getByRole('cell', { name: "Chroma's Effigy" })).toBeInTheDocument();
 		expect(screen.getByText(/500,000 per kill/)).toBeInTheDocument();
 	});
 
 	it('busts outdated advice', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('heading', { name: /outdated advice/i })).toBeInTheDocument();
 		// "Secura Lecta" appears in two myth entries — assert presence, not uniqueness.
 		expect(screen.getAllByText(/Secura Lecta/).length).toBeGreaterThan(0);
@@ -105,7 +105,7 @@ describe('bespoke credits guide page', () => {
 	});
 
 	it('lists honorable mentions and sources', () => {
-		render(Page, { data, params: {} });
+		render(Page, { data, params: {}, form: undefined });
 		// "Railjack" also appears in the two-channel rewards panel.
 		expect(screen.getAllByText(/Railjack/).length).toBeGreaterThan(0);
 		expect(screen.getByRole('link', { name: /Credits — Warframe Wiki/i })).toBeInTheDocument();

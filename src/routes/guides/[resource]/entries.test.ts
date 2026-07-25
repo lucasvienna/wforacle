@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { entries } from './+page';
+import { entries } from './+page.server';
 
 describe('guide prerender entries', () => {
 	it('lists curated resources but not credits (bespoke static route)', async () => {
