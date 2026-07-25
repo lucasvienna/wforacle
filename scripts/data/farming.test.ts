@@ -128,6 +128,21 @@ describe('curated farming data', () => {
 			expect(actual).toEqual(expected);
 		}
 	});
+	it('resolves Zariman-shaped node labels to the zariman region', () => {
+		// Regression: Alloy Plate's late rec read 'Zariman Ten Zero — …', which
+		// slugifies to 'zarimantenzero' and does not match the region id
+		// 'zariman' (special.ts), so recRegionId silently returned undefined and
+		// the rec shipped without its "best farm here" region link. Every curated
+		// label naming the Zariman must use the bare 'Zariman — …' prefix.
+		const zariman = Object.values(RECOMMENDATIONS)
+			.flat()
+			.filter((x) => /zariman/i.test(x.nodeLabel));
+		expect(zariman.length).toBeGreaterThan(0);
+		for (const x of zariman) expect(recRegionId(x.nodeLabel)).toBe('zariman');
+
+		const alloyLate = RECOMMENDATIONS[slugify('Alloy Plate')].find((x) => x.phase === 'late');
+		expect(recRegionId(alloyLate!.nodeLabel)).toBe('zariman');
+	});
 	it('each curated recommendation targets a real resource with an early + late rec', () => {
 		for (const [rid, recs] of Object.entries(RECOMMENDATIONS)) {
 			expect(ids.has(rid)).toBe(true);

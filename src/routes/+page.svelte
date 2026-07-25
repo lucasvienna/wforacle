@@ -14,6 +14,7 @@
 		saveOwned,
 		loadQuests,
 		saveQuests,
+		persist,
 	} from '$lib/tracker/persistence';
 	import { revealedRegions } from '$lib/model/reveal';
 	import CommandPalette from '$lib/palette/CommandPalette.svelte';
@@ -59,10 +60,10 @@
 		const t = createTracker(
 			ds.warframes,
 			(ids) => {
-				if (browser && ready) saveOwned(ids);
+				if (browser && ready) persist('owned parts', saveOwned(ids));
 			},
 			(ids) => {
-				if (browser && ready) saveQuests(ids);
+				if (browser && ready) persist('completed quests', saveQuests(ids));
 			},
 		);
 		t.load(await loadOwned());

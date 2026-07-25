@@ -1,6 +1,6 @@
 {
 	"version": "items@1.1275.18+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-24T12:55:48.747Z",
+	"generatedAt": "2026-07-25T19:12:25.029Z",
 	"data": {
 		"regions": [
 			{
@@ -5294,11 +5294,12 @@
 					},
 					{
 						"phase": "late",
-						"nodeLabel": "Zariman Ten Zero — Tuvul Commons (Void Cascade)",
+						"nodeLabel": "Zariman — Tuvul Commons (Void Cascade)",
 						"boostersApply": true,
 						"note": "Endless Void Cascade enemy density makes this the highest-yield Alloy Plate farm for geared squads; Ceres Gabii Steel Path with a booster is a solid alternative.",
 						"source": "https://wiki.warframe.com/w/Alloy_Plate",
-						"lastVerified": "2026-07-05"
+						"lastVerified": "2026-07-05",
+						"regionId": "zariman"
 					}
 				]
 			},

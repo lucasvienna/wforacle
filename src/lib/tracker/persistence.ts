@@ -45,3 +45,22 @@ export async function clearAccountId(): Promise<void> {
 	if (!browser && typeof indexedDB === 'undefined') return;
 	await (await db()).delete(STORE, KEY_ACCOUNT);
 }
+
+/**
+ * Fire-and-forget a persistence write without dropping its rejection.
+ *
+ * Every write here is intentionally not awaited — they run from a `$effect`
+ * (tracker.svelte.ts) or a click handler, and blocking the UI on IndexedDB
+ * would be worse than the write failing. But a dropped promise means a
+ * blocked-IDB or quota-exceeded failure vanishes as an unhandled rejection and
+ * the user's progress is silently gone on their next visit.
+ *
+ * A named helper rather than four inline `.catch`es: these four calls are the
+ * complete set of writes, and a fifth one added later that forgets to handle
+ * rejection is precisely the regression this exists to make visible.
+ */
+export function persist(what: string, write: Promise<void>): void {
+	void write.catch((e: unknown) => {
+		console.error(`[persistence] failed to save ${what}:`, e);
+	});
+}

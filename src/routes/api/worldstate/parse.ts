@@ -1,7 +1,11 @@
 import type { CycleState, Letter, RotationState, WorldState } from '$lib/worldstate/types';
 
-type RawCycle = { state?: string; expiry?: string };
-type RawSyndicate = { syndicate?: string; expiry?: string; jobs?: { rewardPool?: string[] }[] };
+export type RawCycle = { state?: string; expiry?: string };
+export type RawSyndicate = {
+	syndicate?: string;
+	expiry?: string;
+	jobs?: { rewardPool?: string[] }[];
+};
 
 const WEAPON_TO_LETTER: Record<string, Letter> = { Verdilac: 'A', Nepheri: 'B', Korumm: 'C' };
 

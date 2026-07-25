@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { http, HttpResponse, type JsonBodyType } from 'msw';
 import { server } from '../../../mocks/server';
 import { GET } from './+server';
@@ -19,6 +19,10 @@ const fixtures: Record<string, JsonBodyType> = {
 const PC_URL = 'https://api.warframestat.us/pc/:endpoint';
 
 describe('GET /api/worldstate', () => {
+	// These specs spy on console.error and AbortSignal.timeout; leaking either
+	// into a sibling test file would be a nasty debugging session.
+	afterEach(() => vi.restoreAllMocks());
+
 	it('returns the composed world state on success', async () => {
 		server.use(
 			http.get(PC_URL, ({ params }) => HttpResponse.json(fixtures[params.endpoint as string])),
@@ -36,5 +40,47 @@ describe('GET /api/worldstate', () => {
 		const res = await GET({} as never);
 		expect(await res.json()).toEqual({ ok: false });
 		expect(res.headers.get('cache-control')).toBe('no-store');
+	});
+
+	it('logs which endpoint and status failed', async () => {
+		// The old handler's bare `catch {}` threw away the one piece of
+		// information that makes an upstream break diagnosable from
+		// `wrangler tail`. Only cetusCycle fails here, so the log line has to
+		// name it specifically rather than reporting "something broke".
+		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		server.use(
+			http.get(PC_URL, ({ params }) =>
+				params.endpoint === 'cetusCycle'
+					? new HttpResponse(null, { status: 503 })
+					: HttpResponse.json(fixtures[params.endpoint as string]),
+			),
+		);
+
+		const res = await GET({} as never);
+
+		expect(await res.json()).toEqual({ ok: false });
+		const logged = spy.mock.calls.flat().join(' ');
+		expect(logged).toContain('cetusCycle');
+		expect(logged).toContain('503');
+	});
+
+	it('bounds every upstream call with a timeout signal', async () => {
+		// Pins the timeout wiring: without it a hung upstream holds the Worker
+		// invocation open for the full subrequest limit.
+		//
+		// Asserted on AbortSignal.timeout rather than on the handler's
+		// `request.signal`: Node gives every Request a fresh AbortSignal
+		// regardless of what we pass, so the receiving-end version of this test
+		// passes even with the option deleted — verified before writing this.
+		// Tripping the timeout for real would cost 5s of wall clock per run.
+		const timeout = vi.spyOn(AbortSignal, 'timeout');
+		server.use(
+			http.get(PC_URL, ({ params }) => HttpResponse.json(fixtures[params.endpoint as string])),
+		);
+
+		await GET({} as never);
+
+		expect(timeout).toHaveBeenCalledTimes(4);
+		for (const [ms] of timeout.mock.calls) expect(ms).toBe(5000);
 	});
 });

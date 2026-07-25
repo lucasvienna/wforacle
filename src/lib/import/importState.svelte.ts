@@ -3,7 +3,7 @@ import type { Tracker } from '$lib/tracker/tracker.svelte';
 import { fetchProfile as realFetch, ProfileError } from './profileClient';
 import { parseProfile, type ImportResult } from './parseProfile';
 import { normalizeAccountId } from './accountId';
-import { loadAccountId, saveAccountId, clearAccountId } from '$lib/tracker/persistence';
+import { loadAccountId, saveAccountId, clearAccountId, persist } from '$lib/tracker/persistence';
 
 type Phase = 'idle' | 'loading' | 'preview' | 'error';
 
@@ -52,7 +52,7 @@ export function createImportStore(
 		const id = normalizeAccountId(rawId);
 		if (remember && id) {
 			rememberedId = id;
-			void saveAccountId(id);
+			persist('account id', saveAccountId(id));
 		}
 		phase = 'idle';
 		result = null;
@@ -60,7 +60,7 @@ export function createImportStore(
 
 	function forget() {
 		rememberedId = null;
-		void clearAccountId();
+		persist('cleared account id', clearAccountId());
 	}
 
 	function reset() {
