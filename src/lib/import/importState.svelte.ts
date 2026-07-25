@@ -52,7 +52,7 @@ export function createImportStore(
 		const id = normalizeAccountId(rawId);
 		if (remember && id) {
 			rememberedId = id;
-			persist('account id', saveAccountId(id));
+			persist('saving account id', saveAccountId(id));
 		}
 		phase = 'idle';
 		result = null;
@@ -60,7 +60,7 @@ export function createImportStore(
 
 	function forget() {
 		rememberedId = null;
-		persist('cleared account id', clearAccountId());
+		persist('clearing account id', clearAccountId());
 	}
 
 	function reset() {

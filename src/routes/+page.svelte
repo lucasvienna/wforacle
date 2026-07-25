@@ -60,10 +60,11 @@
 		const t = createTracker(
 			ds.warframes,
 			(ids) => {
-				if (browser && ready) persist('owned parts', saveOwned(ids));
+				if (browser && ready) persist('saving owned parts', saveOwned(ids));
 			},
 			(ids) => {
-				if (browser && ready) persist('completed quests', saveQuests(ids));
+				if (browser && ready)
+					persist('saving completed quests', saveQuests(ids));
 			},
 		);
 		t.load(await loadOwned());

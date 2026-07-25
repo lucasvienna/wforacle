@@ -39,7 +39,7 @@ describe('persist (fire-and-forget writes)', () => {
 	it('logs a rejected write instead of dropping it', async () => {
 		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-		persist('owned parts', Promise.reject(new Error('QuotaExceededError')));
+		persist('saving owned parts', Promise.reject(new Error('QuotaExceededError')));
 		await vi.waitFor(() => expect(spy).toHaveBeenCalled());
 
 		const logged = spy.mock.calls.flat().join(' ');
@@ -56,7 +56,7 @@ describe('persist (fire-and-forget writes)', () => {
 		process.on('unhandledRejection', unhandled);
 
 		try {
-			persist('owned parts', Promise.reject(new Error('blocked IDB')));
+			persist('saving owned parts', Promise.reject(new Error('blocked IDB')));
 			// Two macrotask turns: Node reports unhandled rejections after the
 			// microtask queue drains, so a same-tick assertion would pass even
 			// with a genuinely dropped promise.

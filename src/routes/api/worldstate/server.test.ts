@@ -62,6 +62,14 @@ describe('GET /api/worldstate', () => {
 		const logged = spy.mock.calls.flat().join(' ');
 		expect(logged).toContain('cetusCycle');
 		expect(logged).toContain('503');
+
+		// The Error itself is logged, not `e.message`: the message alone reads
+		// identically in the assertions above but throws away the stack and the
+		// `cause` that fetchEndpoint attaches, which is what you actually want
+		// when reading `wrangler tail`.
+		const [, error] = spy.mock.calls[0]!;
+		expect(error).toBeInstanceOf(Error);
+		expect((error as Error).cause).toBeDefined();
 	});
 
 	it('bounds every upstream call with a timeout signal', async () => {

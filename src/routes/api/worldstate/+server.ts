@@ -73,7 +73,12 @@ export const GET: RequestHandler = async () => {
 		// The only visibility into upstream breakage. Workers invocation_logs are
 		// enabled, so this surfaces in `wrangler tail`; the previous bare
 		// `catch {}` discarded which endpoint and status had failed.
-		console.error('[worldstate] upstream fetch failed:', e instanceof Error ? e.message : e);
+		//
+		// The error object, not `e.message`: fetchEndpoint attaches the original
+		// failure as `cause`, and messages alone throw away both that and the
+		// stack. The endpoint and status are already in the message, so nothing
+		// is lost by logging the whole thing.
+		console.error('[worldstate] upstream fetch failed:', e);
 		return new Response(JSON.stringify({ ok: false }), {
 			headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
 		});
