@@ -65,17 +65,26 @@ function cannedWorldState() {
  * anything rendered from live cycles (rotation chips, availability text) is
  * nondeterministic.
  *
+ * These are `context.route`, NOT `page.route`, and that distinction is
+ * load-bearing: `page.route` stops intercepting once the service worker takes
+ * control of the page, because the SW issues its own `fetch(req)` (see the
+ * network-first `/api/worldstate` branch in src/service-worker.ts). With
+ * `page.route` the mock silently leaked to the live API on every spec that
+ * reloads — verified by watching a canned "Vallis warm" become the real
+ * "Vallis cold" after a reload. `context.route` intercepts SW-issued requests
+ * too. e2e/worldstate.test.ts pins both halves of this.
+ *
  * The block is a `route.abort()` rather than a silent pass-through so a new
  * unmocked call site fails loudly instead of quietly reintroducing the
  * dependency. Specs that legitimately need an upstream endpoint (the profile
- * import) register their own `page.route` in the test body — Playwright gives
- * precedence to the most recently registered handler.
+ * import) register their own `page.route` in the test body — page-level routes
+ * take precedence over context-level ones.
  */
 export const test = base.extend<{ worldstateMock: void }>({
 	worldstateMock: [
-		async ({ page }, use) => {
-			await page.route('**/api.warframestat.us/**', (route) => route.abort());
-			await page.route('**/api/worldstate', (route) =>
+		async ({ context }, use) => {
+			await context.route('**/api.warframestat.us/**', (route) => route.abort());
+			await context.route('**/api/worldstate', (route) =>
 				route.fulfill({
 					status: 200,
 					contentType: 'application/json',
