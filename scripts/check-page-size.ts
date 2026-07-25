@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
@@ -26,6 +26,15 @@ function htmlFiles(dir: string): string[] {
 		else if (entry.name.endsWith('.html')) out.push(path);
 	}
 	return out;
+}
+
+// Guard before walking: readdirSync throws ENOENT on a missing directory, so
+// without this the "did the build run?" message below is unreachable and the
+// common mistake (running this without a build, or the adapter output path
+// moving) surfaces as a raw stack trace.
+if (!existsSync(DIR)) {
+	console.error(`${DIR} does not exist — run \`pnpm build\` first.`);
+	process.exit(1);
 }
 
 const files = htmlFiles(DIR);
