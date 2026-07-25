@@ -2,7 +2,14 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { assembleDataset, validateDataset, buildResources, recRegionId } from './assemble';
+import {
+	assembleDataset,
+	validateDataset,
+	buildResources,
+	recRegionId,
+	validateRecommendationLabels,
+	staleRecommendations,
+} from './assemble';
 import type { SolNodes } from './build';
 import type { RawWarframe } from './build';
 import type { Dataset } from '../../src/lib/model/types';
@@ -229,5 +236,135 @@ describe('validateDataset aspect ids', () => {
 			openWorldFarms: [],
 		} as unknown as Dataset;
 		expect(validateDataset(ds)).toEqual([]);
+	});
+});
+
+/** Minimal dataset carrying just the nodes and recommendations under test. */
+function withRecs(
+	nodes: { id: string; name: string; regionId: string }[],
+	recs: { nodeLabel: string; lastVerified?: string; nodeId?: string }[],
+): Dataset {
+	return {
+		regions: [],
+		nodes,
+		bosses: [],
+		warframes: [],
+		quests: [],
+		openWorldFarms: [],
+		resources: [
+			{
+				id: 'testresource',
+				name: 'Test Resource',
+				regionIds: [],
+				recommendations: recs.map((r) => ({
+					phase: 'early' as const,
+					nodeLabel: r.nodeLabel,
+					nodeId: r.nodeId,
+					boostersApply: true,
+					note: '',
+					source: 'https://wiki.warframe.com/x',
+					lastVerified: r.lastVerified ?? '2026-07-01',
+				})),
+			},
+		],
+	} as unknown as Dataset;
+}
+
+const CERES = [
+	{ id: 'n1', name: 'Seimeni', regionId: 'ceres' },
+	{ id: 'n2', name: 'Gabii', regionId: 'ceres' },
+];
+
+describe('validateRecommendationLabels', () => {
+	it('accepts a label naming a real node on a real region', () => {
+		expect(
+			validateRecommendationLabels(
+				withRecs(CERES, [{ nodeLabel: 'Ceres — Gabii (Dark Sector Survival)' }]),
+			),
+		).toEqual([]);
+	});
+
+	it('rejects a label whose node no longer exists', () => {
+		// D1, the whole point: a game update renames a node, the curated label
+		// keeps pointing at the old name, and the build currently stays green
+		// while the site goes quietly wrong.
+		const problems = validateRecommendationLabels(
+			withRecs(CERES, [{ nodeLabel: 'Ceres — Gabbii (Dark Sector Survival)' }]),
+		);
+		expect(problems).toHaveLength(1);
+		expect(problems[0]).toMatch(/no node "Gabbii" on ceres/);
+	});
+
+	it('rejects a label on a region that has no nodes', () => {
+		const problems = validateRecommendationLabels(
+			withRecs(CERES, [{ nodeLabel: 'Nowhere — Somenode (Survival)' }]),
+		);
+		expect(problems[0]).toMatch(/unknown region "Nowhere"/);
+	});
+
+	it('validates BOTH nodes of a "A / B" shorthand label', () => {
+		// 'Ceres — Seimeni / Gabii' names two real nodes; allowlisting it would
+		// have been the lazy fix and would have lost drift coverage on both.
+		expect(
+			validateRecommendationLabels(
+				withRecs(CERES, [{ nodeLabel: 'Ceres — Seimeni / Gabii (Dark Sector)' }]),
+			),
+		).toEqual([]);
+		const problems = validateRecommendationLabels(
+			withRecs(CERES, [{ nodeLabel: 'Ceres — Seimeni / Gabbii (Dark Sector)' }]),
+		);
+		expect(problems).toHaveLength(1);
+		expect(problems[0]).toMatch(/Gabbii/);
+	});
+
+	it('rejects a dash-less label that is not allowlisted', () => {
+		const problems = validateRecommendationLabels(
+			withRecs(CERES, [{ nodeLabel: 'Some Game Mode (somewhere)' }]),
+		);
+		expect(problems[0]).toMatch(/no "Planet — Node" prefix/);
+	});
+
+	it.each([
+		'Anywhere — Daily First Win Bonus',
+		'Sanctuary Onslaught (Cephalon Simaris)',
+		'Elite Sanctuary Onslaught (Cephalon Simaris)',
+		'Excavation Void Fissures (rotating nodes)',
+		'Höllvania — Legacyte Harvest (Techrot Safes)',
+		'Neptune Proxima — Nu-gua Mines (Railjack)',
+		'Venus — Profit-Taker Orb (Heist Phase 4)',
+		'Neptune — The Index (High Risk)',
+		'Zariman — Void Cascade (Steel Path)',
+	])('allowlists the intentional non-node label %s', (nodeLabel) => {
+		expect(validateRecommendationLabels(withRecs(CERES, [{ nodeLabel }]))).toEqual([]);
+	});
+});
+
+describe('validateDataset recommendation nodeId', () => {
+	it('reports a recommendation pointing at a node that does not exist', () => {
+		// This check existed but was dead: every curated rec has
+		// nodeId: undefined, so nothing ever exercised it. Kept (rather than
+		// deleted) because it is correct the moment a rec does carry a nodeId —
+		// this test is what makes it live code.
+		const ds = withRecs(CERES, [{ nodeLabel: 'Ceres — Gabii', nodeId: 'ghostnode' }]);
+		expect(validateDataset(ds).join(' ')).toMatch(/missing node ghostnode/);
+	});
+});
+
+describe('staleRecommendations', () => {
+	const now = new Date('2026-07-25T00:00:00Z');
+
+	it('ignores recommendations verified within six months', () => {
+		expect(
+			staleRecommendations(withRecs(CERES, [{ nodeLabel: 'x', lastVerified: '2026-07-01' }]), now),
+		).toEqual([]);
+	});
+
+	it('flags one verified more than six months ago', () => {
+		const stale = staleRecommendations(
+			withRecs(CERES, [{ nodeLabel: 'x', lastVerified: '2025-01-01' }]),
+			now,
+		);
+		expect(stale).toHaveLength(1);
+		expect(stale[0]).toMatchObject({ resourceId: 'testresource', lastVerified: '2025-01-01' });
 	});
 });
