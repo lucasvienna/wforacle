@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chanceOf } from './fixtures';
 
 test('Equinox aspects track and persist (Uranus, Titania)', async ({ page }) => {
 	await page.goto('/');
@@ -50,8 +50,10 @@ test('Mesa and Atlas render with the key-boss hint on Eris', async ({ page }) =>
 	await expect(atlasChassis).toBeVisible();
 
 	// Both Mesa (Mutalist Alad V) and Atlas (Jordas Golem) are curated
-	// key-boss nodes, so the "· key" hint should render for each.
-	await expect(page.locator('[data-key]')).toHaveCount(2);
+	// key-boss nodes, so the "· key" hint should render for each. `>=` because
+	// curating a third key boss on Eris is a data change, not a rendering
+	// regression — only the hint disappearing entirely should fail here.
+	await expect.poll(() => page.locator('[data-key]').count()).toBeGreaterThanOrEqual(2);
 });
 
 test('special-region resource cards show signature resources', async ({ page }) => {
@@ -100,7 +102,9 @@ test('Protea and Koumei render as mission farms on Venus and Earth', async ({ pa
 	// worldstate rotation chip (per-run kill ranks, not the bounty cycle).
 	await page.locator('svg [data-region="venus"]').click();
 	await expect(page.locator('[data-part="protea:systems"]')).toBeVisible();
-	await expect(page.getByText(/Granum Void \(Rot C\) · Nightmare · 11\.11%/)).toBeVisible();
+	await expect(
+		page.getByText(`Granum Void (Rot C) · Nightmare · ${chanceOf('protea:systems')}`),
+	).toBeVisible();
 	await expect(page.getByText('Blueprint: Complete The Deadlock Protocol')).toBeVisible();
 
 	// Koumei: Saya's Visions (Shrine Defense) pseudo-node on Earth.
@@ -117,7 +121,9 @@ test('Citrine and Jade render as mission-node farms on Mars and Uranus', async (
 	// drop row (static Rotation C label, no live rotation chip).
 	await page.locator('svg [data-region="mars"]').click();
 	await expect(page.locator('[data-part="citrine:bp"]')).toBeVisible();
-	await expect(page.getByText(/Mirror Defense · Rotation C · 9\.3%/)).toBeVisible();
+	await expect(
+		page.getByText(`Mirror Defense · Rotation C · ${chanceOf('citrine:bp')}`),
+	).toBeVisible();
 
 	// Jade: Brutus Ascension — flat chance, no rotation labels at all.
 	await page.locator('svg [data-region="uranus"]').click();

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test('settings drawer opens and closes, quests panel embedded inside', async ({ page }) => {
 	await page.goto('/');

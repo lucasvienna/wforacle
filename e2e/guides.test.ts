@@ -1,13 +1,14 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, rec } from './fixtures';
 
 test('orokincell guide shows recommendations + prose', async ({ page }) => {
 	await page.goto('/guides/orokincell');
 
 	await expect(page.getByRole('heading', { name: /Orokin Cell farming guide/i })).toBeVisible();
 
-	// One early + one late recommendation from the dataset.
-	await expect(page.getByText('Saturn — Tethys')).toBeVisible();
-	await expect(page.getByText('Ceres — Gabii')).toBeVisible();
+	// One early + one late recommendation, read from the dataset rather than
+	// copied — a re-verified node label must not redden this spec.
+	await expect(page.getByText(rec('orokincell', 'early').nodeLabel)).toBeVisible();
+	await expect(page.getByText(rec('orokincell', 'late').nodeLabel)).toBeVisible();
 
 	// The mdsvex long-form prose is rendered below the structured recs.
 	await expect(page.getByRole('heading', { name: 'Early game' })).toBeVisible();
@@ -22,7 +23,7 @@ test('argoncrystal guide prerenders even though it has no panel link', async ({ 
 
 	expect(response?.status()).toBe(200);
 	await expect(page.getByRole('heading', { name: /Argon Crystal farming guide/i })).toBeVisible();
-	await expect(page.getByText('Void — Hepit')).toBeVisible();
+	await expect(page.getByText(rec('argoncrystal', 'early').nodeLabel)).toBeVisible();
 });
 
 test('credits guide renders the bespoke page', async ({ page }) => {
@@ -31,7 +32,7 @@ test('credits guide renders the bespoke page', async ({ page }) => {
 	expect(response?.status()).toBe(200);
 	await expect(page.getByRole('heading', { name: /Credits farming guide/i })).toBeVisible();
 	// Data-driven card from the dataset entry.
-	await expect(page.getByText('Ceres — Seimeni / Gabii (Dark Sector)')).toBeVisible();
+	await expect(page.getByText(rec('credits', 'early').nodeLabel)).toBeVisible();
 	// Bespoke sections that the generic [resource] shell doesn't have.
 	await expect(page.getByRole('heading', { name: /two-channel rule/i })).toBeVisible();
 	await expect(page.getByRole('heading', { name: /outdated advice/i })).toBeVisible();
@@ -55,7 +56,7 @@ test('affinity guide renders the bespoke page', async ({ page }) => {
 	expect(response?.status()).toBe(200);
 	await expect(page.getByRole('heading', { name: /Affinity farming guide/i })).toBeVisible();
 	// Data-driven card from the dataset entry.
-	await expect(page.getByText('Saturn — Helene (Defense)')).toBeVisible();
+	await expect(page.getByText(rec('affinity', 'early').nodeLabel)).toBeVisible();
 	// Bespoke sections that the generic [resource] shell doesn't have.
 	await expect(page.getByRole('heading', { name: /sharing rules/i })).toBeVisible();
 	await expect(page.getByRole('heading', { name: /stacking multipliers/i })).toBeVisible();

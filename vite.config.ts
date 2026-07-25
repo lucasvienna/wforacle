@@ -23,6 +23,17 @@ export default defineConfig({
 		environment: 'jsdom',
 		setupFiles: ['./vitest-setup.ts'],
 		exclude: ['e2e/**', 'node_modules/**'],
+		// Measured, not enforced: no thresholds. Coverage is here to show where
+		// the untested single points of failure are, not to gate PRs on a number.
+		coverage: {
+			provider: 'v8',
+			// Summary only — nothing is written to disk for CI to collect.
+			reporter: ['text-summary'],
+			// Extension-scoped: a bare `src/**` makes the provider try to parse
+			// app.html and the .svx guide bodies as JS.
+			include: ['src/**/*.{ts,svelte}', 'scripts/**/*.ts'],
+			exclude: ['**/*.test.ts', '**/*.svelte.test.ts', 'src/lib/data/seed.ts'],
+		},
 	},
 	resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined,
 });

@@ -52,7 +52,8 @@ jobs:
       - uses: actions/setup-node@v6
         with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test:unit --run
+      # Report-only: the summary lands in the job log, no threshold gates the PR.
+      - run: pnpm test:coverage
 
   build:
     runs-on: ubuntu-latest

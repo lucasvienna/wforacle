@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test('tracking a part persists across reload', async ({ page }) => {
 	await page.goto('/');

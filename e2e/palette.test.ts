@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test('Ctrl-K palette jumps to a region', async ({ page }) => {
 	await page.goto('/');
