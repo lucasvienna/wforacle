@@ -39,6 +39,12 @@ export function recRegionId(nodeLabel: string): string | undefined {
  * category of exception. Silencing a failure by appending a pattern here
  * without a defensible `why` re-opens exactly the hole the check closes
  * (D1: a rename keeps the build green and the site wrong).
+ *
+ * For the same reason every pattern is anchored to the start of the label. An
+ * unanchored pattern would allowlist any label merely *containing* the phrase
+ * — e.g. a real "Planet — Node (…)" label that mentions fissures in its
+ * parenthetical would skip node validation entirely, which is the failure this
+ * whole module exists to prevent.
  */
 const NON_NODE_LABELS: { pattern: RegExp; why: string }[] = [
 	{
@@ -50,12 +56,12 @@ const NON_NODE_LABELS: { pattern: RegExp; why: string }[] = [
 		why: 'Cephalon Simaris queue modes, entered from a relay rather than the chart',
 	},
 	{
-		pattern: /Void Fissures \(rotating nodes\)/,
+		pattern: /^Excavation Void Fissures \(rotating nodes\)$/,
 		why: 'fissures rotate across the chart; there is no fixed node to name',
 	},
 	{ pattern: /^Höllvania — /, why: 'the 1999 region is not part of the star chart' },
 	{
-		pattern: / Proxima — /,
+		pattern: /^\S+ Proxima — /,
 		why: 'Railjack proxima regions; recRegionId deliberately leaves these unresolved so no "best farm here" badge lands on the parent planet',
 	},
 	{
@@ -127,6 +133,12 @@ export function validateRecommendationLabels(ds: Dataset): string[] {
 	return problems;
 }
 
+export interface StaleRecommendation {
+	resourceId: string;
+	nodeLabel: string;
+	lastVerified: string;
+}
+
 /**
  * Recommendations whose `lastVerified` is older than `maxAgeDays`. Warned on
  * rather than failed: a stale date means "nobody has re-read the wiki page
@@ -136,9 +148,9 @@ export function staleRecommendations(
 	ds: Dataset,
 	now: Date,
 	maxAgeDays = 183,
-): { resourceId: string; nodeLabel: string; lastVerified: string }[] {
+): StaleRecommendation[] {
 	const cutoff = new Date(now.getTime() - maxAgeDays * 86_400_000);
-	const stale = [];
+	const stale: StaleRecommendation[] = [];
 	for (const r of ds.resources)
 		for (const rec of r.recommendations)
 			if (new Date(rec.lastVerified) < cutoff)

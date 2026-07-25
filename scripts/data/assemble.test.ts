@@ -337,6 +337,19 @@ describe('validateRecommendationLabels', () => {
 	])('allowlists the intentional non-node label %s', (nodeLabel) => {
 		expect(validateRecommendationLabels(withRecs(CERES, [{ nodeLabel }]))).toEqual([]);
 	});
+
+	it.each([
+		'Ceres — Gabbii (Excavation Void Fissures (rotating nodes))',
+		'Ceres — Gabbii (better than Sanctuary Onslaught)',
+		'Ceres — Gabbii (nearer than Neptune Proxima — Nu-gua Mines)',
+	])('does not allowlist a real label that merely mentions an exception: %s', (nodeLabel) => {
+		// Every allowlist pattern is anchored for this reason. An unanchored one
+		// would let any label *containing* the phrase skip node validation —
+		// silently re-opening the exact hole this module closes.
+		const problems = validateRecommendationLabels(withRecs(CERES, [{ nodeLabel }]));
+		expect(problems).toHaveLength(1);
+		expect(problems[0]).toMatch(/Gabbii/);
+	});
 });
 
 describe('validateDataset recommendation nodeId', () => {
