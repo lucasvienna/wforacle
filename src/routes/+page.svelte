@@ -46,7 +46,12 @@
 	let paletteOpen = $state(false);
 	let settingsOpen = $state(false);
 	let importOpen = $state(false);
+	let loadError = $state(false);
 	let ready = false;
+	// Plain let, not $state: this guards control flow and is never read by the
+	// template. Prevents a double-click on Retry from booting twice and leaking
+	// a second polling WorldStateStore.
+	let booting = false;
 
 	const IMPORT_ACTION: PaletteItem = {
 		type: 'action',
@@ -55,27 +60,47 @@
 		sublabel: 'Sync owned frames & quests',
 	};
 
-	onMount(async () => {
-		const ds = await loadDataset();
-		const t = createTracker(
-			ds.warframes,
-			(ids) => {
-				if (browser && ready) persist('saving owned parts', saveOwned(ids));
-			},
-			(ids) => {
-				if (browser && ready)
-					persist('saving completed quests', saveQuests(ids));
-			},
-		);
-		t.load(await loadOwned());
-		t.loadQuestState(await loadQuests());
-		ready = true;
-		dataset = ds;
-		tracker = t;
-		ws = createWorldStateStore();
-		importStore = createImportStore(ds);
-		importStore.init();
-	});
+	async function boot() {
+		if (booting) return;
+		booting = true;
+		loadError = false;
+		try {
+			const ds = await loadDataset();
+			// Read the persisted state before constructing the tracker: if a read
+			// rejects (blocked IndexedDB), an already-constructed tracker's
+			// $effect.root would never be disposed, because `t` has not been
+			// assigned to the `tracker` state that onDestroy cleans up.
+			const [owned, quests] = await Promise.all([loadOwned(), loadQuests()]);
+			const t = createTracker(
+				ds.warframes,
+				(ids) => {
+					if (browser && ready) persist('saving owned parts', saveOwned(ids));
+				},
+				(ids) => {
+					if (browser && ready)
+						persist('saving completed quests', saveQuests(ids));
+				},
+			);
+			t.load(owned);
+			t.loadQuestState(quests);
+			ready = true;
+			dataset = ds;
+			tracker = t;
+			ws = createWorldStateStore();
+			importStore = createImportStore(ds);
+			importStore.init();
+		} catch (e) {
+			// The specifics stay in the console — the UI gets a fixed, user-safe
+			// message. Without this the whole app sat on "Loading Star Chart…"
+			// forever, with the failure invisible to both user and maintainer.
+			console.error('[wforacle] failed to load the star chart:', e);
+			loadError = true;
+		} finally {
+			booting = false;
+		}
+	}
+
+	onMount(boot);
 
 	onDestroy(() => {
 		tracker?.dispose();
@@ -255,6 +280,26 @@
 			worldState={ws?.state ?? null}
 			now={ws?.now ?? Date.now()}
 		/>
+	{:else if loadError}
+		<div
+			data-load-error
+			role="alert"
+			class="flex h-96 flex-col items-center justify-center gap-3 px-6 text-center"
+		>
+			<p class="text-slate-300">Couldn’t load the Star Chart data.</p>
+			<p class="max-w-md text-sm text-wf-muted">
+				This is usually a temporary network problem. Your tracked progress is
+				stored locally and hasn’t been lost.
+			</p>
+			<button
+				type="button"
+				data-retry-load
+				onclick={boot}
+				class="rounded-lg border border-wf-edge bg-wf-panel px-4 py-2 text-sm text-wf-cyan hover:border-wf-cyan/40"
+			>
+				Try again
+			</button>
+		</div>
 	{:else}
 		<div class="flex h-96 items-center justify-center text-slate-500">
 			Loading Star Chart…

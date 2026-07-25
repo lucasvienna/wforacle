@@ -35,3 +35,6 @@ playwright-report
 
 # vitest coverage output
 coverage/
+
+# playwright-mcp browser artifacts (snapshots/screenshots from manual verification)
+.playwright-mcp/

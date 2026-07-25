@@ -4,7 +4,23 @@ import { SITE_URL } from '$lib/seo/config';
 import { GET } from './+server';
 
 const dataset: Dataset = {
-	regions: [],
+	// These routes only read `resources`, but loadDataset now rejects a payload
+	// with no regions (it's how a non-dataset response — an SPA fallback, an
+	// error envelope — is caught), and a real dataset can never have zero
+	// regions: build-data.ts's count floors reject it. So the fixture carries
+	// one.
+	regions: [
+		{
+			id: 'earth',
+			name: 'Earth',
+			kind: 'planet' as const,
+			progressionOrder: 1,
+			factions: ['Grineer'],
+			nodeIds: [],
+			spoilerGated: false,
+			resourceIds: ['neurodes'],
+		},
+	],
 	nodes: [],
 	bosses: [],
 	warframes: [],
@@ -70,9 +86,11 @@ const dataset: Dataset = {
 };
 
 function fakeFetch() {
-	return vi
-		.fn()
-		.mockResolvedValue({ json: () => Promise.resolve({ version: 'x', data: dataset }) });
+	return vi.fn().mockResolvedValue({
+		ok: true,
+		status: 200,
+		json: () => Promise.resolve({ version: 'x', data: dataset }),
+	});
 }
 
 // Extracts the single <url>...</url> block whose <loc> matches `loc` exactly,
