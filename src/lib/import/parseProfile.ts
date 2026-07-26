@@ -36,6 +36,7 @@ export function frameFolder(uniqueName: string): string | null {
 	return segs[segs.length - 2];
 }
 
+/** Exported for direct unit tests; parseProfile is the intended entry point. */
 export function matchOwnedFrames(
 	profile: RawProfile,
 	frames: Warframe[],
@@ -62,6 +63,7 @@ export function matchOwnedFrames(
 	return { frameIds, partIds, ownedUntrackedCount: untracked.size };
 }
 
+/** Exported for direct unit tests; parseProfile is the intended entry point. */
 export function matchCompletedQuests(profile: RawProfile, quests: { id: string }[]): string[] {
 	const names = new Set((profile.challengeProgress ?? []).map((c) => c.name));
 	const done: string[] = [];

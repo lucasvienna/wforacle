@@ -17,6 +17,10 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
 			},
 			adapter: adapter(),
+			// seed.ts is a 133-line test fixture. It lived in src/lib/data next to
+			// the real loader, where it read as production code (audit Q4e); an
+			// alias keeps the imports short without putting it back there.
+			alias: { $fixtures: 'src/fixtures' },
 			// CSP lives here rather than in _headers because SvelteKit injects
 			// inline bootstrap scripts whose contents change with every build.
 			// A hand-written `script-src 'self'` blocks them and the app renders
@@ -64,7 +68,7 @@ export default defineConfig({
 			// Extension-scoped: a bare `src/**` makes the provider try to parse
 			// app.html and the .svx guide bodies as JS.
 			include: ['src/**/*.{ts,svelte}', 'scripts/**/*.ts'],
-			exclude: ['**/*.test.ts', '**/*.svelte.test.ts', 'src/lib/data/seed.ts'],
+			exclude: ['**/*.test.ts', '**/*.svelte.test.ts', 'src/fixtures/**'],
 		},
 	},
 	resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined,

@@ -1,5 +1,5 @@
 import { loadDataset } from '$lib/data/dataset';
-import { blurbFor } from '$lib/seo/blurb';
+import { guideResources } from '$lib/seo/guides';
 import { SITE_URL, DEFAULT_DESCRIPTION } from '$lib/seo/config';
 import type { RequestHandler } from './$types';
 
@@ -7,10 +7,7 @@ export const prerender = true;
 
 export const GET: RequestHandler = async ({ fetch }) => {
 	const ds = await loadDataset(fetch);
-	const guides = ds.resources
-		.filter((r) => r.recommendations.length > 0)
-		.map((r) => ({ id: r.id, name: r.name, blurb: blurbFor(r) }))
-		.sort((a, b) => a.name.localeCompare(b.name));
+	const guides = guideResources(ds);
 
 	const lines = [
 		'# wforacle',

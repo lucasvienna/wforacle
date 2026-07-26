@@ -42,7 +42,12 @@
 	let tracker = $state<Tracker | null>(null);
 	let ws = $state<WorldStateStore | null>(null);
 	let importStore = $state<ImportStore | null>(null);
-	let selectedId = $state('venus');
+	// Venus is the default selection: the first region with a trackable
+	// assassination frame (Rhino/Fossa), so a first-time visitor lands on
+	// something with content rather than an empty panel.
+	const DEFAULT_REGION = 'venus';
+
+	let selectedId = $state(DEFAULT_REGION);
 	let paletteOpen = $state(false);
 	let settingsOpen = $state(false);
 	let importOpen = $state(false);
@@ -145,7 +150,7 @@
 
 	$effect(() => {
 		if (visible.length && !visible.some((r) => r.id === selectedId)) {
-			selectedId = 'venus';
+			selectedId = DEFAULT_REGION;
 		}
 	});
 
@@ -156,11 +161,28 @@
 		}
 	}
 
+	// Switch on `type` rather than chaining ifs. The old chain tested
+	// targetRegionId before type === 'resource', so a resource item that ever
+	// gained a targetRegionId would have silently navigated to a region instead
+	// of its guide. The `never` default also makes adding a PaletteItem type a
+	// compile error here rather than a silent no-op.
 	function handlePick(item: PaletteItem) {
-		if (item.type === 'action' && item.id === 'import') importOpen = true;
-		else if (item.targetRegionId) selectedId = item.targetRegionId;
-		else if (item.type === 'resource')
-			goto(resolve('/guides/[resource]', { resource: item.id }));
+		switch (item.type) {
+			case 'action':
+				if (item.id === 'import') importOpen = true;
+				return;
+			case 'resource':
+				void goto(resolve('/guides/[resource]', { resource: item.id }));
+				return;
+			case 'region':
+			case 'frame':
+				if (item.targetRegionId) selectedId = item.targetRegionId;
+				return;
+			default: {
+				const exhaustive: never = item.type;
+				void exhaustive;
+			}
+		}
 	}
 </script>
 

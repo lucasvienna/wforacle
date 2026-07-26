@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/svelte';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { seed } from '$lib/data/seed';
+import { seed } from '$fixtures/seed';
 
 // Hoisted so the mock is controllable per test — the sibling page.svelte.test.ts
 // only ever needs the happy path, so it keeps its simpler static mock.

@@ -2,6 +2,7 @@
 	import type { Region } from '$lib/model/types';
 	import { asset } from '$app/paths';
 	import { layoutRing, layoutAnomalies, type PlacedPlanet } from './geometry';
+	import { activateOnKey } from '$lib/ui/activate';
 
 	const planetSrc = (id: string) => asset(`/planets/${id}.webp`);
 
@@ -69,12 +70,7 @@
 			data-region={p.region.id}
 			class="cursor-pointer"
 			onclick={() => onselect(p.region.id)}
-			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
-					if (e.key === ' ') e.preventDefault();
-					onselect(p.region.id);
-				}
-			}}
+			onkeydown={activateOnKey(() => onselect(p.region.id))}
 		>
 			<!-- transparent hit area so the whole planet region is clickable -->
 			<circle cx={p.x} cy={p.y} r={p.r + 9} fill="transparent" />

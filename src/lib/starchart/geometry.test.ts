@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { layoutRing, layoutAnomalies } from './geometry';
-import { seed } from '$lib/data/seed';
+import { seed } from '$fixtures/seed';
 import type { Region } from '$lib/model/types';
 
 describe('layoutRing', () => {

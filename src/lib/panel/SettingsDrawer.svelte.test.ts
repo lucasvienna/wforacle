@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
 import SettingsDrawer from './SettingsDrawer.svelte';
-import { seed } from '$lib/data/seed';
+import { seed } from '$fixtures/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
 
 // The drawer shell — Escape, backdrop click, focus move and focus trap — is
