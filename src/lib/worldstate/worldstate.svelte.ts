@@ -30,12 +30,48 @@ export function createWorldStateStore() {
 		}
 	}
 
-	if (browser) {
-		void refresh();
-		pollTimer = setInterval(refresh, 60_000);
-		tickTimer = setInterval(() => {
+	// Poll only while the tab is visible (audit P2). A background tab kept the
+	// 60s poll and the 1s ticker running forever, spending the user's battery
+	// and our edge requests to update a countdown nobody is looking at. On
+	// becoming visible again we refresh immediately, because whatever is on
+	// screen is by then up to a poll interval stale.
+	function onVisibility() {
+		if (document.hidden) {
+			stopTimers();
+		} else {
+			// `now` drives every countdown and only advances on the 1s tick, so
+			// without this the first frame after returning renders with the
+			// pre-hide timestamp — visibly wrong for up to a second.
+			now = Date.now();
+			void refresh();
+			startTimers();
+		}
+	}
+
+	function startTimers() {
+		pollTimer ??= setInterval(refresh, 60_000);
+		tickTimer ??= setInterval(() => {
 			now = Date.now();
 		}, 1000);
+	}
+
+	function stopTimers() {
+		if (pollTimer) clearInterval(pollTimer);
+		if (tickTimer) clearInterval(tickTimer);
+		pollTimer = undefined;
+		tickTimer = undefined;
+	}
+
+	if (browser) {
+		// The one fetch always happens: the page needs data even if it was opened
+		// into a background tab and is read later.
+		void refresh();
+		// But only start the timers if the tab is actually visible. Gating just
+		// the visibilitychange transition was not enough — a store created while
+		// hidden ("open link in new tab") polled every 60s until the tab was
+		// first shown, which is the exact cost P2 is about.
+		if (!document.hidden) startTimers();
+		document.addEventListener('visibilitychange', onVisibility);
 	}
 
 	return {
@@ -50,8 +86,8 @@ export function createWorldStateStore() {
 		},
 		refresh,
 		dispose() {
-			if (pollTimer) clearInterval(pollTimer);
-			if (tickTimer) clearInterval(tickTimer);
+			stopTimers();
+			if (browser) document.removeEventListener('visibilitychange', onVisibility);
 		},
 	};
 }

@@ -87,12 +87,56 @@ describe('checkForUpdate', () => {
 		await expect(checkForUpdate()).resolves.toBeUndefined();
 	});
 
-	it('skips the check inside the two-minute throttle window after load', async () => {
-		const container = stubServiceWorker();
+	// This test previously asserted the opposite — that a check in the first two
+	// minutes is skipped — which pinned audit finding P2 in place. lastCheck was
+	// seeded with Date.now() at module load, so the throttle counted from page
+	// load rather than from the previous check, making the very first check
+	// (the one most likely to find a fresh deploy) a silent no-op.
+	it('runs the first check immediately — the throttle is between checks, not from load', async () => {
+		const registration = { update: vi.fn(async () => {}) };
+		stubServiceWorker({ registration });
 		const { checkForUpdate } = await importUpdate();
+
+		await checkForUpdate();
+
+		expect(registration.update).toHaveBeenCalledOnce();
+	});
+
+	it('throttles a second check inside the window', async () => {
+		const registration = { update: vi.fn(async () => {}) };
+		stubServiceWorker({ registration });
+		const { checkForUpdate } = await importUpdate();
+		await checkForUpdate();
+
 		vi.advanceTimersByTime(1 * 60 * 1000);
 		await checkForUpdate();
-		expect(container.getRegistration).not.toHaveBeenCalled();
+
+		expect(registration.update).toHaveBeenCalledOnce();
+	});
+
+	it('allows another check once the window has passed', async () => {
+		const registration = { update: vi.fn(async () => {}) };
+		stubServiceWorker({ registration });
+		const { checkForUpdate } = await importUpdate();
+		await checkForUpdate();
+
+		vi.advanceTimersByTime(3 * 60 * 1000);
+		await checkForUpdate();
+
+		expect(registration.update).toHaveBeenCalledTimes(2);
+	});
+
+	it('does not let two concurrent checks both pass the throttle', async () => {
+		// lastCheck is stamped before awaiting getRegistration; stamping after
+		// left a window where a visibilitychange landing next to the interval
+		// produced two real update() calls.
+		const registration = { update: vi.fn(async () => {}) };
+		stubServiceWorker({ registration });
+		const { checkForUpdate } = await importUpdate();
+
+		await Promise.all([checkForUpdate(), checkForUpdate()]);
+
+		expect(registration.update).toHaveBeenCalledOnce();
 	});
 
 	it('asks the registration for an update once the throttle window has passed', async () => {

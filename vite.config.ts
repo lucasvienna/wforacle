@@ -17,6 +17,35 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
 			},
 			adapter: adapter(),
+			// CSP lives here rather than in _headers because SvelteKit injects
+			// inline bootstrap scripts whose contents change with every build.
+			// A hand-written `script-src 'self'` blocks them and the app renders
+			// nothing — verified before this was written. `mode: 'hash'` makes
+			// Kit compute those hashes itself, so they stay correct.
+			//
+			// Delivered as a <meta http-equiv> on the prerendered pages. That is
+			// why frame-ancestors is NOT here: it is ignored in meta form, so
+			// framing is denied by X-Frame-Options in _headers instead.
+			csp: {
+				mode: 'hash',
+				directives: {
+					'default-src': ['self'],
+					'script-src': ['self'],
+					// The completion bar sets width via a style attribute, and
+					// Svelte emits scoped <style> blocks.
+					'style-src': ['self', 'unsafe-inline'],
+					'img-src': ['self', 'data:'],
+					'font-src': ['self'],
+					// The profile import calls warframestat.us directly from the
+					// browser; the worldstate proxy is same-origin.
+					'connect-src': ['self', 'https://api.warframestat.us'],
+					'base-uri': ['self'],
+					'form-action': ['self'],
+					'object-src': ['none'],
+					'manifest-src': ['self'],
+					'worker-src': ['self'],
+				},
+			},
 		}),
 	],
 	test: {
