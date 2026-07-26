@@ -23,7 +23,21 @@ const ZONE_CYCLE: Record<string, 'cetus' | 'vallis' | 'cambion'> = {
 	'Cambion Drift': 'cambion',
 };
 
-/** "☀ day · 1h 12m" for a free-roam zone, or null when there's nothing to show. */
+/**
+ * A " · resets 21m"-style countdown suffix, or '' when the time is unknown.
+ *
+ * Drops the whole clause rather than rendering a placeholder inside it: a
+ * malformed upstream expiry used to reach formatCountdown as NaN and surface
+ * as "● up now · resets NaNs". zoneCycleLine had always guarded this; these
+ * two paths had not.
+ */
+function suffix(label: string, when: string | Date | null, now: number): string {
+	if (!when) return '';
+	const ms = (when instanceof Date ? when.getTime() : new Date(when).getTime()) - now;
+	return Number.isFinite(ms) ? `${label}${formatCountdown(ms)}` : '';
+}
+
+/** "☀ day · 1h12m" for a free-roam zone, or null when there's nothing to show. */
 export function zoneCycleLine(
 	nodeName: string,
 	worldState: WorldState | null,
@@ -53,15 +67,12 @@ export function owAvailabilityChip(
 	const rot = worldState.rotation;
 	const a = partAvailability(part.rotation, rot.letter);
 	if (a === 'available') {
-		const resets = rot.expiry
-			? ` · resets ${formatCountdown(new Date(rot.expiry).getTime() - now)}`
-			: '';
-		return { cls: 'text-emerald-300', text: `● up now${resets}` };
+		return { cls: 'text-emerald-300', text: `● up now${suffix(' · resets ', rot.expiry, now)}` };
 	}
 	if (a === 'always') return { cls: 'text-emerald-300', text: '● always available' };
 	if (a === 'unavailable') {
 		const next = nextActiveAt(part.rotation, rot.letter, rot.expiry);
-		const when = next ? ` · up in ${formatCountdown(next.getTime() - now)}` : '';
+		const when = suffix(' · up in ', next, now);
 		return { cls: 'text-wf-muted', text: `○ Rot ${part.rotation}${when}` };
 	}
 	return null;

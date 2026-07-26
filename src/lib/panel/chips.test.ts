@@ -81,6 +81,17 @@ describe('owAvailabilityChip', () => {
 		expect(owAvailabilityChip(part({ rotation: 'B' }), null, NOW)).toBeNull();
 	});
 
+	// Regression: a malformed upstream expiry reached formatCountdown as NaN and
+	// rendered "● up now · resets NaNs" to users. Pre-existing on main —
+	// zoneCycleLine guarded it, these two paths did not.
+	it.each([
+		['available', 'B', /^● up now$/],
+		['unavailable', 'C', /^○ Rot C$/],
+	])('drops the countdown clause rather than showing NaN (%s)', (_label, rotation, expected) => {
+		const state = ws({ rotation: { letter: 'B', expiry: 'not-a-date' } });
+		expect(owAvailabilityChip(part({ rotation }), state, NOW)?.text).toMatch(expected);
+	});
+
 	it('renders nothing when the rotation letter is underivable', () => {
 		const chip = owAvailabilityChip(
 			part({ rotation: 'B' }),
