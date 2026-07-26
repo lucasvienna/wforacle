@@ -1,18 +1,10 @@
 <script lang="ts">
 	import type { WorldStateStore } from './worldstate.svelte';
 	import { formatCountdown } from './availability';
+	import { CYCLE_GLYPH } from './cycles';
 
 	let { store }: { store: Pick<WorldStateStore, 'state' | 'error' | 'now'> } =
 		$props();
-
-	const GLYPH: Record<string, string> = {
-		day: '☀',
-		night: '🌙',
-		warm: '🔥',
-		cold: '❄',
-		fass: '🟠',
-		vome: '🔵',
-	};
 
 	function left(expiry: string): string {
 		if (!expiry) return '—';
@@ -27,17 +19,17 @@
 		class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-wf-muted"
 	>
 		<span title="Cetus / Plains of Eidolon"
-			>{GLYPH[ws.cetus.state] ?? ''} Cetus {ws.cetus.state} · {left(
+			>{CYCLE_GLYPH[ws.cetus.state] ?? ''} Cetus {ws.cetus.state} · {left(
 				ws.cetus.expiry,
 			)}</span
 		>
 		<span title="Orb Vallis"
-			>{GLYPH[ws.vallis.state] ?? ''} Vallis {ws.vallis.state} · {left(
+			>{CYCLE_GLYPH[ws.vallis.state] ?? ''} Vallis {ws.vallis.state} · {left(
 				ws.vallis.expiry,
 			)}</span
 		>
 		<span title="Cambion Drift"
-			>{GLYPH[ws.cambion.state] ?? ''} Cambion {ws.cambion.state} · {left(
+			>{CYCLE_GLYPH[ws.cambion.state] ?? ''} Cambion {ws.cambion.state} · {left(
 				ws.cambion.expiry,
 			)}</span
 		>

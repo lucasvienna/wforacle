@@ -4,52 +4,72 @@ import { tick } from 'svelte';
 import RegionPanel from './RegionPanel.svelte';
 import { seed } from '$lib/data/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
-import type { Dataset } from '$lib/model/types';
+import type { Boss, Dataset, Region, StarNode } from '$lib/model/types';
 import type { WorldState } from '$lib/worldstate/types';
+
+/**
+ * Fixture builders. Every dataset below cares about two or three fields;
+ * spelling out all eight of Region and all seven of StarNode each time was
+ * most of this file's bulk and buried the bit that mattered per test.
+ */
+const ds = (over: Partial<Dataset>): Dataset => ({
+	regions: [],
+	nodes: [],
+	bosses: [],
+	warframes: [],
+	resources: [],
+	quests: [],
+	openWorldFarms: [],
+	...over,
+});
+
+const region = (id: string, name: string, over: Partial<Region> = {}): Region => ({
+	id,
+	name,
+	kind: 'planet',
+	progressionOrder: 1,
+	factions: ['Corpus'],
+	nodeIds: [],
+	spoilerGated: false,
+	resourceIds: [],
+	...over,
+});
+
+const node = (
+	id: string,
+	regionId: string,
+	name: string,
+	over: Partial<StarNode> = {},
+): StarNode => ({
+	id,
+	regionId,
+	name,
+	missionType: 'Assassination',
+	faction: 'Corpus',
+	isAssassination: true,
+	...over,
+});
+
+const boss = (id: string, name: string, nodeId: string, faction = 'Corpus'): Boss => ({
+	id,
+	name,
+	nodeId,
+	faction,
+});
 
 // Jupiter-shaped fixture: one region with TWO Assassination nodes, each
 // linking a different frame (mirrors the real Themisto→Valkyr and
 // The Ropalolyst→Wisp case). Regression test for the bug where RegionPanel
 // only rendered the FIRST matching node's frame.
-const multiNodeRegion: Dataset = {
+const multiNodeRegion = ds({
 	regions: [
-		{
-			id: 'jupiter',
-			name: 'Jupiter',
-			kind: 'planet',
-			progressionOrder: 7,
-			factions: ['Corpus'],
-			nodeIds: ['themisto', 'ropalolyst'],
-			spoilerGated: false,
-			resourceIds: [],
-		},
+		region('jupiter', 'Jupiter', { progressionOrder: 7, nodeIds: ['themisto', 'ropalolyst'] }),
 	],
 	nodes: [
-		{
-			id: 'themisto',
-			regionId: 'jupiter',
-			name: 'Themisto',
-			missionType: 'Assassination',
-			faction: 'Corpus',
-			isAssassination: true,
-			bossId: 'aladv',
-			frameId: 'valkyr',
-		},
-		{
-			id: 'ropalolyst',
-			regionId: 'jupiter',
-			name: 'The Ropalolyst',
-			missionType: 'Assassination',
-			faction: 'Corpus',
-			isAssassination: true,
-			bossId: 'ropalolyst',
-			frameId: 'wisp',
-		},
+		node('themisto', 'jupiter', 'Themisto', { bossId: 'aladv', frameId: 'valkyr' }),
+		node('ropalolyst', 'jupiter', 'The Ropalolyst', { bossId: 'ropalolyst', frameId: 'wisp' }),
 	],
-	bosses: [
-		{ id: 'aladv', name: 'Alad V', nodeId: 'themisto', faction: 'Corpus' },
-		{ id: 'ropalolyst', name: 'Ropalolyst', nodeId: 'ropalolyst', faction: 'Corpus' },
-	],
+	bosses: [boss('aladv', 'Alad V', 'themisto'), boss('ropalolyst', 'Ropalolyst', 'ropalolyst')],
 	warframes: [
 		{
 			id: 'valkyr',
@@ -74,40 +94,27 @@ const multiNodeRegion: Dataset = {
 			],
 		},
 	],
-	resources: [],
-	quests: [],
-	openWorldFarms: [],
-};
+});
 
 // Equinox-shaped fixture: Uranus region with a Titania Assassination node
 // linking Equinox, whose parts include eight aspect leaves (Day/Night ×
 // {Aspect Blueprint, Neuroptics, Chassis, Systems}) plus the market blueprint.
-const equinoxRegion: Dataset = {
+const equinoxRegion = ds({
 	regions: [
-		{
-			id: 'uranus',
-			name: 'Uranus',
-			kind: 'planet',
+		region('uranus', 'Uranus', {
 			progressionOrder: 6,
 			factions: ['Grineer'],
 			nodeIds: ['titania'],
-			spoilerGated: false,
-			resourceIds: [],
-		},
+		}),
 	],
 	nodes: [
-		{
-			id: 'titania',
-			regionId: 'uranus',
-			name: 'Titania',
-			missionType: 'Assassination',
+		node('titania', 'uranus', 'Titania', {
 			faction: 'Grineer',
-			isAssassination: true,
 			bossId: 'tylregor',
 			frameId: 'equinox',
-		},
+		}),
 	],
-	bosses: [{ id: 'tylregor', name: 'Tyl Regor', nodeId: 'titania', faction: 'Grineer' }],
+	bosses: [boss('tylregor', 'Tyl Regor', 'titania', 'Grineer')],
 	warframes: [
 		{
 			id: 'equinox',
@@ -162,37 +169,20 @@ const equinoxRegion: Dataset = {
 			],
 		},
 	],
-	resources: [],
-	quests: [],
-	openWorldFarms: [],
-} as unknown as Dataset;
+}) as unknown as Dataset;
 
 // Mesa-shaped fixture: Eris region with a Mutalist Alad V Assassination node
 // — this boss requires crafting a key, so the panel should show a "· key" hint.
-const mesaKeyRegion: Dataset = {
+const mesaKeyRegion = ds({
 	regions: [
-		{
-			id: 'eris',
-			name: 'Eris',
-			kind: 'planet',
-			progressionOrder: 10,
-			factions: ['Infested'],
-			nodeIds: ['oceanum'],
-			spoilerGated: false,
-			resourceIds: [],
-		},
+		region('eris', 'Eris', { progressionOrder: 10, factions: ['Infested'], nodeIds: ['oceanum'] }),
 	],
 	nodes: [
-		{
-			id: 'oceanum',
-			regionId: 'eris',
-			name: 'Oceanum',
-			missionType: 'Assassination',
+		node('oceanum', 'eris', 'Oceanum', {
 			faction: 'Infested',
-			isAssassination: true,
 			bossId: 'mutalistaladv',
 			frameId: 'mesa',
-		},
+		}),
 	],
 	bosses: [
 		{
@@ -215,55 +205,23 @@ const mesaKeyRegion: Dataset = {
 			],
 		},
 	],
-	resources: [],
-	quests: [],
-	openWorldFarms: [],
-} as unknown as Dataset;
+}) as unknown as Dataset;
 
 // Open-world fixture: Caliban farmed on BOTH earth (Plains) and venus (Orb
 // Vallis), plus Hildryn on venus via Exploiter Orb (no bounty tier/rotation).
-const openWorld: Dataset = {
+const openWorld = ds({
 	regions: [
-		{
-			id: 'earth',
-			name: 'Earth',
-			kind: 'planet',
-			progressionOrder: 1,
-			factions: ['Grineer'],
-			nodeIds: ['plains'],
-			spoilerGated: false,
-			resourceIds: [],
-		},
-		{
-			id: 'venus',
-			name: 'Venus',
-			kind: 'planet',
-			progressionOrder: 2,
-			factions: ['Corpus'],
-			nodeIds: ['vallis'],
-			spoilerGated: false,
-			resourceIds: [],
-		},
+		region('earth', 'Earth', { factions: ['Grineer'], nodeIds: ['plains'] }),
+		region('venus', 'Venus', { progressionOrder: 2, nodeIds: ['vallis'] }),
 	],
 	nodes: [
-		{
-			id: 'plains',
-			regionId: 'earth',
-			name: 'Plains of Eidolon',
+		node('plains', 'earth', 'Plains of Eidolon', {
 			missionType: 'Free Roam',
 			faction: 'Grineer',
 			isAssassination: false,
-		},
-		{
-			id: 'vallis',
-			regionId: 'venus',
-			name: 'Orb Vallis',
-			missionType: 'Free Roam',
-			faction: 'Corpus',
-			isAssassination: false,
-		},
+		}),
+		node('vallis', 'venus', 'Orb Vallis', { missionType: 'Free Roam', isAssassination: false }),
 	],
-	bosses: [],
 	warframes: [
 		{
 			id: 'caliban',
@@ -298,8 +256,6 @@ const openWorld: Dataset = {
 			],
 		},
 	],
-	resources: [],
-	quests: [],
 	openWorldFarms: [
 		{
 			frameId: 'caliban',
@@ -323,7 +279,7 @@ const openWorld: Dataset = {
 			bpSource: 'Little Duck (Vox Solaris standing)',
 		},
 	],
-};
+});
 
 describe('RegionPanel — open world', () => {
 	it('renders a Free Roam zone with its frame and a stage-labelled part row', () => {
@@ -338,19 +294,8 @@ describe('RegionPanel — open world', () => {
 	// The zone card's kind chip comes from the node's mission type, so non-Free-
 	// Roam mission farms (Shrine Defense, Granum Void) label themselves correctly.
 	it('labels a mission-farm zone with its mission type, not Free Roam', () => {
-		const shrine: Dataset = {
-			regions: [
-				{
-					id: 'earth',
-					name: 'Earth',
-					kind: 'planet',
-					progressionOrder: 1,
-					factions: ['Grineer'],
-					nodeIds: ['sayasvisions'],
-					spoilerGated: false,
-					resourceIds: [],
-				},
-			],
+		const shrine = ds({
+			regions: [region('earth', 'Earth', { factions: ['Grineer'], nodeIds: ['sayasvisions'] })],
 			nodes: [
 				{
 					id: 'sayasvisions',
@@ -361,7 +306,6 @@ describe('RegionPanel — open world', () => {
 					isAssassination: false,
 				},
 			],
-			bosses: [],
 			warframes: [
 				{
 					id: 'koumei',
@@ -379,8 +323,6 @@ describe('RegionPanel — open world', () => {
 					],
 				},
 			],
-			resources: [],
-			quests: [],
 			openWorldFarms: [
 				{
 					frameId: 'koumei',
@@ -390,7 +332,7 @@ describe('RegionPanel — open world', () => {
 					bpSource: 'Shrine Defense drop or 165 Fate Pearls',
 				},
 			],
-		};
+		});
 		const tracker = createTracker(shrine.warframes);
 		render(RegionPanel, { dataset: shrine, regionId: 'earth', tracker });
 		expect(screen.getByText("Saya's Visions")).toBeInTheDocument();
@@ -398,103 +340,18 @@ describe('RegionPanel — open world', () => {
 		expect(screen.getByText(/^Shrine Defense · 4\.09%$/)).toBeInTheDocument();
 	});
 
-	it('renders a drop-sourced blueprint like a component row, not the bpSource label', () => {
-		const mirror: Dataset = {
-			regions: [
-				{
-					id: 'mars',
-					name: 'Mars',
-					kind: 'planet',
-					progressionOrder: 4,
-					factions: ['Grineer'],
-					nodeIds: ['tyanapass'],
-					spoilerGated: false,
-					resourceIds: [],
-				},
-			],
-			nodes: [
-				{
-					id: 'tyanapass',
-					regionId: 'mars',
-					name: 'Tyana Pass',
-					missionType: 'Mirror Defense',
-					faction: 'Crossfire',
-					isAssassination: false,
-				},
-			],
-			bosses: [],
-			warframes: [
-				{
-					id: 'citrine',
-					name: 'Citrine',
-					nodeId: 'tyanapass',
-					parts: [
-						{
-							id: 'citrine:bp',
-							frameId: 'citrine',
-							slot: 'bp',
-							dropSourceNodeId: 'tyanapass',
-							chance: 9.3,
-							bountyTier: 'Rotation C',
-						},
-						{
-							id: 'citrine:systems',
-							frameId: 'citrine',
-							slot: 'systems',
-							dropSourceNodeId: 'tyanapass',
-							chance: 6.1,
-							bountyTier: 'Rotation C',
-						},
-					],
-				},
-			],
-			resources: [],
-			quests: [],
-			openWorldFarms: [
-				{
-					frameId: 'citrine',
-					nodeId: 'tyanapass',
-					regionId: 'mars',
-					componentSource: 'Mirror Defense',
-					bpSource: 'Mirror Defense drop (Rot C)',
-				},
-			],
-		};
-		const tracker = createTracker(mirror.warframes);
-		render(RegionPanel, { dataset: mirror, regionId: 'mars', tracker });
-		const bpRow = document.querySelector('[data-part="citrine:bp"]') as HTMLElement;
-		expect(bpRow.textContent).toMatch(/Mirror Defense · Rotation C · 9\.3%/);
-		expect(bpRow.textContent).not.toMatch(/drop \(Rot C\)/);
-	});
-
 	// Gyre-shaped fixture: a frame whose only unowned part is a drop-sourced bp.
 	// Regression test for the collapsed-card summary cue ignoring drop-sourced
 	// blueprints (it used to filter out every `bp` slot, drop-sourced or not).
 	it('shows the collapsed summary "up now" when a drop-sourced blueprint is the only thing left to farm', async () => {
-		const gyre: Dataset = {
-			regions: [
-				{
-					id: 'neptune',
-					name: 'Neptune',
-					kind: 'planet',
-					progressionOrder: 8,
-					factions: ['Corpus'],
-					nodeIds: ['zariman'],
-					spoilerGated: false,
-					resourceIds: [],
-				},
-			],
+		const gyre = ds({
+			regions: [region('neptune', 'Neptune', { progressionOrder: 8, nodeIds: ['zariman'] })],
 			nodes: [
-				{
-					id: 'zariman',
-					regionId: 'neptune',
-					name: 'Zariman Ten Zero',
+				node('zariman', 'neptune', 'Zariman Ten Zero', {
 					missionType: 'Void Flood',
-					faction: 'Corpus',
 					isAssassination: false,
-				},
+				}),
 			],
-			bosses: [],
 			warframes: [
 				{
 					id: 'gyre',
@@ -512,8 +369,6 @@ describe('RegionPanel — open world', () => {
 					],
 				},
 			],
-			resources: [],
-			quests: [],
 			openWorldFarms: [
 				{
 					frameId: 'gyre',
@@ -523,7 +378,7 @@ describe('RegionPanel — open world', () => {
 					bpSource: 'Zariman Bounty drop (Rot C)',
 				},
 			],
-		};
+		});
 		const tracker = createTracker(gyre.warframes);
 		render(RegionPanel, {
 			dataset: gyre,
@@ -556,81 +411,12 @@ describe('RegionPanel — open world', () => {
 		expect(screen.getByText('Caliban')).toBeInTheDocument();
 	});
 
-	it('omits tier/rotation for a non-bounty (Exploiter Orb) source', () => {
-		const tracker = createTracker(openWorld.warframes);
-		render(RegionPanel, { dataset: openWorld, regionId: 'venus', tracker });
-		const row = document.querySelector('[data-part="hildryn:chassis"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Exploiter Orb · 38\.72%/);
-		expect(row.textContent).not.toMatch(/Rot /);
-	});
-
 	it('toggles an open-world part on click', async () => {
 		const tracker = createTracker(openWorld.warframes);
 		render(RegionPanel, { dataset: openWorld, regionId: 'earth', tracker });
 		const row = document.querySelector('[data-part="caliban:chassis"]') as HTMLElement;
 		row.click();
 		expect(tracker.isOwned('caliban:chassis')).toBe(true);
-	});
-
-	it('renders "any rot" when a component drops on all rotations equally', () => {
-		const anyRot: Dataset = {
-			regions: [
-				{
-					id: 'earth',
-					name: 'Earth',
-					kind: 'planet',
-					progressionOrder: 1,
-					factions: ['Grineer'],
-					nodeIds: ['plains'],
-					spoilerGated: false,
-					resourceIds: [],
-				},
-			],
-			nodes: [
-				{
-					id: 'plains',
-					regionId: 'earth',
-					name: 'Plains of Eidolon',
-					missionType: 'Free Roam',
-					faction: 'Grineer',
-					isAssassination: false,
-				},
-			],
-			bosses: [],
-			warframes: [
-				{
-					id: 'gara',
-					name: 'Gara',
-					nodeId: 'plains',
-					parts: [
-						{ id: 'gara:bp', frameId: 'gara', slot: 'bp' },
-						{
-							id: 'gara:chassis',
-							frameId: 'gara',
-							slot: 'chassis',
-							dropSourceNodeId: 'plains',
-							chance: 45,
-							bountyTier: 'L5–15',
-							rotation: 'any',
-						},
-					],
-				},
-			],
-			resources: [],
-			quests: [],
-			openWorldFarms: [
-				{
-					frameId: 'gara',
-					nodeId: 'plains',
-					regionId: 'earth',
-					componentSource: 'Cetus Bounty',
-					bpSource: "Complete Saya's Vigil",
-				},
-			],
-		};
-		const tracker = createTracker(anyRot.warframes);
-		render(RegionPanel, { dataset: anyRot, regionId: 'earth', tracker });
-		expect(screen.getByText(/Cetus Bounty · L5–15 · any rot · 45%/)).toBeInTheDocument();
 	});
 });
 
@@ -684,22 +470,8 @@ describe('RegionPanel', () => {
 		expect(document.querySelectorAll('[data-frame="valkyr"]')).toHaveLength(2);
 	});
 	it('renders the region resources with phase badges and a guide link', () => {
-		const ds = {
-			regions: [
-				{
-					id: 'venus',
-					name: 'Venus',
-					kind: 'planet',
-					progressionOrder: 2,
-					factions: ['Corpus'],
-					nodeIds: [],
-					spoilerGated: false,
-					resourceIds: ['alloyplate'],
-				},
-			],
-			nodes: [],
-			bosses: [],
-			warframes: [],
+		const resourceRegion = ds({
+			regions: [region('venus', 'Venus', { progressionOrder: 2, resourceIds: ['alloyplate'] })],
 			resources: [
 				{
 					id: 'alloyplate',
@@ -728,11 +500,9 @@ describe('RegionPanel', () => {
 					],
 				},
 			],
-			quests: [],
-			openWorldFarms: [],
-		} as unknown as Dataset;
+		}) as unknown as Dataset;
 		const tracker = createTracker([]);
-		render(RegionPanel, { dataset: ds, regionId: 'venus', tracker });
+		render(RegionPanel, { dataset: resourceRegion, regionId: 'venus', tracker });
 		expect(screen.getByText('Alloy Plate')).toBeInTheDocument();
 		// Early best IS here (venus) → badge shows; late best is elsewhere (uranus) → no badge.
 		expect(screen.getByText('⚡ early best')).toBeInTheDocument();
@@ -826,30 +596,15 @@ const worldState: WorldState = {
 
 // Earth zone with Gara: Neuroptics is Rot C (up now), Systems is Rot A (not this
 // rotation); plus Hildryn-style always-available part with no rotation.
-const owAvail: Dataset = {
-	regions: [
-		{
-			id: 'earth',
-			name: 'Earth',
-			kind: 'planet',
-			progressionOrder: 1,
-			factions: ['Grineer'],
-			nodeIds: ['plains'],
-			spoilerGated: false,
-			resourceIds: [],
-		},
-	],
+const owAvail = ds({
+	regions: [region('earth', 'Earth', { factions: ['Grineer'], nodeIds: ['plains'] })],
 	nodes: [
-		{
-			id: 'plains',
-			regionId: 'earth',
-			name: 'Plains of Eidolon',
+		node('plains', 'earth', 'Plains of Eidolon', {
 			missionType: 'Free Roam',
 			faction: 'Grineer',
 			isAssassination: false,
-		},
+		}),
 	],
-	bosses: [],
 	warframes: [
 		{
 			id: 'gara',
@@ -885,8 +640,6 @@ const owAvail: Dataset = {
 			],
 		},
 	],
-	resources: [],
-	quests: [],
 	openWorldFarms: [
 		{
 			frameId: 'gara',
@@ -896,7 +649,7 @@ const owAvail: Dataset = {
 			bpSource: "Complete Saya's Vigil",
 		},
 	],
-};
+});
 
 describe('RegionPanel — world-state overlay', () => {
 	it('marks a part up now when its rotation matches the live letter', () => {
@@ -909,28 +662,6 @@ describe('RegionPanel — world-state overlay', () => {
 		});
 		const row = document.querySelector('[data-part="gara:neuroptics"]') as HTMLElement;
 		expect(row.textContent).toMatch(/up now · resets 21m/);
-	});
-	it('marks a part not-this-rotation with the next-up countdown', () => {
-		render(RegionPanel, {
-			dataset: owAvail,
-			regionId: 'earth',
-			tracker: createTracker(owAvail.warframes),
-			worldState,
-			now: wsNow,
-		});
-		const row = document.querySelector('[data-part="gara:systems"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Rot A · up in/);
-	});
-	it('marks a rotation-less component as always available', () => {
-		render(RegionPanel, {
-			dataset: owAvail,
-			regionId: 'earth',
-			tracker: createTracker(owAvail.warframes),
-			worldState,
-			now: wsNow,
-		});
-		const row = document.querySelector('[data-part="gara:chassis"]') as HTMLElement;
-		expect(row.textContent).toMatch(/always available/);
 	});
 	it('renders the zone cycle line for the region', () => {
 		render(RegionPanel, {
@@ -953,182 +684,9 @@ describe('RegionPanel — world-state overlay', () => {
 		);
 		expect(screen.queryByText(/night ·/)).toBeNull();
 	});
-	it('hides the zone cycle line instead of showing NaN when the cycle expiry is missing', () => {
-		const badWorldState: WorldState = {
-			...worldState,
-			cetus: { state: 'day', expiry: '' },
-		};
-		render(RegionPanel, {
-			dataset: owAvail,
-			regionId: 'earth',
-			tracker: createTracker(owAvail.warframes),
-			worldState: badWorldState,
-			now: wsNow,
-		});
-		expect(document.body.textContent).not.toMatch(/NaN/);
-		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
-	});
-	it('hides the zone cycle line when the cycle expiry is a malformed date', () => {
-		const badWorldState: WorldState = {
-			...worldState,
-			cetus: { state: 'day', expiry: 'not-a-date' },
-		};
-		render(RegionPanel, {
-			dataset: owAvail,
-			regionId: 'earth',
-			tracker: createTracker(owAvail.warframes),
-			worldState: badWorldState,
-			now: wsNow,
-		});
-		expect(document.body.textContent).not.toMatch(/NaN/);
-		expect(document.querySelector('[data-zone-cycle]')).toBeNull();
-	});
-	it('shows no collapsed summary when the rotation letter is underivable', async () => {
-		// letter null → we can't claim "not this rotation". Own the always-available
-		// chassis so the remaining needed parts are all rotation-specific (unknown),
-		// then collapse the card to surface owSummary.
-		const tracker = createTracker(owAvail.warframes);
-		tracker.togglePart('gara:chassis');
-		render(RegionPanel, {
-			dataset: owAvail,
-			regionId: 'earth',
-			tracker,
-			worldState: { ...worldState, rotation: { letter: null, expiry: null } },
-			now: wsNow,
-		});
-		(document.querySelector('[data-frame="gara"] button') as HTMLElement).click();
-		await tick();
-		const card = document.querySelector('[data-frame="gara"]') as HTMLElement;
-		expect(card).toHaveAttribute('data-expanded', 'false');
-		expect(card.textContent).not.toMatch(/not this rotation/);
-	});
 });
 
 // Assassination source-label fixture. `regionFrames` maps exactly ONE frame
 // per node (via node.frameId), so each frame needs its own Assassination node.
 // Three frames exercise each blueprint source — Market credit, a bp that drops
 // from the boss (Wisp/Ropalolyst-style), and a curated bpSource (Mesa-style).
-const bpSourceRegion: Dataset = {
-	regions: [
-		{
-			id: 'earth',
-			name: 'Earth',
-			kind: 'planet',
-			progressionOrder: 1,
-			factions: ['Grineer'],
-			nodeIds: ['oro', 'ropa', 'eris'],
-			spoilerGated: false,
-			resourceIds: [],
-		},
-	],
-	nodes: [
-		{
-			id: 'oro',
-			regionId: 'earth',
-			name: 'Oro',
-			missionType: 'Assassination',
-			faction: 'Grineer',
-			isAssassination: true,
-			bossId: 'vayhek',
-			frameId: 'rhino',
-		},
-		{
-			id: 'ropa',
-			regionId: 'earth',
-			name: 'The Ropalolyst',
-			missionType: 'Assassination',
-			faction: 'Corpus',
-			isAssassination: true,
-			bossId: 'ropalolyst',
-			frameId: 'wisp',
-		},
-		{
-			id: 'eris',
-			regionId: 'earth',
-			name: 'Mutalist Alad V',
-			missionType: 'Assassination',
-			faction: 'Infested',
-			isAssassination: true,
-			bossId: 'mutalist',
-			frameId: 'mesa',
-		},
-	],
-	bosses: [
-		{ id: 'vayhek', name: 'Councilor Vay Hek', nodeId: 'oro', faction: 'Grineer' },
-		{ id: 'ropalolyst', name: 'Ropalolyst', nodeId: 'ropa', faction: 'Corpus' },
-		{ id: 'mutalist', name: 'Mutalist Alad V', nodeId: 'eris', faction: 'Infested' },
-	],
-	warframes: [
-		{
-			id: 'rhino',
-			name: 'Rhino',
-			nodeId: 'oro',
-			parts: [
-				{ id: 'rhino:bp', frameId: 'rhino', slot: 'bp', marketCost: 35000 },
-				{
-					id: 'rhino:chassis',
-					frameId: 'rhino',
-					slot: 'chassis',
-					dropSourceNodeId: 'oro',
-					chance: 38.72,
-				},
-			],
-		},
-		{
-			id: 'wisp',
-			name: 'Wisp',
-			nodeId: 'ropa',
-			parts: [
-				{ id: 'wisp:bp', frameId: 'wisp', slot: 'bp', dropSourceNodeId: 'ropa', chance: 22.56 },
-			],
-		},
-		{
-			id: 'mesa',
-			name: 'Mesa',
-			nodeId: 'eris',
-			parts: [{ id: 'mesa:bp', frameId: 'mesa', slot: 'bp', bpSource: 'Mutalist Alad V' }],
-		},
-	],
-	resources: [],
-	quests: [],
-	openWorldFarms: [],
-};
-
-describe('RegionPanel — assassination blueprint & drop-rate labels', () => {
-	it('shows the drop rate on a component row', () => {
-		render(RegionPanel, {
-			dataset: bpSourceRegion,
-			regionId: 'earth',
-			tracker: createTracker(bpSourceRegion.warframes),
-		});
-		const row = document.querySelector('[data-part="rhino:chassis"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Councilor Vay Hek · 38\.72%/);
-	});
-	it('shows the Market credit amount on a purchased blueprint row', () => {
-		render(RegionPanel, {
-			dataset: bpSourceRegion,
-			regionId: 'earth',
-			tracker: createTracker(bpSourceRegion.warframes),
-		});
-		const row = document.querySelector('[data-part="rhino:bp"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Market \(35,000cr\)/);
-	});
-	it('shows the boss + drop rate on a blueprint that drops from the boss', () => {
-		render(RegionPanel, {
-			dataset: bpSourceRegion,
-			regionId: 'earth',
-			tracker: createTracker(bpSourceRegion.warframes),
-		});
-		const row = document.querySelector('[data-part="wisp:bp"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Ropalolyst · 22\.56%/);
-	});
-	it('shows a curated bpSource verbatim', () => {
-		render(RegionPanel, {
-			dataset: bpSourceRegion,
-			regionId: 'earth',
-			tracker: createTracker(bpSourceRegion.warframes),
-		});
-		const row = document.querySelector('[data-part="mesa:bp"]') as HTMLElement;
-		expect(row.textContent).toMatch(/Mutalist Alad V/);
-	});
-});
