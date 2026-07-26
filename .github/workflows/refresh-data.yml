@@ -19,6 +19,9 @@ permissions:
 
 env:
   BRANCH: bot/data-refresh
+  # Scratch ref the commit is built on before BRANCH is moved onto it. See the
+  # commit step for why it cannot be built on BRANCH directly.
+  STAGING: bot/data-refresh-staging
 
 jobs:
   refresh:
@@ -118,20 +121,25 @@ jobs:
             exit 1
           fi
 
-          # Only now that there is definitely something to commit. A fixed
-          # branch, force-updated: an unmerged refresh from last week is
-          # replaced rather than accumulating a second PR alongside it. PATCH
-          # first because the usual case is that the branch already exists;
-          # POST creates it on the first run, and after every merge deletes it.
-          # Doing this before the check above would reset the branch and then
-          # bail, discarding last week's refresh to no purpose.
+          # The commit is built on a scratch ref, not on BRANCH, and only once
+          # there is definitely something to commit.
+          #
+          # createCommitOnBranch needs the branch sitting at the parent commit,
+          # so committing on BRANCH directly means resetting it to main first —
+          # and in that window the branch is identical to main. GitHub closes
+          # any PR whose head stops differing from its base, so that reset
+          # closed PR #48 and disabled its auto-merge, and the next step died
+          # with "Pull request is closed". `git push --force` never hit this: it
+          # moved the ref from last week's commit straight to this week's, one
+          # hop, never empty. Building on STAGING restores that property.
+          #
           # PATCH's stderr is dropped because "Reference does not exist" is the
           # normal first-run path, not a fault, and reads as alarming in the log.
           # A real failure still surfaces: POST runs next and is not silenced.
-          gh api "repos/$REPO/git/refs/heads/$BRANCH" -X PATCH -f sha="$BASE" -F force=true --silent 2>/dev/null \
-            || gh api "repos/$REPO/git/refs" -X POST -f ref="refs/heads/$BRANCH" -f sha="$BASE" --silent
+          gh api "repos/$REPO/git/refs/heads/$STAGING" -X PATCH -f sha="$BASE" -F force=true --silent 2>/dev/null \
+            || gh api "repos/$REPO/git/refs" -X POST -f ref="refs/heads/$STAGING" -f sha="$BASE" --silent
 
-          jq --arg repo "$REPO" --arg branch "$BRANCH" --arg oid "$BASE" '{
+          jq --arg repo "$REPO" --arg branch "$STAGING" --arg oid "$BASE" '{
             query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
             variables: { input: {
               branch: { repositoryNameWithOwner: $repo, branchName: $branch },
@@ -141,8 +149,20 @@ jobs:
             }}
           }' "$RUNNER_TEMP/additions.json" > "$RUNNER_TEMP/commit.json"
 
-          gh api graphql --input "$RUNNER_TEMP/commit.json" \
-            --jq '.data.createCommitOnBranch.commit.oid'
+          NEW=$(gh api graphql --input "$RUNNER_TEMP/commit.json" \
+            --jq '.data.createCommitOnBranch.commit.oid')
+
+          # The one hop that matters: BRANCH goes from last week's commit (or
+          # nowhere) straight to the finished one, so an open PR sees a normal
+          # force-push and keeps both its existence and its auto-merge.
+          gh api "repos/$REPO/git/refs/heads/$BRANCH" -X PATCH -f sha="$NEW" -F force=true --silent 2>/dev/null \
+            || gh api "repos/$REPO/git/refs" -X POST -f ref="refs/heads/$BRANCH" -f sha="$NEW" --silent
+
+          # Tidy-up only; a leftover scratch ref is force-updated by the next
+          # run anyway, so a failure here must not fail an otherwise good run.
+          gh api "repos/$REPO/git/refs/heads/$STAGING" -X DELETE --silent || true
+
+          echo "Committed $NEW to $BRANCH."
 
       - name: Open or update the PR, and let it merge itself on green
         if: steps.changed.outputs.changed == 'true'
