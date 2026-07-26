@@ -105,11 +105,27 @@ describe('createImportStore', () => {
 		expect(store.errorKind).toBe('empty');
 	});
 
-	it('clears the kind on reset and on a new run', async () => {
+	it('clears the kind on reset', async () => {
 		const store = createImportStore(dataset);
 		await store.run('nope');
 		expect(store.errorKind).toBe('invalid');
+
 		store.reset();
+
+		expect(store.errorKind).toBeNull();
+	});
+
+	it('clears the kind when a later run succeeds', async () => {
+		// Otherwise a stale kind would keep the dialog offering the previous
+		// failure's affordance after the problem was fixed.
+		useProfile(PROFILE);
+		const store = createImportStore(dataset);
+		await store.run('nope');
+		expect(store.errorKind).toBe('invalid');
+
+		await store.run('517d823a1a4d804218000052');
+
+		expect(store.phase).toBe('preview');
 		expect(store.errorKind).toBeNull();
 	});
 });
