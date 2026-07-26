@@ -38,9 +38,16 @@ jobs:
             echo "::error::DATA_REFRESH_TOKEN is not set. Create a fine-grained PAT with Contents: Read and write and Pull requests: Read and write, then add it as a repository secret. The default GITHUB_TOKEN cannot be used here: pushes and PRs made with it do not trigger other workflows, so ci.yml would never run on the refresh PR — which is the entire hole this workflow exists to close."
             exit 1
           fi
-          if [ "$(gh api repos/${{ github.repository }} --jq .permissions.push)" != "true" ]; then
+          # Fails only on an explicit "false", never on an absent or unexpected
+          # value. This check exists to catch a read-only token early; it must
+          # not become the thing that blocks a working one because GitHub
+          # reported the legacy permissions object differently than expected.
+          PUSH=$(gh api repos/${{ github.repository }} --jq '.permissions.push // "unknown"' 2>/dev/null || echo unknown)
+          if [ "$PUSH" = "false" ]; then
             echo "::error::DATA_REFRESH_TOKEN cannot push to this repository. Grant the fine-grained PAT 'Contents: Read and write' (and 'Pull requests: Read and write'), and make sure its repository access includes ${{ github.repository }}."
             exit 1
+          elif [ "$PUSH" != "true" ]; then
+            echo "::warning::Could not confirm push access for DATA_REFRESH_TOKEN (permissions.push was '$PUSH'). Continuing; a genuine lack of write access will surface at the push step."
           fi
 
       - uses: actions/checkout@v7
