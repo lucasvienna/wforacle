@@ -4,30 +4,13 @@
 	import { breadcrumbLd, guideLd } from '$lib/seo/jsonld';
 	import { guideDescription } from '$lib/seo/meta';
 	import { SITE_URL } from '$lib/seo/config';
+	import { byPhase } from '$lib/guides/phases';
+	import RecCard from '$lib/guides/RecCard.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
-	const PHASE_LABEL = {
-		early: '⚡ Early game',
-		mid: '🌗 Mid game',
-		late: '💀 Late / endgame',
-	} as const;
-	const PHASE_TAG = {
-		early: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300',
-		mid: 'border-sky-500/40 bg-sky-500/10 text-sky-300',
-		late: 'border-amber-500/40 bg-amber-500/10 text-amber-300',
-	} as const;
-	const PHASE_ORDER = { early: 0, mid: 1, late: 2 } as const;
-
-	// Early recs first, then mid, then late — recommendations come back from
-	// the dataset in that order already, but sort defensively so the layout
-	// is stable even if that ever changes.
-	let recommendations = $derived(
-		[...data.resource.recommendations].sort(
-			(a, b) => PHASE_ORDER[a.phase] - PHASE_ORDER[b.phase],
-		),
-	);
+	let recommendations = $derived(byPhase(data.resource.recommendations));
 
 	let canonical = $derived(`${SITE_URL}/guides/${data.resource.id}`);
 </script>
@@ -66,38 +49,9 @@
 
 	<section class="mb-8 grid gap-4 sm:grid-cols-2">
 		{#each recommendations as rec (rec.phase + rec.nodeLabel)}
-			<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
-				<span
-					class="rounded-full border px-2 py-0.5 text-[11px] font-medium {PHASE_TAG[
-						rec.phase
-					]}"
-				>
-					{PHASE_LABEL[rec.phase]}
-				</span>
-				<h2 class="mt-2 text-base font-semibold text-slate-100">
-					{rec.nodeLabel}
-				</h2>
-				<p class="mt-1 text-sm text-wf-muted">{rec.note}</p>
-				<p class="mt-2 text-xs text-wf-muted">
-					{rec.boosterNote ??
-						(rec.boostersApply
-							? 'Boosters help: this spot relies on enemy drop tables.'
-							: "Boosters don't apply: this spot is a container/deposit pickup, not an enemy drop.")}
-				</p>
-				<div
-					class="mt-3 flex items-center justify-between text-xs text-wf-muted"
-				>
-					<a
-						href={rec.source}
-						target="_blank"
-						rel="noreferrer"
-						class="text-wf-cyan hover:text-wf-cyan/80"
-					>
-						Source ↗
-					</a>
-					<span>Verified {rec.lastVerified}</span>
-				</div>
-			</div>
+			<!-- headingLevel 2: these cards sit directly under the page <h1>,
+			     unlike the bespoke guides where they nest under a section <h2>. -->
+			<RecCard {rec} headingLevel={2} />
 		{/each}
 	</section>
 
