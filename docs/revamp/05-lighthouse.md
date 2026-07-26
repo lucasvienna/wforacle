@@ -29,6 +29,12 @@ Core Web Vitals after: CLS 0.014 (home mobile) / 0.003 (credits mobile) / 0
 elsewhere; LCP 1.4–1.5 s mobile, 0.3–0.4 s desktop; TBT 0 ms except home mobile
 (40 ms).
 
+**On run-to-run variance:** Lighthouse scores move by a point or two between
+runs, especially on a loaded machine — home/mobile has been observed at both
+100 and 99 with no code change between. Treat the table as "clears the 97 floor
+with room to spare", not as an exact number to defend. `scripts/lighthouse.sh`
+asserts the floor, not equality with 100, for this reason.
+
 **Both halves of task 2.5's acceptance criteria are met: a documented baseline
 table, and ≥ 97 on all four pages, mobile and desktop.**
 

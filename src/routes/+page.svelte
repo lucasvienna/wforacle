@@ -210,7 +210,7 @@
 					Dimension-matched placeholder for the readout below. Both widgets
 					appear only after boot(); letting them pop in grew the header row
 					and pushed the whole page down. The count uses a fixed-width,
-					tabular-numerals slot so "0/48" and "12/48" reserve the same
+					`tabular-nums` slot so "0/48" and "12/48" reserve the same
 					space and the row cannot re-wrap when the real numbers land.
 				-->
 				<div

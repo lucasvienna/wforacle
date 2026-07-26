@@ -18,8 +18,20 @@ set -uo pipefail
 
 FLOOR=${FLOOR:-97}
 BASE=${BASE:-http://localhost:4173}
-OUT=$(mktemp -d)
+# BSD/macOS mktemp requires an explicit template; GNU's does not. Pass one so
+# both work.
+OUT=$(mktemp -d "${TMPDIR:-/tmp}/wforacle-lh.XXXXXX")
 trap 'rm -rf "$OUT"' EXIT
+
+# `timeout` is GNU coreutils and is absent on a stock macOS. Bound each run
+# where it exists, and degrade to running unbounded rather than failing with a
+# confusing "command not found" swallowed inside run().
+if command -v timeout >/dev/null 2>&1; then
+	TIMEOUT=(timeout 300)
+else
+	TIMEOUT=()
+	echo "note: \`timeout\` not found — Lighthouse runs will not be time-bounded." >&2
+fi
 
 if [ -z "${CHROME_PATH:-}" ]; then
 	CHROME_PATH=$(node -e "try{console.log(require('playwright').chromium.executablePath())}catch(e){}" 2>/dev/null)
@@ -38,11 +50,19 @@ fi
 run() { # name path device [extra flags...]
 	local name=$1 path=$2 dev=$3
 	shift 3
-	timeout 300 pnpm dlx lighthouse@12 "$BASE$path" \
+	# stderr is captured rather than discarded: without it a failure here (a
+	# missing binary, a Chrome crash) surfaced only as a generic "lighthouse
+	# failed", with the actual cause thrown away.
+	"${TIMEOUT[@]}" pnpm dlx lighthouse@12 "$BASE$path" \
 		--only-categories=performance,accessibility,best-practices,seo --quiet \
 		--chrome-flags="--headless --no-sandbox" \
-		--output=json --output-path="$OUT/$name-$dev.json" "$@" >/dev/null 2>&1
-	[ -s "$OUT/$name-$dev.json" ] || { echo "lighthouse failed for $name/$dev" >&2; return 1; }
+		--output=json --output-path="$OUT/$name-$dev.json" "$@" \
+		>/dev/null 2>"$OUT/$name-$dev.err"
+	if [ ! -s "$OUT/$name-$dev.json" ]; then
+		echo "lighthouse failed for $name/$dev:" >&2
+		tail -5 "$OUT/$name-$dev.err" >&2
+		return 1
+	fi
 }
 
 PAGES=("home:/" "guides:/guides" "resource:/guides/orokincell" "credits:/guides/credits")
