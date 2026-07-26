@@ -1,0 +1,55 @@
+wforacle
+Copyright (C) 2026 Lucas Vienna
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of version 3 of the GNU Affero General Public License as published by
+the Free Software Foundation.
+
+Version 3 only, not "or (at your option) any later version" — matching the
+SPDX identifier AGPL-3.0-only in package.json. The FSF's own boilerplate
+recommends or-later; this project takes the narrower grant so the terms cannot
+change under downstream users if a future version is published.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program. If not, see <https://www.gnu.org/licenses/>.
+
+The full licence text is in LICENSE. It is kept byte-verbatim so automated
+licence detection recognises it; everything specific to this project lives in
+this file instead.
+
+
+THIRD-PARTY CONTENT
+===================
+
+The AGPL above covers the *code* in this repository. It does not, and cannot,
+cover the following, which belong to their respective owners.
+
+Warframe names, imagery and game data
+-------------------------------------
+Warframe is a trademark of Digital Extremes Ltd. All Warframe names, icons,
+artwork and in-game data referenced here are the property of Digital Extremes.
+This is an unofficial fan project, not affiliated with or endorsed by Digital
+Extremes, and is published under their Fan Content / Content Use policies:
+
+    https://www.warframe.com/steamterms  (Section 8, User Generated Content)
+
+The resource and Warframe icons under static/ are downloaded from official and
+community sources by scripts/fetch-resource-images.sh and
+scripts/fetch-frame-glyphs.sh; they are not original works of this project.
+
+Wiki-derived data
+-----------------
+Drop rates, node names and farming recommendations in scripts/data/ and
+static/data/dataset.json are compiled from the Warframe Wiki
+(https://wiki.warframe.com), which publishes under CC BY-SA 3.0, and from the
+official drop tables (https://www.warframe.com/droptables). Each curated
+recommendation carries a `source` URL and a `lastVerified` date.
+
+Upstream packages
+-----------------
+Generated data is built from @wfcd/items and warframe-worldstate-data
+(WFCD, MIT). Live world state is proxied from https://api.warframestat.us.
