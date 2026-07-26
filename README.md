@@ -101,15 +101,21 @@ Pushing to `main` deploys to Cloudflare Workers via Workers Builds. `ci.yml`
 gates every pull request and push to `main` on lint, format, `svelte-check`,
 unit tests, build (including the page-size budget) and e2e.
 
-`refresh-data.yml` runs daily at 06:17 UTC: it bumps the two upstream data
-packages, regenerates the dataset, runs unit tests, and commits the result
-straight to `main` if anything changed.
+`main` is protected: `lint`, `format`, `check`, `unit`, `build` and `e2e` must
+pass before anything merges, so every commit that lands has been through the
+full gate.
 
-> [!WARNING]
-> That cron pushes to `main` without going through `ci.yml` — a bot push using
-> the default `GITHUB_TOKEN` does not trigger other workflows. Moving it to a
-> weekly auto-created PR is planned and needs a fine-grained PAT; see task 1.1
-> in [`docs/revamp/04-task-plan.md`](docs/revamp/04-task-plan.md).
+`refresh-data.yml` runs weekly (Mondays, 06:17 UTC). It bumps the two upstream
+data packages, regenerates the dataset, and runs `data:build` plus the unit
+suite as a cheap local gate. If anything changed it force-updates a fixed
+`bot/data-refresh` branch, opens (or updates) a PR, and enables auto-merge — so
+the refresh lands only once `ci.yml` is green on it. A failed run opens or
+comments on a pinned issue rather than failing silently.
+
+It authenticates with a `DATA_REFRESH_TOKEN` secret (a fine-grained PAT with
+Contents and Pull requests write). That is not incidental: a PR opened with the
+default `GITHUB_TOKEN` does **not** trigger other workflows, so `ci.yml` would
+never run on it — which was the whole problem.
 
 ## Repository layout
 
