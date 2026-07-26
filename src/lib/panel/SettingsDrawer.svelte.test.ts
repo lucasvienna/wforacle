@@ -1,9 +1,12 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/svelte';
+import { render, screen, fireEvent } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
 import SettingsDrawer from './SettingsDrawer.svelte';
 import { seed } from '$lib/data/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
 
+// The drawer shell — Escape, backdrop click, focus move and focus trap — is
+// covered once in src/lib/ui/Drawer.svelte.test.ts. This spec asserts only
+// what SettingsDrawer itself contributes.
 describe('SettingsDrawer', () => {
 	it('renders nothing when closed', () => {
 		render(SettingsDrawer, {
@@ -42,19 +45,6 @@ describe('SettingsDrawer', () => {
 		expect(onclose).toHaveBeenCalledOnce();
 	});
 
-	it('calls onclose on Escape', async () => {
-		const onclose = vi.fn();
-		render(SettingsDrawer, {
-			dataset: seed,
-			tracker: createTracker(seed.warframes),
-			open: true,
-			onclose,
-			onimport: vi.fn(),
-		});
-		await fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
-		expect(onclose).toHaveBeenCalledOnce();
-	});
-
 	it('resets tracked parts through the two-step confirm flow', async () => {
 		const tracker = createTracker(seed.warframes);
 		tracker.togglePart('rhino:bp');
@@ -75,50 +65,5 @@ describe('SettingsDrawer', () => {
 
 		await fireEvent.click(confirmBtn as HTMLElement);
 		expect(tracker.isOwned('rhino:bp')).toBe(false);
-	});
-
-	it('calls onclose when the backdrop is clicked', async () => {
-		const onclose = vi.fn();
-		render(SettingsDrawer, {
-			dataset: seed,
-			tracker: createTracker(seed.warframes),
-			open: true,
-			onclose,
-			onimport: vi.fn(),
-		});
-		// The backdrop is the role="presentation" element; a click on it (target
-		// === currentTarget) dismisses the drawer, but clicks inside the panel do not.
-		await fireEvent.click(screen.getByRole('presentation'));
-		expect(onclose).toHaveBeenCalledOnce();
-	});
-
-	it('moves focus to the close button on open', async () => {
-		render(SettingsDrawer, {
-			dataset: seed,
-			tracker: createTracker(seed.warframes),
-			open: true,
-			onclose: vi.fn(),
-			onimport: vi.fn(),
-		});
-		const closeBtn = document.querySelector('[data-close-settings]');
-		await waitFor(() => expect(document.activeElement).toBe(closeBtn));
-	});
-
-	it('traps focus, wrapping Tab from the last tabbable control back to the close button', async () => {
-		render(SettingsDrawer, {
-			dataset: seed,
-			tracker: createTracker(seed.warframes),
-			open: true,
-			onclose: vi.fn(),
-			onimport: vi.fn(),
-		});
-		const closeBtn = document.querySelector('[data-close-settings]') as HTMLElement;
-		const resetBtn = document.querySelector('[data-reset-tracking]') as HTMLElement;
-
-		resetBtn.focus();
-		expect(document.activeElement).toBe(resetBtn);
-
-		await fireEvent.keyDown(resetBtn, { key: 'Tab', bubbles: true });
-		expect(document.activeElement).toBe(closeBtn);
 	});
 });
