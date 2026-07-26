@@ -6,12 +6,13 @@ written as a handover for the executing agent/engineer.
 
 ## Reading order
 
-| Doc                                          | Contents                                                        |
-| -------------------------------------------- | --------------------------------------------------------------- |
-| [01-repo-map.md](01-repo-map.md)             | Purpose, stack, architecture sketch, conventions, surprises     |
-| [02-audit-findings.md](02-audit-findings.md) | All findings with file:line evidence, severity, and strengths   |
-| [03-strategy.md](03-strategy.md)             | 4 themes, target states, explicit non-goals                     |
-| [04-task-plan.md](04-task-plan.md)           | Milestones 0–3, task table, quick wins, implementation sketches |
+| Doc                                          | Contents                                                          |
+| -------------------------------------------- | ----------------------------------------------------------------- |
+| [01-repo-map.md](01-repo-map.md)             | Purpose, stack, architecture sketch, conventions, surprises       |
+| [02-audit-findings.md](02-audit-findings.md) | All findings with file:line evidence, severity, and strengths     |
+| [03-strategy.md](03-strategy.md)             | 4 themes, target states, explicit non-goals                       |
+| [04-task-plan.md](04-task-plan.md)           | Milestones 0–3, task table, quick wins, implementation sketches   |
+| [05-lighthouse.md](05-lighthouse.md)         | Task 2.5: LH baseline table, what was wrong, and how it was fixed |
 
 ## Executive summary
 

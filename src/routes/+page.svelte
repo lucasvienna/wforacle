@@ -205,13 +205,43 @@
 			>
 				<img src={asset('/resources/affinity.webp')} alt="" class="h-4 w-4" />
 			</a>
+			{#if !tracker}
+				<!--
+					Dimension-matched placeholder for the readout below. Both widgets
+					appear only after boot(); letting them pop in grew the header row
+					and pushed the whole page down. The count uses a fixed-width,
+					tabular-numerals slot so "0/48" and "12/48" reserve the same
+					space and the row cannot re-wrap when the real numbers land.
+				-->
+				<div
+					aria-hidden="true"
+					class="flex items-center gap-2 rounded-lg border border-wf-edge bg-wf-panel px-3 py-1.5 text-xs text-wf-muted"
+				>
+					<span
+						>Frame Parts <b
+							class="inline-block min-w-[3.25rem] text-center text-wf-gold tabular-nums"
+							>—</b
+						></span
+					>
+					<span
+						class="relative h-1.5 w-16 overflow-hidden rounded-full bg-wf-edge"
+					></span>
+				</div>
+				<div
+					aria-hidden="true"
+					class="rounded-lg border border-transparent px-2.5 py-1.5 text-wf-muted"
+				>
+					<span class="invisible" aria-hidden="true">⚙</span>
+				</div>
+			{/if}
 			{#if tracker}
 				<div
 					class="flex items-center gap-2 rounded-lg border border-wf-edge bg-wf-panel px-3 py-1.5 text-xs text-wf-muted"
 					title="Node frame parts owned"
 				>
 					<span
-						>Frame Parts <b class="text-wf-gold"
+						>Frame Parts <b
+							class="inline-block min-w-[3.25rem] text-center text-wf-gold tabular-nums"
 							>{tracker.total.owned}/{tracker.total.total}</b
 						></span
 					>
@@ -257,54 +287,80 @@
 		</p>
 	</div>
 
-	{#if ws}
-		<div class="mb-4 rounded-xl border border-wf-edge bg-wf-panel px-4 py-2">
+	<!--
+		The wrapper renders unconditionally. `ws` only exists after boot(), so
+		gating the whole block on it inserted ~50px of new content mid-load and
+		pushed everything below it down — a measurable slice of the page's CLS.
+		The placeholder mirrors WorldStateTicker's own loading branch exactly, so
+		the swap is height-neutral.
+	-->
+	<div class="mb-4 rounded-xl border border-wf-edge bg-wf-panel px-4 py-2">
+		{#if ws}
 			<WorldStateTicker store={ws} />
-		</div>
-	{/if}
+		{:else}
+			<div data-worldstate class="text-xs text-wf-muted">
+				Loading live status…
+			</div>
+		{/if}
+	</div>
 
-	{#if dataset && tracker}
-		<div class="mb-4 overflow-hidden rounded-xl border border-wf-edge">
-			<StarChart
-				regions={planetRegions}
-				{specialRegions}
-				{selectedId}
-				{statusOf}
-				onselect={(id) => (selectedId = id)}
+	<!--
+		min-h-screen reserves roughly a viewport for the client-rendered chart and
+		panel. Without it this slot was a 384px placeholder replaced by ~3100px of
+		content, which shoved the prerendered directory below — and that directory
+		starts *inside* the viewport, so the displacement scored CLS 0.47 ("poor"
+		is anything over 0.25) and held the home page's performance score at 79.
+
+		Reserving the full loaded height is not an option (3100px of blank page),
+		but it isn't necessary either: layout shift only counts elements visible in
+		the viewport. One viewport of reserve puts the directory below the fold
+		before the swap happens, so its later movement costs nothing, and the chart
+		and panel are newly inserted nodes rather than moved ones.
+	-->
+	<div class="min-h-screen">
+		{#if dataset && tracker}
+			<div class="mb-4 overflow-hidden rounded-xl border border-wf-edge">
+				<StarChart
+					regions={planetRegions}
+					{specialRegions}
+					{selectedId}
+					{statusOf}
+					onselect={(id) => (selectedId = id)}
+				/>
+			</div>
+			<RegionPanel
+				{dataset}
+				regionId={selectedId}
+				{tracker}
+				worldState={ws?.state ?? null}
+				now={ws?.now ?? Date.now()}
 			/>
-		</div>
-		<RegionPanel
-			{dataset}
-			regionId={selectedId}
-			{tracker}
-			worldState={ws?.state ?? null}
-			now={ws?.now ?? Date.now()}
-		/>
-	{:else if loadError}
-		<div
-			data-load-error
-			role="alert"
-			class="flex h-96 flex-col items-center justify-center gap-3 px-6 text-center"
-		>
-			<p class="text-slate-300">Couldn’t load the Star Chart data.</p>
-			<p class="max-w-md text-sm text-wf-muted">
-				This is usually a temporary network problem. Your tracked progress is
-				stored locally and hasn’t been lost.
-			</p>
-			<button
-				type="button"
-				data-retry-load
-				onclick={boot}
-				class="rounded-lg border border-wf-edge bg-wf-panel px-4 py-2 text-sm text-wf-cyan hover:border-wf-cyan/40"
+		{:else if loadError}
+			<div
+				data-load-error
+				role="alert"
+				class="flex h-96 flex-col items-center justify-center gap-3 px-6 text-center"
 			>
-				Try again
-			</button>
-		</div>
-	{:else}
-		<div class="flex h-96 items-center justify-center text-slate-500">
-			Loading Star Chart…
-		</div>
-	{/if}
+				<p class="text-slate-300">Couldn’t load the Star Chart data.</p>
+				<p class="max-w-md text-sm text-wf-muted">
+					This is usually a temporary network problem. Your tracked progress is
+					stored locally and hasn’t been lost.
+				</p>
+				<button
+					type="button"
+					data-retry-load
+					onclick={boot}
+					class="rounded-lg border border-wf-edge bg-wf-panel px-4 py-2 text-sm text-wf-cyan hover:border-wf-cyan/40"
+				>
+					Try again
+				</button>
+			</div>
+		{:else}
+			<div class="flex h-96 items-center justify-center text-slate-500">
+				Loading Star Chart…
+			</div>
+		{/if}
+	</div>
 
 	<section class="mt-8">
 		<h2 class="mb-3 text-lg font-bold text-slate-100">Browse the Star Chart</h2>

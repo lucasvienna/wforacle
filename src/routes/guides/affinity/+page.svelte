@@ -338,14 +338,20 @@
 
 	<section class="mb-8">
 		<h2 class="mb-3 text-lg font-semibold">Sources</h2>
-		<ul class="list-disc pl-5 text-sm">
+		<!--
+			space-y-1 + inline-block py-1 give each source link a >=24px tap target
+			with >=24px between neighbours. At the default 16px line height these
+			links were 16px tall and 16.2px apart, failing Lighthouse's target-size
+			audit and, more to the point, being genuinely fiddly to hit on a phone.
+		-->
+		<ul class="list-disc space-y-1 pl-5 text-sm">
 			{#each SOURCES as s (s.url)}
 				<li>
 					<a
 						href={s.url}
 						target="_blank"
 						rel="noreferrer"
-						class="text-wf-cyan hover:text-wf-cyan/80"
+						class="inline-block py-1 text-wf-cyan hover:text-wf-cyan/80"
 					>
 						{s.label}
 					</a>

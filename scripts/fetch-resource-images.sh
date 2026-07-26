@@ -13,7 +13,17 @@ U="wforacle"
 B="https://cdn.warframestat.us/img"
 T=$(mktemp -d)
 trap 'rm -rf "$T"' EXIT
-dl() { curl -fsSL -A "$U" -o "$T/$1" "$B/$2" && convert "$T/$1" -resize 64x64 -strip "static/resources/$1" && echo "ok $1"; }
+# 128px, not 64: these icons render at up to 48 CSS px (the guide page header),
+# and Lighthouse's image-size-responsive audit wants ~1.5x that for high-DPI
+# screens. Every upstream source is >=310px, so this is a genuine downscale
+# rather than an upscale that would only fool the audit.
+dl() { curl -fsSL -A "$U" -o "$T/$1" "$B/$2" && convert "$T/$1" -resize 128x128 -strip "static/resources/$1" && echo "ok $1"; }
+
+# As dl(), but pads a non-square source to a square canvas instead of
+# stretching it. Lighthouse's image-aspect-ratio audit fires when a natural
+# ratio differs from the rendered one, and these icons are always rendered
+# square.
+dlsq() { curl -fsSL -A "$U" -o "$T/$1" "$2" && convert "$T/$1" -resize 128x128 -background none -gravity center -extent 128x128 -strip "static/resources/$1" && echo "ok $1"; }
 
 dl orokincell.webp ComponentCell.png
 dl neurodes.webp ComponentNeurode.png
@@ -44,5 +54,12 @@ dl kuva.webp Kuva.png
 dl voidgelorb.webp ZarimanMiscItemA.png
 dl entratilanthorn.webp ZarimanMiscItemB.png
 
-# Credits has no @wfcd/items entry — icon comes from the official wiki instead.
-curl -fsSL -A "$U" -o "$T/credits.webp" "https://wiki.warframe.com/images/Credits64.png" && convert "$T/credits.webp" -resize 64x64 -strip "static/resources/credits.webp" && echo "ok credits.webp"
+# Credits and Affinity have no @wfcd/items entry — icons come from the official
+# wiki instead. Credits.png is the 512px original; Credits64.png (used before)
+# is a 64px derivative too small for the 128px target.
+#
+# Affinity was previously hand-made and unreproducible by this script, so a
+# re-run silently dropped it (audit finding D2). It is now built here like
+# everything else, padded from its 310x333 source to a square canvas.
+dlsq credits.webp "https://wiki.warframe.com/images/Credits.png"
+dlsq affinity.webp "https://wiki.warframe.com/images/AffinityOrb.png"
