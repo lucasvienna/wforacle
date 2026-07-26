@@ -1,29 +1,126 @@
 name: Refresh WFCD data
+
+# Weekly, not daily (owner decision #2). The upstream packages do not change
+# often enough to justify a daily run, and every run now costs a PR.
 on:
-  schedule: [{ cron: '17 6 * * *' }] # daily 06:17 UTC
+  schedule: [{ cron: '17 6 * * 1' }] # Mondays, 06:17 UTC
   workflow_dispatch:
+
+# One refresh at a time. Runs share a single bot branch, so a second run
+# starting mid-flight would fight the first over it. Not cancel-in-progress:
+# a half-finished refresh should complete rather than leave a partial branch.
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
 permissions:
-  contents: write
+  contents: read
+  issues: write
+
+env:
+  BRANCH: bot/data-refresh
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
+      # Fail loudly and early rather than at `git push` with an auth error.
+      - name: Require the refresh token
+        env:
+          TOKEN: ${{ secrets.DATA_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::DATA_REFRESH_TOKEN is not set. Create a fine-grained PAT with Contents: write and Pull requests: write, then add it as a repository secret. The default GITHUB_TOKEN cannot be used here: pushes and PRs made with it do not trigger other workflows, so ci.yml would never run on the refresh PR — which is the entire hole this workflow exists to close."
+            exit 1
+          fi
+
       - uses: actions/checkout@v7
+        with:
+          # The PAT, deliberately. A bot PR opened with GITHUB_TOKEN does not
+          # trigger ci.yml, so the refresh would land ungated (audit H1).
+          token: ${{ secrets.DATA_REFRESH_TOKEN }}
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm update @wfcd/items warframe-worldstate-data
+
+      - name: Bump the upstream data packages
+        run: pnpm update @wfcd/items warframe-worldstate-data
+
+      # Cheap local gate before spending a PR: data:build enforces referential
+      # integrity, curated-label resolution and the entity-count floors, and the
+      # unit suite catches the rest. ci.yml re-runs everything on the PR.
       - run: pnpm data:build
       - run: pnpm test:unit --run
-      - name: Commit if changed
+
+      - name: Check for changes
+        id: changed
         run: |
           if [ -n "$(git status --porcelain static/data/dataset.json pnpm-lock.yaml)" ]; then
-            git config user.name "wforacle-bot"
-            git config user.email "bot@users.noreply.github.com"
-            git add static/data/dataset.json pnpm-lock.yaml
-            git commit -m "chore(data): refresh WFCD dataset"
-            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No data changes."
+          fi
+
+      - name: Push the refresh branch
+        if: steps.changed.outputs.changed == 'true'
+        run: |
+          git config user.name "wforacle-bot"
+          git config user.email "bot@users.noreply.github.com"
+          # A fixed branch, force-updated: an unmerged refresh from last week is
+          # replaced rather than accumulating a second PR alongside it.
+          git checkout -B "$BRANCH"
+          git add static/data/dataset.json pnpm-lock.yaml
+          git commit -m "chore(data): refresh WFCD dataset"
+          git push --force origin "$BRANCH"
+
+      - name: Open or update the PR, and let it merge itself on green
+        if: steps.changed.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DATA_REFRESH_TOKEN }}
+        run: |
+          # Filtered to --state open, and the number captured, both on purpose:
+          # `gh pr view <branch>` resolves to the most recent PR for that branch
+          # INCLUDING merged ones, so from the second successful refresh onward
+          # it would find last week's merged PR, skip creating a new one, and
+          # then fail trying to auto-merge something already merged.
+          NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$NUMBER" ]; then
+            echo "PR #$NUMBER already open for $BRANCH — the push updated it in place."
+          else
+            gh pr create --base main --head "$BRANCH" \
+              --title "chore(data): refresh WFCD dataset" \
+              --body-file .github/refresh-pr-body.md
+            NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          fi
+          # Auto-merge waits for the required checks; it does not bypass them.
+          gh pr merge "$NUMBER" --auto --squash
+
+      # A cron that fails silently is a cron that has been broken for months.
+      - name: Report a failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITLE="Weekly data refresh is failing"
+          # Comment on the existing report rather than opening a new issue every
+          # week — one thread that grows is easier to act on than seven issues.
+          NUMBER=$(gh issue list --state open --search "$TITLE in:title" --json number,title \
+            --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
+          if [ -n "$NUMBER" ]; then
+            gh issue comment "$NUMBER" --body "Failed again: $RUN_URL"
+          else
+            gh issue create --title "$TITLE" --body "The weekly WFCD data refresh failed.
+
+          Run: $RUN_URL
+
+          Likely causes: an upstream package changed shape and \`pnpm data:build\`
+          hit a validation floor; a curated \`nodeLabel\` stopped resolving after a
+          game update; or \`DATA_REFRESH_TOKEN\` expired.
+
+          This issue is reused for later failures — check the comments to see how
+          long it has been broken."
           fi
