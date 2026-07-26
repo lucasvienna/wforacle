@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { loadDataset } from './dataset';
-import { seed } from './seed';
+import { seed } from '$fixtures/seed';
 
 /** A minimal Response stand-in; only the two members loadDataset touches. */
 function response(init: { ok?: boolean; status?: number; json: () => Promise<unknown> }) {

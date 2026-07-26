@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
-import { seed } from '$lib/data/seed';
+import { seed } from '$fixtures/seed';
 
 const withDeimos = {
 	...seed,

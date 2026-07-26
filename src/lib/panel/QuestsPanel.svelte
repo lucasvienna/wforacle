@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Dataset } from '$lib/model/types';
 	import type { Tracker } from '$lib/tracker/tracker.svelte';
+	import CheckboxRow from '$lib/ui/CheckboxRow.svelte';
 
 	let { dataset, tracker }: { dataset: Dataset; tracker: Tracker } = $props();
 
@@ -17,40 +18,23 @@
 		<div class="space-y-2">
 			{#each dataset.quests as q (q.id)}
 				{@const done = tracker.isQuestDone(q.id)}
-				<div
+				<CheckboxRow
+					checked={done}
+					ontoggle={() => tracker.toggleQuest(q.id)}
 					data-quest={q.id}
 					data-done={done}
-					role="checkbox"
-					aria-checked={done}
-					tabindex="0"
-					class="flex cursor-pointer items-start gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-wf-cyan/10 {done
-						? 'border-emerald-500/30 bg-emerald-500/10'
-						: ''}"
-					onclick={() => tracker.toggleQuest(q.id)}
-					onkeydown={(e) => {
-						if (e.key === 'Enter' || e.key === ' ') {
-							if (e.key === ' ') e.preventDefault();
-							tracker.toggleQuest(q.id);
-						}
-					}}
 				>
-					<span
-						aria-hidden="true"
-						class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[11px] {done
-							? 'border-emerald-400 bg-emerald-400 text-slate-950'
-							: 'border-wf-edge text-transparent'}"
-					>
-						✓
-					</span>
-					<div class="min-w-0">
-						<div class="text-sm {done ? 'text-emerald-300' : 'text-slate-200'}">
+					{#snippet children(isDone)}
+						<div
+							class="text-sm {isDone ? 'text-emerald-300' : 'text-slate-200'}"
+						>
 							{q.name}
 						</div>
 						<p class="text-xs text-wf-muted">
 							Reveals: {q.revealsRegionIds.map(regionName).join(', ')}
 						</p>
-					</div>
-				</div>
+					{/snippet}
+				</CheckboxRow>
 			{/each}
 		</div>
 	{/if}

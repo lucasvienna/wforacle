@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
 import { tick } from 'svelte';
 import RegionPanel from './RegionPanel.svelte';
-import { seed } from '$lib/data/seed';
+import { seed } from '$fixtures/seed';
 import { createTracker } from '$lib/tracker/tracker.svelte';
 import type { Boss, Dataset, Region, StarNode } from '$lib/model/types';
 import type { WorldState } from '$lib/worldstate/types';

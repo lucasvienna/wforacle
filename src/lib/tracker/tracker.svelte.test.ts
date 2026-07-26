@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { flushSync } from 'svelte';
 import { createTracker } from './tracker.svelte';
-import { seed } from '$lib/data/seed';
+import { seed } from '$fixtures/seed';
 
 describe('tracker', () => {
 	it('toggles a single part', () => {

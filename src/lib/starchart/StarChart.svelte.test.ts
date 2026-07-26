@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
 import StarChart from './StarChart.svelte';
-import { seed } from '$lib/data/seed';
+import { seed } from '$fixtures/seed';
 
 describe('StarChart', () => {
 	const base = {
