@@ -77,4 +77,55 @@ describe('createImportStore', () => {
 		expect(tracker.isQuestDone('thewarwithin')).toBe(true);
 		expect(store.phase).toBe('idle');
 	});
+
+	// Q4c: ProfileError.kind was populated in four places and read in none. The
+	// store now surfaces it so the dialog can pick an action, not just wording.
+	it.each([
+		[404, 'notFound'],
+		[429, 'rateLimited'],
+		[403, 'rateLimited'],
+		[500, 'network'],
+	])('reports HTTP %i as errorKind %s', async (status, kind) => {
+		server.use(http.get(PROFILE_URL, () => new HttpResponse(null, { status })));
+		const store = createImportStore(dataset);
+		await store.run('517d823a1a4d804218000052');
+		expect(store.errorKind).toBe(kind);
+	});
+
+	it('reports a malformed id as invalid, without fetching', async () => {
+		const store = createImportStore(dataset);
+		await store.run('nope');
+		expect(store.errorKind).toBe('invalid');
+	});
+
+	it('reports a profile with no usable data as empty', async () => {
+		server.use(http.get(PROFILE_URL, () => HttpResponse.json({})));
+		const store = createImportStore(dataset);
+		await store.run('517d823a1a4d804218000052');
+		expect(store.errorKind).toBe('empty');
+	});
+
+	it('clears the kind on reset', async () => {
+		const store = createImportStore(dataset);
+		await store.run('nope');
+		expect(store.errorKind).toBe('invalid');
+
+		store.reset();
+
+		expect(store.errorKind).toBeNull();
+	});
+
+	it('clears the kind when a later run succeeds', async () => {
+		// Otherwise a stale kind would keep the dialog offering the previous
+		// failure's affordance after the problem was fixed.
+		useProfile(PROFILE);
+		const store = createImportStore(dataset);
+		await store.run('nope');
+		expect(store.errorKind).toBe('invalid');
+
+		await store.run('517d823a1a4d804218000052');
+
+		expect(store.phase).toBe('preview');
+		expect(store.errorKind).toBeNull();
+	});
 });

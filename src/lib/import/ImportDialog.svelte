@@ -17,10 +17,30 @@
 
 	let value = $state('');
 	let remember = $state(true);
+	let helpOpen = $state(false);
+
+	/**
+	 * Differentiate the *action*, not just the wording — the messages were
+	 * already per-kind. A wrong or malformed ID means the user needs the "how to
+	 * find it" steps, so expand them for real rather than making them hunt; a
+	 * network or rate-limit failure is transient, so offer a retry. `empty` and
+	 * `unknown` get neither, because neither would help.
+	 */
+	let wrongId = $derived(
+		store.errorKind === 'notFound' || store.errorKind === 'invalid',
+	);
+	let retryable = $derived(
+		store.errorKind === 'network' || store.errorKind === 'rateLimited',
+	);
+
+	$effect(() => {
+		if (wrongId) helpOpen = true;
+	});
 
 	function onOpen() {
 		store.reset();
 		value = store.rememberedId ?? '';
+		helpOpen = false;
 	}
 
 	function doApply() {
@@ -50,7 +70,11 @@
 		class="w-full rounded border border-wf-edge bg-transparent px-3 py-2 text-sm text-slate-100 placeholder:text-wf-muted focus:outline-none"
 	/>
 
-	<details class="rounded-lg border border-wf-edge p-3 text-xs text-wf-muted">
+	<details
+		bind:open={helpOpen}
+		data-import-help
+		class="rounded-lg border border-wf-edge p-3 text-xs text-wf-muted"
+	>
 		<summary class="cursor-pointer text-wf-cyan"
 			>How to find your account ID</summary
 		>
@@ -77,7 +101,19 @@
 	</details>
 
 	{#if store.phase === 'error'}
-		<p data-import-error class="text-sm text-amber-300">{store.error}</p>
+		<div role="alert">
+			<p data-import-error class="text-sm text-amber-300">{store.error}</p>
+			{#if retryable}
+				<button
+					data-import-retry
+					type="button"
+					onclick={() => store.run(value)}
+					class="mt-2 rounded border border-wf-edge px-3 py-1.5 text-sm text-wf-muted hover:text-wf-cyan"
+				>
+					Try again
+				</button>
+			{/if}
+		</div>
 	{/if}
 
 	{#if store.phase === 'preview' && store.result}
