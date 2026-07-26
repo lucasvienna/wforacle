@@ -25,13 +25,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      # Fail loudly and early rather than at `git push` with an auth error.
-      - name: Require the refresh token
+      # Checks the token can actually WRITE, not merely that it is set. The
+      # first real run got through fifteen minutes of install, data:build and
+      # tests before dying on a 403 at `git push`, because a token missing
+      # Contents: write still authenticates and still passes checkout (which
+      # only reads). Failing here costs seconds and says what to fix.
+      - name: Require a writable refresh token
         env:
-          TOKEN: ${{ secrets.DATA_REFRESH_TOKEN }}
+          GH_TOKEN: ${{ secrets.DATA_REFRESH_TOKEN }}
         run: |
-          if [ -z "$TOKEN" ]; then
-            echo "::error::DATA_REFRESH_TOKEN is not set. Create a fine-grained PAT with Contents: write and Pull requests: write, then add it as a repository secret. The default GITHUB_TOKEN cannot be used here: pushes and PRs made with it do not trigger other workflows, so ci.yml would never run on the refresh PR — which is the entire hole this workflow exists to close."
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::DATA_REFRESH_TOKEN is not set. Create a fine-grained PAT with Contents: Read and write and Pull requests: Read and write, then add it as a repository secret. The default GITHUB_TOKEN cannot be used here: pushes and PRs made with it do not trigger other workflows, so ci.yml would never run on the refresh PR — which is the entire hole this workflow exists to close."
+            exit 1
+          fi
+          if [ "$(gh api repos/${{ github.repository }} --jq .permissions.push)" != "true" ]; then
+            echo "::error::DATA_REFRESH_TOKEN cannot push to this repository. Grant the fine-grained PAT 'Contents: Read and write' (and 'Pull requests: Read and write'), and make sure its repository access includes ${{ github.repository }}."
             exit 1
           fi
 
@@ -57,7 +65,7 @@ jobs:
       - name: Check for changes
         id: changed
         run: |
-          if [ -n "$(git status --porcelain static/data/dataset.json pnpm-lock.yaml)" ]; then
+          if [ -n "$(git status --porcelain package.json pnpm-lock.yaml static/data/dataset.json)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -72,7 +80,13 @@ jobs:
           # A fixed branch, force-updated: an unmerged refresh from last week is
           # replaced rather than accumulating a second PR alongside it.
           git checkout -B "$BRANCH"
-          git add static/data/dataset.json pnpm-lock.yaml
+          # package.json too, not just the lockfile: `pnpm update` bumps the
+          # dependency range there as well, and committing one without the
+          # other leaves them disagreeing — every CI job on the PR then dies at
+          # `pnpm install --frozen-lockfile` with "specifiers in the lockfile
+          # don't match specifiers in package.json", so it could never go green
+          # and auto-merge would never fire.
+          git add package.json pnpm-lock.yaml static/data/dataset.json
           git commit -m "chore(data): refresh WFCD dataset"
           git push --force origin "$BRANCH"
 
