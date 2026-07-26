@@ -162,7 +162,7 @@
 					<a
 						href={s.url}
 						target="_blank"
-						rel="noreferrer"
+						rel="noopener noreferrer"
 						class="inline-block py-1 text-wf-cyan hover:text-wf-cyan/80"
 					>
 						{s.label}

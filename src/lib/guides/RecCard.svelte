@@ -30,7 +30,7 @@
 		<a
 			href={rec.source}
 			target="_blank"
-			rel="noreferrer"
+			rel="noopener noreferrer"
 			class="text-wf-cyan hover:text-wf-cyan/80"
 		>
 			Source ↗
