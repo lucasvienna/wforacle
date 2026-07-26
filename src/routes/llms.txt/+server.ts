@@ -1,5 +1,5 @@
 import { loadDataset } from '$lib/data/dataset';
-import { guideResources } from '$lib/model/guides';
+import { guideResources } from '$lib/seo/guides';
 import { SITE_URL, DEFAULT_DESCRIPTION } from '$lib/seo/config';
 import type { RequestHandler } from './$types';
 

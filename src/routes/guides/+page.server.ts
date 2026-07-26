@@ -1,5 +1,5 @@
 import { loadDataset } from '$lib/data/dataset';
-import { guideResources } from '$lib/model/guides';
+import { guideResources } from '$lib/seo/guides';
 import type { PageServerLoad } from './$types';
 
 export const prerender = true;

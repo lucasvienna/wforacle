@@ -11,6 +11,9 @@
 	 * their data attribute and toggle callback (audit A4c). Two copies of
 	 * hand-rolled `role="checkbox"` semantics is two chances to get the ARIA
 	 * wrong, and only the one you happen to test.
+	 *
+	 * Extra attributes are spread onto the root, but cannot override the ARIA
+	 * wiring or handlers — see the comment on the element below.
 	 */
 	let {
 		checked,
@@ -27,7 +30,14 @@
 	} & Omit<HTMLAttributes<HTMLDivElement>, 'children'> = $props();
 </script>
 
+<!--
+	`{...rest}` is spread FIRST, deliberately. Svelte spread is last-wins, so
+	spreading it last would let a caller passing `class` or `onclick` silently
+	clobber the very checkbox semantics this component exists to centralise.
+	Callers may add attributes; they may not override these.
+-->
 <div
+	{...rest}
 	role="checkbox"
 	aria-checked={checked}
 	tabindex="0"
@@ -36,7 +46,6 @@
 		: ''}"
 	onclick={ontoggle}
 	onkeydown={activateOnKey(ontoggle)}
-	{...rest}
 >
 	<span
 		aria-hidden="true"

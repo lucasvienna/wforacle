@@ -10,7 +10,7 @@
 	let {
 		part,
 		tracker,
-		children: content,
+		children,
 	}: {
 		part: WarframePart;
 		tracker: Tracker;
@@ -26,8 +26,5 @@
 	ontoggle={() => tracker.togglePart(part.id)}
 	data-part={part.id}
 	data-owned={owned}
->
-	{#snippet children(isOwned)}
-		{@render content(isOwned)}
-	{/snippet}
-</CheckboxRow>
+	{children}
+/>
