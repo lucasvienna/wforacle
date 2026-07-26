@@ -4,7 +4,10 @@
 const CHECK_THROTTLE_MS = 1000 * 60 * 2;
 
 let notified = false;
-let lastCheck = Date.now();
+// 0, not Date.now(): seeding with the load time made every check in the first
+// two minutes of a session a silent no-op — including the one on first
+// visibilitychange, which is the most likely moment to find a fresh deploy.
+let lastCheck = 0;
 
 /**
  * Calls `onUpdate` (at most once) when a new service worker takes control of
@@ -33,9 +36,12 @@ export async function checkForUpdate() {
 	const now = Date.now();
 	if (now - lastCheck < CHECK_THROTTLE_MS) return;
 	try {
+		// Stamped before the await, not after: two checks firing close together
+		// (a visibilitychange landing next to the interval) would both pass the
+		// throttle while the first was still resolving getRegistration.
+		lastCheck = now;
 		const sw = await navigator.serviceWorker.getRegistration();
 		if (sw === undefined) return;
-		lastCheck = now;
 		await sw.update();
 	} catch (err) {
 		// Ignore update errors (e.g. offline/race conditions) so callers don't get unhandled rejections.

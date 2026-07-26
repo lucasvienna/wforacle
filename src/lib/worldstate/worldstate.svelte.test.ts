@@ -84,4 +84,90 @@ describe('createWorldStateStore', () => {
 		await vi.advanceTimersByTimeAsync(120_000);
 		expect(requests).toBe(afterDispose);
 	});
+
+	// P2: a background tab kept polling every 60s and ticking every second
+	// forever. Nothing was watching, and it costs battery and edge requests.
+	describe('visibility gating', () => {
+		function setHidden(hidden: boolean) {
+			Object.defineProperty(document, 'hidden', { value: hidden, configurable: true });
+			document.dispatchEvent(new Event('visibilitychange'));
+		}
+
+		it('stops polling while the tab is hidden', async () => {
+			server.use(okHandler());
+			let requests = 0;
+			server.events.on('request:start', () => {
+				requests += 1;
+			});
+			const store = createWorldStateStore();
+			await vi.advanceTimersByTimeAsync(0);
+
+			setHidden(true);
+			const whenHidden = requests;
+			await vi.advanceTimersByTimeAsync(300_000);
+
+			expect(requests).toBe(whenHidden);
+			store.dispose();
+		});
+
+		it('refreshes immediately on becoming visible again', async () => {
+			// Whatever is on screen is by then up to a poll interval stale, so
+			// waiting another 60s to correct it would be the wrong trade.
+			server.use(okHandler());
+			let requests = 0;
+			server.events.on('request:start', () => {
+				requests += 1;
+			});
+			const store = createWorldStateStore();
+			await vi.advanceTimersByTimeAsync(0);
+			setHidden(true);
+			await vi.advanceTimersByTimeAsync(300_000);
+			const whenHidden = requests;
+
+			setHidden(false);
+			await vi.advanceTimersByTimeAsync(0);
+
+			expect(requests).toBe(whenHidden + 1);
+			store.dispose();
+		});
+
+		it('resumes polling after becoming visible, without doubling up', async () => {
+			// startTimers uses ??=, so a second visible event cannot leave two
+			// intervals running.
+			server.use(okHandler());
+			let requests = 0;
+			server.events.on('request:start', () => {
+				requests += 1;
+			});
+			const store = createWorldStateStore();
+			await vi.advanceTimersByTimeAsync(0);
+			setHidden(true);
+			setHidden(false);
+			setHidden(false);
+			await vi.advanceTimersByTimeAsync(0);
+			const base = requests;
+
+			await vi.advanceTimersByTimeAsync(60_000);
+
+			expect(requests).toBe(base + 1);
+			store.dispose();
+		});
+
+		it('stops listening after dispose', async () => {
+			server.use(okHandler());
+			let requests = 0;
+			server.events.on('request:start', () => {
+				requests += 1;
+			});
+			const store = createWorldStateStore();
+			await vi.advanceTimersByTimeAsync(0);
+			store.dispose();
+			const afterDispose = requests;
+
+			setHidden(false);
+			await vi.advanceTimersByTimeAsync(120_000);
+
+			expect(requests).toBe(afterDispose);
+		});
+	});
 });

@@ -30,12 +30,38 @@ export function createWorldStateStore() {
 		}
 	}
 
-	if (browser) {
-		void refresh();
-		pollTimer = setInterval(refresh, 60_000);
-		tickTimer = setInterval(() => {
+	// Poll only while the tab is visible (audit P2). A background tab kept the
+	// 60s poll and the 1s ticker running forever, spending the user's battery
+	// and our edge requests to update a countdown nobody is looking at. On
+	// becoming visible again we refresh immediately, because whatever is on
+	// screen is by then up to a poll interval stale.
+	function onVisibility() {
+		if (document.hidden) {
+			stopTimers();
+		} else {
+			void refresh();
+			startTimers();
+		}
+	}
+
+	function startTimers() {
+		pollTimer ??= setInterval(refresh, 60_000);
+		tickTimer ??= setInterval(() => {
 			now = Date.now();
 		}, 1000);
+	}
+
+	function stopTimers() {
+		if (pollTimer) clearInterval(pollTimer);
+		if (tickTimer) clearInterval(tickTimer);
+		pollTimer = undefined;
+		tickTimer = undefined;
+	}
+
+	if (browser) {
+		void refresh();
+		startTimers();
+		document.addEventListener('visibilitychange', onVisibility);
 	}
 
 	return {
@@ -50,8 +76,8 @@ export function createWorldStateStore() {
 		},
 		refresh,
 		dispose() {
-			if (pollTimer) clearInterval(pollTimer);
-			if (tickTimer) clearInterval(tickTimer);
+			stopTimers();
+			if (browser) document.removeEventListener('visibilitychange', onVisibility);
 		},
 	};
 }

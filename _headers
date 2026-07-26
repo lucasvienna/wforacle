@@ -1,0 +1,20 @@
+# Baseline security headers (audit S1). Lives in the project ROOT, not static/:
+# adapter-cloudflare copies it into the build and appends its own immutable-
+# asset block. A copy in static/ is silently ignored (it warns, then overwrites).
+# Consumed by Workers static assets as configuration, not served as an asset:
+# https://developers.cloudflare.com/workers/static-assets/headers/
+#
+# The site is fully prerendered, so a hooks.server.ts `handle` would only ever
+# see /api/worldstate. Headers for the pages themselves have to come from here.
+#
+# The CSP itself is NOT here — it lives in vite.config.ts under kit.csp, so
+# SvelteKit can hash its own inline bootstrap scripts. A hand-written
+# `script-src 'self'` in this file blocked them and the app rendered nothing.
+#
+# X-Frame-Options carries the anti-framing rule because Kit delivers its CSP as
+# a <meta http-equiv>, and frame-ancestors is ignored in meta form.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()
