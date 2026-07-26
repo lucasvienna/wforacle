@@ -39,6 +39,10 @@ export function createWorldStateStore() {
 		if (document.hidden) {
 			stopTimers();
 		} else {
+			// `now` drives every countdown and only advances on the 1s tick, so
+			// without this the first frame after returning renders with the
+			// pre-hide timestamp — visibly wrong for up to a second.
+			now = Date.now();
 			void refresh();
 			startTimers();
 		}
@@ -59,8 +63,14 @@ export function createWorldStateStore() {
 	}
 
 	if (browser) {
+		// The one fetch always happens: the page needs data even if it was opened
+		// into a background tab and is read later.
 		void refresh();
-		startTimers();
+		// But only start the timers if the tab is actually visible. Gating just
+		// the visibilitychange transition was not enough — a store created while
+		// hidden ("open link in new tab") polled every 60s until the tab was
+		// first shown, which is the exact cost P2 is about.
+		if (!document.hidden) startTimers();
 		document.addEventListener('visibilitychange', onVisibility);
 	}
 

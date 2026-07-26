@@ -93,6 +93,14 @@ describe('createWorldStateStore', () => {
 			document.dispatchEvent(new Event('visibilitychange'));
 		}
 
+		// Without this, "stops polling while the tab is hidden" leaves
+		// document.hidden true for every later test in the file. The suite only
+		// survived because each test happened to set it explicitly first — a trap
+		// for whoever adds the next one.
+		afterEach(() => {
+			Object.defineProperty(document, 'hidden', { value: false, configurable: true });
+		});
+
 		it('stops polling while the tab is hidden', async () => {
 			server.use(okHandler());
 			let requests = 0;
@@ -168,6 +176,46 @@ describe('createWorldStateStore', () => {
 			await vi.advanceTimersByTimeAsync(120_000);
 
 			expect(requests).toBe(afterDispose);
+		});
+
+		it('does not start polling when the store is created in a hidden tab', async () => {
+			// "Open link in a new tab": the store is constructed while hidden and
+			// used later. Gating only the visibilitychange transition left this
+			// case polling every 60s until the tab was first shown.
+			Object.defineProperty(document, 'hidden', { value: true, configurable: true });
+			server.use(okHandler());
+			let requests = 0;
+			server.events.on('request:start', () => {
+				requests += 1;
+			});
+			const store = createWorldStateStore();
+			await vi.advanceTimersByTimeAsync(0);
+			// The initial fetch still happens — the page needs data when read.
+			const initial = requests;
+			expect(initial).toBe(1);
+
+			await vi.advanceTimersByTimeAsync(300_000);
+
+			expect(requests).toBe(initial);
+			store.dispose();
+		});
+
+		it('advances `now` on becoming visible, so countdowns are not a second stale', async () => {
+			// `now` only moves on the 1s tick, so without an explicit update the
+			// first frame after returning renders the pre-hide timestamp.
+			server.use(okHandler());
+			const store = createWorldStateStore();
+			await vi.advanceTimersByTimeAsync(0);
+			setHidden(true);
+			const beforeHiddenGap = store.now;
+			await vi.advanceTimersByTimeAsync(120_000);
+			expect(store.now).toBe(beforeHiddenGap);
+
+			setHidden(false);
+			await vi.advanceTimersByTimeAsync(0);
+
+			expect(store.now).toBeGreaterThan(beforeHiddenGap);
+			store.dispose();
 		});
 	});
 });
