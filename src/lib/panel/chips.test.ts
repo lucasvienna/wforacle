@@ -85,8 +85,8 @@ describe('owAvailabilityChip', () => {
 	// rendered "● up now · resets NaNs" to users. Pre-existing on main —
 	// zoneCycleLine guarded it, these two paths did not.
 	it.each([
-		['available', 'B', /^● up now$/],
-		['unavailable', 'C', /^○ Rot C$/],
+		['available', 'B' as const, /^● up now$/],
+		['unavailable', 'C' as const, /^○ Rot C$/],
 	])('drops the countdown clause rather than showing NaN (%s)', (_label, rotation, expected) => {
 		const state = ws({ rotation: { letter: 'B', expiry: 'not-a-date' } });
 		expect(owAvailabilityChip(part({ rotation }), state, NOW)?.text).toMatch(expected);

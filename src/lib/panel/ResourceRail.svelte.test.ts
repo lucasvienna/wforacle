@@ -7,7 +7,6 @@ const resources: Resource[] = [
 	{
 		id: 'alloyplate',
 		name: 'Alloy Plate',
-		image: 'AlloyPlate.png',
 		regionIds: ['venus'],
 		recommendations: [
 			{

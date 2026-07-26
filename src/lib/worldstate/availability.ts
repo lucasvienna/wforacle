@@ -1,3 +1,4 @@
+import type { Rotation } from '$lib/model/types';
 import type { Letter } from './types';
 
 export type PartAvailability = 'available' | 'unavailable' | 'always' | 'unknown';
@@ -5,10 +6,9 @@ export type PartAvailability = 'available' | 'unavailable' | 'always' | 'unknown
 const LETTERS: Letter[] = ['A', 'B', 'C'];
 const ROTATION_MS = 150 * 60 * 1000;
 
-/** Availability of a component given its curated rotation and the live letter.
- * rotation is WarframePart.rotation: 'any' | 'A' | 'B' | 'C' | 'A/B' | undefined. */
+/** Availability of a component given its curated rotation and the live letter. */
 export function partAvailability(
-	rotation: string | undefined,
+	rotation: Rotation | undefined,
 	letter: Letter | null,
 ): PartAvailability {
 	if (rotation === undefined) return 'always';
@@ -21,7 +21,7 @@ export function partAvailability(
  * "any"/undefined, or the letter/expiry are unknown. Rotations cycle A→B→C→A
  * every 150 min; window i (1-based) starts at expiry + (i-1)·150min. */
 export function nextActiveAt(
-	rotation: string | undefined,
+	rotation: Rotation | undefined,
 	letter: Letter | null,
 	expiry: string | null,
 ): Date | null {

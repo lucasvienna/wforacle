@@ -6,6 +6,7 @@ import type {
 	Slot,
 	WarframePart,
 	OpenWorldFarm,
+	Rotation,
 } from '../../src/lib/model/types';
 import { parseNodeValue, slugify, parseDropLocation } from './parse';
 import {
@@ -120,7 +121,7 @@ const ORDER: Slot[] = ['bp', 'neuroptics', 'chassis', 'systems'];
 export interface BountyStage {
 	chance: number;
 	bountyTier?: string;
-	rotation?: string;
+	rotation?: Rotation;
 }
 
 /** Pick the single best bounty stage (tier + rotation) a component drops at.
@@ -171,8 +172,14 @@ export function bestBountyStage(
 	if (!best) return null;
 
 	// 4. Rotation label: all three → "any"; none → undefined; else sorted join.
+	// This is where the Rotation union's invariant is established, and the one
+	// place a cast is warranted: rots is deduped, sorted, and drawn from the
+	// /Rotation ([A-C])/ match above, so the join can only ever be 'A/B',
+	// 'A/C' or 'B/C'. TypeScript cannot see that through Array.join.
 	const rots = [...new Set(best.rots)].sort();
-	const rotation = rots.length === 0 ? undefined : rots.length === 3 ? 'any' : rots.join('/');
+	const rotation = (rots.length === 0 ? undefined : rots.length === 3 ? 'any' : rots.join('/')) as
+		| Rotation
+		| undefined;
 	return { chance: best.chance, bountyTier: best.tier, rotation };
 }
 
@@ -286,7 +293,6 @@ export function buildFrames(
 			name: wf.name,
 			uniqueName: wf.uniqueName,
 			nodeId: node.id,
-			image: wf.imageName,
 			parts,
 		});
 
@@ -358,7 +364,6 @@ export function buildOpenWorldFrames(warframes: RawWarframe[], farms: OpenWorldF
 			name: wf.name,
 			uniqueName: wf.uniqueName,
 			nodeId,
-			image: wf.imageName,
 			parts,
 		});
 	}

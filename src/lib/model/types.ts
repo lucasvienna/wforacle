@@ -1,5 +1,18 @@
 export type Slot = 'bp' | 'neuroptics' | 'chassis' | 'systems';
 
+/**
+ * Bounty rotations a component can drop on. 'any' means all three; a pair
+ * means exactly two. The pipeline sorts and dedupes before joining, so pairs
+ * are always canonical — 'A/B', never 'B/A' (see pickBestStage in build.ts).
+ *
+ * A closed union is honest here because the game's rotation vocabulary is
+ * closed. bountyTier deliberately stays `string` for the opposite reason: its
+ * values are level ranges generated from upstream drop text, so a new tier
+ * would turn a routine data refresh into a type error for no benefit —
+ * nothing branches on it, it is rendered verbatim.
+ */
+export type Rotation = 'A' | 'B' | 'C' | 'A/B' | 'A/C' | 'B/C' | 'any';
+
 export interface WarframePart {
 	id: string;
 	frameId: string;
@@ -9,8 +22,8 @@ export interface WarframePart {
 	/** Open-world bounty stage the component drops at, e.g. "L20–40". Absent for
 	 * assassination parts and non-bounty sources (Exploiter Orb). */
 	bountyTier?: string;
-	/** Bounty rotation: "A" | "B" | "C" | "any" | joined like "A/B". Absent when N/A. */
-	rotation?: string;
+	/** Bounty rotation the component drops on. Absent when N/A. */
+	rotation?: Rotation;
 	/** Credit cost of buying this blueprint from the Market (`@wfcd/items`
 	 * `bpCost`). Set only on `bp` parts that are a Market purchase; absent for
 	 * drop-sourced, curated, and open-world blueprints. */
@@ -33,7 +46,6 @@ export interface Warframe {
 	 * Used to match a player's mastered frames from their profile. Always set by
 	 * the build; optional so seed/test fixtures need not provide it. */
 	uniqueName?: string;
-	image?: string;
 	nodeId?: string;
 	parts: WarframePart[];
 }
@@ -76,7 +88,6 @@ export interface Recommendation {
 export interface Resource {
 	id: string;
 	name: string;
-	image?: string;
 	regionIds: string[];
 	recommendations: Recommendation[];
 }

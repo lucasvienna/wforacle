@@ -19,8 +19,9 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		.map((region) => {
 			const frameIds = new Set(
 				dataset.nodes
-					.filter((node) => node.regionId === region.id && node.isAssassination && node.frameId)
-					.map((node) => node.frameId!),
+					.filter((node) => node.regionId === region.id && node.isAssassination)
+					.map((node) => node.frameId)
+					.filter((id): id is string => id !== undefined),
 			);
 			const frames = [...frameIds]
 				.map((id) => dataset.warframes.find((w) => w.id === id)?.name)

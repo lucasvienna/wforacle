@@ -531,7 +531,6 @@ describe('buildOpenWorldFrames', () => {
 		const frames = buildOpenWorldFrames([gara, caliban], farms);
 		expect(frames.map((f) => f.id).sort()).toEqual(['caliban', 'gara']);
 		expect(frames.find((f) => f.id === 'caliban')!.nodeId).toBe('SolNode228');
-		expect(frames.find((f) => f.id === 'gara')!.image).toBe('gara.png');
 	});
 
 	it('sets chance/tier/rotation on component parts and nothing on the bp part', () => {

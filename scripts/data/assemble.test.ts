@@ -19,11 +19,6 @@ const __dirname = dirname(__filename);
 const warframes: RawWarframe[] = JSON.parse(
 	readFileSync(join(__dirname, './fixtures/warframes.sample.json'), 'utf8'),
 );
-const rawResources = [
-	{ name: 'Alloy Plate', imageName: 'AlloyPlate.png' },
-	{ name: 'Orokin Cell', imageName: 'ComponentCell.png' },
-];
-
 // Inline solNodes with one node on every main planet the curated
 // PLANET_RESOURCES map references, so assembleDataset builds all 14 regions
 // and every resource's regionIds resolves legitimately against ds.regions
@@ -99,7 +94,7 @@ describe('assembleDataset', () => {
 		'Jade',
 		'Gyre',
 	].map(ow);
-	const ds = assembleDataset(solNodes, [...warframes, ...owWarframes], rawResources);
+	const ds = assembleDataset(solNodes, [...warframes, ...owWarframes]);
 	it('back-fills bossId/frameId on the assassination node', () => {
 		const fossa = ds.nodes.find((n) => n.id === 'SolNode104')!;
 		expect(fossa.bossId).toBe('fossa');
@@ -184,15 +179,14 @@ describe('assembleDataset', () => {
 });
 
 describe('buildResources', () => {
-	const resources = buildResources(rawResources);
-	it('builds curated resources with image + regionIds + recs', () => {
+	const resources = buildResources();
+	it('builds curated resources with regionIds + recs', () => {
 		const alloy = resources.find((r) => r.id === 'alloyplate');
-		expect(alloy?.image).toBe('AlloyPlate.png');
 		expect(alloy?.regionIds).toContain('venus');
 		expect(alloy?.recommendations.length).toBeGreaterThan(0);
 	});
 	it('tags each recommendation with the main-planet region parsed from its nodeLabel', () => {
-		const resources = buildResources(rawResources);
+		const resources = buildResources();
 		const alloy = resources.find((r) => r.id === 'alloyplate')!;
 		// Every rec gets a regionId (main planet) or undefined (special region) — never left unset.
 		for (const rec of alloy.recommendations)

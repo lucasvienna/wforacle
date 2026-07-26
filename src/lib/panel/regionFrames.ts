@@ -35,7 +35,7 @@ export function regionFrames(dataset: Dataset, regionId: string): RegionFrames {
 		.filter((e): e is AssassinationEntry => !!e.boss && !!e.frame);
 
 	const byNode = new Map<string, OpenWorldZone>();
-	for (const farm of dataset.openWorldFarms ?? []) {
+	for (const farm of dataset.openWorldFarms) {
 		if (farm.regionId !== regionId) continue;
 		const node = dataset.nodes.find((n) => n.id === farm.nodeId);
 		const frame = dataset.warframes.find((w) => w.id === farm.frameId);
