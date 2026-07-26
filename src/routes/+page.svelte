@@ -112,9 +112,13 @@
 		// A region can have multiple Assassination-frame nodes (e.g. Jupiter:
 		// Themisto→Valkyr and The Ropalolyst→Wisp) — aggregate across all of
 		// them so the status only reports 'done' when every frame is complete.
+		// Type predicate rather than `n.frameId!` — same idiom as
+		// regionFrames.ts:35. The filter already proves it, but only a predicate
+		// tells the compiler so.
 		const frameIds = dataset.nodes
-			.filter((n) => n.regionId === regionId && n.isAssassination && n.frameId)
-			.map((n) => n.frameId!);
+			.filter((n) => n.regionId === regionId && n.isAssassination)
+			.map((n) => n.frameId)
+			.filter((id): id is string => id !== undefined);
 		let owned = 0;
 		let total = 0;
 		for (const fid of frameIds) {

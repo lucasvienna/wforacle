@@ -1,5 +1,4 @@
 import type { SolNodes, RawWarframe } from './build';
-import type { RawResource } from './assemble';
 
 /**
  * Loads the real WFCD data used to build the dataset.
@@ -18,21 +17,14 @@ import type { RawResource } from './assemble';
  * Archwings/Pets/Sentinels) yields playable Warframes whose `components[]`
  * carry `drops[].location` / `drops[].chance`, matching `RawWarframe`.
  *
- * Likewise, resources: verified against node_modules/@wfcd/items that every
- * curated RESOURCES name (scripts/data/farming.ts) — Orokin Cell, Alloy
- * Plate, Rubedo, etc. — lives under `category: 'Misc'`, not `'Resources'`
- * (that category instead holds Gems/Fish/event items); and even within
- * Misc, `type` is inconsistent (`'Resource'` for most, but `'Misc'` for
- * Neurodes, whose top-level entry is oddly shaped like a blueprint recipe
- * yet still carries the correct `imageName`). So both categories are
- * queried with no `type` filter, and `buildResources` (assemble.ts) does
- * the real filtering by matching `raw.name` against the curated RESOURCES
- * list — any unrelated Misc/Resources items just go unmatched and unused.
+ * Resources are NOT loaded from @wfcd/items. They used to be, purely to read
+ * `imageName` into `Resource.image` — a field no component ever read (audit
+ * Q4d), since icons come from `asset('/resources/{id}.webp')`. Everything else
+ * about a resource is curated in scripts/data/farming.ts.
  */
 export async function loadSources(): Promise<{
 	solNodes: SolNodes;
 	warframes: RawWarframe[];
-	rawResources: RawResource[];
 }> {
 	const worldstateData = (await import('warframe-worldstate-data')).default;
 	const solNodes = worldstateData.solNodes as unknown as SolNodes;
@@ -41,8 +33,5 @@ export async function loadSources(): Promise<{
 	const items = new Items({ category: ['Warframes'] });
 	const warframes = items.filter((i) => i.type === 'Warframe') as unknown as RawWarframe[];
 
-	const resourceItems = new Items({ category: ['Resources', 'Misc'] });
-	const rawResources = resourceItems as unknown as RawResource[];
-
-	return { solNodes, warframes, rawResources };
+	return { solNodes, warframes };
 }

@@ -1,6 +1,6 @@
 {
-	"version": "items@1.1275.18+worldstate-data@3.16.3",
-	"generatedAt": "2026-07-25T19:12:25.029Z",
+	"version": "items@1.1275.25+worldstate-data@3.16.3",
+	"generatedAt": "2026-07-26T11:23:47.861Z",
 	"data": {
 		"regions": [
 			{
@@ -3988,7 +3988,6 @@
 				"name": "Atlas",
 				"uniqueName": "/Lotus/Powersuits/Brawler/Brawler",
 				"nodeId": "CuratedJordasGolem",
-				"image": "Atlas.png",
 				"parts": [
 					{
 						"id": "atlas:bp",
@@ -4024,7 +4023,6 @@
 				"name": "Ember",
 				"uniqueName": "/Lotus/Powersuits/Ember/Ember",
 				"nodeId": "SolNode32",
-				"image": "Ember.png",
 				"parts": [
 					{
 						"id": "ember:bp",
@@ -4060,7 +4058,6 @@
 				"name": "Equinox",
 				"uniqueName": "/Lotus/Powersuits/YinYang/YinYang",
 				"nodeId": "SolNode105",
-				"image": "Equinox.png",
 				"parts": [
 					{
 						"id": "equinox:bp",
@@ -4139,7 +4136,6 @@
 				"name": "Excalibur",
 				"uniqueName": "/Lotus/Powersuits/Excalibur/Excalibur",
 				"nodeId": "SolNode99",
-				"image": "Excalibur.png",
 				"parts": [
 					{
 						"id": "excalibur:bp",
@@ -4175,7 +4171,6 @@
 				"name": "Frost",
 				"uniqueName": "/Lotus/Powersuits/Frost/Frost",
 				"nodeId": "SolNode144",
-				"image": "Frost.png",
 				"parts": [
 					{
 						"id": "frost:bp",
@@ -4211,7 +4206,6 @@
 				"name": "Hydroid",
 				"uniqueName": "/Lotus/Powersuits/Pirate/Pirate",
 				"nodeId": "SolNode24",
-				"image": "Hydroid.png",
 				"parts": [
 					{
 						"id": "hydroid:bp",
@@ -4247,7 +4241,6 @@
 				"name": "Loki",
 				"uniqueName": "/Lotus/Powersuits/Loki/Loki",
 				"nodeId": "SolNode127",
-				"image": "Loki.png",
 				"parts": [
 					{
 						"id": "loki:bp",
@@ -4283,7 +4276,6 @@
 				"name": "Mag",
 				"uniqueName": "/Lotus/Powersuits/Mag/Mag",
 				"nodeId": "SettlementNode20",
-				"image": "Mag.png",
 				"parts": [
 					{
 						"id": "mag:bp",
@@ -4319,7 +4311,6 @@
 				"name": "Mesa",
 				"uniqueName": "/Lotus/Powersuits/Cowgirl/Cowgirl",
 				"nodeId": "CuratedMutalistAladV",
-				"image": "Mesa.png",
 				"parts": [
 					{
 						"id": "mesa:bp",
@@ -4355,7 +4346,6 @@
 				"name": "Nekros",
 				"uniqueName": "/Lotus/Powersuits/Necro/Necro",
 				"nodeId": "SolNode712",
-				"image": "Nekros.png",
 				"parts": [
 					{
 						"id": "nekros:bp",
@@ -4391,7 +4381,6 @@
 				"name": "Nova",
 				"uniqueName": "/Lotus/Powersuits/AntiMatter/Anti",
 				"nodeId": "SolNode210",
-				"image": "Nova.png",
 				"parts": [
 					{
 						"id": "nova:bp",
@@ -4427,7 +4416,6 @@
 				"name": "Rhino",
 				"uniqueName": "/Lotus/Powersuits/Rhino/Rhino",
 				"nodeId": "SolNode104",
-				"image": "Rhino.png",
 				"parts": [
 					{
 						"id": "rhino:bp",
@@ -4463,7 +4451,6 @@
 				"name": "Saryn",
 				"uniqueName": "/Lotus/Powersuits/Saryn/Saryn",
 				"nodeId": "SolNode193",
-				"image": "Saryn.png",
 				"parts": [
 					{
 						"id": "saryn:bp",
@@ -4499,7 +4486,6 @@
 				"name": "Trinity",
 				"uniqueName": "/Lotus/Powersuits/Trinity/Trinity",
 				"nodeId": "SolNode51",
-				"image": "Trinity.png",
 				"parts": [
 					{
 						"id": "trinity:bp",
@@ -4535,7 +4521,6 @@
 				"name": "Valkyr",
 				"uniqueName": "/Lotus/Powersuits/Berserker/Berserker",
 				"nodeId": "SolNode53",
-				"image": "Valkyr.png",
 				"parts": [
 					{
 						"id": "valkyr:bp",
@@ -4571,7 +4556,6 @@
 				"name": "Wisp",
 				"uniqueName": "/Lotus/Powersuits/Wisp/Wisp",
 				"nodeId": "SolNode740",
-				"image": "Wisp.png",
 				"parts": [
 					{
 						"id": "wisp:bp",
@@ -4608,7 +4592,6 @@
 				"name": "Gara",
 				"uniqueName": "/Lotus/Powersuits/Glass/Glass",
 				"nodeId": "SolNode228",
-				"image": "Gara.png",
 				"parts": [
 					{
 						"id": "gara:bp",
@@ -4649,7 +4632,6 @@
 				"name": "Revenant",
 				"uniqueName": "/Lotus/Powersuits/Revenant/Revenant",
 				"nodeId": "SolNode228",
-				"image": "Revenant.png",
 				"parts": [
 					{
 						"id": "revenant:bp",
@@ -4690,7 +4672,6 @@
 				"name": "Caliban",
 				"uniqueName": "/Lotus/Powersuits/Sentient/Sentient",
 				"nodeId": "SolNode228",
-				"image": "Caliban.png",
 				"parts": [
 					{
 						"id": "caliban:bp",
@@ -4731,7 +4712,6 @@
 				"name": "Garuda",
 				"uniqueName": "/Lotus/Powersuits/Garuda/Garuda",
 				"nodeId": "SolNode129",
-				"image": "Garuda.png",
 				"parts": [
 					{
 						"id": "garuda:bp",
@@ -4772,7 +4752,6 @@
 				"name": "Hildryn",
 				"uniqueName": "/Lotus/Powersuits/IronFrame/IronFrame",
 				"nodeId": "SolNode129",
-				"image": "IronFrame.png",
 				"parts": [
 					{
 						"id": "hildryn:bp",
@@ -4807,7 +4786,6 @@
 				"name": "Xaku",
 				"uniqueName": "/Lotus/Powersuits/BrokenFrame/BrokenFrame",
 				"nodeId": "SolNode229",
-				"image": "BrokenFrame.png",
 				"parts": [
 					{
 						"id": "xaku:bp",
@@ -4848,7 +4826,6 @@
 				"name": "Qorvex",
 				"uniqueName": "/Lotus/Powersuits/ConcreteFrame/ConcreteFrame",
 				"nodeId": "CuratedAlbrechtLabs",
-				"image": "Qorvex.png",
 				"parts": [
 					{
 						"id": "qorvex:bp",
@@ -4889,7 +4866,6 @@
 				"name": "Protea",
 				"uniqueName": "/Lotus/Powersuits/Odalisk/Odalisk",
 				"nodeId": "CuratedGranumVoid",
-				"image": "Odalisk.png",
 				"parts": [
 					{
 						"id": "protea:bp",
@@ -4926,7 +4902,6 @@
 				"name": "Koumei",
 				"uniqueName": "/Lotus/Powersuits/Koumei/Koumei",
 				"nodeId": "CuratedSayasVisions",
-				"image": "Koumei.png",
 				"parts": [
 					{
 						"id": "koumei:bp",
@@ -4963,7 +4938,6 @@
 				"name": "Citrine",
 				"uniqueName": "/Lotus/Powersuits/Geode/Geode",
 				"nodeId": "SolNode450",
-				"image": "Citrine.png",
 				"parts": [
 					{
 						"id": "citrine:bp",
@@ -5004,7 +4978,6 @@
 				"name": "Dante",
 				"uniqueName": "/Lotus/Powersuits/Pagemaster/Pagemaster",
 				"nodeId": "SolNode721",
-				"image": "Pagemaster.png",
 				"parts": [
 					{
 						"id": "dante:bp",
@@ -5045,7 +5018,6 @@
 				"name": "Gauss",
 				"uniqueName": "/Lotus/Powersuits/Runner/Runner",
 				"nodeId": "SolNode177",
-				"image": "Gauss.png",
 				"parts": [
 					{
 						"id": "gauss:bp",
@@ -5083,7 +5055,6 @@
 				"name": "Voruna",
 				"uniqueName": "/Lotus/Powersuits/Werewolf/Werewolf",
 				"nodeId": "SolNode310",
-				"image": "Voruna.png",
 				"parts": [
 					{
 						"id": "voruna:bp",
@@ -5124,7 +5095,6 @@
 				"name": "Nidus",
 				"uniqueName": "/Lotus/Powersuits/Infestation/Infestation",
 				"nodeId": "SolNode167",
-				"image": "Nidus.png",
 				"parts": [
 					{
 						"id": "nidus:bp",
@@ -5162,7 +5132,6 @@
 				"name": "Jade",
 				"uniqueName": "/Lotus/Powersuits/Choir/Choir",
 				"nodeId": "SolNode723",
-				"image": "Jade.png",
 				"parts": [
 					{
 						"id": "jade:bp",
@@ -5197,7 +5166,6 @@
 				"name": "Gyre",
 				"uniqueName": "/Lotus/Powersuits/Gyre/Gyre",
 				"nodeId": "ZarimanHub",
-				"image": "Gyre.png",
 				"parts": [
 					{
 						"id": "gyre:bp",
@@ -5242,7 +5210,6 @@
 			{
 				"id": "ferrite",
 				"name": "Ferrite",
-				"image": "ComponentFerrite.png",
 				"regionIds": [
 					"mercury",
 					"earth",
@@ -5273,7 +5240,6 @@
 			{
 				"id": "alloyplate",
 				"name": "Alloy Plate",
-				"image": "AlloyPlate.png",
 				"regionIds": [
 					"venus",
 					"phobos",
@@ -5306,7 +5272,6 @@
 			{
 				"id": "nanospores",
 				"name": "Nano Spores",
-				"image": "ComponentNanospores.png",
 				"regionIds": [
 					"saturn",
 					"neptune",
@@ -5337,7 +5302,6 @@
 			{
 				"id": "salvage",
 				"name": "Salvage",
-				"image": "ComponentSalvage.png",
 				"regionIds": [
 					"mars",
 					"jupiter",
@@ -5368,7 +5332,6 @@
 			{
 				"id": "circuits",
 				"name": "Circuits",
-				"image": "ComponentCircuits.png",
 				"regionIds": [
 					"venus",
 					"ceres",
@@ -5398,7 +5361,6 @@
 			{
 				"id": "polymerbundle",
 				"name": "Polymer Bundle",
-				"image": "PolymerBundle.png",
 				"regionIds": [
 					"mercury",
 					"venus",
@@ -5428,7 +5390,6 @@
 			{
 				"id": "plastids",
 				"name": "Plastids",
-				"image": "ComponentPlastids.png",
 				"regionIds": [
 					"phobos",
 					"saturn",
@@ -5461,7 +5422,6 @@
 			{
 				"id": "rubedo",
 				"name": "Rubedo",
-				"image": "ComponentRubedo.png",
 				"regionIds": [
 					"earth",
 					"phobos",
@@ -5494,7 +5454,6 @@
 			{
 				"id": "morphics",
 				"name": "Morphics",
-				"image": "ComponentMorphic.png",
 				"regionIds": [
 					"mercury",
 					"mars",
@@ -5526,7 +5485,6 @@
 			{
 				"id": "gallium",
 				"name": "Gallium",
-				"image": "ComponentGallium.png",
 				"regionIds": [
 					"mars",
 					"uranus"
@@ -5555,7 +5513,6 @@
 			{
 				"id": "neurodes",
 				"name": "Neurodes",
-				"image": "ComponentNeurode.png",
 				"regionIds": [
 					"earth",
 					"eris",
@@ -5586,7 +5543,6 @@
 			{
 				"id": "neuralsensors",
 				"name": "Neural Sensors",
-				"image": "NeuralSensor.png",
 				"regionIds": [
 					"jupiter",
 					"kuvafortress"
@@ -5615,7 +5571,6 @@
 			{
 				"id": "controlmodule",
 				"name": "Control Module",
-				"image": "ControlModule.png",
 				"regionIds": [
 					"europa",
 					"neptune"
@@ -5644,7 +5599,6 @@
 			{
 				"id": "orokincell",
 				"name": "Orokin Cell",
-				"image": "ComponentCell.png",
 				"regionIds": [
 					"ceres",
 					"saturn"
@@ -5673,7 +5627,6 @@
 			{
 				"id": "oxium",
 				"name": "Oxium",
-				"image": "ComponentOxium.png",
 				"regionIds": [
 					"venus",
 					"mars",
@@ -5707,7 +5660,6 @@
 			{
 				"id": "tellurium",
 				"name": "Tellurium",
-				"image": "Tellurium.png",
 				"regionIds": [
 					"uranus",
 					"kuvafortress"
@@ -5736,7 +5688,6 @@
 			{
 				"id": "hexenon",
 				"name": "Hexenon",
-				"image": "ComponentConcentratedGas.png",
 				"regionIds": [
 					"jupiter"
 				],
@@ -5764,7 +5715,6 @@
 			{
 				"id": "mutagensample",
 				"name": "Mutagen Sample",
-				"image": "InfestedFragment.png",
 				"regionIds": [
 					"eris",
 					"deimos"
@@ -5793,7 +5743,6 @@
 			{
 				"id": "detoniteampule",
 				"name": "Detonite Ampule",
-				"image": "GrineerFragment.png",
 				"regionIds": [
 					"mercury",
 					"earth",
@@ -5828,7 +5777,6 @@
 			{
 				"id": "fieldronsample",
 				"name": "Fieldron Sample",
-				"image": "CorpusFragment.png",
 				"regionIds": [
 					"venus",
 					"mars",
@@ -5860,7 +5808,6 @@
 			{
 				"id": "carbides",
 				"name": "Carbides",
-				"image": "RailjackComponentCarbides.png",
 				"regionIds": [
 					"ceres"
 				],
@@ -5869,7 +5816,6 @@
 			{
 				"id": "cubicdiodes",
 				"name": "Cubic Diodes",
-				"image": "RailjackComponentCubics.png",
 				"regionIds": [
 					"europa"
 				],
@@ -5896,7 +5842,6 @@
 			{
 				"id": "cryotic",
 				"name": "Cryotic",
-				"image": "ComponentCryotic.png",
 				"regionIds": [
 					"earth",
 					"pluto"
@@ -5936,7 +5881,6 @@
 			{
 				"id": "argoncrystal",
 				"name": "Argon Crystal",
-				"image": "ArgonCrystal.png",
 				"regionIds": [
 					"void"
 				],
@@ -5964,7 +5908,6 @@
 			{
 				"id": "somaticfibers",
 				"name": "Somatic Fibers",
-				"image": "MemoryCryptoFragment.png",
 				"regionIds": [
 					"lua"
 				],
@@ -5992,7 +5935,6 @@
 			{
 				"id": "kuva",
 				"name": "Kuva",
-				"image": "Kuva.png",
 				"regionIds": [
 					"kuvafortress"
 				],
@@ -6020,7 +5962,6 @@
 			{
 				"id": "voidgelorb",
 				"name": "Voidgel Orb",
-				"image": "ZarimanMiscItemA.png",
 				"regionIds": [
 					"zariman"
 				],
@@ -6048,7 +5989,6 @@
 			{
 				"id": "entratilanthorn",
 				"name": "Entrati Lanthorn",
-				"image": "ZarimanMiscItemB.png",
 				"regionIds": [
 					"zariman"
 				],

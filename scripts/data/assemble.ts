@@ -14,8 +14,6 @@ import { OPEN_WORLD_SOLNODES, OPEN_WORLD_FARMS } from './openworld';
 import { slugify } from './parse';
 import { partId } from '../../src/lib/model/completion';
 
-export type RawResource = { name: string; imageName?: string };
-
 // Every real region slug — main planets AND curated special regions (Deimos,
 // Void, …) — so a rec on a special region resolves its "best farm here" badge.
 const REGION_IDS = new Set([
@@ -162,15 +160,7 @@ export function staleRecommendations(
 	return stale;
 }
 
-export function buildResources(raw: RawResource[]): Resource[] {
-	// Prefer the first match for a given name and skip entries without an
-	// imageName: a name can appear in both the 'Resources' and 'Misc'
-	// categories (see sources.ts), and we don't want a later, image-less or
-	// unrelated entry to overwrite an earlier, correct one.
-	const imgByName = new Map<string, string>();
-	for (const r of raw) {
-		if (r.imageName && !imgByName.has(r.name)) imgByName.set(r.name, r.imageName);
-	}
+export function buildResources(): Resource[] {
 	const regionsByResource = new Map<string, string[]>();
 	for (const [region, rids] of Object.entries(PLANET_RESOURCES))
 		for (const rid of rids)
@@ -178,7 +168,6 @@ export function buildResources(raw: RawResource[]): Resource[] {
 	return RESOURCES.map((r) => ({
 		id: r.id,
 		name: r.name,
-		image: imgByName.get(r.name),
 		regionIds: regionsByResource.get(r.id) ?? [],
 		recommendations: (RECOMMENDATIONS[r.id] ?? []).map((rec) => ({
 			...rec,
@@ -187,11 +176,7 @@ export function buildResources(raw: RawResource[]): Resource[] {
 	}));
 }
 
-export function assembleDataset(
-	solNodes: SolNodes,
-	warframes: RawWarframe[],
-	rawResources: RawResource[],
-): Dataset {
+export function assembleDataset(solNodes: SolNodes, warframes: RawWarframe[]): Dataset {
 	// Merge in the curated Eris key-boss pseudo-nodes (Mutalist Alad V, Jordas
 	// Golem): they're key-crafted boss missions absent from the game's real
 	// solNodes data, so buildFrames has nothing to link Mesa/Atlas to without
@@ -208,7 +193,7 @@ export function assembleDataset(
 		n.bossId = bossByNode.get(n.id)?.id;
 		n.frameId = frameByNode.get(n.id)?.id;
 	}
-	const resources = buildResources(rawResources);
+	const resources = buildResources();
 	const openWorldFrames = buildOpenWorldFrames(warframes, OPEN_WORLD_FARMS);
 	return {
 		regions,

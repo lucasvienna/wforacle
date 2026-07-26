@@ -39,8 +39,8 @@ function sourceVersion(): string {
 }
 
 async function main() {
-	const { solNodes, warframes, rawResources } = await loadSources();
-	const data = assembleDataset(solNodes, warframes, rawResources);
+	const { solNodes, warframes } = await loadSources();
+	const data = assembleDataset(solNodes, warframes);
 	const problems = validateDataset(data);
 	if (problems.length) {
 		console.error('Dataset invalid:\n' + problems.join('\n'));
@@ -112,12 +112,10 @@ async function main() {
 		console.error('Sanity check failed: Nekros (Deimos/Magnacidium) not linked');
 		process.exit(1);
 	}
-	// Floor matching the curated RESOURCES list size (scripts/data/farming.ts,
-	// Task 6): all 27 curated resources — including the 4 special-region ones
-	// (Somatic Fibers, Kuva, Voidgel Orb, Entrati Lanthorn) — are built
-	// regardless of @wfcd/items match success, so this guards against
-	// buildResources silently returning far fewer entries (e.g. an
-	// empty/malformed rawResources source).
+	// Floor matching the curated RESOURCES list size (scripts/data/farming.ts):
+	// all 27 curated resources — including the 4 special-region ones (Somatic
+	// Fibers, Kuva, Voidgel Orb, Entrati Lanthorn) — come from that list alone,
+	// so this guards against buildResources silently returning far fewer.
 	if (data.resources.length < 27) {
 		console.error(`Sanity check failed (expected >=27 resources, got ${data.resources.length})`);
 		process.exit(1);
