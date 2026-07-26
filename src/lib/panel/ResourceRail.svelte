@@ -1,10 +1,31 @@
 <script lang="ts">
 	import type { Resource } from '$lib/model/types';
 	import { bestPhaseRec } from '$lib/model/resources';
+	import {
+		PHASES,
+		PHASE_RAIL_LABEL,
+		PHASE_SHORT_LABEL,
+		PHASE_TAG,
+		PHASE_TEXT,
+	} from '$lib/guides/phases';
 	import { asset, resolve } from '$app/paths';
 
 	let { resources, regionId }: { resources: Resource[]; regionId: string } =
 		$props();
+
+	/**
+	 * Best rec per phase, plus whether that rec's farm is on the region being
+	 * viewed. This was previously three hand-written chips and three
+	 * hand-written lines with their emoji, wording and colours inlined — a
+	 * fourth copy of the phase vocabulary, and the one most likely to drift out
+	 * of sync with the guide pages, since nothing connected them.
+	 */
+	function phaseRows(r: Resource) {
+		return PHASES.map((phase) => {
+			const rec = bestPhaseRec(r, phase);
+			return { phase, rec, here: !!rec && rec.regionId === regionId };
+		}).filter((row) => row.rec);
+	}
 </script>
 
 <section class="lg:sticky lg:top-4" data-resource-rail>
@@ -17,12 +38,7 @@
 	{#if resources.length > 0}
 		<ul class="space-y-3">
 			{#each resources as r (r.id)}
-				{@const early = bestPhaseRec(r, 'early')}
-				{@const mid = bestPhaseRec(r, 'mid')}
-				{@const late = bestPhaseRec(r, 'late')}
-				{@const earlyHere = !!early && early.regionId === regionId}
-				{@const midHere = !!mid && mid.regionId === regionId}
-				{@const lateHere = !!late && late.regionId === regionId}
+				{@const rows = phaseRows(r)}
 				<li class="rounded-xl border border-wf-edge bg-wf-panel p-4">
 					<div class="flex flex-wrap items-center gap-2">
 						<img
@@ -32,27 +48,15 @@
 							loading="lazy"
 						/>
 						<span class="text-sm font-medium text-slate-200">{r.name}</span>
-						{#if earlyHere}
+						{#each rows.filter((row) => row.here) as row (row.phase)}
 							<span
-								class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-300"
+								class="rounded-full border px-2 py-0.5 text-[11px] font-medium {PHASE_TAG[
+									row.phase
+								]}"
 							>
-								⚡ early best
+								{PHASE_RAIL_LABEL[row.phase]}
 							</span>
-						{/if}
-						{#if midHere}
-							<span
-								class="rounded-full border border-sky-500/40 bg-sky-500/10 px-2 py-0.5 text-[11px] font-medium text-sky-300"
-							>
-								🌗 mid best
-							</span>
-						{/if}
-						{#if lateHere}
-							<span
-								class="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-300"
-							>
-								💀 late best
-							</span>
-						{/if}
+						{/each}
 						{#if r.recommendations.length > 0}
 							<a
 								href={resolve('/guides/[resource]', { resource: r.id })}
@@ -62,33 +66,15 @@
 							</a>
 						{/if}
 					</div>
-					{#if early}
+					{#each rows as row, i (row.phase)}
 						<p
-							class="mt-1.5 text-xs {earlyHere
-								? 'text-emerald-300'
+							class="{i === 0 ? 'mt-1.5' : 'mt-0.5'} text-xs {row.here
+								? PHASE_TEXT[row.phase]
 								: 'text-wf-muted'}"
 						>
-							⚡ Early: {early.nodeLabel}
+							{PHASE_SHORT_LABEL[row.phase]}: {row.rec?.nodeLabel}
 						</p>
-					{/if}
-					{#if mid}
-						<p
-							class="mt-0.5 text-xs {midHere
-								? 'text-sky-300'
-								: 'text-wf-muted'}"
-						>
-							🌗 Mid: {mid.nodeLabel}
-						</p>
-					{/if}
-					{#if late}
-						<p
-							class="mt-0.5 text-xs {lateHere
-								? 'text-amber-300'
-								: 'text-wf-muted'}"
-						>
-							💀 Late: {late.nodeLabel}
-						</p>
-					{/if}
+					{/each}
 				</li>
 			{/each}
 		</ul>

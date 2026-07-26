@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
 import type { Resource } from '$lib/model/types';
-import { SITE_URL } from '$lib/seo/config';
 import Page from './+page.svelte';
 import type { PageData } from './$types';
 
@@ -47,32 +46,18 @@ const fixtureResource: Resource = {
 const data = { resource: fixtureResource } as PageData;
 
 describe('bespoke affinity guide page', () => {
-	it('sets the guide title, canonical and JSON-LD', () => {
-		render(Page, { data, params: {}, form: undefined });
-		expect(document.title).toBe('Affinity Farming Guide — Fastest XP Locations | wforacle');
-		const canonical = document.head.querySelector('link[rel="canonical"]');
-		expect(canonical?.getAttribute('href')).toBe(`${SITE_URL}/guides/affinity`);
-		expect(document.head.querySelector('script[type="application/ld+json"]')).not.toBeNull();
-	});
+	// The section shells, SEO block, card ordering and boosterNote fallback are
+	// covered once in src/lib/guides/GuideLongform.svelte.test.ts. This spec
+	// asserts only what is specific to the affinity guide: its own content file
+	// and its two prose snippets.
 
-	it('renders every recommendation card with its booster note and source', () => {
+	it('renders its own recommendation cards from the dataset entry', () => {
 		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByText('Saturn — Helene (Defense)')).toBeInTheDocument();
-		expect(screen.getByText('Sanctuary Onslaught (Cephalon Simaris)')).toBeInTheDocument();
 		expect(screen.getByText('Jupiter — Elara (Steel Path Survival)')).toBeInTheDocument();
-		expect(screen.getByText(/drop chance, not affinity/)).toBeInTheDocument();
-		expect(screen.getAllByRole('link', { name: /source/i })).toHaveLength(3);
-	});
-
-	it('groups cards early → mid → late regardless of dataset order', () => {
-		render(Page, { data, params: {}, form: undefined });
-		const headings = screen.getAllByRole('heading', { level: 3 });
-		const labels = headings.map((h) => h.textContent);
-		const early = labels.indexOf('Saturn — Helene (Defense)');
-		const mid = labels.indexOf('Sanctuary Onslaught (Cephalon Simaris)');
-		const late = labels.indexOf('Jupiter — Elara (Steel Path Survival)');
-		expect(early).toBeLessThan(mid);
-		expect(mid).toBeLessThan(late);
+		expect(
+			screen.getByText(/Steel Path bonuses are drop chance, not affinity/),
+		).toBeInTheDocument();
 	});
 
 	it('gives the affinity icon a descriptive alt', () => {
@@ -84,29 +69,27 @@ describe('bespoke affinity guide page', () => {
 		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByRole('heading', { name: /sharing rules/i })).toBeInTheDocument();
 		expect(screen.getByText('Your kills')).toBeInTheDocument();
-		expect(screen.getByText(/Squad kills/)).toBeInTheDocument();
-		expect(screen.getByText(/only the gear you.re leveling/i)).toBeInTheDocument();
+		expect(screen.getByText('Squad kills')).toBeInTheDocument();
+		expect(screen.getByText(/only the gear you’re leveling/i)).toBeInTheDocument();
 	});
 
-	it('renders the multiplier stacking table with the ×5 worked example', () => {
+	it('lists affinity multipliers with the ×5 worked example, and no channel column', () => {
 		render(Page, { data, params: {}, form: undefined });
-		expect(screen.getByRole('heading', { name: /stacking multipliers/i })).toBeInTheDocument();
 		expect(screen.getByRole('cell', { name: 'Smeeta Kavat Charm' })).toBeInTheDocument();
+		// Every affinity multiplier applies to everything, so the column that
+		// the credits guide needs must not appear here.
+		expect(screen.queryByRole('columnheader', { name: /applies to/i })).not.toBeInTheDocument();
 		expect(screen.getByText(/×5 on every kill/)).toBeInTheDocument();
 	});
 
-	it('busts outdated advice', () => {
+	it('busts outdated affinity advice', () => {
 		render(Page, { data, params: {}, form: undefined });
-		expect(screen.getByRole('heading', { name: /outdated advice/i })).toBeInTheDocument();
-		// "Draco" and "Steel Path" each appear in both a claim and elsewhere —
-		// assert presence, not uniqueness.
-		expect(screen.getAllByText(/Draco/).length).toBeGreaterThan(0);
 		expect(screen.getAllByText(/Steel Path/).length).toBeGreaterThan(0);
 	});
 
-	it('lists honorable mentions and sources', () => {
+	it('lists affinity honorable mentions and sources', () => {
 		render(Page, { data, params: {}, form: undefined });
-		expect(screen.getByText(/Solstice Square/)).toBeInTheDocument();
+		expect(screen.getByText(/Adaro \(Sedna\) stealth/)).toBeInTheDocument();
 		expect(screen.getByRole('link', { name: /Affinity — Warframe Wiki/i })).toBeInTheDocument();
 	});
 });

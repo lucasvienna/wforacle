@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
 import type { Resource } from '$lib/model/types';
-import { SITE_URL } from '$lib/seo/config';
 import Page from './+page.svelte';
 import type { PageData } from './$types';
 
@@ -48,32 +47,17 @@ const fixtureResource: Resource = {
 const data = { resource: fixtureResource } as PageData;
 
 describe('bespoke credits guide page', () => {
-	it('sets the guide title, canonical and JSON-LD', () => {
-		render(Page, { data, params: {}, form: undefined });
-		expect(document.title).toBe('Credits Farming Guide — Best Locations | wforacle');
-		const canonical = document.head.querySelector('link[rel="canonical"]');
-		expect(canonical?.getAttribute('href')).toBe(`${SITE_URL}/guides/credits`);
-		expect(document.head.querySelector('script[type="application/ld+json"]')).not.toBeNull();
-	});
+	// The section shells, SEO block, card ordering and boosterNote fallback are
+	// covered once in src/lib/guides/GuideLongform.svelte.test.ts. This spec
+	// asserts only what is specific to the credits guide: its own content file
+	// and its two prose snippets.
 
-	it('renders every recommendation card with its booster note and source', () => {
+	it('renders its own recommendation cards from the dataset entry', () => {
 		render(Page, { data, params: {}, form: undefined });
 		expect(screen.getByText('Ceres — Seimeni / Gabii (Dark Sector)')).toBeInTheDocument();
 		expect(screen.getByText('Neptune — Laomedeia (Disruption)')).toBeInTheDocument();
 		expect(screen.getByText('Venus — Profit-Taker Orb (Heist Phase 4)')).toBeInTheDocument();
 		expect(screen.getByText(/Effigy and booster double the drops/)).toBeInTheDocument();
-		expect(screen.getAllByRole('link', { name: /source/i })).toHaveLength(3);
-	});
-
-	it('groups cards early → mid → late regardless of dataset order', () => {
-		render(Page, { data, params: {}, form: undefined });
-		const headings = screen.getAllByRole('heading', { level: 3 });
-		const labels = headings.map((h) => h.textContent);
-		const early = labels.indexOf('Ceres — Seimeni / Gabii (Dark Sector)');
-		const mid = labels.indexOf('Neptune — Laomedeia (Disruption)');
-		const late = labels.indexOf('Venus — Profit-Taker Orb (Heist Phase 4)');
-		expect(early).toBeLessThan(mid);
-		expect(mid).toBeLessThan(late);
 	});
 
 	it('gives the credits icon a descriptive alt', () => {
@@ -89,22 +73,22 @@ describe('bespoke credits guide page', () => {
 		expect(screen.getByText(/wastes the First Win Bonus/i)).toBeInTheDocument();
 	});
 
-	it('renders the multiplier stacking table with the 500k worked example', () => {
+	it('lists credit multipliers with the 500k worked example', () => {
 		render(Page, { data, params: {}, form: undefined });
-		expect(screen.getByRole('heading', { name: /stacking multipliers/i })).toBeInTheDocument();
 		expect(screen.getByRole('cell', { name: "Chroma's Effigy" })).toBeInTheDocument();
+		// The channel column is credits-only; affinity has no such distinction.
+		expect(screen.getByRole('columnheader', { name: /applies to/i })).toBeInTheDocument();
 		expect(screen.getByText(/500,000 per kill/)).toBeInTheDocument();
 	});
 
-	it('busts outdated advice', () => {
+	it('busts outdated credit advice', () => {
 		render(Page, { data, params: {}, form: undefined });
-		expect(screen.getByRole('heading', { name: /outdated advice/i })).toBeInTheDocument();
 		// "Secura Lecta" appears in two myth entries — assert presence, not uniqueness.
 		expect(screen.getAllByText(/Secura Lecta/).length).toBeGreaterThan(0);
 		expect(screen.getByText(/Gian Point/)).toBeInTheDocument();
 	});
 
-	it('lists honorable mentions and sources', () => {
+	it('lists credit honorable mentions and sources', () => {
 		render(Page, { data, params: {}, form: undefined });
 		// "Railjack" also appears in the two-channel rewards panel.
 		expect(screen.getAllByText(/Railjack/).length).toBeGreaterThan(0);
