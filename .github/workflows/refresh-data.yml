@@ -50,11 +50,10 @@ jobs:
             echo "::warning::Could not confirm push access for DATA_REFRESH_TOKEN (permissions.push was '$PUSH'). Continuing; a genuine lack of write access will surface at the push step."
           fi
 
+      # No token override: nothing here pushes with git. The commit and the PR
+      # are both written through the API with the PAT further down, which is
+      # what makes ci.yml trigger on the result (audit H1).
       - uses: actions/checkout@v7
-        with:
-          # The PAT, deliberately. A bot PR opened with GITHUB_TOKEN does not
-          # trigger ci.yml, so the refresh would land ungated (audit H1).
-          token: ${{ secrets.DATA_REFRESH_TOKEN }}
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with: { node-version: 26, cache: pnpm }
@@ -79,23 +78,71 @@ jobs:
             echo "No data changes."
           fi
 
-      - name: Push the refresh branch
+      # `git commit` + `git push` would produce an UNSIGNED commit, and main
+      # requires verified signatures: the PR would go green and then refuse to
+      # merge, forever. Commits written through the GitHub API are signed by
+      # GitHub's own web-flow key instead, so this needs no bot signing key —
+      # one less secret to leak, rotate, or silently expire. The trade is
+      # attribution: the commit is authored by whoever owns DATA_REFRESH_TOKEN
+      # rather than by a separate bot identity.
+      - name: Commit the refresh through the API, so it is signed
         if: steps.changed.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DATA_REFRESH_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
-          git config user.name "wforacle-bot"
-          git config user.email "bot@users.noreply.github.com"
-          # A fixed branch, force-updated: an unmerged refresh from last week is
-          # replaced rather than accumulating a second PR alongside it.
-          git checkout -B "$BRANCH"
+          BASE=$(git rev-parse HEAD)
+
           # package.json too, not just the lockfile: `pnpm update` bumps the
           # dependency range there as well, and committing one without the
           # other leaves them disagreeing — every CI job on the PR then dies at
           # `pnpm install --frozen-lockfile` with "specifiers in the lockfile
           # don't match specifiers in package.json", so it could never go green
           # and auto-merge would never fire.
-          git add package.json pnpm-lock.yaml static/data/dataset.json
-          git commit -m "chore(data): refresh WFCD dataset"
-          git push --force origin "$BRANCH"
+          # The base64 dataset is ~200KB and Linux caps a single argv entry at
+          # 128KB, so every hop here moves it through a file or stdin and never
+          # through an argument — `--arg contents "$(base64 ...)"` and
+          # `--argjson additions "$ADDITIONS"` both die with "Argument list too
+          # long". Neither shows up on a small test file; only on the real one.
+          for f in package.json pnpm-lock.yaml static/data/dataset.json; do
+            if ! git diff --quiet HEAD -- "$f"; then
+              base64 -w0 "$f" > "$RUNNER_TEMP/contents.b64"
+              jq -n --arg path "$f" --rawfile contents "$RUNNER_TEMP/contents.b64" '$ARGS.named'
+            fi
+          done | jq -sc . > "$RUNNER_TEMP/additions.json"
+
+          # Reachable only if the change detector and this loop disagree about
+          # what changed. An empty commit would be the confusing symptom; say so.
+          if [ "$(jq length "$RUNNER_TEMP/additions.json")" -eq 0 ]; then
+            echo "::error::Detected changes but found no modified file contents to commit. The change detector and the commit step disagree about which paths to watch."
+            exit 1
+          fi
+
+          # Only now that there is definitely something to commit. A fixed
+          # branch, force-updated: an unmerged refresh from last week is
+          # replaced rather than accumulating a second PR alongside it. PATCH
+          # first because the usual case is that the branch already exists;
+          # POST creates it on the first run, and after every merge deletes it.
+          # Doing this before the check above would reset the branch and then
+          # bail, discarding last week's refresh to no purpose.
+          # PATCH's stderr is dropped because "Reference does not exist" is the
+          # normal first-run path, not a fault, and reads as alarming in the log.
+          # A real failure still surfaces: POST runs next and is not silenced.
+          gh api "repos/$REPO/git/refs/heads/$BRANCH" -X PATCH -f sha="$BASE" -F force=true --silent 2>/dev/null \
+            || gh api "repos/$REPO/git/refs" -X POST -f ref="refs/heads/$BRANCH" -f sha="$BASE" --silent
+
+          jq --arg repo "$REPO" --arg branch "$BRANCH" --arg oid "$BASE" '{
+            query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
+            variables: { input: {
+              branch: { repositoryNameWithOwner: $repo, branchName: $branch },
+              message: { headline: "chore(data): refresh WFCD dataset" },
+              expectedHeadOid: $oid,
+              fileChanges: { additions: . }
+            }}
+          }' "$RUNNER_TEMP/additions.json" > "$RUNNER_TEMP/commit.json"
+
+          gh api graphql --input "$RUNNER_TEMP/commit.json" \
+            --jq '.data.createCommitOnBranch.commit.oid'
 
       - name: Open or update the PR, and let it merge itself on green
         if: steps.changed.outputs.changed == 'true'
