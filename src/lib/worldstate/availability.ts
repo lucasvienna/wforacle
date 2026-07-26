@@ -40,6 +40,10 @@ export function nextActiveAt(
 
 /** "1h15m" | "24m" | "38s" | "0s". Clamps negatives to "0s". */
 export function formatCountdown(ms: number): string {
+	// A malformed upstream expiry produces NaN here, and NaN fails every
+	// comparison below — so without this the function returned the string
+	// "NaNs" and callers rendered "resets NaNs" to users.
+	if (!Number.isFinite(ms)) return '—';
 	if (ms <= 0) return '0s';
 	const total = Math.floor(ms / 1000);
 	const h = Math.floor(total / 3600);

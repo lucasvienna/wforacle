@@ -52,5 +52,9 @@ describe('formatCountdown', () => {
 		expect(formatCountdown(5 * 1000)).toBe('5s');
 		expect(formatCountdown(0)).toBe('0s');
 		expect(formatCountdown(-10)).toBe('0s');
+		// NaN fails every comparison below the guard, so without it this
+		// returned the literal string "NaNs" and callers rendered it.
+		expect(formatCountdown(NaN)).toBe('—');
+		expect(formatCountdown(Infinity)).toBe('—');
 	});
 });
