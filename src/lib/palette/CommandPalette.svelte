@@ -2,6 +2,7 @@
 	import { tick } from 'svelte';
 	import { trapFocus } from '$lib/actions/trapFocus';
 	import { filterPaletteItems, type PaletteItem } from './search';
+	import { createFocusRestore } from '$lib/ui/focusRestore';
 
 	let {
 		items,
@@ -19,24 +20,23 @@
 	let highlight = $state(0);
 	let inputEl: HTMLInputElement | undefined = $state();
 	let rowEls: (HTMLButtonElement | undefined)[] = $state([]);
-	let triggerEl: HTMLElement | null = null;
+	const focus = createFocusRestore();
 
 	let results = $derived(filterPaletteItems(items, query));
 	let clampedHighlight = $derived(
 		Math.min(highlight, Math.max(results.length - 1, 0)),
 	);
 
+	// A combobox rather than a drawer, so it does not use Drawer — but the
+	// focus-restore half was the same code, and now comes from the shared helper.
 	$effect(() => {
 		if (open) {
-			triggerEl =
-				typeof document !== 'undefined'
-					? (document.activeElement as HTMLElement | null)
-					: null;
+			focus.capture();
 			query = '';
 			highlight = 0;
 			tick().then(() => inputEl?.focus());
 		} else {
-			triggerEl?.focus?.();
+			focus.restore();
 		}
 	});
 
