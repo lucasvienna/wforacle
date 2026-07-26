@@ -38,3 +38,7 @@ coverage/
 
 # playwright-mcp browser artifacts (snapshots/screenshots from manual verification)
 .playwright-mcp/
+
+# Chrome profile dirs Lighthouse creates under WSL, where it resolves a
+# Windows-style LOCALAPPDATA into a literal relative path.
+C:\\*
