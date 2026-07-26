@@ -1,11 +1,19 @@
 import type { Dataset } from '$lib/model/types';
 import type { Tracker } from '$lib/tracker/tracker.svelte';
-import { fetchProfile as realFetch, ProfileError } from './profileClient';
+import { fetchProfile as realFetch, ProfileError, type ProfileErrorKind } from './profileClient';
 import { parseProfile, type ImportResult } from './parseProfile';
 import { normalizeAccountId } from './accountId';
 import { loadAccountId, saveAccountId, clearAccountId, persist } from '$lib/tracker/persistence';
 
 type Phase = 'idle' | 'loading' | 'preview' | 'error';
+
+/**
+ * Why the import failed, so the dialog can offer the right next action rather
+ * than just different words. 'invalid' is ours (the id never left the browser);
+ * the rest come from ProfileError, whose `kind` was populated in four places
+ * and read in none (audit Q4c).
+ */
+export type ImportErrorKind = ProfileErrorKind | 'invalid' | 'unknown';
 
 export function createImportStore(
 	dataset: Dataset,
@@ -13,6 +21,7 @@ export function createImportStore(
 ) {
 	const fetchProfile = deps.fetchProfile ?? realFetch;
 	let phase = $state<Phase>('idle');
+	let errorKind = $state<ImportErrorKind | null>(null);
 	let result = $state<ImportResult | null>(null);
 	let error = $state('');
 	let rememberedId = $state<string | null>(null);
@@ -25,17 +34,20 @@ export function createImportStore(
 		const id = normalizeAccountId(rawId);
 		if (!id) {
 			phase = 'error';
+			errorKind = 'invalid';
 			error = "That doesn't look like a 24-character account ID.";
 			return;
 		}
 		phase = 'loading';
 		error = '';
+		errorKind = null;
 		try {
 			const profile = await fetchProfile(id);
 			result = parseProfile(profile, dataset);
 			phase = 'preview';
 		} catch (e) {
 			phase = 'error';
+			errorKind = e instanceof ProfileError ? e.kind : 'unknown';
 			error = e instanceof ProfileError ? e.message : 'Something went wrong. Please try again.';
 		}
 	}
@@ -67,6 +79,7 @@ export function createImportStore(
 		phase = 'idle';
 		result = null;
 		error = '';
+		errorKind = null;
 	}
 
 	return {
@@ -83,6 +96,9 @@ export function createImportStore(
 		},
 		get error() {
 			return error;
+		},
+		get errorKind() {
+			return errorKind;
 		},
 		get rememberedId() {
 			return rememberedId;

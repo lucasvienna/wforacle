@@ -66,4 +66,66 @@ describe('ImportDialog', () => {
 		await fireEvent.click(document.querySelector('[data-import-run]') as HTMLElement);
 		await waitFor(() => expect(document.querySelector('[data-import-error]')).toBeTruthy());
 	});
+
+	// The point of consuming errorKind: a different next action per failure,
+	// not different words. The messages were already per-kind.
+	async function submit(id: string) {
+		await fireEvent.input(document.querySelector('[data-account-input]') as HTMLElement, {
+			target: { value: id },
+		});
+		await fireEvent.click(document.querySelector('[data-import-run]') as HTMLElement);
+		await waitFor(() => expect(document.querySelector('[data-import-error]')).toBeTruthy());
+	}
+
+	it('expands the "how to find your ID" help when the ID is malformed', async () => {
+		setup();
+		expect(document.querySelector('[data-import-help]')).not.toHaveAttribute('open');
+		await submit('nope');
+		expect(document.querySelector('[data-import-help]')).toHaveAttribute('open');
+	});
+
+	it('expands the help when the profile is not found', async () => {
+		// Overwhelmingly this means the user pasted a display name.
+		server.use(http.get(PROFILE_URL, () => new HttpResponse(null, { status: 404 })));
+		setup();
+		await submit('517d823a1a4d804218000052');
+		expect(document.querySelector('[data-import-help]')).toHaveAttribute('open');
+	});
+
+	it('offers a retry for a transient failure, and does not expand the help', async () => {
+		server.use(http.get(PROFILE_URL, () => new HttpResponse(null, { status: 429 })));
+		setup();
+		await submit('517d823a1a4d804218000052');
+		expect(document.querySelector('[data-import-retry]')).toBeTruthy();
+		expect(document.querySelector('[data-import-help]')).not.toHaveAttribute('open');
+	});
+
+	it('offers no retry for a wrong ID — retrying the same ID cannot help', async () => {
+		setup();
+		await submit('nope');
+		expect(document.querySelector('[data-import-retry]')).toBeNull();
+	});
+
+	it('retry re-runs the fetch and can succeed', async () => {
+		let calls = 0;
+		server.use(
+			http.get(PROFILE_URL, () => {
+				calls += 1;
+				return calls === 1 ? new HttpResponse(null, { status: 500 }) : HttpResponse.json(PROFILE);
+			}),
+		);
+		setup();
+		await submit('517d823a1a4d804218000052');
+
+		await fireEvent.click(document.querySelector('[data-import-retry]') as HTMLElement);
+
+		await waitFor(() => expect(document.querySelector('[data-import-preview]')).toBeTruthy());
+		expect(calls).toBe(2);
+	});
+
+	it('announces the error to assistive tech', async () => {
+		setup();
+		await submit('nope');
+		expect(screen.getByRole('alert')).toHaveTextContent(/24-character account ID/);
+	});
 });
