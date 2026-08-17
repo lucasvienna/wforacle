@@ -5,8 +5,7 @@
 
 	let { dataset, tracker }: { dataset: Dataset; tracker: Tracker } = $props();
 
-	const regionName = (id: string) =>
-		dataset.regions.find((r) => r.id === id)?.name ?? id;
+	const regionName = (id: string) => dataset.regions.find((r) => r.id === id)?.name ?? id;
 </script>
 
 <section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
@@ -25,9 +24,7 @@
 					data-done={done}
 				>
 					{#snippet children(isDone)}
-						<div
-							class="text-sm {isDone ? 'text-emerald-300' : 'text-slate-200'}"
-						>
+						<div class="text-sm {isDone ? 'text-emerald-300' : 'text-slate-200'}">
 							{q.name}
 						</div>
 						<p class="text-xs text-wf-muted">

@@ -25,8 +25,5 @@
 {@render children()}
 
 {#if updateAvailable}
-	<UpdateToast
-		onrefresh={() => location.reload()}
-		ondismiss={() => (updateAvailable = false)}
-	/>
+	<UpdateToast onrefresh={() => location.reload()} ondismiss={() => (updateAvailable = false)} />
 {/if}

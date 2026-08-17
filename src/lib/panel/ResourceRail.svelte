@@ -10,8 +10,7 @@
 	} from '$lib/guides/phases';
 	import { asset, resolve } from '$app/paths';
 
-	let { resources, regionId }: { resources: Resource[]; regionId: string } =
-		$props();
+	let { resources, regionId }: { resources: Resource[]; regionId: string } = $props();
 
 	/**
 	 * Best rec per phase, plus whether that rec's farm is on the region being
@@ -32,9 +31,7 @@
 	<!-- Mirrors the left column's header rhythm (h2 mb-4, then a text-xs
 	     label line with mb-3) so the first card tops align across columns. -->
 	<h2 class="mb-4 text-lg font-semibold text-wf-gold">Resources</h2>
-	<p class="mb-3 text-xs text-wf-muted">
-		Informational · best farm spots badged by game phase
-	</p>
+	<p class="mb-3 text-xs text-wf-muted">Informational · best farm spots badged by game phase</p>
 	{#if resources.length > 0}
 		<ul class="space-y-3">
 			{#each resources as r (r.id)}

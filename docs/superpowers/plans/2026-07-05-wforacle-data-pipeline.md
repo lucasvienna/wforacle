@@ -922,7 +922,9 @@ Replace `src/routes/+page.svelte`'s script + guard the markup. Key changes: impo
 
 	onMount(async () => {
 		const ds = await loadDataset();
-		const t = createTracker(ds.warframes, (ids) => { if (browser && ready) saveOwned(ids); });
+		const t = createTracker(ds.warframes, (ids) => {
+			if (browser && ready) saveOwned(ids);
+		});
 		t.load(await loadOwned());
 		ready = true;
 		data = ds;
@@ -950,7 +952,12 @@ Replace `src/routes/+page.svelte`'s script + guard the markup. Key changes: impo
 
 	{#if data && tracker}
 		<div class="mb-4 overflow-hidden rounded-xl border border-slate-700">
-			<StarChart regions={data.regions} {selectedId} {statusOf} onselect={(id) => (selectedId = id)} />
+			<StarChart
+				regions={data.regions}
+				{selectedId}
+				{statusOf}
+				onselect={(id) => (selectedId = id)}
+			/>
 		</div>
 		<RegionPanel dataset={data} regionId={selectedId} {tracker} />
 	{:else}
@@ -958,7 +965,8 @@ Replace `src/routes/+page.svelte`'s script + guard the markup. Key changes: impo
 	{/if}
 
 	<footer class="mt-8 text-center text-xs text-slate-600">
-		Planet art &amp; game data © Digital Extremes, via the Warframe wiki. Fan-made tool — not affiliated with Digital Extremes.
+		Planet art &amp; game data © Digital Extremes, via the Warframe wiki. Fan-made tool — not
+		affiliated with Digital Extremes.
 	</footer>
 </div>
 ```

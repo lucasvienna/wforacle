@@ -95,9 +95,10 @@ Ensure `src/routes/+layout.svelte` imports the stylesheet:
 
 ```svelte
 <script lang="ts">
-  import '../app.css';
-  let { children } = $props();
+	import '../app.css';
+	let { children } = $props();
 </script>
+
 {@render children()}
 ```
 
@@ -832,40 +833,78 @@ Expected: FAIL (module not found).
 
 ```svelte
 <script lang="ts">
-  import type { Region } from '$lib/model/types';
-  import { layoutRing } from './geometry';
+	import type { Region } from '$lib/model/types';
+	import { layoutRing } from './geometry';
 
-  let { regions, selectedId, statusOf, onselect }:
-    { regions: Region[]; selectedId: string;
-      statusOf: (id: string) => 'done'|'part'|'none';
-      onselect: (id: string) => void } = $props();
+	let {
+		regions,
+		selectedId,
+		statusOf,
+		onselect,
+	}: {
+		regions: Region[];
+		selectedId: string;
+		statusOf: (id: string) => 'done' | 'part' | 'none';
+		onselect: (id: string) => void;
+	} = $props();
 
-  const VBW = 1120, VBH = 480;
-  let placed = $derived(layoutRing(regions, { cx: VBW/2 }));
+	const VBW = 1120,
+		VBH = 480;
+	let placed = $derived(layoutRing(regions, { cx: VBW / 2 }));
 </script>
 
 <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" class="block select-none">
-  <ellipse cx={VBW/2} cy="238" rx="500" ry="150" fill="none" stroke="#1c3050" stroke-width="1.5" opacity="0.7" />
-  {#each placed as p (p.region.id)}
-    {@const status = statusOf(p.region.id)}
-    {@const sel = p.region.id === selectedId}
-    <g role="button" tabindex="0" data-region={p.region.id} class="cursor-pointer"
-       onclick={() => onselect(p.region.id)}
-       onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && onselect(p.region.id)}>
-      {#if sel}
-        <circle cx={p.x} cy={p.y} r={p.r + 7} fill="none" stroke="#37d2e6" stroke-width="2" />
-      {:else if status !== 'none'}
-        <circle cx={p.x} cy={p.y} r={p.r + 4} fill="none"
-          stroke={status === 'done' ? '#2ee6a0' : '#e6b854'} stroke-width="2" opacity="0.7" />
-      {/if}
-      <circle cx={p.x} cy={p.y} r={p.r}
-        fill={status === 'done' ? '#2ee6a0' : status === 'part' ? '#c99a4a' : '#33506f'}
-        stroke="#0a1018" />
-      <text x={p.x} y={p.y + p.r + 16} text-anchor="middle"
-        font-size={p.front > 0.55 ? 15 : 12}
-        fill={sel ? '#37d2e6' : p.front > 0.5 ? '#cfe0f2' : '#8298b4'}>{p.region.name.toUpperCase()}</text>
-    </g>
-  {/each}
+	<ellipse
+		cx={VBW / 2}
+		cy="238"
+		rx="500"
+		ry="150"
+		fill="none"
+		stroke="#1c3050"
+		stroke-width="1.5"
+		opacity="0.7"
+	/>
+	{#each placed as p (p.region.id)}
+		{@const status = statusOf(p.region.id)}
+		{@const sel = p.region.id === selectedId}
+		<g
+			role="button"
+			tabindex="0"
+			data-region={p.region.id}
+			class="cursor-pointer"
+			onclick={() => onselect(p.region.id)}
+			onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && onselect(p.region.id)}
+		>
+			{#if sel}
+				<circle cx={p.x} cy={p.y} r={p.r + 7} fill="none" stroke="#37d2e6" stroke-width="2" />
+			{:else if status !== 'none'}
+				<circle
+					cx={p.x}
+					cy={p.y}
+					r={p.r + 4}
+					fill="none"
+					stroke={status === 'done' ? '#2ee6a0' : '#e6b854'}
+					stroke-width="2"
+					opacity="0.7"
+				/>
+			{/if}
+			<circle
+				cx={p.x}
+				cy={p.y}
+				r={p.r}
+				fill={status === 'done' ? '#2ee6a0' : status === 'part' ? '#c99a4a' : '#33506f'}
+				stroke="#0a1018"
+			/>
+			<text
+				x={p.x}
+				y={p.y + p.r + 16}
+				text-anchor="middle"
+				font-size={p.front > 0.55 ? 15 : 12}
+				fill={sel ? '#37d2e6' : p.front > 0.5 ? '#cfe0f2' : '#8298b4'}
+				>{p.region.name.toUpperCase()}</text
+			>
+		</g>
+	{/each}
 </svg>
 ```
 
@@ -941,41 +980,57 @@ Expected: FAIL (module not found).
 
 ```svelte
 <script lang="ts">
-  import type { Dataset } from '$lib/model/types';
-  import type { Tracker } from '$lib/tracker/tracker.svelte';
+	import type { Dataset } from '$lib/model/types';
+	import type { Tracker } from '$lib/tracker/tracker.svelte';
 
-  let { dataset, regionId, tracker }:
-    { dataset: Dataset; regionId: string; tracker: Tracker } = $props();
+	let { dataset, regionId, tracker }: { dataset: Dataset; regionId: string; tracker: Tracker } =
+		$props();
 
-  const SLOT_LABEL = { bp: 'Blueprint', neuroptics: 'Neuroptics', chassis: 'Chassis', systems: 'Systems' } as const;
+	const SLOT_LABEL = {
+		bp: 'Blueprint',
+		neuroptics: 'Neuroptics',
+		chassis: 'Chassis',
+		systems: 'Systems',
+	} as const;
 
-  let region = $derived(dataset.regions.find((r) => r.id === regionId));
-  let node = $derived(dataset.nodes.find((n) => n.regionId === regionId && n.isAssassination));
-  let boss = $derived(node ? dataset.bosses.find((b) => b.id === node!.bossId) : undefined);
-  let frame = $derived(node ? dataset.warframes.find((w) => w.id === node!.frameId) : undefined);
+	let region = $derived(dataset.regions.find((r) => r.id === regionId));
+	let node = $derived(dataset.nodes.find((n) => n.regionId === regionId && n.isAssassination));
+	let boss = $derived(node ? dataset.bosses.find((b) => b.id === node!.bossId) : undefined);
+	let frame = $derived(node ? dataset.warframes.find((w) => w.id === node!.frameId) : undefined);
 </script>
 
 <section class="rounded-xl border border-slate-700 bg-slate-900 p-4">
-  {#if node && boss && frame}
-    <h3 class="font-semibold">{node.name} — <span class="text-sky-300">{boss.name}</span></h3>
-    <p class="mb-3 text-sm text-slate-400">Drops {frame.name}
-      · {tracker.frameCount(frame.id).owned}/{tracker.frameCount(frame.id).total} owned</p>
-    {#each frame.parts as part (part.id)}
-      <div data-part={part.id} data-owned={tracker.isOwned(part.id)}
-        role="button" tabindex="0"
-        class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-slate-800"
-        class:bg-emerald-500-15={tracker.isOwned(part.id)}
-        onclick={() => tracker.togglePart(part.id)}
-        onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && tracker.togglePart(part.id)}>
-        <span class="inline-flex h-4 w-4 items-center justify-center rounded border"
-          class:border-emerald-400={tracker.isOwned(part.id)}>{tracker.isOwned(part.id) ? '✓' : ''}</span>
-        <span>{SLOT_LABEL[part.slot]}</span>
-      </div>
-    {/each}
-    <button class="mt-2 text-sm text-sky-300" onclick={() => tracker.toggleFrame(frame!.id)}>Toggle whole frame</button>
-  {:else}
-    <p class="text-sm text-slate-400">{region?.name}: no Assassination frame here yet.</p>
-  {/if}
+	{#if node && boss && frame}
+		<h3 class="font-semibold">{node.name} — <span class="text-sky-300">{boss.name}</span></h3>
+		<p class="mb-3 text-sm text-slate-400">
+			Drops {frame.name}
+			· {tracker.frameCount(frame.id).owned}/{tracker.frameCount(frame.id).total} owned
+		</p>
+		{#each frame.parts as part (part.id)}
+			<div
+				data-part={part.id}
+				data-owned={tracker.isOwned(part.id)}
+				role="button"
+				tabindex="0"
+				class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-slate-800"
+				class:bg-emerald-500-15={tracker.isOwned(part.id)}
+				onclick={() => tracker.togglePart(part.id)}
+				onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && tracker.togglePart(part.id)}
+			>
+				<span
+					class="inline-flex h-4 w-4 items-center justify-center rounded border"
+					class:border-emerald-400={tracker.isOwned(part.id)}
+					>{tracker.isOwned(part.id) ? '✓' : ''}</span
+				>
+				<span>{SLOT_LABEL[part.slot]}</span>
+			</div>
+		{/each}
+		<button class="mt-2 text-sm text-sky-300" onclick={() => tracker.toggleFrame(frame!.id)}
+			>Toggle whole frame</button
+		>
+	{:else}
+		<p class="text-sm text-slate-400">{region?.name}: no Assassination frame here yet.</p>
+	{/if}
 </section>
 ```
 
@@ -1025,40 +1080,49 @@ export const useTracker = () => getContext<Tracker>(KEY);
 
 ```svelte
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { browser } from '$app/environment';
-  import { seed } from '$lib/data/seed';
-  import StarChart from '$lib/starchart/StarChart.svelte';
-  import RegionPanel from '$lib/panel/RegionPanel.svelte';
-  import { createTracker } from '$lib/tracker/tracker.svelte';
-  import { loadOwned, saveOwned } from '$lib/tracker/persistence';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	import { seed } from '$lib/data/seed';
+	import StarChart from '$lib/starchart/StarChart.svelte';
+	import RegionPanel from '$lib/panel/RegionPanel.svelte';
+	import { createTracker } from '$lib/tracker/tracker.svelte';
+	import { loadOwned, saveOwned } from '$lib/tracker/persistence';
 
-  const tracker = createTracker(seed.warframes, (ids) => { if (browser) saveOwned(ids); });
-  let selectedId = $state('venus');
+	const tracker = createTracker(seed.warframes, (ids) => {
+		if (browser) saveOwned(ids);
+	});
+	let selectedId = $state('venus');
 
-  onMount(async () => { tracker.load(await loadOwned()); });
+	onMount(async () => {
+		tracker.load(await loadOwned());
+	});
 
-  function statusOf(regionId: string): 'done'|'part'|'none' {
-    const node = seed.nodes.find((n) => n.regionId === regionId && n.isAssassination);
-    if (!node?.frameId) return 'none';
-    const c = tracker.frameCount(node.frameId);
-    return c.owned === c.total && c.total > 0 ? 'done' : c.owned > 0 ? 'part' : 'none';
-  }
+	function statusOf(regionId: string): 'done' | 'part' | 'none' {
+		const node = seed.nodes.find((n) => n.regionId === regionId && n.isAssassination);
+		if (!node?.frameId) return 'none';
+		const c = tracker.frameCount(node.frameId);
+		return c.owned === c.total && c.total > 0 ? 'done' : c.owned > 0 ? 'part' : 'none';
+	}
 </script>
 
 <div class="mx-auto max-w-6xl p-6 text-slate-100">
-  <header class="mb-4 flex items-center gap-4">
-    <span class="text-lg font-bold">wf<span class="text-sky-400">oracle</span></span>
-    <span class="ml-auto text-sm text-slate-400">
-      Node Frames <b class="text-slate-100">{tracker.total.owned} / {tracker.total.total}</b>
-    </span>
-  </header>
+	<header class="mb-4 flex items-center gap-4">
+		<span class="text-lg font-bold">wf<span class="text-sky-400">oracle</span></span>
+		<span class="ml-auto text-sm text-slate-400">
+			Node Frames <b class="text-slate-100">{tracker.total.owned} / {tracker.total.total}</b>
+		</span>
+	</header>
 
-  <div class="mb-4 rounded-xl border border-slate-700">
-    <StarChart regions={seed.regions} {selectedId} {statusOf} onselect={(id) => (selectedId = id)} />
-  </div>
+	<div class="mb-4 rounded-xl border border-slate-700">
+		<StarChart
+			regions={seed.regions}
+			{selectedId}
+			{statusOf}
+			onselect={(id) => (selectedId = id)}
+		/>
+	</div>
 
-  <RegionPanel dataset={seed} regionId={selectedId} {tracker} />
+	<RegionPanel dataset={seed} regionId={selectedId} {tracker} />
 </div>
 ```
 

@@ -531,9 +531,9 @@ import AspectBreakdown from './AspectBreakdown.svelte';
    `<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>`, add:
 
 ```svelte
-						{#if part.subDrops}
-							<AspectBreakdown {part} {owned} />
-						{/if}
+{#if part.subDrops}
+	<AspectBreakdown {part} {owned} />
+{/if}
 ```
 
 (`owned` is already in scope — `{@const owned = tracker.isOwned(part.id)}` at the top of the `{#each}`.)

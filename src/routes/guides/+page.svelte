@@ -13,18 +13,15 @@
 />
 
 <div class="mx-auto max-w-screen-2xl p-6 text-slate-100">
-	<a
-		href={resolve('/')}
-		class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
-	>
+	<a href={resolve('/')} class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80">
 		&lt; Back to Star Chart
 	</a>
 
 	<header class="mt-4 mb-6">
 		<h1 class="text-2xl font-bold">Warframe Resource Farming Guides</h1>
 		<p class="mt-2 text-sm text-wf-muted">
-			Wiki-sourced farming locations for every tracked resource — pick a
-			material below for its best early- and late-game spots.
+			Wiki-sourced farming locations for every tracked resource — pick a material below for its best
+			early- and late-game spots.
 		</p>
 	</header>
 

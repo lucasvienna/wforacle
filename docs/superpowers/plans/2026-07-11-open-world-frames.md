@@ -1158,7 +1158,9 @@ function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
 Then, in the assassination `{#each entries as { node, boss, frame } (node.id)}` block, replace the avatar/parts/toggle markup (everything from the `<div class="mb-4 flex items-center gap-3">` avatar block through the "Toggle whole frame" `</button>`) with:
 
 ```svelte
-					{@render frameCard(frame, `Blueprint from Market · components from ${boss.name}`, (part) => sourceLabel(part.slot, boss.name))}
+{@render frameCard(frame, `Blueprint from Market · components from ${boss.name}`, (part) =>
+	sourceLabel(part.slot, boss.name),
+)}
 ```
 
 (Keep the surrounding node header — `<h3>{node.name}</h3>`, the "Boss: … drops Warframe components" line, and the faction/Assassination tag — unchanged.)
@@ -1180,21 +1182,27 @@ to:
 Immediately after the assassination `{#each entries …}{/each}` loop (still inside the same `<div class="space-y-6">`), add the open-world zones:
 
 ```svelte
-				{#each openWorldZones as zone (zone.node.id)}
-					<div>
-						<div class="mb-4 flex items-start justify-between gap-3">
-							<h3 class="text-base font-semibold text-slate-100">{zone.node.name}</h3>
-							<span class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[zone.node.faction] ?? 'border-wf-edge text-wf-muted'}">
-								{zone.node.faction} · Free Roam
-							</span>
-						</div>
-						<div class="space-y-6">
-							{#each zone.entries as { frame, farm } (frame.id)}
-								{@render frameCard(frame, `Blueprint: ${farm.bpSource}`, (part) => owSourceText(part, farm))}
-							{/each}
-						</div>
-					</div>
-				{/each}
+{#each openWorldZones as zone (zone.node.id)}
+	<div>
+		<div class="mb-4 flex items-start justify-between gap-3">
+			<h3 class="text-base font-semibold text-slate-100">{zone.node.name}</h3>
+			<span
+				class="shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium {FACTION_TAG[
+					zone.node.faction
+				] ?? 'border-wf-edge text-wf-muted'}"
+			>
+				{zone.node.faction} · Free Roam
+			</span>
+		</div>
+		<div class="space-y-6">
+			{#each zone.entries as { frame, farm } (frame.id)}
+				{@render frameCard(frame, `Blueprint: ${farm.bpSource}`, (part) =>
+					owSourceText(part, farm),
+				)}
+			{/each}
+		</div>
+	</div>
+{/each}
 ```
 
 The existing `{:else}` empty-state (`no Assassination frame here yet.`) stays — it now shows only when a region has neither assassination nor open-world frames.

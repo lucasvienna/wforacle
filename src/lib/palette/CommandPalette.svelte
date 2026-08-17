@@ -23,9 +23,7 @@
 	const focus = createFocusRestore();
 
 	let results = $derived(filterPaletteItems(items, query));
-	let clampedHighlight = $derived(
-		Math.min(highlight, Math.max(results.length - 1, 0)),
-	);
+	let clampedHighlight = $derived(Math.min(highlight, Math.max(results.length - 1, 0)));
 
 	// A combobox rather than a drawer, so it does not use Drawer — but the
 	// focus-restore half was the same code, and now comes from the shared helper.
@@ -100,9 +98,7 @@
 				aria-expanded="true"
 				aria-autocomplete="list"
 				aria-controls="palette-listbox"
-				aria-activedescendant={results.length
-					? `palette-opt-${clampedHighlight}`
-					: undefined}
+				aria-activedescendant={results.length ? `palette-opt-${clampedHighlight}` : undefined}
 				placeholder="Search planets, frames, resources…"
 				class="w-full border-b border-wf-edge bg-transparent px-4 py-3 text-sm text-slate-100 placeholder:text-wf-muted focus:outline-none"
 			/>
@@ -129,11 +125,8 @@
 							onclick={() => select(item)}
 							onmouseenter={() => (highlight = index)}
 						>
-							<span class="text-sm font-medium text-slate-100"
-								>{item.label}</span
-							>
-							<span class="shrink-0 text-xs text-wf-muted">{item.sublabel}</span
-							>
+							<span class="text-sm font-medium text-slate-100">{item.label}</span>
+							<span class="shrink-0 text-xs text-wf-muted">{item.sublabel}</span>
 						</button>
 					{/each}
 				{:else}

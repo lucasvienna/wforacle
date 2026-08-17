@@ -9,26 +9,14 @@
 	import RegionPanel from '$lib/panel/RegionPanel.svelte';
 	import SettingsDrawer from '$lib/panel/SettingsDrawer.svelte';
 	import { createTracker, type Tracker } from '$lib/tracker/tracker.svelte';
-	import {
-		loadOwned,
-		saveOwned,
-		loadQuests,
-		saveQuests,
-		persist,
-	} from '$lib/tracker/persistence';
+	import { loadOwned, saveOwned, loadQuests, saveQuests, persist } from '$lib/tracker/persistence';
 	import { revealedRegions } from '$lib/model/reveal';
 	import CommandPalette from '$lib/palette/CommandPalette.svelte';
 	import { buildPaletteItems, type PaletteItem } from '$lib/palette/search';
-	import {
-		createWorldStateStore,
-		type WorldStateStore,
-	} from '$lib/worldstate/worldstate.svelte';
+	import { createWorldStateStore, type WorldStateStore } from '$lib/worldstate/worldstate.svelte';
 	import WorldStateTicker from '$lib/worldstate/WorldStateTicker.svelte';
 	import ImportDialog from '$lib/import/ImportDialog.svelte';
-	import {
-		createImportStore,
-		type ImportStore,
-	} from '$lib/import/importState.svelte';
+	import { createImportStore, type ImportStore } from '$lib/import/importState.svelte';
 	import SeoHead from '$lib/seo/SeoHead.svelte';
 	import { webApplicationLd } from '$lib/seo/jsonld';
 	import type { PageProps } from './$types';
@@ -82,8 +70,7 @@
 					if (browser && ready) persist('saving owned parts', saveOwned(ids));
 				},
 				(ids) => {
-					if (browser && ready)
-						persist('saving completed quests', saveQuests(ids));
+					if (browser && ready) persist('saving completed quests', saveQuests(ids));
 				},
 			);
 			t.load(owned);
@@ -141,10 +128,7 @@
 	let specialRegions = $derived(visible.filter((r) => r.kind === 'special'));
 	let paletteItems = $derived(
 		dataset
-			? [
-					...buildPaletteItems(dataset, new Set(visible.map((r) => r.id))),
-					IMPORT_ACTION,
-				]
+			? [...buildPaletteItems(dataset, new Set(visible.map((r) => r.id))), IMPORT_ACTION]
 			: ([] as PaletteItem[]),
 	);
 
@@ -198,9 +182,7 @@
 
 <div class="mx-auto max-w-screen-2xl p-6 text-slate-100">
 	<header class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-		<span class="text-lg font-bold text-wf-gold"
-			>wf<span class="text-wf-cyan">oracle</span></span
-		>
+		<span class="text-lg font-bold text-wf-gold">wf<span class="text-wf-cyan">oracle</span></span>
 		<div class="ml-auto flex items-center gap-2 sm:gap-3">
 			<button
 				type="button"
@@ -210,10 +192,7 @@
 			>
 				<span aria-hidden="true">🔍</span>
 				Search
-				<kbd
-					class="rounded border border-wf-edge px-1 text-[10px] text-wf-muted"
-					>Ctrl K</kbd
-				>
+				<kbd class="rounded border border-wf-edge px-1 text-[10px] text-wf-muted">Ctrl K</kbd>
 			</button>
 			<a
 				href={resolve('/guides/credits')}
@@ -245,13 +224,10 @@
 				>
 					<span
 						>Frame Parts <b
-							class="inline-block min-w-[3.25rem] text-center text-wf-gold tabular-nums"
-							>—</b
+							class="inline-block min-w-[3.25rem] text-center text-wf-gold tabular-nums">—</b
 						></span
 					>
-					<span
-						class="relative h-1.5 w-16 overflow-hidden rounded-full bg-wf-edge"
-					></span>
+					<span class="relative h-1.5 w-16 overflow-hidden rounded-full bg-wf-edge"></span>
 				</div>
 				<div
 					aria-hidden="true"
@@ -271,9 +247,7 @@
 							>{tracker.total.owned}/{tracker.total.total}</b
 						></span
 					>
-					<span
-						class="relative h-1.5 w-16 overflow-hidden rounded-full bg-wf-edge"
-					>
+					<span class="relative h-1.5 w-16 overflow-hidden rounded-full bg-wf-edge">
 						<span
 							class="absolute inset-y-0 left-0 rounded-full bg-wf-cyan"
 							style="width: {tracker.total.total
@@ -304,12 +278,10 @@
 	</header>
 
 	<div class="mb-4">
-		<h1 class="text-xl font-bold text-slate-100">
-			Warframe Star Chart Tracker
-		</h1>
+		<h1 class="text-xl font-bold text-slate-100">Warframe Star Chart Tracker</h1>
 		<p class="mt-1 text-sm text-wf-muted">
-			Track which Warframes you own, find the best farming spots for every
-			planet and boss, and never lose progress on a grind again.
+			Track which Warframes you own, find the best farming spots for every planet and boss, and
+			never lose progress on a grind again.
 		</p>
 	</div>
 
@@ -324,9 +296,7 @@
 		{#if ws}
 			<WorldStateTicker store={ws} />
 		{:else}
-			<div data-worldstate class="text-xs text-wf-muted">
-				Loading live status…
-			</div>
+			<div data-worldstate class="text-xs text-wf-muted">Loading live status…</div>
 		{/if}
 	</div>
 
@@ -369,8 +339,8 @@
 			>
 				<p class="text-slate-300">Couldn’t load the Star Chart data.</p>
 				<p class="max-w-md text-sm text-wf-muted">
-					This is usually a temporary network problem. Your tracked progress is
-					stored locally and hasn’t been lost.
+					This is usually a temporary network problem. Your tracked progress is stored locally and
+					hasn’t been lost.
 				</p>
 				<button
 					type="button"
@@ -382,9 +352,7 @@
 				</button>
 			</div>
 		{:else}
-			<div class="flex h-96 items-center justify-center text-slate-500">
-				Loading Star Chart…
-			</div>
+			<div class="flex h-96 items-center justify-center text-slate-500">Loading Star Chart…</div>
 		{/if}
 	</div>
 
@@ -398,9 +366,7 @@
 					</h3>
 					{#if planet.frames.length}
 						<p class="mt-1 text-xs text-wf-muted">
-							Boss frame{planet.frames.length > 1 ? 's' : ''}: {planet.frames.join(
-								', ',
-							)}
+							Boss frame{planet.frames.length > 1 ? 's' : ''}: {planet.frames.join(', ')}
 						</p>
 					{/if}
 					{#if planet.resources.length}
@@ -427,8 +393,8 @@
 	</section>
 
 	<footer class="mt-8 text-center text-xs text-slate-600">
-		Planet art &amp; game data © Digital Extremes, via the Warframe wiki.
-		Fan-made tool — not affiliated with Digital Extremes.
+		Planet art &amp; game data © Digital Extremes, via the Warframe wiki. Fan-made tool — not
+		affiliated with Digital Extremes.
 		<br />
 		<a href={resolve('/guides')} class="text-wf-cyan hover:text-wf-cyan/80">
 			Browse all resource farming guides

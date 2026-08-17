@@ -55,10 +55,7 @@
 />
 
 <div class="mx-auto max-w-5xl p-6 text-slate-100">
-	<a
-		href={resolve('/')}
-		class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
-	>
+	<a href={resolve('/')} class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80">
 		&lt; Back to Star Chart
 	</a>
 
@@ -138,11 +135,7 @@
 	<section class="mb-8">
 		<h2 class="mb-3 text-lg font-semibold">Honorable mentions</h2>
 		{#each content.mentions as m, i (m.lead)}
-			<p
-				class="text-sm text-wf-muted {i < content.mentions.length - 1
-					? 'mb-2'
-					: ''}"
-			>
+			<p class="text-sm text-wf-muted {i < content.mentions.length - 1 ? 'mb-2' : ''}">
 				<strong class="text-slate-100">{m.lead}</strong> — {m.text}
 			</p>
 		{/each}
