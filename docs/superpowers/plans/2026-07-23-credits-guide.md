@@ -461,9 +461,7 @@ export const load: PageLoad = async ({ fetch }) => {
 
 {#snippet recCard(rec: Recommendation)}
 	<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
-		<span
-			class="rounded-full border px-2 py-0.5 text-[11px] font-medium {PHASE_TAG[rec.phase]}"
-		>
+		<span class="rounded-full border px-2 py-0.5 text-[11px] font-medium {PHASE_TAG[rec.phase]}">
 			{PHASE_LABEL[rec.phase]}
 		</span>
 		<h3 class="mt-2 text-base font-semibold text-slate-100">{rec.nodeLabel}</h3>
@@ -512,8 +510,8 @@ export const load: PageLoad = async ({ fetch }) => {
 		<div>
 			<h1 class="text-2xl font-bold">{data.resource.name} farming guide</h1>
 			<p class="mt-1 text-sm text-wf-muted">
-				Every credit source pays through one of two channels — and every
-				multiplier only works on one of them.
+				Every credit source pays through one of two channels — and every multiplier only works on
+				one of them.
 			</p>
 		</div>
 	</header>
@@ -711,41 +709,36 @@ const SOURCES = [
 Replace `<!-- two-channel rule section inserted here in a follow-up -->` with:
 
 ```svelte
-	<section class="mb-8">
-		<h2 class="mb-3 text-lg font-semibold">The two-channel rule</h2>
-		<p class="mb-4 text-sm text-wf-muted">
-			Every credit source pays through one of two channels, and every multiplier
-			attaches to exactly one of them — which explains every “why didn’t my
-			booster work?” moment.
-		</p>
-		<div class="grid gap-4 sm:grid-cols-2">
-			<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
-				<h3 class="text-sm font-semibold text-emerald-300">End-of-mission rewards</h3>
-				<p class="mt-1 text-xs text-wf-muted">
-					Dark Sectors · Arbitrations · Sorties · Railjack
-				</p>
-				<p class="mt-2 text-sm text-wf-muted">
-					Doubled by the <strong>Daily First Win Bonus</strong> and by a
-					<strong>Credit Booster</strong> — stack both for ×4.
-				</p>
-			</div>
-			<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
-				<h3 class="text-sm font-semibold text-amber-300">Pickups &amp; caches</h3>
-				<p class="mt-1 text-xs text-wf-muted">
-					The Index · Laomedeia · Techrot Safes · Profit-Taker
-				</p>
-				<p class="mt-2 text-sm text-wf-muted">
-					Doubled by a <strong>Credit Booster</strong>, <strong>Chroma’s Effigy</strong>
-					(drops), the <strong>MR30 Blessing</strong> and
-					<strong>Prosperous Retriever</strong> — never by the First Win Bonus.
-				</p>
-			</div>
+<section class="mb-8">
+	<h2 class="mb-3 text-lg font-semibold">The two-channel rule</h2>
+	<p class="mb-4 text-sm text-wf-muted">
+		Every credit source pays through one of two channels, and every multiplier attaches to exactly
+		one of them — which explains every “why didn’t my booster work?” moment.
+	</p>
+	<div class="grid gap-4 sm:grid-cols-2">
+		<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
+			<h3 class="text-sm font-semibold text-emerald-300">End-of-mission rewards</h3>
+			<p class="mt-1 text-xs text-wf-muted">Dark Sectors · Arbitrations · Sorties · Railjack</p>
+			<p class="mt-2 text-sm text-wf-muted">
+				Doubled by the <strong>Daily First Win Bonus</strong> and by a
+				<strong>Credit Booster</strong> — stack both for ×4.
+			</p>
 		</div>
-		<p class="mt-3 text-xs text-amber-300/90">
-			⚠ Running a cache mission first each day wastes the First Win Bonus — it is
-			consumed with no effect. Spend it on an Arbitration or a Dark Sector first.
-		</p>
-	</section>
+		<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
+			<h3 class="text-sm font-semibold text-amber-300">Pickups &amp; caches</h3>
+			<p class="mt-1 text-xs text-wf-muted">The Index · Laomedeia · Techrot Safes · Profit-Taker</p>
+			<p class="mt-2 text-sm text-wf-muted">
+				Doubled by a <strong>Credit Booster</strong>, <strong>Chroma’s Effigy</strong>
+				(drops), the <strong>MR30 Blessing</strong> and
+				<strong>Prosperous Retriever</strong> — never by the First Win Bonus.
+			</p>
+		</div>
+	</div>
+	<p class="mt-3 text-xs text-amber-300/90">
+		⚠ Running a cache mission first each day wastes the First Win Bonus — it is consumed with no
+		effect. Spend it on an Arbitration or a Dark Sector first.
+	</p>
+</section>
 ```
 
 - [ ] **Step 6: Replace the second placeholder comment with the remaining sections**
@@ -753,84 +746,78 @@ Replace `<!-- two-channel rule section inserted here in a follow-up -->` with:
 Replace `<!-- stacking table, myth-bust and honorable-mention sections inserted here in a follow-up -->` with:
 
 ```svelte
-	<section class="mb-8">
-		<h2 class="mb-3 text-lg font-semibold">Stacking multipliers</h2>
-		<div class="overflow-x-auto rounded-xl border border-wf-edge">
-			<table class="w-full text-left text-sm">
-				<thead class="bg-wf-panel text-xs text-wf-muted">
-					<tr>
-						<th class="px-3 py-2 font-medium">Multiplier</th>
-						<th class="px-3 py-2 font-medium">Applies to</th>
-						<th class="px-3 py-2 font-medium">Effect</th>
+<section class="mb-8">
+	<h2 class="mb-3 text-lg font-semibold">Stacking multipliers</h2>
+	<div class="overflow-x-auto rounded-xl border border-wf-edge">
+		<table class="w-full text-left text-sm">
+			<thead class="bg-wf-panel text-xs text-wf-muted">
+				<tr>
+					<th class="px-3 py-2 font-medium">Multiplier</th>
+					<th class="px-3 py-2 font-medium">Applies to</th>
+					<th class="px-3 py-2 font-medium">Effect</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#each MULTIPLIERS as m (m.name)}
+					<tr class="border-t border-wf-edge">
+						<td class="px-3 py-2 font-medium text-slate-100">{m.name}</td>
+						<td class="px-3 py-2 text-wf-muted">{m.channel}</td>
+						<td class="px-3 py-2 text-wf-muted">{m.effect}</td>
 					</tr>
-				</thead>
-				<tbody>
-					{#each MULTIPLIERS as m (m.name)}
-						<tr class="border-t border-wf-edge">
-							<td class="px-3 py-2 font-medium text-slate-100">{m.name}</td>
-							<td class="px-3 py-2 text-wf-muted">{m.channel}</td>
-							<td class="px-3 py-2 text-wf-muted">{m.effect}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-		<p class="mt-3 text-sm text-wf-muted">
-			Worked example — Profit-Taker’s guaranteed drop: 125,000 base → 250,000 with
-			Effigy → <strong class="text-slate-100">500,000 per kill</strong> with a
-			Credit Booster on top. The First Win Bonus never touches drops, so spend it
-			elsewhere.
-		</p>
-	</section>
-
-	<section class="mb-8">
-		<h2 class="mb-3 text-lg font-semibold">Outdated advice</h2>
-		<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
-			<ul class="space-y-3 text-sm">
-				{#each MYTHS as m (m.claim)}
-					<li>
-						<p class="font-medium text-slate-100">“{m.claim}”</p>
-						<p class="mt-0.5 text-wf-muted">{m.truth}</p>
-					</li>
 				{/each}
-			</ul>
-		</div>
-	</section>
+			</tbody>
+		</table>
+	</div>
+	<p class="mt-3 text-sm text-wf-muted">
+		Worked example — Profit-Taker’s guaranteed drop: 125,000 base → 250,000 with Effigy → <strong
+			class="text-slate-100">500,000 per kill</strong
+		> with a Credit Booster on top. The First Win Bonus never touches drops, so spend it elsewhere.
+	</p>
+</section>
 
-	<section class="mb-8">
-		<h2 class="mb-3 text-lg font-semibold">Honorable mentions</h2>
-		<p class="mb-2 text-sm text-wf-muted">
-			<strong class="text-slate-100">Railjack</strong> — Veil Proxima skirmishes pay
-			80–150k per mission (per the Update 27.4 reward tables) while also earning
-			Endo, intrinsics and relics: the relaxed farm-while-doing-other-things pick.
-		</p>
-		<p class="mb-2 text-sm text-wf-muted">
-			<strong class="text-slate-100">Sorties</strong> — a fixed 100,000 per day
-			(20k + 30k + 50k) for ~20 minutes of endgame missions.
-		</p>
-		<p class="text-sm text-wf-muted">
-			<strong class="text-slate-100">Zariman bounties</strong> — up to ~60,000 as
-			end-of-mission rewards if you’re already grinding Holdfasts standing.
-		</p>
-	</section>
-
-	<section class="mb-8">
-		<h2 class="mb-3 text-lg font-semibold">Sources</h2>
-		<ul class="list-disc pl-5 text-sm">
-			{#each SOURCES as s (s.url)}
+<section class="mb-8">
+	<h2 class="mb-3 text-lg font-semibold">Outdated advice</h2>
+	<div class="rounded-xl border border-wf-edge bg-wf-panel p-4">
+		<ul class="space-y-3 text-sm">
+			{#each MYTHS as m (m.claim)}
 				<li>
-					<a
-						href={s.url}
-						target="_blank"
-						rel="noreferrer"
-						class="text-wf-cyan hover:text-wf-cyan/80"
-					>
-						{s.label}
-					</a>
+					<p class="font-medium text-slate-100">“{m.claim}”</p>
+					<p class="mt-0.5 text-wf-muted">{m.truth}</p>
 				</li>
 			{/each}
 		</ul>
-	</section>
+	</div>
+</section>
+
+<section class="mb-8">
+	<h2 class="mb-3 text-lg font-semibold">Honorable mentions</h2>
+	<p class="mb-2 text-sm text-wf-muted">
+		<strong class="text-slate-100">Railjack</strong> — Veil Proxima skirmishes pay 80–150k per mission
+		(per the Update 27.4 reward tables) while also earning Endo, intrinsics and relics: the relaxed farm-while-doing-other-things
+		pick.
+	</p>
+	<p class="mb-2 text-sm text-wf-muted">
+		<strong class="text-slate-100">Sorties</strong> — a fixed 100,000 per day (20k + 30k + 50k) for ~20
+		minutes of endgame missions.
+	</p>
+	<p class="text-sm text-wf-muted">
+		<strong class="text-slate-100">Zariman bounties</strong> — up to ~60,000 as end-of-mission rewards
+		if you’re already grinding Holdfasts standing.
+	</p>
+</section>
+
+<section class="mb-8">
+	<h2 class="mb-3 text-lg font-semibold">Sources</h2>
+	<ul class="list-disc pl-5 text-sm">
+		{#each SOURCES as s (s.url)}
+			<li>
+				<a href={s.url} target="_blank" rel="noreferrer" class="text-wf-cyan hover:text-wf-cyan/80">
+					{s.label}
+				</a>
+			</li>
+		{/each}
+	</ul>
+</section>
 ```
 
 - [ ] **Step 7: Run svelte autofixer, then the tests**

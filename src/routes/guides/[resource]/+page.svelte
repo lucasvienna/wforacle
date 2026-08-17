@@ -31,10 +31,7 @@
 />
 
 <div class="mx-auto max-w-3xl p-6 text-slate-100">
-	<a
-		href={resolve('/')}
-		class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80"
-	>
+	<a href={resolve('/')} class="text-xs font-medium text-wf-cyan hover:text-wf-cyan/80">
 		&lt; Back to Star Chart
 	</a>
 

@@ -46,9 +46,7 @@
 			<div class="space-y-6">
 				{#if frames.assassination.length > 0}
 					<section>
-						<h3
-							class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase"
-						>
+						<h3 class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase">
 							Assassination
 						</h3>
 						<!-- Assassination cards are the region's primary frames: each
@@ -63,8 +61,7 @@
 									kindLabel="Assassination"
 									isKey={KEY_BOSSES.has(boss.name)}
 									defaultExpanded={defaultExpanded(frame.id)}
-									sourceText={(part) =>
-										assassinationSourceText(part, boss.name)}
+									sourceText={(part) => assassinationSourceText(part, boss.name)}
 									aspectNote={`Each ${boss.name} kill drops one Day and one Night component.`}
 								/>
 							{/each}
@@ -74,9 +71,7 @@
 
 				{#if frames.zones.length > 0}
 					<section>
-						<h3
-							class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase"
-						>
+						<h3 class="mb-3 text-xs font-semibold tracking-wide text-wf-muted uppercase">
 							Zones &amp; Missions
 						</h3>
 						<div class="space-y-5">
@@ -88,14 +83,10 @@
 											{zone.node.name}
 										</h4>
 										{#if line}
-											<span class="text-xs text-wf-muted" data-zone-cycle
-												>{line}</span
-											>
+											<span class="text-xs text-wf-muted" data-zone-cycle>{line}</span>
 										{/if}
 									</div>
-									<div
-										class="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-3"
-									>
+									<div class="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-3">
 										{#each zone.entries as { frame, farm } (regionId + ':' + zone.node.id + ':' + frame.id)}
 											<FrameCard
 												{frame}
@@ -105,11 +96,8 @@
 												kindLabel={zone.node.missionType}
 												defaultExpanded={defaultExpanded(frame.id)}
 												sourceText={(part) => owSourceText(part, farm)}
-												avail={(part) =>
-													owAvailabilityChip(part, worldState, now)}
-												summary={owSummary(frame, worldState, (id) =>
-													tracker.isOwned(id),
-												)}
+												avail={(part) => owAvailabilityChip(part, worldState, now)}
+												summary={owSummary(frame, worldState, (id) => tracker.isOwned(id))}
 											/>
 										{/each}
 									</div>

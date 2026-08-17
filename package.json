@@ -20,10 +20,10 @@
 		"gen": "wrangler types",
 		"data:build": "tsx scripts/build-data.ts",
 		"lint": "oxlint",
-		"lint:check": "oxlint",
+		"lint:check": "oxlint --type-check",
 		"lint:fix": "oxlint --fix --fix-suggestions",
-		"format": "oxfmt . && prettier --write -l \"**/*.svelte\"",
-		"format:check": "oxfmt --check . && prettier --check \"**/*.svelte\""
+		"format": "oxfmt",
+		"format:check": "oxfmt --check"
 	},
 	"dependencies": {
 		"idb": "^8.0.3"
@@ -48,8 +48,6 @@
 		"oxlint": "^1.78.0",
 		"oxlint-tsgolint": "^7.0.2001",
 		"playwright": "^1.62.1",
-		"prettier": "^3.9.6",
-		"prettier-plugin-svelte": "^4.1.1",
 		"svelte": "^5.56.9",
 		"svelte-check": "^4.7.6",
 		"tailwindcss": "^4.3.3",
@@ -63,5 +61,5 @@
 	"engines": {
 		"node": ">=24"
 	},
-	"packageManager": "pnpm@11.11.0"
+	"packageManager": "pnpm@11.22.0"
 }

@@ -2,5 +2,13 @@
 	"$schema": "./node_modules/oxfmt/configuration_schema.json",
 	"useTabs": true,
 	"singleQuote": true,
-	"ignorePatterns": ["**/*.svelte", "static/data/dataset.json"]
+	"svelte": true,
+	"ignorePatterns": [
+		"static/data/dataset.json",
+		"worker-configuration.d.ts",
+		"node_modules",
+		"build",
+		".svelte-kit",
+		".superpowers"
+	]
 }

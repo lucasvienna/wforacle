@@ -26,12 +26,8 @@
 	 * network or rate-limit failure is transient, so offer a retry. `empty` and
 	 * `unknown` get neither, because neither would help.
 	 */
-	let wrongId = $derived(
-		store.errorKind === 'notFound' || store.errorKind === 'invalid',
-	);
-	let retryable = $derived(
-		store.errorKind === 'network' || store.errorKind === 'rateLimited',
-	);
+	let wrongId = $derived(store.errorKind === 'notFound' || store.errorKind === 'invalid');
+	let retryable = $derived(store.errorKind === 'network' || store.errorKind === 'rateLimited');
 
 	$effect(() => {
 		if (wrongId) helpOpen = true;
@@ -75,9 +71,7 @@
 		data-import-help
 		class="rounded-lg border border-wf-edge p-3 text-xs text-wf-muted"
 	>
-		<summary class="cursor-pointer text-wf-cyan"
-			>How to find your account ID</summary
-		>
+		<summary class="cursor-pointer text-wf-cyan">How to find your account ID</summary>
 		<ol class="mt-2 list-decimal space-y-1 pl-4">
 			<li>
 				Open
@@ -94,9 +88,9 @@
 			<li>Paste it above.</li>
 		</ol>
 		<p class="mt-2">
-			This is not your display name. Your account ID is a public in-game
-			identifier and is not a password or login credential — we only send it to
-			the profile API, and store it (if you allow) in your own browser.
+			This is not your display name. Your account ID is a public in-game identifier and is not a
+			password or login credential — we only send it to the profile API, and store it (if you allow)
+			in your own browser.
 		</p>
 	</details>
 
@@ -117,10 +111,7 @@
 	{/if}
 
 	{#if store.phase === 'preview' && store.result}
-		<div
-			data-import-preview
-			class="rounded-lg border border-wf-edge p-3 text-sm text-slate-200"
-		>
+		<div data-import-preview class="rounded-lg border border-wf-edge p-3 text-sm text-slate-200">
 			<p>
 				<b class="text-wf-gold">{store.result.frameIds.length}</b> frames →
 				<b class="text-wf-gold">{store.result.partIds.length}</b> parts
@@ -133,9 +124,7 @@
 					{store.result.ownedUntrackedCount} owned frames aren't tracked here (skipped).
 				</p>
 			{/if}
-			<p class="mt-2 text-xs text-wf-muted">
-				Applying only adds checks — nothing is un-checked.
-			</p>
+			<p class="mt-2 text-xs text-wf-muted">Applying only adds checks — nothing is un-checked.</p>
 		</div>
 		<label class="flex items-center gap-2 text-sm text-wf-muted">
 			<input data-import-remember type="checkbox" bind:checked={remember} />

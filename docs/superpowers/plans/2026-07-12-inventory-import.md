@@ -1221,20 +1221,20 @@ let {
 and add this section directly above the existing `Tracking` section (before the `<section …>Reset tracked parts…</section>`):
 
 ```svelte
-		<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
-			<h2 class="mb-1 text-lg font-semibold text-wf-gold">Import from account</h2>
-			<p class="mb-3 text-xs text-wf-muted">
-				Seed your tracked frames and quests from your Warframe account.
-			</p>
-			<button
-				data-open-import
-				type="button"
-				onclick={onimport}
-				class="rounded border border-wf-edge px-3 py-1.5 text-sm text-wf-muted hover:text-wf-cyan"
-			>
-				Import from account…
-			</button>
-		</section>
+<section class="rounded-xl border border-wf-edge bg-wf-panel p-5">
+	<h2 class="mb-1 text-lg font-semibold text-wf-gold">Import from account</h2>
+	<p class="mb-3 text-xs text-wf-muted">
+		Seed your tracked frames and quests from your Warframe account.
+	</p>
+	<button
+		data-open-import
+		type="button"
+		onclick={onimport}
+		class="rounded border border-wf-edge px-3 py-1.5 text-sm text-wf-muted hover:text-wf-cyan"
+	>
+		Import from account…
+	</button>
+</section>
 ```
 
 - [ ] **Step 5: Wire the page** — in `src/routes/+page.svelte`:
@@ -1294,29 +1294,29 @@ function handlePick(item: PaletteItem) {
 Pass `onimport` to the settings drawer (update its usage):
 
 ```svelte
-		<SettingsDrawer
-			dataset={data}
-			{tracker}
-			open={settingsOpen}
-			onclose={() => (settingsOpen = false)}
-			onimport={() => {
-				settingsOpen = false;
-				importOpen = true;
-			}}
-		/>
+<SettingsDrawer
+	dataset={data}
+	{tracker}
+	open={settingsOpen}
+	onclose={() => (settingsOpen = false)}
+	onimport={() => {
+		settingsOpen = false;
+		importOpen = true;
+	}}
+/>
 ```
 
 Render the dialog (next to the `SettingsDrawer` block, inside the same `{#if data && tracker}`), guarded on the store:
 
 ```svelte
-		{#if importStore}
-			<ImportDialog
-				store={importStore}
-				{tracker}
-				open={importOpen}
-				onclose={() => (importOpen = false)}
-			/>
-		{/if}
+{#if importStore}
+	<ImportDialog
+		store={importStore}
+		{tracker}
+		open={importOpen}
+		onclose={() => (importOpen = false)}
+	/>
+{/if}
 ```
 
 - [ ] **Step 6: Validate touched Svelte files with the MCP autofixer**

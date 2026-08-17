@@ -536,9 +536,9 @@ import AspectBreakdown from './AspectBreakdown.svelte';
 and delete the block at lines 175-177:
 
 ```svelte
-						{#if part.subDrops}
-							<AspectBreakdown {part} {owned} />
-						{/if}
+{#if part.subDrops}
+	<AspectBreakdown {part} {owned} />
+{/if}
 ```
 
 - [ ] **Step 3: Remove the subDrops branch in RegionPanel**
@@ -693,25 +693,24 @@ import PartRow from './PartRow.svelte';
 Replace the entire part-row `{#each}` body (lines 130-180, from `{#each frame.parts as part (part.id)}` through its closing `{/each}`) with:
 
 ```svelte
-				{#each frame.parts as part (part.id)}
-					{@const chip = avail?.(part) ?? null}
-					<PartRow {part} {tracker}>
-						{#snippet children(owned)}
-							<div class="flex items-center gap-2">
-								<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
-									{#if SLOT_ICON[part.slot]}<span
-											aria-hidden="true"
-											class="mr-1 text-wf-gold">{SLOT_ICON[part.slot]}</span
-										>{/if}{SLOT_LABEL[part.slot]}
-								</span>
-								{#if chip}
-									<span class="ml-auto shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
-								{/if}
-							</div>
-							<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>
-						{/snippet}
-					</PartRow>
-				{/each}
+{#each frame.parts as part (part.id)}
+	{@const chip = avail?.(part) ?? null}
+	<PartRow {part} {tracker}>
+		{#snippet children(owned)}
+			<div class="flex items-center gap-2">
+				<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
+					{#if SLOT_ICON[part.slot]}<span aria-hidden="true" class="mr-1 text-wf-gold"
+							>{SLOT_ICON[part.slot]}</span
+						>{/if}{SLOT_LABEL[part.slot]}
+				</span>
+				{#if chip}
+					<span class="ml-auto shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
+				{/if}
+			</div>
+			<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>
+		{/snippet}
+	</PartRow>
+{/each}
 ```
 
 - [ ] **Step 5: Run tests**
@@ -1100,35 +1099,35 @@ let rows = $derived.by<Row[]>(() => {
 (e) Replace the `{#each frame.parts ...}` block (the PartRow loop from Task 5) with a loop over `rows`:
 
 ```svelte
-				{#each rows as row (row.kind === 'aspect' ? row.aspect : row.part.id)}
-					{#if row.kind === 'aspect'}
-						<AspectGroup aspect={row.aspect} parts={row.parts} {tracker} />
-					{:else}
-						{@const part = row.part}
-						{@const chip = avail?.(part) ?? null}
-						<PartRow {part} {tracker}>
-							{#snippet children(owned)}
-								<div class="flex items-center gap-2">
-									<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
-										{slotLabel(part)}
-									</span>
-									{#if chip}
-										<span class="ml-auto shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
-									{/if}
-								</div>
-								<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>
-							{/snippet}
-						</PartRow>
+{#each rows as row (row.kind === 'aspect' ? row.aspect : row.part.id)}
+	{#if row.kind === 'aspect'}
+		<AspectGroup aspect={row.aspect} parts={row.parts} {tracker} />
+	{:else}
+		{@const part = row.part}
+		{@const chip = avail?.(part) ?? null}
+		<PartRow {part} {tracker}>
+			{#snippet children(owned)}
+				<div class="flex items-center gap-2">
+					<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
+						{slotLabel(part)}
+					</span>
+					{#if chip}
+						<span class="ml-auto shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
 					{/if}
-				{/each}
+				</div>
+				<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>
+			{/snippet}
+		</PartRow>
+	{/if}
+{/each}
 ```
 
 (f) Add the bottom note after the parts `<div>` group but before the "Toggle whole frame" button (i.e. between the closing `</div>` of the `role="group"` block and the toggle `<button>`, ~line 181):
 
 ```svelte
-			{#if aspectNote && frame.parts.some((p) => p.aspect)}
-				<p class="mt-2 text-[11px] text-wf-muted">ⓘ {aspectNote}</p>
-			{/if}
+{#if aspectNote && frame.parts.some((p) => p.aspect)}
+	<p class="mt-2 text-[11px] text-wf-muted">ⓘ {aspectNote}</p>
+{/if}
 ```
 
 - [ ] **Step 4: Pass `aspectNote` from RegionPanel**
@@ -1136,7 +1135,7 @@ let rows = $derived.by<Row[]>(() => {
 In `src/lib/panel/RegionPanel.svelte`, find the assassination `<FrameCard ... />` usage (~line 176-186, where `sourceText={(part) => assassinationSourceText(part, bossName)}` is passed). Add an `aspectNote` prop alongside it:
 
 ```svelte
-									aspectNote={`Each ${bossName} kill drops one Day and one Night component.`}
+aspectNote={`Each ${bossName} kill drops one Day and one Night component.`}
 ```
 
 (`bossName` is already in scope at this call site — it is the same value passed to `assassinationSourceText`. If it is computed inline, hoist it to a `const bossName = ...` above the `<FrameCard>` so both props can use it.)

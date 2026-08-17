@@ -77,11 +77,7 @@
 				>
 					Confirm reset
 				</button>
-				<button
-					type="button"
-					onclick={() => (confirming = false)}
-					class="text-sm text-wf-muted"
-				>
+				<button type="button" onclick={() => (confirming = false)} class="text-sm text-wf-muted">
 					Cancel
 				</button>
 			</div>

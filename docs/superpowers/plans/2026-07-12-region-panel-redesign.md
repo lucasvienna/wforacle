@@ -477,7 +477,7 @@ import { resourcesForRegion } from '$lib/model/resources';
 Replace the entire right resource `<section>` (currently the block starting `<section ...>` with `<h2 ...>Resources on {region?.name}</h2>` through its closing `</section>`) with:
 
 ```svelte
-	<ResourceRail {resources} {regionId} />
+<ResourceRail {resources} {regionId} />
 ```
 
 - [ ] **Step 6: Run the full unit suite**
@@ -960,11 +960,7 @@ Replace the entire contents of `src/lib/panel/RegionPanel.svelte` with:
 	function owSourceText(part: WarframePart, farm: OpenWorldFarm): string {
 		if (part.slot === 'bp') return farm.bpSource;
 		const rot =
-			part.rotation === 'any'
-				? 'any rot'
-				: part.rotation
-					? `Rot ${part.rotation}`
-					: undefined;
+			part.rotation === 'any' ? 'any rot' : part.rotation ? `Rot ${part.rotation}` : undefined;
 		const chance = part.chance != null ? `~${Math.round(part.chance)}%` : undefined;
 		return [farm.componentSource, part.bountyTier, rot, chance].filter(Boolean).join(' · ');
 	}

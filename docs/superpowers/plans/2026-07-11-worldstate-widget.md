@@ -743,16 +743,20 @@ Create `src/lib/worldstate/WorldStateTicker.svelte` (use the `svelte:svelte-file
 
 {#if store.state}
 	{@const ws = store.state}
-	<div
-		data-worldstate
-		class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-wf-muted"
-	>
-		<span title="Cetus / Plains of Eidolon">{GLYPH[ws.cetus.state] ?? ''} Cetus {ws.cetus.state} · {left(ws.cetus.expiry)}</span>
-		<span title="Orb Vallis">{GLYPH[ws.vallis.state] ?? ''} Vallis {ws.vallis.state} · {left(ws.vallis.expiry)}</span>
-		<span title="Cambion Drift">{GLYPH[ws.cambion.state] ?? ''} Cambion {ws.cambion.state} · {left(ws.cambion.expiry)}</span>
+	<div data-worldstate class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-wf-muted">
+		<span title="Cetus / Plains of Eidolon"
+			>{GLYPH[ws.cetus.state] ?? ''} Cetus {ws.cetus.state} · {left(ws.cetus.expiry)}</span
+		>
+		<span title="Orb Vallis"
+			>{GLYPH[ws.vallis.state] ?? ''} Vallis {ws.vallis.state} · {left(ws.vallis.expiry)}</span
+		>
+		<span title="Cambion Drift"
+			>{GLYPH[ws.cambion.state] ?? ''} Cambion {ws.cambion.state} · {left(ws.cambion.expiry)}</span
+		>
 		{#if ws.rotation.letter}
 			<span class="text-wf-gold" title="Global bounty reward rotation"
-				>Rotation {ws.rotation.letter}{#if ws.rotation.expiry} · flips {left(ws.rotation.expiry)}{/if}</span
+				>Rotation {ws.rotation.letter}{#if ws.rotation.expiry}
+					· flips {left(ws.rotation.expiry)}{/if}</span
 			>
 		{/if}
 	</div>
@@ -1032,27 +1036,32 @@ function owAvailabilityChip(part: WarframePart): { cls: string; text: string } |
 Inside the snippet's part-row `{#each frame.parts as part (part.id)}` loop, after the existing source `<span class="ml-auto …">{sourceText(part)}</span>`, add the chip on its own line under the row's flex container. Replace the single source span line with source + chip:
 
 ```svelte
-					<span class="ml-auto text-xs text-wf-muted">{sourceText(part)}</span>
-					{#if avail}
-						{@const chip = avail(part)}
-						{#if chip}
-							<span class="ml-2 shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
-						{/if}
-					{/if}
+<span class="ml-auto text-xs text-wf-muted">{sourceText(part)}</span>
+{#if avail}
+	{@const chip = avail(part)}
+	{#if chip}
+		<span class="ml-2 shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
+	{/if}
+{/if}
 ```
 
 3c. Pass the callback only from the open-world caller (assassination stays `undefined`). In the open-world `{#each zone.entries …}` block, update the render call:
 
 ```svelte
-						{@render frameCard(frame, `Blueprint: ${farm.bpSource}`, (part) => owSourceText(part, farm), owAvailabilityChip)}
+{@render frameCard(
+	frame,
+	`Blueprint: ${farm.bpSource}`,
+	(part) => owSourceText(part, farm),
+	owAvailabilityChip,
+)}
 ```
 
 3d. Add the zone cycle line to the open-world zone header. In the zone header `<div class="mb-4 flex items-start justify-between gap-3">`, add below the `<h3>{zone.node.name}</h3>` (inside the left cell) — or after the faction tag — a cycle line:
 
 ```svelte
-						{#if zoneCycleLine(zone.node.name)}
-							<p class="mt-0.5 text-xs text-wf-muted" data-zone-cycle>{zoneCycleLine(zone.node.name)}</p>
-						{/if}
+{#if zoneCycleLine(zone.node.name)}
+	<p class="mt-0.5 text-xs text-wf-muted" data-zone-cycle>{zoneCycleLine(zone.node.name)}</p>
+{/if}
 ```
 
 (The assassination `{@render frameCard(...)}` call keeps three args — no chip.)
@@ -1117,21 +1126,21 @@ onDestroy(() => {
 Render the ticker in the header — add it inside the `<header>`'s `ml-auto` group, before the Search button (so it sits left of the controls):
 
 ```svelte
-			{#if ws}
-				<WorldStateTicker store={ws} />
-			{/if}
+{#if ws}
+	<WorldStateTicker store={ws} />
+{/if}
 ```
 
 Pass the overlay props to `RegionPanel`:
 
 ```svelte
-			<RegionPanel
-				dataset={data}
-				regionId={selectedId}
-				{tracker}
-				worldState={ws?.state ?? null}
-				now={ws?.now ?? Date.now()}
-			/>
+<RegionPanel
+	dataset={data}
+	regionId={selectedId}
+	{tracker}
+	worldState={ws?.state ?? null}
+	now={ws?.now ?? Date.now()}
+/>
 ```
 
 - [ ] **Step 2: Add the service-worker network-first rule**

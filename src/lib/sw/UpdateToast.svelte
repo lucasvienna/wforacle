@@ -1,8 +1,5 @@
 <script lang="ts">
-	let {
-		onrefresh,
-		ondismiss,
-	}: { onrefresh: () => void; ondismiss: () => void } = $props();
+	let { onrefresh, ondismiss }: { onrefresh: () => void; ondismiss: () => void } = $props();
 </script>
 
 <div

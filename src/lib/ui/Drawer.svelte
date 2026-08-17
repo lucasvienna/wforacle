@@ -66,11 +66,7 @@
 </script>
 
 {#if open}
-	<div
-		class="fixed inset-0 z-40 bg-black/50"
-		onclick={onBackdropClick}
-		role="presentation"
-	></div>
+	<div class="fixed inset-0 z-40 bg-black/50" onclick={onBackdropClick} role="presentation"></div>
 	<div
 		role="dialog"
 		aria-modal="true"

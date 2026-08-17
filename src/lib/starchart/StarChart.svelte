@@ -23,9 +23,7 @@
 	const VBW = 1120,
 		VBH = 480;
 	let placed = $derived(layoutRing(regions, { cx: VBW / 2 }));
-	let placedAnomalies = $derived(
-		layoutAnomalies(specialRegions, placed, { cx: VBW / 2 }),
-	);
+	let placedAnomalies = $derived(layoutAnomalies(specialRegions, placed, { cx: VBW / 2 }));
 </script>
 
 <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" class="block select-none">
@@ -86,14 +84,7 @@
 				/>
 			{/if}
 			{#if sel}
-				<circle
-					cx={p.x}
-					cy={p.y}
-					r={p.r + 8}
-					fill="none"
-					stroke="#37d2e6"
-					stroke-width="2.5"
-				/>
+				<circle cx={p.x} cy={p.y} r={p.r + 8} fill="none" stroke="#37d2e6" stroke-width="2.5" />
 				<circle
 					cx={p.x}
 					cy={p.y}
@@ -127,13 +118,8 @@
 				y={p.y + p.r + 16}
 				text-anchor="middle"
 				font-size={anomaly ? 11 : p.front > 0.55 ? 15 : 12}
-				fill={sel
-					? '#37d2e6'
-					: anomaly
-						? '#b6a8f0'
-						: p.front > 0.5
-							? '#cfe0f2'
-							: '#8298b4'}>{p.region.name.toUpperCase()}</text
+				fill={sel ? '#37d2e6' : anomaly ? '#b6a8f0' : p.front > 0.5 ? '#cfe0f2' : '#8298b4'}
+				>{p.region.name.toUpperCase()}</text
 			>
 		</g>
 	{/snippet}

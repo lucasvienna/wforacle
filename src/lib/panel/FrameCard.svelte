@@ -57,9 +57,7 @@
 	let iconFailed = $state(false);
 	let count = $derived(tracker.frameCount(frame.id));
 	let done = $derived(count.total > 0 && count.owned === count.total);
-	let pct = $derived(
-		count.total ? Math.round((count.owned / count.total) * 100) : 0,
-	);
+	let pct = $derived(count.total ? Math.round((count.owned / count.total) * 100) : 0);
 
 	type Row =
 		| { kind: 'part'; part: WarframePart }
@@ -91,9 +89,7 @@
 <div
 	data-frame={frame.id}
 	data-expanded={expanded}
-	class="rounded-xl border border-wf-edge bg-wf-panel p-4 {done
-		? 'opacity-60'
-		: ''}"
+	class="rounded-xl border border-wf-edge bg-wf-panel p-4 {done ? 'opacity-60' : ''}"
 >
 	<button
 		type="button"
@@ -125,12 +121,7 @@
 						faction
 					] ?? 'border-wf-edge text-wf-muted'}"
 				>
-					{faction} · {kindLabel}{#if isKey}<span
-							data-key
-							class="text-wf-muted"
-						>
-							· key</span
-						>{/if}
+					{faction} · {kindLabel}{#if isKey}<span data-key class="text-wf-muted"> · key</span>{/if}
 				</span>
 			</div>
 			<div class="mt-1 flex items-center gap-2">
@@ -140,14 +131,10 @@
 						style="width: {pct}%"
 					></div>
 				</div>
-				<span
-					class="shrink-0 text-xs {done ? 'text-emerald-400' : 'text-wf-muted'}"
-				>
+				<span class="shrink-0 text-xs {done ? 'text-emerald-400' : 'text-wf-muted'}">
 					{#if done}✓ done{:else}{count.owned}/{count.total}{/if}
 				</span>
-				<span class="shrink-0 text-wf-muted" aria-hidden="true"
-					>{expanded ? '▾' : '▸'}</span
-				>
+				<span class="shrink-0 text-wf-muted" aria-hidden="true">{expanded ? '▾' : '▸'}</span>
 			</div>
 			<div class="mt-0.5 text-xs text-wf-muted">{subLine}</div>
 		</div>
@@ -155,9 +142,7 @@
 
 	{#if expanded}
 		{#if frame.parts.some((p) => p.aspect)}
-			<p class="mt-3 mb-2 text-xs text-wf-muted">
-				Assembled from its Day and Night aspects.
-			</p>
+			<p class="mt-3 mb-2 text-xs text-wf-muted">Assembled from its Day and Night aspects.</p>
 		{/if}
 		<!-- Group the part checkboxes under the frame name so a screen reader
 		     navigating control-to-control keeps the frame context — each row's
@@ -172,17 +157,11 @@
 					<PartRow {part} {tracker}>
 						{#snippet children(owned)}
 							<div class="flex items-center gap-2">
-								<span
-									class="text-sm {owned
-										? 'text-emerald-300'
-										: 'text-slate-200'}"
-								>
+								<span class="text-sm {owned ? 'text-emerald-300' : 'text-slate-200'}">
 									{SLOT_LABEL[part.slot]}
 								</span>
 								{#if chip}
-									<span class="ml-auto shrink-0 text-[11px] {chip.cls}"
-										>{chip.text}</span
-									>
+									<span class="ml-auto shrink-0 text-[11px] {chip.cls}">{chip.text}</span>
 								{/if}
 							</div>
 							<div class="mt-0.5 text-xs text-wf-muted">{sourceText(part)}</div>

@@ -452,7 +452,7 @@ with:
 In the same file, change the assassination `FrameCard` usage (currently `sourceText={(part) => sourceLabel(part.slot, boss.name)}`) to:
 
 ```svelte
-										sourceText={(part) => assassinationSourceText(part, boss.name)}
+sourceText={(part) => assassinationSourceText(part, boss.name)}
 ```
 
 - [ ] **Step 5: Validate the component with the Svelte MCP tools**
