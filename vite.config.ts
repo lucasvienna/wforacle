@@ -34,7 +34,15 @@ export default defineConfig({
 				mode: 'hash',
 				directives: {
 					'default-src': ['self'],
-					'script-src': ['self'],
+					'script-src': [
+						'self',
+						// Cloudflare Web Analytics injects its beacon at the edge, after
+						// the build has hashed the inline scripts, so the tag can never be
+						// covered by a hash. The trailing slash matters: the injected URL
+						// carries a version segment (beacon.min.js/v4513226c…) and CSP
+						// path matching is exact without it.
+						'https://static.cloudflareinsights.com/beacon.min.js/',
+					],
 					// The completion bar sets width via a style attribute, and
 					// Svelte emits scoped <style> blocks.
 					'style-src': ['self', 'unsafe-inline'],

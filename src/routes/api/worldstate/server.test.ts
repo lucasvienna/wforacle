@@ -19,9 +19,13 @@ const fixtures: Record<string, JsonBodyType> = {
 const PC_URL = 'https://api.warframestat.us/pc/:endpoint';
 
 describe('GET /api/worldstate', () => {
-	// These specs spy on console.error and AbortSignal.timeout; leaking either
-	// into a sibling test file would be a nasty debugging session.
-	afterEach(() => vi.restoreAllMocks());
+	// These specs spy on console.error and AbortSignal.timeout and stub `caches`;
+	// leaking any of them into a sibling test file would be a nasty debugging
+	// session.
+	afterEach(() => {
+		vi.restoreAllMocks();
+		vi.unstubAllGlobals();
+	});
 
 	it('returns the composed world state on success', async () => {
 		server.use(
@@ -90,5 +94,29 @@ describe('GET /api/worldstate', () => {
 
 		expect(timeout).toHaveBeenCalledTimes(4);
 		for (const [ms] of timeout.mock.calls) expect(ms).toBe(5000);
+	});
+
+	it('returns a cached hit with mutable headers', async () => {
+		// The regression this pins: workerd's Cache API returns a Response whose
+		// headers carry the Fetch spec's "immutable" guard, so the header writes in
+		// hooks.server.ts threw `Can't modify immutable headers` on every edge-cache
+		// hit, a 500 roughly once a minute in production. It went unnoticed because
+		// `caches` is absent under vitest, so this branch never ran at all.
+		const cached = new Response(JSON.stringify({ ok: true, cached: true }), {
+			headers: { 'content-type': 'application/json', 'cache-control': 'public, s-maxage=60' },
+		});
+		// undici offers no way to construct a genuinely immutable guard, so only the
+		// throw is reproduced. `set` is the sole part of it this handler can trip.
+		cached.headers.set = () => {
+			throw new TypeError("Can't modify immutable headers.");
+		};
+		vi.stubGlobal('caches', { default: { match: async () => cached } });
+
+		const res = await GET({} as never);
+
+		// Copied, not passed through: same payload, writable headers.
+		expect(await res.json()).toEqual({ ok: true, cached: true });
+		expect(res.headers.get('cache-control')).toBe('public, s-maxage=60');
+		expect(() => res.headers.set('x-content-type-options', 'nosniff')).not.toThrow();
 	});
 });
