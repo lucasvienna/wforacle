@@ -47,7 +47,10 @@ export const GET: RequestHandler = async () => {
 	const edge = (globalThis as { caches?: { default?: Cache } }).caches?.default;
 	if (edge) {
 		const hit = await edge.match(CACHE_KEY);
-		if (hit) return hit;
+		// Cache API responses carry the Fetch spec's "immutable" header guard, which
+		// makes the writes in hooks.server.ts throw. Only a copy through the
+		// constructor drops it; clone() preserves the guard.
+		if (hit) return new Response(hit.body, hit);
 	}
 	try {
 		// An explicit 4-element array rather than ENDPOINTS.map(), so the tuple
