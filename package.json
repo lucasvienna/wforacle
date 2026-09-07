@@ -39,7 +39,7 @@
 		"@testing-library/svelte": "^5.4.2",
 		"@types/node": "^26.2.0",
 		"@vitest/coverage-v8": "^4.1.10",
-		"@wfcd/items": "^1.1275.75",
+		"@wfcd/items": "^1.1275.82",
 		"fake-indexeddb": "^6.2.5",
 		"jsdom": "^30.0.1",
 		"mdsvex": "^0.12.8",
@@ -55,7 +55,7 @@
 		"typescript": "^6.0.3",
 		"vite": "^8.2.1",
 		"vitest": "^4.1.10",
-		"warframe-worldstate-data": "^3.16.7",
+		"warframe-worldstate-data": "^3.16.9",
 		"wrangler": "^4.123.0"
 	},
 	"engines": {
