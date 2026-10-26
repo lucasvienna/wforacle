@@ -43,8 +43,8 @@ importers:
         specifier: ^4.1.10
         version: 4.1.11(vitest@4.1.11)
       '@wfcd/items':
-        specifier: ^1.1276.26
-        version: 1.1276.26(warframe-worldstate-data@3.18.1)
+        specifier: ^1.1276.36
+        version: 1.1276.36(warframe-worldstate-data@3.18.1)
       fake-indexeddb:
         specifier: ^6.2.5
         version: 6.2.5
@@ -1424,8 +1424,8 @@ packages:
   '@vitest/utils@4.1.11':
     resolution: {integrity: sha512-zTCVGpyFsGWBhllOyKlTw/vnr6D9qxsfSDyfbyZmTyjHw5N/VuvzHpHoQjm2ZJzn4RJgx5w4r7V0er69CmLgPQ==}
 
-  '@wfcd/items@1.1276.26':
-    resolution: {integrity: sha512-wsBpkUjmIJL+Z04UJQknmaGf0e0onCpM0k/v1x75fcPLFCFhjvMbDQvUP/Q7PH7fXFFKHx4UmXbpimbAjLUHfA==}
+  '@wfcd/items@1.1276.36':
+    resolution: {integrity: sha512-V0BKmWHZcZKT3212M1Z108IJJjibC6WE1M7P5N499YD7w4wVPpQry6NfdQLeR56q7lQuPaDdvkyc4K1Qek6Scw==}
     peerDependencies:
       warframe-worldstate-data: ^3.0.0
 
@@ -3278,7 +3278,7 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.1
 
-  '@wfcd/items@1.1276.26(warframe-worldstate-data@3.18.1)':
+  '@wfcd/items@1.1276.36(warframe-worldstate-data@3.18.1)':
     dependencies:
       warframe-worldstate-data: 3.18.1
 
