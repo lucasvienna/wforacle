@@ -1,6 +1,6 @@
 {
-	"version": "items@1.1276.26+worldstate-data@3.18.1",
-	"generatedAt": "2026-10-19T06:55:02.575Z",
+	"version": "items@1.1276.36+worldstate-data@3.18.1",
+	"generatedAt": "2026-10-26T06:55:50.742Z",
 	"data": {
 		"regions": [
 			{
@@ -4944,7 +4944,7 @@
 						"frameId": "citrine",
 						"slot": "bp",
 						"dropSourceNodeId": "SolNode450",
-						"chance": 9.3,
+						"chance": 8.62,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -4952,7 +4952,7 @@
 						"frameId": "citrine",
 						"slot": "neuroptics",
 						"dropSourceNodeId": "SolNode450",
-						"chance": 6.1,
+						"chance": 5.65,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -4960,7 +4960,7 @@
 						"frameId": "citrine",
 						"slot": "chassis",
 						"dropSourceNodeId": "SolNode450",
-						"chance": 6.1,
+						"chance": 5.65,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -4968,7 +4968,7 @@
 						"frameId": "citrine",
 						"slot": "systems",
 						"dropSourceNodeId": "SolNode450",
-						"chance": 6.1,
+						"chance": 5.65,
 						"bountyTier": "Rotation C"
 					}
 				]
@@ -4984,7 +4984,7 @@
 						"frameId": "dante",
 						"slot": "bp",
 						"dropSourceNodeId": "SolNode721",
-						"chance": 7.5,
+						"chance": 6.82,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -4992,7 +4992,7 @@
 						"frameId": "dante",
 						"slot": "neuroptics",
 						"dropSourceNodeId": "SolNode721",
-						"chance": 5,
+						"chance": 4.55,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -5000,7 +5000,7 @@
 						"frameId": "dante",
 						"slot": "chassis",
 						"dropSourceNodeId": "SolNode721",
-						"chance": 5,
+						"chance": 4.55,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -5008,7 +5008,7 @@
 						"frameId": "dante",
 						"slot": "systems",
 						"dropSourceNodeId": "SolNode721",
-						"chance": 5,
+						"chance": 4.55,
 						"bountyTier": "Rotation C"
 					}
 				]
@@ -5029,7 +5029,7 @@
 						"frameId": "gauss",
 						"slot": "neuroptics",
 						"dropSourceNodeId": "SolNode177",
-						"chance": 7.84,
+						"chance": 7.12,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -5037,7 +5037,7 @@
 						"frameId": "gauss",
 						"slot": "chassis",
 						"dropSourceNodeId": "SolNode177",
-						"chance": 7.84,
+						"chance": 7.12,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -5045,7 +5045,7 @@
 						"frameId": "gauss",
 						"slot": "systems",
 						"dropSourceNodeId": "SolNode177",
-						"chance": 7.84,
+						"chance": 7.12,
 						"bountyTier": "Rotation C"
 					}
 				]
@@ -5061,7 +5061,7 @@
 						"frameId": "voruna",
 						"slot": "bp",
 						"dropSourceNodeId": "SolNode310",
-						"chance": 12.24,
+						"chance": 11.54,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -5069,7 +5069,7 @@
 						"frameId": "voruna",
 						"slot": "neuroptics",
 						"dropSourceNodeId": "SolNode310",
-						"chance": 8.16,
+						"chance": 7.69,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -5077,7 +5077,7 @@
 						"frameId": "voruna",
 						"slot": "chassis",
 						"dropSourceNodeId": "SolNode310",
-						"chance": 8.16,
+						"chance": 7.69,
 						"bountyTier": "Rotation C"
 					},
 					{
@@ -5085,7 +5085,7 @@
 						"frameId": "voruna",
 						"slot": "systems",
 						"dropSourceNodeId": "SolNode310",
-						"chance": 8.16,
+						"chance": 7.69,
 						"bountyTier": "Rotation C"
 					}
 				]
