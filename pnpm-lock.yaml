@@ -43,8 +43,8 @@ importers:
         specifier: ^4.1.10
         version: 4.1.11(vitest@4.1.11)
       '@wfcd/items':
-        specifier: ^1.1276.50
-        version: 1.1276.50(warframe-worldstate-data@3.19.0)
+        specifier: ^1.1276.51
+        version: 1.1276.51(warframe-worldstate-data@3.19.3)
       fake-indexeddb:
         specifier: ^6.2.5
         version: 6.2.5
@@ -91,8 +91,8 @@ importers:
         specifier: ^4.1.10
         version: 4.1.11(@types/node@26.2.0)(@vitest/coverage-v8@4.1.11)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.2.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12))
       warframe-worldstate-data:
-        specifier: ^3.19.0
-        version: 3.19.0
+        specifier: ^3.19.3
+        version: 3.19.3
       wrangler:
         specifier: ^4.123.0
         version: 4.125.0
@@ -1424,8 +1424,8 @@ packages:
   '@vitest/utils@4.1.11':
     resolution: {integrity: sha512-zTCVGpyFsGWBhllOyKlTw/vnr6D9qxsfSDyfbyZmTyjHw5N/VuvzHpHoQjm2ZJzn4RJgx5w4r7V0er69CmLgPQ==}
 
-  '@wfcd/items@1.1276.50':
-    resolution: {integrity: sha512-EKdOdIDuXRM7a1YhfwoeufObQXi0PC+SP2n+L9rcO/vpqGSuQW9t9lT1dM6HSp7JPlTGOqwWwMYitGM1qBzmhg==}
+  '@wfcd/items@1.1276.51':
+    resolution: {integrity: sha512-Lq8vIKaHhuEB2HDA9+6tYmbliNbNCUYHID9xPMqlzRQrYTnFx0dHMRbUmwUTRDHLllPhxtd5QJ0HScEU495bpg==}
     peerDependencies:
       warframe-worldstate-data: ^3.0.0
 
@@ -2313,8 +2313,8 @@ packages:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
 
-  warframe-worldstate-data@3.19.0:
-    resolution: {integrity: sha512-SEK8iDOCpeRm5gCmnxpXpmQjWpzWdBnkmxbnRgosm+ELJwXoOTjKaKkbXjTlXQeZnL+6iAp8luOR8M3mLXfdmg==}
+  warframe-worldstate-data@3.19.3:
+    resolution: {integrity: sha512-mOCFlbyVbwfn0C65Y0NDcbQs9LfPDu+2jToFbJpLh0BhOKLVPh50fOAT+GyATsuodSLF4IjuukFEOg/1th064g==}
     engines: {node: '>=22'}
 
   webidl-conversions@8.0.1:
@@ -3278,9 +3278,9 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.1
 
-  '@wfcd/items@1.1276.50(warframe-worldstate-data@3.19.0)':
+  '@wfcd/items@1.1276.51(warframe-worldstate-data@3.19.3)':
     dependencies:
-      warframe-worldstate-data: 3.19.0
+      warframe-worldstate-data: 3.19.3
 
   acorn@8.18.0: {}
 
@@ -4134,7 +4134,7 @@ snapshots:
     dependencies:
       xml-name-validator: 5.0.0
 
-  warframe-worldstate-data@3.19.0: {}
+  warframe-worldstate-data@3.19.3: {}
 
   webidl-conversions@8.0.1: {}
 
